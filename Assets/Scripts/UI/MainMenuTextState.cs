@@ -13,23 +13,27 @@ namespace UI
     {
         [SerializeField] private GameObject image;
         private TMP_Text _text;
+        private Animator textHover;
         private bool isHovering;
+        private static readonly int IsHovering = Animator.StringToHash("IsHovering");
 
         private void Awake()
         {
-            _text = GetComponent<TMP_Text>();
+            _text = GetComponentInChildren<TMP_Text>();
+            textHover = GetComponentInChildren<Animator>();
         }
         
         public void OnPointerExit(PointerEventData eventData)
         {
             isHovering = false;
-            //_text.color = new Color(192, 192, 192, 255);
+            textHover.SetBool(IsHovering, isHovering);
             image.SetActive(false);
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
             isHovering = true;
+            textHover.SetBool(IsHovering, isHovering);
             _text.color = Color.black;
             image.SetActive(true);
         }
