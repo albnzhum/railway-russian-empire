@@ -3,13 +3,14 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 namespace UI
 {
     /// <summary>
     /// Class for changing main menu text state while hovering
     /// </summary>
-    public class MainMenuTextState : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+    public class MainMenuTextState : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     {
         [SerializeField] private GameObject image;
         private TMP_Text _text;
@@ -36,6 +37,11 @@ namespace UI
             textHover.SetBool(IsHovering, isHovering);
             _text.color = Color.black;
             image.SetActive(true);
+        }
+
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            SceneManager.LoadScene("LoadScreen");
         }
 
         private void Update()
