@@ -5,10 +5,13 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+/// <summary>
+/// Class for asynchronously loading scene 
+/// </summary>
 public class LoadingScreen : MonoBehaviour
 {
     [SerializeField] private Slider loadingSlider;
-    private float loadingSpeed = 1;
+    private readonly float loadingSpeed = 1;
     private float targetValue;
     private AsyncOperation operation;
 
@@ -46,7 +49,6 @@ public class LoadingScreen : MonoBehaviour
 
             if ((int)(loadingSlider.value * 100) == 100)
             {
-                // Разрешить автоматическое переключение сцен после асинхронной загрузки
                 operation.allowSceneActivation = true;
             }
         }

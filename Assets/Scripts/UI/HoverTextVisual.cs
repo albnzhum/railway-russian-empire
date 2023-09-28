@@ -1,18 +1,14 @@
-using System;
 using Observers;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 
 namespace UI
 {
     /// <summary>
     /// Class for changing main menu text state while hovering
     /// </summary>
-    public class MainMenuTextState : MonoBehaviour
+    public class HoverTextVisual : MonoBehaviour
     {
         [SerializeField] private PointerObserver pointerObserver;
         [SerializeField] private GameObject image;
@@ -26,7 +22,6 @@ namespace UI
             _text = GetComponentInChildren<TMP_Text>();
             textHover = GetComponentInChildren<Animator>();
             
-            pointerObserver.PointerClicked += OnPointerClick;
             pointerObserver.PointerEntered += OnPointerEnter;
             pointerObserver.PointerExited += OnPointerExit;
         }
@@ -35,6 +30,7 @@ namespace UI
         {
             isHovering = false;
             textHover.SetBool(IsHovering, isHovering);
+            _text.color = new Color(192, 192, 192, 255);
             image.SetActive(false);
         }
 
@@ -46,17 +42,5 @@ namespace UI
             image.SetActive(true);
         }
 
-        public void OnPointerClick(PointerEventData eventData)
-        {
-            SceneManager.LoadScene("LoadScreen");
-        }
-
-        private void Update()
-        {
-            if (!isHovering)
-            {
-                _text.color = new Color(192, 192, 192, 255);
-            }
-        }
     }
 }
