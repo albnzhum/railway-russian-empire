@@ -12,6 +12,9 @@ public class Startup : MonoBehaviour
     {
         ecsWorld = new EcsWorld();
         systems = new EcsSystems(ecsWorld);
+        
+        /*systems
+            .Add()*/
     }
 
     private void Update()
