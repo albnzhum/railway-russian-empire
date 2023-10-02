@@ -10,6 +10,8 @@ namespace LandscapeGenerator
         public HexGrid HexGrid;
         private Color activeColor;
 
+        private int activeElevation;
+
         private void Awake()
         {
             SelectColor(0);
@@ -29,8 +31,20 @@ namespace LandscapeGenerator
             RaycastHit hit;
             if (Physics.Raycast(inputRay, out hit))
             {
-                HexGrid.ColorCell(hit.point, activeColor);
+                EditCell(HexGrid.GetCell(hit.point));
             }
+        }
+
+        void EditCell(HexCell cell)
+        {
+            cell.color = activeColor;
+            cell.Elevation = activeElevation;
+            HexGrid.Refresh();
+        }
+
+        public void SetElevation(float elevation)
+        {
+            activeElevation = (int)elevation;
         }
 
         public void SelectColor(int index)

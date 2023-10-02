@@ -42,6 +42,11 @@ namespace LandscapeGenerator
 
         #endregion
 
+        public void Refresh()
+        {
+            _hexMesh.Triangulate(_cells);
+        }
+
         void CreateCell(int x, int z, int i)
         {
             Vector3 position;
@@ -78,8 +83,6 @@ namespace LandscapeGenerator
             label.text = cell.Coordinates.ToStringOnSeparateLines();
         }
 
-        
-
         public void ColorCell(Vector3 position, Color color)
         {
             position = transform.InverseTransformPoint(position);
@@ -88,6 +91,14 @@ namespace LandscapeGenerator
             HexCell cell = _cells[index];
             cell.color = color;
             _hexMesh.Triangulate(_cells);
+        }
+
+        public HexCell GetCell(Vector3 position)
+        {
+            position = transform.InverseTransformPoint(position);
+            HexCoordinates coordinates = HexCoordinates.FromPosition(position);
+            int index = coordinates.X + coordinates.Z * width + coordinates.Z / 2;
+            return _cells[index];
         }
     }
 }

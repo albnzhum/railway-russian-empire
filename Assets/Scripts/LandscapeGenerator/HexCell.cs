@@ -9,6 +9,22 @@ namespace LandscapeGenerator
         public Color color;
 
         [SerializeField] private HexCell[] neighbors;
+        private int elevation;
+
+        public int Elevation
+        {
+            get
+            {
+                return elevation;
+            }
+            set
+            {
+                elevation = value;
+                Vector3 position = transform.localPosition;
+                position.y = value * HexMetrics.elevationStep;
+                transform.localPosition = position;
+            }
+        }
 
         public HexCell GetNeighbor(HexDirection direction)
         {
