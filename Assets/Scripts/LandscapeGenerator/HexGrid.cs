@@ -17,6 +17,7 @@ namespace LandscapeGenerator
         private HexMesh _hexMesh;
 
         public Color defaultColor = Color.white;
+        
         #region UNITY_ENGINE
 
         private void Start()
@@ -38,7 +39,7 @@ namespace LandscapeGenerator
                 }
             }
         }
-        
+
         #endregion
 
         void CreateCell(int x, int z, int i)
@@ -53,6 +54,24 @@ namespace LandscapeGenerator
             cell.transform.localPosition = position;
             cell.Coordinates = HexCoordinates.FromOffsetCoordinates(x, z);
             cell.color = defaultColor;
+
+            if (x > 0) {
+                cell.SetNeighbor(HexDirection.W, _cells[i - 1]);
+            }
+            if (z > 0) {
+                if ((z & 1) == 0) {
+                    cell.SetNeighbor(HexDirection.SE, _cells[i - width]);
+                    if (x > 0) {
+                        cell.SetNeighbor(HexDirection.SW, _cells[i - width - 1]);
+                    }
+                }
+                else {
+                    cell.SetNeighbor(HexDirection.SW, _cells[i - width]);
+                    if (x < width - 1) {
+                        cell.SetNeighbor(HexDirection.SE, _cells[i - width + 1]);
+                    }
+                }
+            }
 
             Text label = Instantiate<Text>(cellLabelPrefab, gridCanvas.transform, false);
             label.rectTransform.anchoredPosition = new Vector2(position.x, position.z);
