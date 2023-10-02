@@ -1,8 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
-public class HexCell : MonoBehaviour
+namespace LandscapeGenerator
 {
-    
+    public class HexCell : MonoBehaviour
+    {
+        public HexCoordinates Coordinates;
+        public Color color;
+    }
 }
