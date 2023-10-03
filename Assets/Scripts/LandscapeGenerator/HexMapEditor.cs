@@ -43,9 +43,8 @@ namespace LandscapeGenerator
 
         void EditCell(HexCell cell)
         {
-            cell.color = activeColor;
+            cell.Color = activeColor;
             cell.Elevation = activeElevation;
-            HexGrid.Refresh();
         }
 
         public void SetElevation()

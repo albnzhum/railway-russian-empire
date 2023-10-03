@@ -10,14 +10,12 @@ namespace LandscapeGenerator
     /// </summary>
     public class HexGrid : MonoBehaviour
     {
-        int cellCountX,cellCountZ ;
+        int cellCountX, cellCountZ;
 
         public HexCell cellPrefab;
         public Text cellLabelPrefab;
-        private Canvas gridCanvas;
 
         private HexCell[] _cells;
-        private HexMesh _hexMesh;
 
         public Color defaultColor = Color.white;
 
@@ -27,13 +25,8 @@ namespace LandscapeGenerator
         public HexGridChunk chunkPrefab;
         private HexGridChunk[] chunks;
         
-        #region UNITY_ENGINE
-
-        private void Start()
-        {
-            _hexMesh.Triangulate(_cells);
-        }
-
+#region UNITY_ENGINE
+        
         private void OnEnable()
         {
             HexMetrics.noiseSource = noiseSource;
@@ -42,8 +35,6 @@ namespace LandscapeGenerator
         private void Awake()
         {
             HexMetrics.noiseSource = noiseSource;
-            gridCanvas = GetComponentInChildren<Canvas>();
-            _hexMesh = GetComponentInChildren<HexMesh>();
 
             cellCountX = chunkCountX * HexMetrics.chunkSizeX;
             cellCountZ = chunkCountZ * HexMetrics.chunkSizeZ;
@@ -51,12 +42,7 @@ namespace LandscapeGenerator
             CreateCells();
         }
 
-        #endregion
-
-        public void Refresh()
-        {
-            _hexMesh.Triangulate(_cells);
-        }
+#endregion
 
         void CreateChunks()
         {
@@ -78,7 +64,7 @@ namespace LandscapeGenerator
             {
                 for (int x = 0; x < cellCountX; x++)
                 {
-                    CreateCell(x, z, i);
+                    CreateCell(x, z, i++);
                 }
             }
         }
@@ -93,8 +79,8 @@ namespace LandscapeGenerator
             HexCell cell = _cells[i] = Instantiate<HexCell>(cellPrefab);
             cell.transform.SetParent(transform, false);
             cell.transform.localPosition = position;
-            cell.Coordinates = HexCoordinates.FromOffsetCoordinates(x, z);
-            cell.color = defaultColor;
+            cell.coordinates = HexCoordinates.FromOffsetCoordinates(x, z);
+            cell.Color = defaultColor;
 
             if (x > 0) {
                 cell.SetNeighbor(HexDirection.W, _cells[i - 1]);
@@ -114,27 +100,25 @@ namespace LandscapeGenerator
                 }
             }
 
-            Text label = Instantiate<Text>(cellLabelPrefab, gridCanvas.transform, false);
+            Text label = Instantiate<Text>(cellLabelPrefab);
             label.rectTransform.anchoredPosition = new Vector2(position.x, position.z);
-            label.text = cell.Coordinates.ToStringOnSeparateLines();
+            label.text = cell.coordinates.ToStringOnSeparateLines();
             cell.uiRect = label.rectTransform;
             cell.Elevation = 0;
+            AddCellToChunk(x, z, cell);
         }
 
-        /// <summary>
-        /// Colors a cell at a specified position with a given color.
-        /// </summary>
-        /// <param name="position"></param>
-        /// <param name="color"></param>
-        public void ColorCell(Vector3 position, Color color)
+        void AddCellToChunk(int x, int z, HexCell cell)
         {
-            position = transform.InverseTransformPoint(position);
-            HexCoordinates coordinates = HexCoordinates.FromPosition(position);
-            int index = coordinates.X + coordinates.Z * cellCountX  + coordinates.Z / 2;
-            HexCell cell = _cells[index];
-            cell.color = color;
-            _hexMesh.Triangulate(_cells);
+            int chunkX = x / HexMetrics.chunkSizeX;
+            int chunkZ = z / HexMetrics.chunkSizeZ;
+            HexGridChunk chunk = chunks[chunkX + chunkZ * chunkCountX];
+
+            int localX = x - chunkX * HexMetrics.chunkSizeX;
+            int localZ = z - chunkZ * HexMetrics.chunkSizeZ;
+            chunk.AddCell(localX + localZ * HexMetrics.chunkSizeX, cell);
         }
+        
 
         /// <summary>
         /// Returns the cell at a specified position
