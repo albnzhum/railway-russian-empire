@@ -37,6 +37,7 @@ namespace LandscapeGenerator
 
         private void Awake()
         {
+            HexMetrics.noiseSource = noiseSource;
             gridCanvas = GetComponentInChildren<Canvas>();
             _hexMesh = GetComponentInChildren<HexMesh>();
             _cells = new HexCell[height * width];
@@ -92,6 +93,7 @@ namespace LandscapeGenerator
             label.rectTransform.anchoredPosition = new Vector2(position.x, position.z);
             label.text = cell.Coordinates.ToStringOnSeparateLines();
             cell.uiRect = label.rectTransform;
+            cell.Elevation = 0;
         }
 
         /// <summary>

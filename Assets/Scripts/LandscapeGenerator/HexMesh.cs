@@ -1,5 +1,8 @@
 using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
+using Vector3 = UnityEngine.Vector3;
+using Vector4 = UnityEngine.Vector4;
 
 namespace LandscapeGenerator
 {
@@ -69,15 +72,22 @@ namespace LandscapeGenerator
         /// <param name="cell"></param>
         void Triangulate(HexDirection direction, HexCell cell)
         {
-            Vector3 center = cell.transform.localPosition;
+            Vector3 center = cell.Position;
             Vector3 v1 = center + HexMetrics.GetFirstSolidCorner(direction);
             Vector3 v2 = center + HexMetrics.GetSecondSolidCorner(direction);
 
-            AddTriangle(center, v1, v2);
+            Vector3 e1 = Vector3.Lerp(v1, v2, 1f/3f);
+            Vector3 e2 = Vector3.Lerp(v1, v2, 2f / 3f);
+
+            AddTriangle(center, v1, e1);
+            AddTriangleColor(cell.color);
+            AddTriangle(center, e1, e2);
+            AddTriangleColor(cell.color);
+            AddTriangle(center, e2, v2);
             AddTriangleColor(cell.color);
 
             if (direction <= HexDirection.SE) {
-                TriangulateConnection(direction, cell, v1, v2);
+                TriangulateConnection(direction, cell, v1, e1, e2, v2);
             }
         }
         
@@ -89,7 +99,8 @@ namespace LandscapeGenerator
         /// <param name="v1">First vertex of the connection</param>
         /// <param name="v2">Second vertex of the connection</param>
         void TriangulateConnection (
-            HexDirection direction, HexCell cell, Vector3 v1, Vector3 v2
+            HexDirection direction, HexCell cell, 
+            Vector3 v1,Vector3 e1, Vector3 e2, Vector3 v2
         ) {
             HexCell neighbor = cell.GetNeighbor(direction);
             if (neighbor == null) {
@@ -99,7 +110,10 @@ namespace LandscapeGenerator
             Vector3 bridge = HexMetrics.GetBridge(direction);
             Vector3 v3 = v1 + bridge;
             Vector3 v4 = v2 + bridge;
-            v3.y = v4.y = neighbor.Elevation * HexMetrics.elevationStep;
+            v3.y = v4.y = neighbor.Position.y;
+
+            Vector3 e3 = Vector3.Lerp(v3, v4, 1f / 3f);
+            Vector3 e4 = Vector3.Lerp(v3, v4, 2f / 3f);
 
             if (cell.GetEdgeType(direction) == HexEdgeType.Slope)
             {
@@ -107,7 +121,11 @@ namespace LandscapeGenerator
             }
             else
             {
-                AddQuad(v1, v2, v3, v4);
+                AddQuad(v1, e1, v3, e3);
+                AddQuadColor(cell.color, neighbor.color);
+                AddQuad(e1, e2, e3, e4);
+                AddQuadColor(cell.color, neighbor.color);
+                AddQuad(e2, v2, e4, v4);
                 AddQuadColor(cell.color, neighbor.color);
             }
             
@@ -115,7 +133,7 @@ namespace LandscapeGenerator
             if (direction <= HexDirection.E && nextNeighbor != null)
             {
                 Vector3 v5 = v2 + HexMetrics.GetBridge(direction.Next());
-                v5.y = nextNeighbor.Elevation * HexMetrics.elevationStep;
+                v5.y = nextNeighbor.Position.y;
                 if (cell.Elevation <= neighbor.Elevation)
                 {
                     if (cell.Elevation <= nextNeighbor.Elevation)
@@ -257,7 +275,7 @@ namespace LandscapeGenerator
                 Color c1 = c3;
                 Color c2 = c4;
                 v3 = HexMetrics.TerraceLerp(begin, left, i);
-                v3 = HexMetrics.TerraceLerp(begin, right, i);
+                v4 = HexMetrics.TerraceLerp(begin, right, i);
                 c3 = HexMetrics.TerraceLerp(beginCell.color, leftCell.color, i);
                 c4 = HexMetrics.TerraceLerp(beginCell.color, rightCell.color, i);
                 AddQuad(v1, v2, v3, v4);
@@ -316,7 +334,7 @@ namespace LandscapeGenerator
                 b = -b;
             }
             Vector3 boundary = Vector3.Lerp(begin, right, b);
-            Color boundaryColor = Color.Lerp(beginCell.color, rightCell.color, b);
+            Color boundaryColor = Color.Lerp(beginCell.color, leftCell.color, b);
 
             TriangulateBoundaryTriangle(
                 right, rightCell, begin, beginCell, boundary, boundaryColor);
@@ -432,7 +450,7 @@ namespace LandscapeGenerator
         {
             Vector4 sample = HexMetrics.SampleNoise(position);
             position.x += (sample.x * 2f - 1f) * HexMetrics.cellPerturbStrength;
-            position.y += (sample.y * 2f - 1f) * HexMetrics.cellPerturbStrength;
+            //position.y += (sample.y * 2f - 1f) * HexMetrics.cellPerturbStrength;
             position.z += (sample.z * 2f - 1f) * HexMetrics.cellPerturbStrength;
             return position;
         }

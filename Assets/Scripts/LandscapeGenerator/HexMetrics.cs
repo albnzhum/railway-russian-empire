@@ -20,6 +20,7 @@ namespace LandscapeGenerator
         public static Texture2D noiseSource;
         public const float cellPerturbStrength = 5f;
         public const float noiseScale = 0.003f;
+        public const float elevationPerturbStrength = 1.5f;
 
         public static Vector3[] corners =
         {
