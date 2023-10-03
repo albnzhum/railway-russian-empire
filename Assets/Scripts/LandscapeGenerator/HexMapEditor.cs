@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 namespace LandscapeGenerator
 {
+    /// <summary>
+    /// Handles the editing of hex cells in the mp
+    /// </summary>
     public class HexMapEditor : MonoBehaviour
     {
         public Color[] colors;

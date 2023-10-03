@@ -17,6 +17,10 @@ namespace LandscapeGenerator
         public const float horizontalTerraceStepSize = 1f / terraceSteps;
         public const float verticalTerraceStepSize = 1f / (terracesPerSlope + 1);
 
+        public static Texture2D noiseSource;
+        public const float cellPerturbStrength = 5f;
+        public const float noiseScale = 0.003f;
+
         public static Vector3[] corners =
         {
             new Vector3(0f, 0f, outerRadius),
@@ -27,6 +31,8 @@ namespace LandscapeGenerator
             new Vector3(-innerRadius, 0f, 0.5f * outerRadius),
             new Vector3(0f, 0f, outerRadius)
         };
+
+        #region Corners
 
         public static Vector3 GetFirstCorner(HexDirection direction)
         {
@@ -47,6 +53,8 @@ namespace LandscapeGenerator
         {
             return corners[(int)direction + 1] * solidFactor;
         }
+
+        #endregion
         
         public static Vector3 GetBridge (HexDirection direction) {
             return (corners[(int)direction] + corners[(int)direction + 1]) *
@@ -84,5 +92,12 @@ namespace LandscapeGenerator
 
             return HexEdgeType.Cliff;
         }
+
+        public static Vector4 SampleNoise(Vector3 position)
+        {
+            return noiseSource.GetPixelBilinear(
+                position.x * noiseScale, position.z * noiseScale);
+        }
+        
     }
 }

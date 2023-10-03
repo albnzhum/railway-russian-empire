@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace LandscapeGenerator
 {
+    /// <summary>
+    /// Generates a mesh for hexagonal grid
+    /// </summary>
     [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 
     public class HexMesh : MonoBehaviour
@@ -24,6 +27,10 @@ namespace LandscapeGenerator
             triangles = new List<int>();
         }
 
+        /// <summary>
+        /// Triangulates an array of HexCells to create the mesh
+        /// </summary>
+        /// <param name="cells"></param>
         public void Triangulate(HexCell[] cells)
         {
             hexMesh.Clear();
@@ -43,6 +50,10 @@ namespace LandscapeGenerator
             _meshCollider.sharedMesh = hexMesh;
         }
 
+        /// <summary>
+        /// Triangulates a single HexCell
+        /// </summary>
+        /// <param name="cell"></param>
         void Triangulate(HexCell cell)
         {
             for (HexDirection d = HexDirection.NE; d <= HexDirection.NW; d++)
@@ -51,6 +62,11 @@ namespace LandscapeGenerator
             }
         }
 
+        /// <summary>
+        /// Triangulates a specific direction of a hexagonal cells
+        /// </summary>
+        /// <param name="direction">The direction to be triangulated</param>
+        /// <param name="cell"></param>
         void Triangulate(HexDirection direction, HexCell cell)
         {
             Vector3 center = cell.transform.localPosition;
@@ -65,6 +81,13 @@ namespace LandscapeGenerator
             }
         }
         
+        /// <summary>
+        /// Triangulate the connection between two cells
+        /// </summary>
+        /// <param name="direction"></param>
+        /// <param name="cell"></param>
+        /// <param name="v1">First vertex of the connection</param>
+        /// <param name="v2">Second vertex of the connection</param>
         void TriangulateConnection (
             HexDirection direction, HexCell cell, Vector3 v1, Vector3 v2
         ) {
@@ -115,6 +138,15 @@ namespace LandscapeGenerator
             }
         }
 
+        /// <summary>
+        /// Triangulates a slope edge between two cells
+        /// </summary>
+        /// <param name="beginLeft">The left vertex at the beginning</param>
+        /// <param name="beginRight">The right vertex at the beginning</param>
+        /// <param name="beginCell">The cell at the beginning</param>
+        /// <param name="endLeft">The left vertex at the end</param>
+        /// <param name="endRight">The right vertex at the end</param>
+        /// <param name="endCell">The cell at the end</param>
         void TriangulateEdgeTerraces(
             Vector3 beginLeft, Vector3 beginRight, HexCell beginCell, Vector3 endLeft,
             Vector3 endRight, HexCell endCell)
@@ -141,6 +173,15 @@ namespace LandscapeGenerator
             AddQuadColor(c2, endCell.color);
         }
 
+        /// <summary>
+        /// Triangulates a corner between three hex cells with terraces
+        /// </summary>
+        /// <param name="bottom"></param>
+        /// <param name="bottomCell"></param>
+        /// <param name="left"></param>
+        /// <param name="leftCell"></param>
+        /// <param name="right"></param>
+        /// <param name="rightCell"></param>
         void TriangulateCorner(
             Vector3 bottom, HexCell bottomCell,
             Vector3 left, HexCell leftCell,
@@ -195,7 +236,7 @@ namespace LandscapeGenerator
                 AddTriangleColor(bottomCell.color, leftCell.color, rightCell.color);
             }
         }
-
+        
         void TriangulateCornerTerrace(
             Vector3 begin, HexCell beginCell,
             Vector3 left, HexCell leftCell,
@@ -227,6 +268,15 @@ namespace LandscapeGenerator
             AddQuadColor(c3, c4, leftCell.color, rightCell.color);
         }
 
+        /// <summary>
+        /// Triangulates a corner with terraces and cliffs
+        /// </summary>
+        /// <param name="begin"></param>
+        /// <param name="beginCell"></param>
+        /// <param name="left"></param>
+        /// <param name="leftCell"></param>
+        /// <param name="right"></param>
+        /// <param name="rightCell"></param>
         void TriangulateCornerTerraceCliff(
             Vector3 begin, HexCell beginCell,
             Vector3 left, HexCell leftCell,
@@ -283,6 +333,15 @@ namespace LandscapeGenerator
             }
         }
 
+        /// <summary>
+        /// Triangulates a boundary triangle
+        /// </summary>
+        /// <param name="begin"></param>
+        /// <param name="beginCell"></param>
+        /// <param name="left"></param>
+        /// <param name="leftCell"></param>
+        /// <param name="boundary"></param>
+        /// <param name="boundaryColor"></param>
         void TriangulateBoundaryTriangle(
             Vector3 begin, HexCell beginCell,
             Vector3 left, HexCell leftCell,
@@ -308,17 +367,27 @@ namespace LandscapeGenerator
             AddTriangleColor(c2, leftCell.color, boundaryColor);
         }
 
+        /// <summary>
+        /// Adds a triangle to the mesh
+        /// </summary>
+        /// <param name="v1"></param>
+        /// <param name="v2"></param>
+        /// <param name="v3"></param>
         void AddTriangle(Vector3 v1, Vector3 v2, Vector3 v3)
         {
             int vertexIndex = vertices.Count;
-            vertices.Add(v1);
-            vertices.Add(v2);
-            vertices.Add(v3);
+            vertices.Add(Perturb(v1));
+            vertices.Add(Perturb(v2));
+            vertices.Add(Perturb(v3));
             triangles.Add(vertexIndex);
             triangles.Add(vertexIndex + 1);
             triangles.Add(vertexIndex + 2);
         }
 
+        /// <summary>
+        /// Adds color for a single triangle
+        /// </summary>
+        /// <param name="color"></param>
         void AddTriangleColor (Color color) {
             colors.Add(color);
             colors.Add(color);
@@ -333,10 +402,10 @@ namespace LandscapeGenerator
         
         void AddQuad (Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4) {
             int vertexIndex = vertices.Count;
-            vertices.Add(v1);
-            vertices.Add(v2);
-            vertices.Add(v3);
-            vertices.Add(v4);
+            vertices.Add(Perturb(v1));
+            vertices.Add(Perturb(v2));
+            vertices.Add(Perturb(v3));
+            vertices.Add(Perturb(v4));
             triangles.Add(vertexIndex);
             triangles.Add(vertexIndex + 2);
             triangles.Add(vertexIndex + 1);
@@ -357,6 +426,15 @@ namespace LandscapeGenerator
             colors.Add(c2);
             colors.Add(c3);
             colors.Add(c4);
+        }
+
+        Vector3 Perturb(Vector3 position)
+        {
+            Vector4 sample = HexMetrics.SampleNoise(position);
+            position.x += (sample.x * 2f - 1f) * HexMetrics.cellPerturbStrength;
+            position.y += (sample.y * 2f - 1f) * HexMetrics.cellPerturbStrength;
+            position.z += (sample.z * 2f - 1f) * HexMetrics.cellPerturbStrength;
+            return position;
         }
     }
 }

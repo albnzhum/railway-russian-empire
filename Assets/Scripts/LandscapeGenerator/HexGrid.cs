@@ -4,6 +4,9 @@ using UnityEngine.UI;
 
 namespace LandscapeGenerator
 {
+    /// <summary>
+    /// Manages a grid for hex cells
+    /// </summary>
     public class HexGrid : MonoBehaviour
     {
         public int width = 6;
@@ -17,12 +20,19 @@ namespace LandscapeGenerator
         private HexMesh _hexMesh;
 
         public Color defaultColor = Color.white;
+
+        public Texture2D noiseSource;
         
         #region UNITY_ENGINE
 
         private void Start()
         {
             _hexMesh.Triangulate(_cells);
+        }
+
+        private void OnEnable()
+        {
+            HexMetrics.noiseSource = noiseSource;
         }
 
         private void Awake()
@@ -84,6 +94,11 @@ namespace LandscapeGenerator
             cell.uiRect = label.rectTransform;
         }
 
+        /// <summary>
+        /// Colors a cell at a specified position with a given color.
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="color"></param>
         public void ColorCell(Vector3 position, Color color)
         {
             position = transform.InverseTransformPoint(position);
@@ -94,6 +109,11 @@ namespace LandscapeGenerator
             _hexMesh.Triangulate(_cells);
         }
 
+        /// <summary>
+        /// Returns the cell at a specified position
+        /// </summary>
+        /// <param name="position"></param>
+        /// <returns></returns>
         public HexCell GetCell(Vector3 position)
         {
             position = transform.InverseTransformPoint(position);
