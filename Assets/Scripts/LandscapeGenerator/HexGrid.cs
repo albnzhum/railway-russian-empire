@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace LandscapeGenerator
@@ -9,8 +10,7 @@ namespace LandscapeGenerator
     /// </summary>
     public class HexGrid : MonoBehaviour
     {
-        public int width = 6;
-        public int height = 6;
+        int cellCountX,cellCountZ ;
 
         public HexCell cellPrefab;
         public Text cellLabelPrefab;
@@ -22,6 +22,10 @@ namespace LandscapeGenerator
         public Color defaultColor = Color.white;
 
         public Texture2D noiseSource;
+
+        public int chunkCountX = 4, chunkCountZ = 3;
+        public HexGridChunk chunkPrefab;
+        private HexGridChunk[] chunks;
         
         #region UNITY_ENGINE
 
@@ -40,15 +44,11 @@ namespace LandscapeGenerator
             HexMetrics.noiseSource = noiseSource;
             gridCanvas = GetComponentInChildren<Canvas>();
             _hexMesh = GetComponentInChildren<HexMesh>();
-            _cells = new HexCell[height * width];
 
-            for (int z = 0, i = 0; z < height; z++)
-            {
-                for (int x = 0; x < width; x++)
-                {
-                    CreateCell(x, z, i++);
-                }
-            }
+            cellCountX = chunkCountX * HexMetrics.chunkSizeX;
+            cellCountZ = chunkCountZ * HexMetrics.chunkSizeZ;
+            CreateChunks();
+            CreateCells();
         }
 
         #endregion
@@ -56,6 +56,31 @@ namespace LandscapeGenerator
         public void Refresh()
         {
             _hexMesh.Triangulate(_cells);
+        }
+
+        void CreateChunks()
+        {
+            chunks = new HexGridChunk[chunkCountX * chunkCountZ];
+            for (int z = 0, i = 0; z < chunkCountZ; z++)
+            {
+                for (int x = 0; x < chunkCountX; x++)
+                {
+                    HexGridChunk chunk = chunks[i++] = Instantiate(chunkPrefab);
+                    chunk.transform.SetParent(transform);
+                }
+            }
+        }
+
+        void CreateCells()
+        {
+            _cells = new HexCell[cellCountZ * cellCountX];
+            for (int z = 0, i = 0; z < cellCountZ; z++)
+            {
+                for (int x = 0; x < cellCountX; x++)
+                {
+                    CreateCell(x, z, i);
+                }
+            }
         }
 
         void CreateCell(int x, int z, int i)
@@ -76,15 +101,15 @@ namespace LandscapeGenerator
             }
             if (z > 0) {
                 if ((z & 1) == 0) {
-                    cell.SetNeighbor(HexDirection.SE, _cells[i - width]);
+                    cell.SetNeighbor(HexDirection.SE, _cells[i - cellCountX]);
                     if (x > 0) {
-                        cell.SetNeighbor(HexDirection.SW, _cells[i - width - 1]);
+                        cell.SetNeighbor(HexDirection.SW, _cells[i - cellCountX - 1]);
                     }
                 }
                 else {
-                    cell.SetNeighbor(HexDirection.SW, _cells[i - width]);
-                    if (x < width - 1) {
-                        cell.SetNeighbor(HexDirection.SE, _cells[i - width + 1]);
+                    cell.SetNeighbor(HexDirection.SW, _cells[i - cellCountX]);
+                    if (x < cellCountX - 1) {
+                        cell.SetNeighbor(HexDirection.SE, _cells[i - cellCountX + 1]);
                     }
                 }
             }
@@ -105,7 +130,7 @@ namespace LandscapeGenerator
         {
             position = transform.InverseTransformPoint(position);
             HexCoordinates coordinates = HexCoordinates.FromPosition(position);
-            int index = coordinates.X + coordinates.Z * width  + coordinates.Z / 2;
+            int index = coordinates.X + coordinates.Z * cellCountX  + coordinates.Z / 2;
             HexCell cell = _cells[index];
             cell.color = color;
             _hexMesh.Triangulate(_cells);
@@ -120,7 +145,7 @@ namespace LandscapeGenerator
         {
             position = transform.InverseTransformPoint(position);
             HexCoordinates coordinates = HexCoordinates.FromPosition(position);
-            int index = coordinates.X + coordinates.Z * width + coordinates.Z / 2;
+            int index = coordinates.X + coordinates.Z * cellCountX + coordinates.Z / 2;
             return _cells[index];
         }
         
