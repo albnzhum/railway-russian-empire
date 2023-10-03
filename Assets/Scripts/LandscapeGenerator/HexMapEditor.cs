@@ -1,6 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace LandscapeGenerator
 {
@@ -11,6 +12,8 @@ namespace LandscapeGenerator
         private Color activeColor;
 
         private int activeElevation;
+
+        [SerializeField] private Slider elevationSlider;
 
         private void Awake()
         {
@@ -42,9 +45,9 @@ namespace LandscapeGenerator
             HexGrid.Refresh();
         }
 
-        public void SetElevation(float elevation)
+        public void SetElevation()
         {
-            activeElevation = (int)elevation;
+            activeElevation = (int)elevationSlider.value;
         }
 
         public void SelectColor(int index)
