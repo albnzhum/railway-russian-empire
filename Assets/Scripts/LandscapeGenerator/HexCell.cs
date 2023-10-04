@@ -72,6 +72,8 @@ namespace LandscapeGenerator
         public HexDirection OutgoingRiver => outgoingRiver;
         public bool HasRiver => hasIncomingRiver || hasOutgoingRiver;
         public bool HasRiverBeginOrEnd => hasIncomingRiver != hasOutgoingRiver;
+        public float StreamDebY => (elevation + HexMetrics.streamBedElevationOffset) 
+                                   * HexMetrics.elevationStep;
 
         #endregion
 
