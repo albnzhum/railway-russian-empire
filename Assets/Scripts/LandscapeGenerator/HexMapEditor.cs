@@ -16,7 +16,16 @@ namespace LandscapeGenerator
 
         private int activeElevation;
 
+        private bool applyColor;
+        private bool applyElevation = true;
+
+        private int brushSize;
+
+        [Header("UI")]
         [SerializeField] private Slider elevationSlider;
+        [SerializeField] private Slider brushSizeSlider;
+        [SerializeField] private Toggle elevationToggle;
+        [SerializeField] private Toggle labelsVisibility;
 
         private void Awake()
         {
@@ -37,14 +46,57 @@ namespace LandscapeGenerator
             RaycastHit hit;
             if (Physics.Raycast(inputRay, out hit))
             {
-                EditCell(HexGrid.GetCell(hit.point));
+                EditCells(HexGrid.GetCell(hit.point));
+            }
+        }
+
+        void EditCells(HexCell center)
+        {
+            int centerX = center.coordinates.X;
+            int centerZ = center.coordinates.Z;
+
+            for (int r = 0, z = centerZ - brushSize; z <= centerZ; z++, r++)
+            {
+                for (int x = centerX - r; x <= centerX + brushSize; x++)
+                {
+                    EditCell(HexGrid.GetCell(new HexCoordinates(x, z)));
+                }
+            }
+            for (int r = 0, z = centerZ + brushSize; z > centerZ; z--, r++)
+            {
+                for (int x = centerX - brushSize; x <= centerX + r; x++)
+                {
+                    EditCell(HexGrid.GetCell(new HexCoordinates(x, z)));
+                }
             }
         }
 
         void EditCell(HexCell cell)
         {
-            cell.Color = activeColor;
-            cell.Elevation = activeElevation;
+            if (cell)
+            {
+                if (applyColor)
+                {
+                    cell.Color = activeColor;
+                }
+
+                if (applyElevation)
+                {
+                    cell.Elevation = activeElevation;
+                }
+            }
+        }
+
+        public void SetApplyElevation()
+        {
+            if (elevationToggle.isOn)
+            {
+                applyElevation = true;
+            }
+            else
+            {
+                applyElevation = false;
+            }
         }
 
         public void SetElevation()
@@ -54,7 +106,28 @@ namespace LandscapeGenerator
 
         public void SelectColor(int index)
         {
-            activeColor = colors[index];
+            applyColor = index >= 0;
+            if (applyColor)
+            {
+                activeColor = colors[index];
+            }
+        }
+
+        public void SetBrushSize()
+        {
+            brushSize = (int)brushSizeSlider.value;
+        }
+
+        public void ShowUI()
+        {
+            if (labelsVisibility.isOn)
+            {
+                HexGrid.ShowUI(true);
+            }
+            else
+            {
+                HexGrid.ShowUI(false);
+            }
         }
     }
 }
