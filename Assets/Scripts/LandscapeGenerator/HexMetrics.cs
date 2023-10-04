@@ -112,5 +112,12 @@ namespace LandscapeGenerator
                 (0.5f * solidFactor);
         }
         
+        public static Vector3 Perturb (Vector3 position) {
+            Vector4 sample = SampleNoise(position);
+            position.x += (sample.x * 2f - 1f) * cellPerturbStrength;
+            position.z += (sample.z * 2f - 1f) * cellPerturbStrength;
+            return position;
+        }
+        
     }
 }

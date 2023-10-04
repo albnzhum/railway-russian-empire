@@ -84,6 +84,9 @@ namespace LandscapeGenerator
                         TriangulateWithRiver(direction, cell, center, e);
                     }
                 }
+                else {
+                    TriangulateAdjacentToRiver(direction, cell, center, e);
+                }
             }
             else {
                 TriangulateEdgeFan(center, e, cell.Color);
@@ -142,6 +145,35 @@ namespace LandscapeGenerator
             AddQuadColor(cell.Color);
             AddTriangle(centerR, m.v4, m.v5);
             AddTriangleColor(cell.Color);
+        }
+        
+        void TriangulateAdjacentToRiver (
+            HexDirection direction, HexCell cell, Vector3 center, EdgeVertices e) {
+            if (cell.HasRiverThroughEdge(direction.Next())) {
+                if (cell.HasRiverThroughEdge(direction.Previous())) {
+                    center += HexMetrics.GetSolidEdgeMiddle(direction) *
+                              (HexMetrics.innerToOuter * 0.5f);
+                }
+                else if (
+                    cell.HasRiverThroughEdge(direction.Previous2())
+                ) {
+                    center += HexMetrics.GetFirstSolidCorner(direction) * 0.25f;
+                }
+            }
+            else if (
+                cell.HasRiverThroughEdge(direction.Previous()) &&
+                cell.HasRiverThroughEdge(direction.Next2())
+            ) {
+                center += HexMetrics.GetSecondSolidCorner(direction) * 0.25f;
+            }
+
+            EdgeVertices m = new EdgeVertices(
+                Vector3.Lerp(center, e.v1, 0.5f),
+                Vector3.Lerp(center, e.v5, 0.5f)
+            );
+
+            TriangulateEdgeStrip(m, cell.Color, e, cell.Color);
+            TriangulateEdgeFan(center, m, cell.Color);
         }
         
         void TriangulateWithRiverBeginOrEnd (
@@ -360,7 +392,7 @@ namespace LandscapeGenerator
             {
                 b = -b;
             }
-            Vector3 boundary = Vector3.Lerp(Perturb(begin), Perturb(right), b);
+            Vector3 boundary = Vector3.Lerp(HexMetrics.Perturb(begin), HexMetrics.Perturb(right), b);
             Color boundaryColor = Color.Lerp(beginCell.Color, rightCell.Color, b);
 
             TriangulateBoundaryTriangle(
@@ -373,7 +405,7 @@ namespace LandscapeGenerator
             }
             else
             {
-                AddTriangleUnperturbed(Perturb(left), Perturb(right), boundary);
+                AddTriangleUnperturbed(HexMetrics.Perturb(left), HexMetrics.Perturb(right), boundary);
                 AddTriangleColor(leftCell.Color, rightCell.Color, boundaryColor);
             }
         }
@@ -388,7 +420,7 @@ namespace LandscapeGenerator
             {
                 b = -b;
             }
-            Vector3 boundary = Vector3.Lerp(Perturb(begin), Perturb(left), b);
+            Vector3 boundary = Vector3.Lerp(HexMetrics.Perturb(begin), HexMetrics.Perturb(left), b);
             Color boundaryColor = Color.Lerp(beginCell.Color, leftCell.Color, b);
 
             TriangulateBoundaryTriangle(
@@ -401,7 +433,7 @@ namespace LandscapeGenerator
             }
             else
             {
-                AddTriangleUnperturbed(Perturb(left), Perturb(right), boundary);
+                AddTriangleUnperturbed(HexMetrics.Perturb(left), HexMetrics.Perturb(right), boundary);
                 AddTriangleColor(leftCell.Color, rightCell.Color, boundaryColor);
             }
         }
@@ -420,23 +452,23 @@ namespace LandscapeGenerator
             Vector3 left, HexCell leftCell,
             Vector3 boundary, Color boundaryColor)
         {
-            Vector3 v2 = Perturb(HexMetrics.TerraceLerp(begin, left, 1));
+            Vector3 v2 = HexMetrics.Perturb(HexMetrics.TerraceLerp(begin, left, 1));
             Color c2 = HexMetrics.TerraceLerp(beginCell.Color, leftCell.Color, 1);
             
-            AddTriangleUnperturbed(Perturb(begin), v2, boundary);
+            AddTriangleUnperturbed(HexMetrics.Perturb(begin), v2, boundary);
             AddTriangleColor(beginCell.Color, c2, boundaryColor);
 
             for (int i = 2; i < HexMetrics.terraceSteps; i++)
             {
                 Vector3 v1 = v2;
                 Color c1 = c2;
-                v2 = Perturb(HexMetrics.TerraceLerp(begin, left, i));
+                v2 = HexMetrics.Perturb(HexMetrics.TerraceLerp(begin, left, i));
                 c2 = HexMetrics.TerraceLerp(beginCell.Color, leftCell.Color, i);
                 AddTriangleUnperturbed(v1, v2, boundary);
                 AddTriangleColor(c1, c2, boundaryColor);
             }
             
-            AddTriangle(v2, Perturb(left), boundary);
+            AddTriangle(v2, HexMetrics.Perturb(left), boundary);
             AddTriangleColor(c2, leftCell.Color, boundaryColor);
         }
 
@@ -476,9 +508,9 @@ namespace LandscapeGenerator
         void AddTriangle(Vector3 v1, Vector3 v2, Vector3 v3)
         {
             int vertexIndex = vertices.Count;
-            vertices.Add(Perturb(v1));
-            vertices.Add(Perturb(v2));
-            vertices.Add(Perturb(v3));
+            vertices.Add(HexMetrics.Perturb(v1));
+            vertices.Add(HexMetrics.Perturb(v2));
+            vertices.Add(HexMetrics.Perturb(v3));
             triangles.Add(vertexIndex);
             triangles.Add(vertexIndex + 1);
             triangles.Add(vertexIndex + 2);
@@ -502,10 +534,10 @@ namespace LandscapeGenerator
         
         void AddQuad (Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4) {
             int vertexIndex = vertices.Count;
-            vertices.Add(Perturb(v1));
-            vertices.Add(Perturb(v2));
-            vertices.Add(Perturb(v3));
-            vertices.Add(Perturb(v4));
+            vertices.Add(HexMetrics.Perturb(v1));
+            vertices.Add(HexMetrics.Perturb(v2));
+            vertices.Add(HexMetrics.Perturb(v3));
+            vertices.Add(HexMetrics.Perturb(v4));
             triangles.Add(vertexIndex);
             triangles.Add(vertexIndex + 2);
             triangles.Add(vertexIndex + 1);
@@ -548,13 +580,13 @@ namespace LandscapeGenerator
 
             #endregion
 
-        Vector3 Perturb(Vector3 position)
+        /*Vector3 HexMetrics.Perturb(Vector3 position)
         {
             Vector4 sample = HexMetrics.SampleNoise(position);
             position.x += (sample.x * 2f - 1f) * HexMetrics.cellPerturbStrength;
             //position.y += (sample.y * 2f - 1f) * HexMetrics.cellPerturbStrength;
             position.z += (sample.z * 2f - 1f) * HexMetrics.cellPerturbStrength;
             return position;
-        }
+        }*/
     }
 }
