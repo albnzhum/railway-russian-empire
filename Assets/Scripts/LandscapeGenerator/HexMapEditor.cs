@@ -27,6 +27,16 @@ namespace LandscapeGenerator
         [SerializeField] private Toggle elevationToggle;
         [SerializeField] private Toggle labelsVisibility;
 
+        enum OptionalToggle
+        {
+            Ignore, Yes, No
+        }
+
+        private OptionalToggle riverMode;
+        private bool isDrag;
+        private HexDirection dragDirection;
+        private HexCell previousCell;
+
         private void Awake()
         {
             SelectColor(0);
@@ -38,6 +48,10 @@ namespace LandscapeGenerator
             {
                 HandleInput();
             }
+            else
+            {
+                previousCell = null;
+            }
         }
 
         private void HandleInput()
@@ -46,8 +60,36 @@ namespace LandscapeGenerator
             RaycastHit hit;
             if (Physics.Raycast(inputRay, out hit))
             {
-                EditCells(HexGrid.GetCell(hit.point));
+                HexCell currentCell = HexGrid.GetCell(hit.point);
+                if (previousCell && previousCell != currentCell)
+                {
+                    ValidateDrag(currentCell);
+                }
+                else
+                {
+                    isDrag = false;
+                }
+                EditCells(currentCell);
+                previousCell = currentCell;
+                isDrag = true;
             }
+        }
+
+        void ValidateDrag(HexCell currentCell)
+        {
+            for (
+                dragDirection = HexDirection.NE;
+                dragDirection <= HexDirection.NW;
+                dragDirection++)
+            {
+                if (previousCell.GetNeighbor(dragDirection) == currentCell)
+                {
+                    isDrag = true;
+                    return;
+                }
+            }
+
+            isDrag = false;
         }
 
         void EditCells(HexCell center)
@@ -79,10 +121,22 @@ namespace LandscapeGenerator
                 {
                     cell.Color = activeColor;
                 }
-
                 if (applyElevation)
                 {
                     cell.Elevation = activeElevation;
+                }
+
+                if (riverMode == OptionalToggle.No)
+                {
+                    cell.RemoveRiver();
+                }
+                else if (isDrag && riverMode == OptionalToggle.Yes)
+                {
+                    HexCell otherCell = cell.GetNeighbor(dragDirection.Opposite());
+                    if (otherCell)
+                    {
+                        otherCell.SetOutgoingRiver(dragDirection);
+                    }
                 }
             }
         }
@@ -128,6 +182,11 @@ namespace LandscapeGenerator
             {
                 HexGrid.ShowUI(false);
             }
+        }
+
+        public void SetRiverMode(int mode)
+        {
+            riverMode = (OptionalToggle)mode;
         }
     }
 }
