@@ -75,6 +75,9 @@ namespace LandscapeGenerator
         public float StreamDebY => (elevation + HexMetrics.streamBedElevationOffset) 
                                    * HexMetrics.elevationStep;
 
+        public float RiverSurfaceY => (elevation + HexMetrics.riverSurfaceElevationOffset) 
+                                      * HexMetrics.elevationStep;
+
         #endregion
 
         #region Rivers
