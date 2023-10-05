@@ -32,7 +32,7 @@ namespace LandscapeGenerator
             Ignore, Yes, No
         }
 
-        private OptionalToggle riverMode;
+        private OptionalToggle riverMode, roadMode;
         private bool isDrag;
         private HexDirection dragDirection;
         private HexCell previousCell;
@@ -115,27 +115,28 @@ namespace LandscapeGenerator
 
         void EditCell(HexCell cell)
         {
-            if (cell)
-            {
-                if (applyColor)
-                {
+            if (cell) {
+                if (applyColor) {
                     cell.Color = activeColor;
                 }
-                if (applyElevation)
-                {
+                if (applyElevation) {
                     cell.Elevation = activeElevation;
                 }
-
-                if (riverMode == OptionalToggle.No)
-                {
+                if (riverMode == OptionalToggle.No) {
                     cell.RemoveRiver();
                 }
-                else if (isDrag && riverMode == OptionalToggle.Yes)
-                {
+                if (roadMode == OptionalToggle.No) {
+                    cell.RemoveRoads();
+                }
+                if (isDrag) {
                     HexCell otherCell = cell.GetNeighbor(dragDirection.Opposite());
-                    if (otherCell)
-                    {
-                        otherCell.SetOutgoingRiver(dragDirection);
+                    if (otherCell) {
+                        if (riverMode == OptionalToggle.Yes) {
+                            otherCell.SetOutgoingRiver(dragDirection);
+                        }
+                        if (roadMode == OptionalToggle.Yes) {
+                            otherCell.AddRoad(dragDirection);
+                        }
                     }
                 }
             }
@@ -187,6 +188,11 @@ namespace LandscapeGenerator
         public void SetRiverMode(int mode)
         {
             riverMode = (OptionalToggle)mode;
+        }
+
+        public void SetRoadMode(int mode)
+        {
+            roadMode = (OptionalToggle)mode;
         }
     }
 }

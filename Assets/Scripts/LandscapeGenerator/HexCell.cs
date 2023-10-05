@@ -13,6 +13,14 @@ namespace LandscapeGenerator
 
         private bool hasIncomingRiver, hasOutgoingRiver;
         private HexDirection incomingRiver, outgoingRiver;
+        
+        Color color;
+
+        int elevation = int.MinValue;
+
+        [SerializeField] HexCell[] neighbors;
+
+        [SerializeField] private bool[] roads;
 
         #region Public Properties
 
@@ -33,7 +41,7 @@ namespace LandscapeGenerator
 
         public int Elevation
         {
-            get { return elevation; }
+            get => elevation;
             set
             {
                 if (elevation == value)
@@ -62,6 +70,15 @@ namespace LandscapeGenerator
                 {
                     RemoveIncomingRiver();
                 }
+
+                for (int i = 0; i < roads.Length; i++)
+                {
+                    if (roads[i] && GetElevationDifference((HexDirection)i) > 1)
+                    {
+                        SetRoad(i, false);
+                    }
+                }
+                
                 Refresh();
             }
         }
@@ -77,6 +94,21 @@ namespace LandscapeGenerator
 
         public float RiverSurfaceY => (elevation + HexMetrics.riverSurfaceElevationOffset) 
                                       * HexMetrics.elevationStep;
+
+        public bool HasRoads
+        {
+            get
+            {
+                for (int i = 0; i < roads.Length; i++)
+                {
+                    if (roads[i])
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
 
         #endregion
 
@@ -129,12 +161,12 @@ namespace LandscapeGenerator
 
             hasOutgoingRiver = true;
             outgoingRiver = direction;
-            RefreshSelfOnly();
             
             neighbor.RemoveIncomingRiver();
             neighbor.hasIncomingRiver = true;
             neighbor.incomingRiver = direction.Opposite();
-            neighbor.RefreshSelfOnly();
+            
+            SetRoad((int)direction, false);
         }
 
         #endregion
@@ -148,12 +180,6 @@ namespace LandscapeGenerator
         {
             get { return transform.localPosition; }
         }
-
-        Color color;
-
-        int elevation = int.MinValue;
-
-        [SerializeField] HexCell[] neighbors;
 
         public HexCell GetNeighbor(HexDirection direction)
         {
@@ -179,6 +205,52 @@ namespace LandscapeGenerator
                 elevation, otherCell.elevation
             );
         }
+
+        #region Roads
+
+        public bool HasRoadThroughEdge(HexDirection direction)
+        {
+            return roads[(int)direction];
+        }
+
+        public void AddRoad(HexDirection direction)
+        {
+            if (!roads[(int)direction] && !HasRiverThroughEdge(direction)
+                && GetElevationDifference(direction) <= 1)
+            {
+                SetRoad((int)direction, true);
+            }
+        }
+
+        private void SetRoad(int index, bool state)
+        {
+            roads[index] = state;
+            neighbors[index].roads[(int)((HexDirection)index).Opposite()] = state;
+            neighbors[index].RefreshSelfOnly();
+            RefreshSelfOnly();
+        }
+
+        public int GetElevationDifference(HexDirection direction)
+        {
+            int difference = elevation - GetNeighbor(direction).elevation;
+            return difference >= 0 ? difference : -difference;
+        }
+
+        public void RemoveRoads()
+        {
+            for (int i = 0; i < neighbors.Length; i++)
+            {
+                if (roads[i])
+                {
+                    roads[i] = false;
+                    neighbors[i].roads[(int)((HexDirection)i).Opposite()] = false;
+                    neighbors[i].RefreshSelfOnly();
+                    RefreshSelfOnly();
+                }
+            }
+        }
+
+        #endregion
 
         void Refresh()
         {
