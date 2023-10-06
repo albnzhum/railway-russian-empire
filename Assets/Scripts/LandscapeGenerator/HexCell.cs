@@ -57,16 +57,7 @@ namespace LandscapeGenerator
                 Vector3 uiPosition = uiRect.localPosition;
                 uiPosition.z = -position.y;
                 uiRect.localPosition = uiPosition;
-
-                if (HasOutgoingRiver && _elevation < GetNeighbor(OutgoingRiver)._elevation)
-                {
-                    RemoveOutgoingRiver();
-                }
-
-                if (HasIncomingRiver && _elevation < GetNeighbor(IncomingRiver)._elevation)
-                {
-                    RemoveIncomingRiver();
-                }
+                ValidateRivers();
 
                 for (int i = 0; i < roads.Length; i++)
                 {
@@ -95,19 +86,16 @@ namespace LandscapeGenerator
 
         public float RiverSurfaceY => (_elevation + HexMetrics.WaterElevationOffset) 
                                       * HexMetrics.ElevationStep;
-        
+
         public float WaterSurfaceY =>
             (_waterLevel + HexMetrics.WaterElevationOffset) *
             HexMetrics.ElevationStep;
 
         public bool HasRoads
         {
-            get
-            {
-                for (int i = 0; i < roads.Length; i++)
-                {
-                    if (roads[i])
-                    {
+            get {
+                for (int i = 0; i < roads.Length; i++) {
+                    if (roads[i]) {
                         return true;
                     }
                 }
@@ -124,6 +112,7 @@ namespace LandscapeGenerator
                     return;
                 }
                 _waterLevel = value;
+                ValidateRivers();
                 Refresh();
             }
         }
@@ -171,7 +160,9 @@ namespace LandscapeGenerator
         {
             if (HasOutgoingRiver && OutgoingRiver == direction) return;
             HexCell neighbor = GetNeighbor(direction);
-            if (!neighbor || _elevation < neighbor._elevation) return;
+            if (!IsValidRiverDestination(neighbor)) {
+                return;
+            }
             RemoveOutgoingRiver();
             if (HasIncomingRiver && IncomingRiver == direction)
             {
@@ -186,6 +177,27 @@ namespace LandscapeGenerator
             neighbor.IncomingRiver = direction.Opposite();
             
             SetRoad((int)direction, false);
+        }
+        
+        bool IsValidRiverDestination (HexCell neighbor) {
+            return neighbor && (
+                _elevation >= neighbor._elevation || _waterLevel == neighbor._elevation
+            );
+        }
+        
+        void ValidateRivers () {
+            if (
+                HasOutgoingRiver &&
+                !IsValidRiverDestination(GetNeighbor(OutgoingRiver))
+            ) {
+                RemoveOutgoingRiver();
+            }
+            if (
+                HasOutgoingRiver &&
+                !GetNeighbor(IncomingRiver).IsValidRiverDestination(this)
+            ) {
+                RemoveIncomingRiver();
+            }
         }
 
         #endregion
