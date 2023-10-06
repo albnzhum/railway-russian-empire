@@ -10,7 +10,7 @@ namespace LandscapeGenerator
     /// </summary>
     public class HexGrid : MonoBehaviour
     {
-        int cellCountX, cellCountZ;
+        int _cellCountX, _cellCountZ;
 
         public HexCell cellPrefab;
         public Text cellLabelPrefab;
@@ -23,21 +23,21 @@ namespace LandscapeGenerator
 
         public int chunkCountX = 4, chunkCountZ = 3;
         public HexGridChunk chunkPrefab;
-        private HexGridChunk[] chunks;
+        private HexGridChunk[] _chunks;
         
 #region UNITY_ENGINE
         
         private void OnEnable()
         {
-            HexMetrics.noiseSource = noiseSource;
+            HexMetrics.NoiseSource = noiseSource;
         }
 
         private void Awake()
         {
-            HexMetrics.noiseSource = noiseSource;
+            HexMetrics.NoiseSource = noiseSource;
 
-            cellCountX = chunkCountX * HexMetrics.chunkSizeX;
-            cellCountZ = chunkCountZ * HexMetrics.chunkSizeZ;
+            _cellCountX = chunkCountX * HexMetrics.ChunkSizeX;
+            _cellCountZ = chunkCountZ * HexMetrics.ChunkSizeZ;
             CreateChunks();
             CreateCells();
         }
@@ -46,12 +46,12 @@ namespace LandscapeGenerator
 
         void CreateChunks()
         {
-            chunks = new HexGridChunk[chunkCountX * chunkCountZ];
+            _chunks = new HexGridChunk[chunkCountX * chunkCountZ];
             for (int z = 0, i = 0; z < chunkCountZ; z++)
             {
                 for (int x = 0; x < chunkCountX; x++)
                 {
-                    HexGridChunk chunk = chunks[i++] = Instantiate(chunkPrefab);
+                    HexGridChunk chunk = _chunks[i++] = Instantiate(chunkPrefab);
                     chunk.transform.SetParent(transform);
                 }
             }
@@ -59,10 +59,10 @@ namespace LandscapeGenerator
 
         void CreateCells()
         {
-            _cells = new HexCell[cellCountZ * cellCountX];
-            for (int z = 0, i = 0; z < cellCountZ; z++)
+            _cells = new HexCell[_cellCountZ * _cellCountX];
+            for (int z = 0, i = 0; z < _cellCountZ; z++)
             {
-                for (int x = 0; x < cellCountX; x++)
+                for (int x = 0; x < _cellCountX; x++)
                 {
                     CreateCell(x, z, i++);
                 }
@@ -72,9 +72,9 @@ namespace LandscapeGenerator
         void CreateCell(int x, int z, int i)
         {
             Vector3 position;
-            position.x = (x + z * 0.5f - z / 2) * (HexMetrics.innerRadius * 2f);
+            position.x = (x + z * 0.5f - z / 2) * (HexMetrics.InnerRadius * 2f);
             position.y = 0f;
-            position.z = z * (HexMetrics.outerRadius * 1.5f);
+            position.z = z * (HexMetrics.OuterRadius * 1.5f);
 
             HexCell cell = _cells[i] = Instantiate<HexCell>(cellPrefab);
             cell.transform.SetParent(transform, false);
@@ -87,15 +87,15 @@ namespace LandscapeGenerator
             }
             if (z > 0) {
                 if ((z & 1) == 0) {
-                    cell.SetNeighbor(HexDirection.SE, _cells[i - cellCountX]);
+                    cell.SetNeighbor(HexDirection.Se, _cells[i - _cellCountX]);
                     if (x > 0) {
-                        cell.SetNeighbor(HexDirection.SW, _cells[i - cellCountX - 1]);
+                        cell.SetNeighbor(HexDirection.SW, _cells[i - _cellCountX - 1]);
                     }
                 }
                 else {
-                    cell.SetNeighbor(HexDirection.SW, _cells[i - cellCountX]);
-                    if (x < cellCountX - 1) {
-                        cell.SetNeighbor(HexDirection.SE, _cells[i - cellCountX + 1]);
+                    cell.SetNeighbor(HexDirection.SW, _cells[i - _cellCountX]);
+                    if (x < _cellCountX - 1) {
+                        cell.SetNeighbor(HexDirection.Se, _cells[i - _cellCountX + 1]);
                     }
                 }
             }
@@ -110,13 +110,13 @@ namespace LandscapeGenerator
 
         void AddCellToChunk(int x, int z, HexCell cell)
         {
-            int chunkX = x / HexMetrics.chunkSizeX;
-            int chunkZ = z / HexMetrics.chunkSizeZ;
-            HexGridChunk chunk = chunks[chunkX + chunkZ * chunkCountX];
+            int chunkX = x / HexMetrics.ChunkSizeX;
+            int chunkZ = z / HexMetrics.ChunkSizeZ;
+            HexGridChunk chunk = _chunks[chunkX + chunkZ * chunkCountX];
 
-            int localX = x - chunkX * HexMetrics.chunkSizeX;
-            int localZ = z - chunkZ * HexMetrics.chunkSizeZ;
-            chunk.AddCell(localX + localZ * HexMetrics.chunkSizeX, cell);
+            int localX = x - chunkX * HexMetrics.ChunkSizeX;
+            int localZ = z - chunkZ * HexMetrics.ChunkSizeZ;
+            chunk.AddCell(localX + localZ * HexMetrics.ChunkSizeX, cell);
         }
         
 
@@ -129,31 +129,31 @@ namespace LandscapeGenerator
         {
             position = transform.InverseTransformPoint(position);
             HexCoordinates coordinates = HexCoordinates.FromPosition(position);
-            int index = coordinates.X + coordinates.Z * cellCountX + coordinates.Z / 2;
+            int index = coordinates.X + coordinates.Z * _cellCountX + coordinates.Z / 2;
             return _cells[index];
         }
 
         public HexCell GetCell(HexCoordinates coordinates)
         {
             int z = coordinates.Z;
-            if (z < 0 || z >= cellCountZ)
+            if (z < 0 || z >= _cellCountZ)
             {
                 return null;
             }
             int x = coordinates.X + z / 2;
             
-            if (x < 0 || x >= cellCountX)
+            if (x < 0 || x >= _cellCountX)
             {
                 return null;
             }
-            return _cells[x + z * cellCountX];
+            return _cells[x + z * _cellCountX];
         }
 
         public void ShowUI(bool visible)
         {
-            for (int i = 0; i < chunks.Length; i++)
+            for (int i = 0; i < _chunks.Length; i++)
             {
-                chunks[i].ShowUI(visible);
+                _chunks[i].ShowUI(visible);
             }
         }
         

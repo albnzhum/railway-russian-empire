@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Rivers
-  m_Shader: {fileID: 4800000, guid: 68846cfa853987e4d9039ab8306159c2, type: 3}
+  m_Shader: {fileID: 4800000, guid: e4add7c933226734ea51c8d4e10755f5, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -78,6 +78,6 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.15881987, g: 0.34203997, b: 0.7830189, a: 0.23921569}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []

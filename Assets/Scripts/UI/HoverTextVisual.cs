@@ -13,14 +13,14 @@ namespace UI
         [SerializeField] private PointerObserver pointerObserver;
         [SerializeField] private GameObject image;
         private TMP_Text _text;
-        private Animator textHover;
-        private bool isHovering;
+        private Animator _textHover;
+        private bool _isHovering;
         private static readonly int IsHovering = Animator.StringToHash("IsHovering");
 
         private void Awake()
         {
             _text = GetComponentInChildren<TMP_Text>();
-            textHover = GetComponentInChildren<Animator>();
+            _textHover = GetComponentInChildren<Animator>();
             
             pointerObserver.PointerEntered += OnPointerEnter;
             pointerObserver.PointerExited += OnPointerExit;
@@ -28,16 +28,16 @@ namespace UI
         
         public void OnPointerExit(PointerEventData eventData)
         {
-            isHovering = false;
-            textHover.SetBool(IsHovering, isHovering);
+            _isHovering = false;
+            _textHover.SetBool(IsHovering, _isHovering);
             _text.color = new Color(192, 192, 192, 255);
             image.SetActive(false);
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            isHovering = true;
-            textHover.SetBool(IsHovering, isHovering);
+            _isHovering = true;
+            _textHover.SetBool(IsHovering, _isHovering);
             _text.color = Color.black;
             image.SetActive(true);
         }

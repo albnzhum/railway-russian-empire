@@ -11,9 +11,9 @@ using UnityEngine.UI;
 public class LoadingScreen : MonoBehaviour
 {
     [SerializeField] private Slider loadingSlider;
-    private readonly float loadingSpeed = 1;
-    private float targetValue;
-    private AsyncOperation operation;
+    private readonly float _loadingSpeed = 1;
+    private float _targetValue;
+    private AsyncOperation _operation;
 
     private void Start()
     {
@@ -26,30 +26,30 @@ public class LoadingScreen : MonoBehaviour
     
     IEnumerator LoadSceneAsync()
     { 
-        operation = SceneManager.LoadSceneAsync("Game");
-        operation.allowSceneActivation = false;
-        yield return operation;
+        _operation = SceneManager.LoadSceneAsync("Game");
+        _operation.allowSceneActivation = false;
+        yield return _operation;
     }
 
     private void Update()
     {
-        targetValue = operation.progress;
-        if (operation.progress >= 0.9f)
+        _targetValue = _operation.progress;
+        if (_operation.progress >= 0.9f)
         {
-            targetValue = 1.0f;
+            _targetValue = 1.0f;
         }
 
-        if (targetValue != loadingSlider.value)
+        if (_targetValue != loadingSlider.value)
         {
-            loadingSlider.value = Mathf.Lerp(loadingSlider.value, targetValue, Time.deltaTime * loadingSpeed);
-            if (Mathf.Abs(loadingSlider.value - targetValue) < 0.01f)
+            loadingSlider.value = Mathf.Lerp(loadingSlider.value, _targetValue, Time.deltaTime * _loadingSpeed);
+            if (Mathf.Abs(loadingSlider.value - _targetValue) < 0.01f)
             {
-                loadingSlider.value = targetValue;
+                loadingSlider.value = _targetValue;
             }
 
             if ((int)(loadingSlider.value * 100) == 100)
             {
-                operation.allowSceneActivation = true;
+                _operation.allowSceneActivation = true;
             }
         }
     }

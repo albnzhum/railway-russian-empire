@@ -4,83 +4,86 @@ namespace LandscapeGenerator
 {
     public static class HexMetrics
     {
-        public const float outerToInner = 0.866025404f;
-        public const float innerToOuter = 1f / outerToInner;
-        public const float outerRadius = 10f;
-        public const float innerRadius = outerRadius * outerToInner;
+        private const float OuterToInner = 0.866025404f;
+        public const float InnerToOuter = 1f / OuterToInner;
+        public const float OuterRadius = 10f;
+        public const float InnerRadius = OuterRadius * OuterToInner;
 
-        public const float solidFactor = 0.8f;
-        public const float blendFactor = 1f-solidFactor;
+        private const float SolidFactor = 0.8f;
+        private const float BlendFactor = 1f-SolidFactor;
 
-        public const float elevationStep = 3f;
+        public const float ElevationStep = 3f;
 
-        public const int terracesPerSlope = 2;
-        public const int terraceSteps = terracesPerSlope * 2 + 1;
-        public const float horizontalTerraceStepSize = 1f / terraceSteps;
-        public const float verticalTerraceStepSize = 1f / (terracesPerSlope + 1);
+        private const int TerracesPerSlope = 2;
+        public const int TerraceSteps = TerracesPerSlope * 2 + 1;
+        private const float HorizontalTerraceStepSize = 1f / TerraceSteps;
+        private const float VerticalTerraceStepSize = 1f / (TerracesPerSlope + 1);
 
-        public static Texture2D noiseSource;
-        public const float cellPerturbStrength = 4f;
-        public const float noiseScale = 0.003f;
-        public const float elevationPerturbStrength = 1.5f;
+        public static Texture2D NoiseSource;
+        private const float CellPerturbStrength = 4f;
+        private const float NoiseScale = 0.003f;
+        public const float ElevationPerturbStrength = 1.5f;
 
-        public const int chunkSizeX = 5, chunkSizeZ = 5;
+        public const int ChunkSizeX = 5, ChunkSizeZ = 5;
 
-        public const float streamBedElevationOffset = -1.75f;
-        public const float waterElevationOffset = -0.5f;
-        public static Vector3[] corners =
+        public const float StreamBedElevationOffset = -1.75f;
+        public const float WaterElevationOffset = -0.5f;
+        private const float WaterFactor = 0.6f;
+        private const float WaterBlendFactor = 1f - WaterFactor;
+
+        private static readonly Vector3[] Corners =
         {
-            new Vector3(0f, 0f, outerRadius),
-            new Vector3(innerRadius, 0f, 0.5f * outerRadius),
-            new Vector3(innerRadius, 0f, -0.5f * outerRadius),
-            new Vector3(0f, 0f, -outerRadius),
-            new Vector3(-innerRadius, 0f, -0.5f * outerRadius),
-            new Vector3(-innerRadius, 0f, 0.5f * outerRadius),
-            new Vector3(0f, 0f, outerRadius)
+            new Vector3(0f, 0f, OuterRadius),
+            new Vector3(InnerRadius, 0f, 0.5f * OuterRadius),
+            new Vector3(InnerRadius, 0f, -0.5f * OuterRadius),
+            new Vector3(0f, 0f, -OuterRadius),
+            new Vector3(-InnerRadius, 0f, -0.5f * OuterRadius),
+            new Vector3(-InnerRadius, 0f, 0.5f * OuterRadius),
+            new Vector3(0f, 0f, OuterRadius)
         };
 
         #region Corners
 
         public static Vector3 GetFirstCorner(HexDirection direction)
         {
-            return corners[(int)direction];
+            return Corners[(int)direction];
         }
 
         public static Vector3 GetSecondCorner(HexDirection direction)
         {
-            return corners[(int)direction + 1];
+            return Corners[(int)direction + 1];
         }
 
         public static Vector3 GetFirstSolidCorner(HexDirection direction)
         {
-            return corners[(int)direction] * solidFactor;
+            return Corners[(int)direction] * SolidFactor;
         }
 
         public static Vector3 GetSecondSolidCorner(HexDirection direction)
         {
-            return corners[(int)direction + 1] * solidFactor;
+            return Corners[(int)direction + 1] * SolidFactor;
         }
 
         #endregion
         
         public static Vector3 GetBridge (HexDirection direction) {
-            return (corners[(int)direction] + corners[(int)direction + 1]) *
-                   blendFactor;
+            return (Corners[(int)direction] + Corners[(int)direction + 1]) *
+                   BlendFactor;
         }
 
         public static Vector3 TerraceLerp(Vector3 a, Vector3 b, int step)
         {
-            float h = step * HexMetrics.horizontalTerraceStepSize;
+            float h = step * HexMetrics.HorizontalTerraceStepSize;
             a.x += (b.x - a.x) * h;
             a.z += (b.z - a.z) * h;
-            float v = ((step + 1) / 2) * HexMetrics.verticalTerraceStepSize;
+            var v = ((step + 1) / 2) * HexMetrics.VerticalTerraceStepSize;
             a.y += (b.y - a.y) * v;
             return a;
         }
 
         public static Color TerraceLerp(Color a, Color b, int step)
         {
-            float h = step * HexMetrics.horizontalTerraceStepSize;
+            float h = step * HexMetrics.HorizontalTerraceStepSize;
             return Color.Lerp(a, b, h);
         }
 
@@ -102,21 +105,34 @@ namespace LandscapeGenerator
 
         public static Vector4 SampleNoise(Vector3 position)
         {
-            return noiseSource.GetPixelBilinear(
-                position.x * noiseScale, position.z * noiseScale);
+            return NoiseSource.GetPixelBilinear(
+                position.x * NoiseScale, position.z * NoiseScale);
         }
         
         public static Vector3 GetSolidEdgeMiddle (HexDirection direction) {
             return
-                (corners[(int)direction] + corners[(int)direction + 1]) *
-                (0.5f * solidFactor);
+                (Corners[(int)direction] + Corners[(int)direction + 1]) *
+                (0.5f * SolidFactor);
         }
         
         public static Vector3 Perturb (Vector3 position) {
             Vector4 sample = SampleNoise(position);
-            position.x += (sample.x * 2f - 1f) * cellPerturbStrength;
-            position.z += (sample.z * 2f - 1f) * cellPerturbStrength;
+            position.x += (sample.x * 2f - 1f) * CellPerturbStrength;
+            position.z += (sample.z * 2f - 1f) * CellPerturbStrength;
             return position;
+        }
+        
+        public static Vector3 GetFirstWaterCorner (HexDirection direction) {
+            return Corners[(int)direction] * WaterFactor;
+        }
+
+        public static Vector3 GetSecondWaterCorner (HexDirection direction) {
+            return Corners[(int)direction + 1] * WaterFactor;
+        }
+        
+        public static Vector3 GetWaterBridge (HexDirection direction) {
+            return (Corners[(int)direction] + Corners[(int)direction + 1]) *
+                   WaterBlendFactor;
         }
         
     }

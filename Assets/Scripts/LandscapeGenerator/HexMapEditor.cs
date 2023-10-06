@@ -1,6 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace LandscapeGenerator
@@ -11,23 +12,24 @@ namespace LandscapeGenerator
     public class HexMapEditor : MonoBehaviour
     {
         public Color[] colors;
-        public HexGrid HexGrid;
-        private Color activeColor;
+        [FormerlySerializedAs("HexGrid")] public HexGrid hexGrid;
+        private Color _activeColor;
 
-        private int activeElevation;
-        int activeWaterLevel;
+        private int _activeElevation;
+        private int _activeWaterLevel;
 
-        private bool applyColor;
-        private bool applyElevation = true;
-        bool applyWaterLevel = true;
+        private bool _applyColor;
+        private bool _applyElevation = true;
+        private bool _applyWaterLevel = true;
 
-        private int brushSize;
+        private int _brushSize;
 
         [Header("UI")]
         [SerializeField] private Slider elevationSlider;
         [SerializeField] private Slider brushSizeSlider;
         [SerializeField] private Slider waterLevelSlider;
         [SerializeField] private Toggle elevationToggle;
+        [SerializeField] private Toggle waterToggle;
         [SerializeField] private Toggle labelsVisibility;
 
         enum OptionalToggle
@@ -35,10 +37,10 @@ namespace LandscapeGenerator
             Ignore, Yes, No
         }
 
-        private OptionalToggle riverMode, roadMode;
-        private bool isDrag;
-        private HexDirection dragDirection;
-        private HexCell previousCell;
+        private OptionalToggle _riverMode, _roadMode;
+        private bool _isDrag;
+        private HexDirection _dragDirection;
+        private HexCell _previousCell;
 
         private void Awake()
         {
@@ -53,95 +55,98 @@ namespace LandscapeGenerator
             }
             else
             {
-                previousCell = null;
+                _previousCell = null;
             }
         }
 
         private void HandleInput()
         {
-            Ray inputRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(inputRay, out hit))
+            if (Camera.main != null)
             {
-                HexCell currentCell = HexGrid.GetCell(hit.point);
-                if (previousCell && previousCell != currentCell)
+                Ray inputRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+                if (Physics.Raycast(inputRay, out hit))
                 {
-                    ValidateDrag(currentCell);
+                    HexCell currentCell = hexGrid.GetCell(hit.point);
+                    if (_previousCell && _previousCell != currentCell)
+                    {
+                        ValidateDrag(currentCell);
+                    }
+                    else
+                    {
+                        _isDrag = false;
+                    }
+                    EditCells(currentCell);
+                    _previousCell = currentCell;
+                    _isDrag = true;
                 }
-                else
-                {
-                    isDrag = false;
-                }
-                EditCells(currentCell);
-                previousCell = currentCell;
-                isDrag = true;
             }
         }
 
-        void ValidateDrag(HexCell currentCell)
+        private void ValidateDrag(HexCell currentCell)
         {
             for (
-                dragDirection = HexDirection.NE;
-                dragDirection <= HexDirection.NW;
-                dragDirection++)
+                _dragDirection = HexDirection.Ne;
+                _dragDirection <= HexDirection.Nw;
+                _dragDirection++)
             {
-                if (previousCell.GetNeighbor(dragDirection) == currentCell)
+                if (_previousCell.GetNeighbor(_dragDirection) == currentCell)
                 {
-                    isDrag = true;
+                    _isDrag = true;
                     return;
                 }
             }
 
-            isDrag = false;
+            _isDrag = false;
         }
 
-        void EditCells(HexCell center)
+        private void EditCells(HexCell center)
         {
             int centerX = center.coordinates.X;
             int centerZ = center.coordinates.Z;
 
-            for (int r = 0, z = centerZ - brushSize; z <= centerZ; z++, r++)
+            for (int r = 0, z = centerZ - _brushSize; z <= centerZ; z++, r++)
             {
-                for (int x = centerX - r; x <= centerX + brushSize; x++)
+                for (int x = centerX - r; x <= centerX + _brushSize; x++)
                 {
-                    EditCell(HexGrid.GetCell(new HexCoordinates(x, z)));
+                    EditCell(hexGrid.GetCell(new HexCoordinates(x, z)));
                 }
             }
-            for (int r = 0, z = centerZ + brushSize; z > centerZ; z--, r++)
+            for (int r = 0, z = centerZ + _brushSize; z > centerZ; z--, r++)
             {
-                for (int x = centerX - brushSize; x <= centerX + r; x++)
+                for (int x = centerX - _brushSize; x <= centerX + r; x++)
                 {
-                    EditCell(HexGrid.GetCell(new HexCoordinates(x, z)));
+                    EditCell(hexGrid.GetCell(new HexCoordinates(x, z)));
                 }
             }
         }
 
-        void EditCell(HexCell cell)
+        private void EditCell(HexCell cell)
         {
             if (cell) {
-                if (applyColor) {
-                    cell.Color = activeColor;
+                if (_applyColor) {
+                    cell.Color = _activeColor;
                 }
-                if (applyElevation) {
-                    cell.Elevation = activeElevation;
+                if (_applyElevation) {
+                    cell.Elevation = _activeElevation;
                 }
-                if (applyWaterLevel) {
-                    cell.WaterLevel = activeWaterLevel;
+                if (_applyWaterLevel) {
+                    cell.WaterLevel = _activeWaterLevel;
                 }
-                if (riverMode == OptionalToggle.No) {
+                if (_riverMode == OptionalToggle.No) {
                     cell.RemoveRiver();
                 }
-                if (roadMode == OptionalToggle.No) {
+                if (_roadMode == OptionalToggle.No) {
                     cell.RemoveRoads();
                 }
-                if (isDrag) {
-                    HexCell otherCell = cell.GetNeighbor(dragDirection.Opposite());
+                if (_isDrag) {
+                    HexCell otherCell = cell.GetNeighbor(_dragDirection.Opposite());
                     if (otherCell) {
-                        if (riverMode == OptionalToggle.Yes) {
-                            otherCell.SetOutgoingRiver(dragDirection);
+                        if (_riverMode == OptionalToggle.Yes) {
+                            otherCell.SetOutgoingRiver(_dragDirection);
                         }
-                        if (roadMode == OptionalToggle.Yes) {
-                            otherCell.AddRoad(dragDirection);
+                        if (_roadMode == OptionalToggle.Yes) {
+                            otherCell.AddRoad(_dragDirection);
                         }
                     }
                 }
@@ -152,61 +157,68 @@ namespace LandscapeGenerator
         {
             if (elevationToggle.isOn)
             {
-                applyElevation = true;
+                _applyElevation = true;
             }
             else
             {
-                applyElevation = false;
+                _applyElevation = false;
             }
         }
 
         public void SetElevation()
         {
-            activeElevation = (int)elevationSlider.value;
+            _activeElevation = (int)elevationSlider.value;
         }
 
         public void SelectColor(int index)
         {
-            applyColor = index >= 0;
-            if (applyColor)
+            _applyColor = index >= 0;
+            if (_applyColor)
             {
-                activeColor = colors[index];
+                _activeColor = colors[index];
             }
         }
 
         public void SetBrushSize()
         {
-            brushSize = (int)brushSizeSlider.value;
+            _brushSize = (int)brushSizeSlider.value;
         }
 
         public void ShowUI()
         {
             if (labelsVisibility.isOn)
             {
-                HexGrid.ShowUI(true);
+                hexGrid.ShowUI(true);
             }
             else
             {
-                HexGrid.ShowUI(false);
+                hexGrid.ShowUI(false);
             }
         }
 
         public void SetRiverMode(int mode)
         {
-            riverMode = (OptionalToggle)mode;
+            _riverMode = (OptionalToggle)mode;
         }
 
         public void SetRoadMode(int mode)
         {
-            roadMode = (OptionalToggle)mode;
+            _roadMode = (OptionalToggle)mode;
         }
         
-        public void SetApplyWaterLevel (bool toggle) {
-            applyWaterLevel = toggle;
+        public void SetApplyWaterLevel () {
+            if (waterToggle.isOn)
+            {
+                _applyWaterLevel = true;
+            }
+            else
+            {
+                _applyWaterLevel = false;
+            }
         }
 	
         public void SetWaterLevel () {
-            activeWaterLevel = (int)waterLevelSlider.value;
+            _activeWaterLevel = (int)waterLevelSlider.value;
         }
     }
 }
