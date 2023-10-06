@@ -14,7 +14,8 @@ namespace LandscapeGenerator
 
         private int _elevation = int.MinValue;
         private int _waterLevel;
-        private int urbanLevel;
+        private int urbanLevel, farmLevel, plantLevel;
+        private bool walled;
 
         [SerializeField] HexCell[] neighbors;
 
@@ -128,6 +129,45 @@ namespace LandscapeGenerator
                 {
                     urbanLevel = value;
                     RefreshSelfOnly();
+                }
+            }
+        }
+
+        public int FarmLevel
+        {
+            get => farmLevel;
+            set
+            {
+                if (farmLevel != value)
+                {
+                    farmLevel = value;
+                    RefreshSelfOnly();
+                }
+            }
+        }
+
+        public int PlantLevel
+        {
+            get => plantLevel;
+            set
+            {
+                if (plantLevel != value)
+                {
+                    plantLevel = value;
+                    RefreshSelfOnly();
+                }
+            }
+        }
+
+        public bool Walled
+        {
+            get => walled;
+            set
+            {
+                if (walled != value)
+                {
+                    walled = value;
+                    Refresh();
                 }
             }
         }

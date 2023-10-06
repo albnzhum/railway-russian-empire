@@ -24,18 +24,32 @@ namespace LandscapeGenerator
 
         private int _brushSize;
 
-        private int activeUrbanLevel;
-        private bool applyUrbanLevel;
+        private int activeUrbanLevel, activeFarmLevel, activePlantLevel;
+        private bool applyUrbanLevel, applyFarmLevel, applyPlantLevel;
+
+        #region UI Variables
 
         [Header("UI")]
         [SerializeField] private Slider elevationSlider;
-        [SerializeField] private Slider brushSizeSlider;
-        [SerializeField] private Slider waterLevelSlider;
-        [SerializeField] private Slider urbalLevelSlider;
         [SerializeField] private Toggle elevationToggle;
-        [SerializeField] private Toggle urbanToggle;
+        [Space]
+        [SerializeField] private Slider brushSizeSlider;
+        [Space]
+        [SerializeField] private Slider waterLevelSlider;
         [SerializeField] private Toggle waterToggle;
-        [SerializeField] private Toggle labelsVisibility;
+        [Space]
+        [SerializeField] private Slider urbanLevelSlider;
+        [SerializeField] private Toggle urbanToggle;
+        [Space]
+        [SerializeField] private Toggle labelsVisibility; 
+        [Space] 
+        [SerializeField] private Toggle plantToggle;
+        [SerializeField] private Slider plantLevelSlider;
+        [Space] 
+        [SerializeField] private Toggle farmToggle;
+        [SerializeField] private Slider farmLevelSlider;
+
+        #endregion
 
         enum OptionalToggle
         {
@@ -138,10 +152,17 @@ namespace LandscapeGenerator
                 if (_applyWaterLevel) {
                     cell.WaterLevel = _activeWaterLevel;
                 }
-
                 if (applyUrbanLevel)
                 {
                     cell.UrbanLevel = activeUrbanLevel;
+                }
+                if (applyFarmLevel)
+                {
+                    cell.FarmLevel = activeFarmLevel;
+                }
+                if (applyPlantLevel)
+                {
+                    cell.PlantLevel = activePlantLevel;
                 }
                 if (_riverMode == OptionalToggle.No) {
                     cell.RemoveRiver();
@@ -163,22 +184,88 @@ namespace LandscapeGenerator
             }
         }
 
+        #region Set Apply Methods
+
         public void SetApplyElevation()
         {
-            if (elevationToggle.isOn)
-            {
+            if (elevationToggle.isOn) {
                 _applyElevation = true;
-            }
-            else
-            {
+            } else {
                 _applyElevation = false;
             }
         }
+        
+        public void SetApplyWaterLevel () {
+            if (waterToggle.isOn) {
+                _applyWaterLevel = true;
+            } else {
+                _applyWaterLevel = false;
+            }
+        }
+        
+        public void SetApplyUrbanLevel () {
+            if (urbanToggle.isOn) {
+                applyUrbanLevel = true;
+            } else {
+                applyUrbanLevel = false;
+            }
+        }
+
+        public void SetApplyFarmLevel()
+        {
+            if (farmToggle.isOn) applyFarmLevel = true;
+            else applyFarmLevel = false;
+        }
+
+        public void SetApplyPlantLevel()
+        {
+            if (plantToggle.isOn) applyPlantLevel = true;
+            else applyPlantLevel = false;
+        }
+
+        #endregion
+
+        #region Set Level Methods
 
         public void SetElevation()
         {
             _activeElevation = (int)elevationSlider.value;
         }
+        
+        public void SetRiverMode(int mode)
+        {
+            _riverMode = (OptionalToggle)mode;
+        }
+
+        public void SetRoadMode(int mode)
+        {
+            _roadMode = (OptionalToggle)mode;
+        }
+        
+        public void SetBrushSize()
+        {
+            _brushSize = (int)brushSizeSlider.value;
+        }
+        
+        public void SetWaterLevel () {
+            _activeWaterLevel = (int)waterLevelSlider.value;
+        }
+
+        public void SetUrbanLevel () {
+            activeUrbanLevel = (int)urbanLevelSlider.value;
+        }
+
+        public void SetFarmLevel()
+        {
+            activeFarmLevel = (int)farmLevelSlider.value;
+        }
+
+        public void SetPlantLevel()
+        {
+            activePlantLevel = (int)plantLevelSlider.value;
+        }
+
+        #endregion
 
         public void SelectColor(int index)
         {
@@ -187,11 +274,6 @@ namespace LandscapeGenerator
             {
                 _activeColor = colors[index];
             }
-        }
-
-        public void SetBrushSize()
-        {
-            _brushSize = (int)brushSizeSlider.value;
         }
 
         public void ShowUI()
@@ -205,45 +287,7 @@ namespace LandscapeGenerator
                 hexGrid.ShowUI(false);
             }
         }
-
-        public void SetRiverMode(int mode)
-        {
-            _riverMode = (OptionalToggle)mode;
-        }
-
-        public void SetRoadMode(int mode)
-        {
-            _roadMode = (OptionalToggle)mode;
-        }
         
-        public void SetApplyWaterLevel () {
-            if (waterToggle.isOn)
-            {
-                _applyWaterLevel = true;
-            }
-            else
-            {
-                _applyWaterLevel = false;
-            }
-        }
-	
-        public void SetWaterLevel () {
-            _activeWaterLevel = (int)waterLevelSlider.value;
-        }
         
-        public void SetApplyUrbanLevel () {
-            if (urbanToggle.isOn)
-            {
-                applyUrbanLevel = true;
-            }
-            else
-            {
-                applyUrbanLevel = false;
-            }
-        }
-	
-        public void SetUrbanLevel () {
-            activeUrbanLevel = (int)urbalLevelSlider.value;
-        }
     }
 }
