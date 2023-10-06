@@ -56,7 +56,7 @@ namespace LandscapeGenerator
             Ignore, Yes, No
         }
 
-        private OptionalToggle _riverMode, _roadMode;
+        private OptionalToggle _riverMode, _roadMode, _walledMode;
         private bool _isDrag;
         private HexDirection _dragDirection;
         private HexCell _previousCell;
@@ -170,6 +170,11 @@ namespace LandscapeGenerator
                 if (_roadMode == OptionalToggle.No) {
                     cell.RemoveRoads();
                 }
+
+                if (_walledMode != OptionalToggle.Ignore)
+                {
+                    cell.Walled = _walledMode == OptionalToggle.Yes;
+                } 
                 if (_isDrag) {
                     HexCell otherCell = cell.GetNeighbor(_dragDirection.Opposite());
                     if (otherCell) {
@@ -240,6 +245,11 @@ namespace LandscapeGenerator
         public void SetRoadMode(int mode)
         {
             _roadMode = (OptionalToggle)mode;
+        }
+
+        public void SetWalledMode(int mode)
+        {
+            _walledMode = (OptionalToggle)mode;
         }
         
         public void SetBrushSize()

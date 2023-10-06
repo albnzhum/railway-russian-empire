@@ -137,8 +137,11 @@ namespace LandscapeGenerator
             EdgeVertices e2 = new EdgeVertices(
                 e1.V1 + bridge,
                 e1.V5 + bridge);
+            
+            bool hasRiver = cell.HasRiverThroughEdge(direction);
+            bool hasRoad = cell.HasRoadThroughEdge(direction);
 
-            if (cell.HasRiverThroughEdge(direction))
+            if (hasRiver)
             {
                 e2.V3.y = neighbor.StreamDebY;
                 if (!cell.IsUnderwater) {
@@ -176,6 +179,8 @@ namespace LandscapeGenerator
             else {
                 TriangulateEdgeStrip(e1, cell.Color, e2, neighbor.Color, cell.HasRoadThroughEdge(direction));
             }
+
+            features.AddWall(e1, cell, e2, neighbor, hasRiver, hasRoad);
             
             HexCell nextNeighbor = cell.GetNeighbor(direction.Next());
             if (direction <= HexDirection.E && nextNeighbor != null)
@@ -282,6 +287,7 @@ namespace LandscapeGenerator
                 terrain.AddTriangle(bottom, left, right);
                 terrain.AddTriangleColor(bottomCell.Color, leftCell.Color, rightCell.Color);
             }
+            features.AddWall(bottom, bottomCell, left, leftCell, right, rightCell);
         }
         
         void TriangulateCornerTerrace(
@@ -662,6 +668,7 @@ namespace LandscapeGenerator
                 ) * (1f / 3f);
             }
             else if (cell.IncomingRiver == cell.OutgoingRiver.Opposite()) {
+                Vector3 corner;
                 if (previousHasRiver) {
                     if (
                         !hasRoadThroughEdge &&
@@ -669,7 +676,16 @@ namespace LandscapeGenerator
                     ) {
                         return;
                     }
-                    HexMetrics.GetSecondSolidCorner(direction);
+                    corner = HexMetrics.GetSecondSolidCorner(direction);
+                    
+                    roadCenter += corner * 0.5f;
+                    if (cell.IncomingRiver == direction.Next() && (
+                            cell.HasRoadThroughEdge(direction.Next2()) ||
+                            cell.HasRoadThroughEdge(direction.Opposite())
+                        )) {
+                        features.AddBridge(roadCenter, center - corner * 0.5f);
+                    }
+                    center += corner * 0.25f;
                 }
                 else {
                     if (
