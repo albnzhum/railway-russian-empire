@@ -70,13 +70,17 @@ namespace LandscapeGenerator
         /// </summary>
         void Triangulate(HexCell cell)
         {
-            for (HexDirection d = HexDirection.Ne; d <= HexDirection.Nw; d++)
-            {
+            for (HexDirection d = HexDirection.Ne; d <= HexDirection.Nw; d++) {
                 Triangulate(d, cell);
             }
-            /*if (!cell.IsUnderwater && !cell.HasRiver && !cell.HasRoads) {
-                features.AddFeature(cell.Position);
-            }*/
+            if (!cell.IsUnderwater) {
+                if (!cell.HasRiver && !cell.HasRoads) {
+                    features.AddFeature(cell, cell.Position);
+                }
+                if (cell.IsSpecial) {
+                    features.AddSpecialFeature(cell, cell.Position);
+                }
+            }
         }
         
         /// <summary>
@@ -730,7 +734,18 @@ namespace LandscapeGenerator
                 ) {
                     return;
                 }
-                roadCenter += HexMetrics.GetSolidEdgeMiddle(middle) * 0.25f;
+                Vector3 offset = HexMetrics.GetSolidEdgeMiddle(middle);
+                roadCenter += offset * 0.25f;
+                if (
+                    direction == middle &&
+                    cell.HasRoadThroughEdge(direction.Opposite())
+                ) {
+                    features.AddBridge(
+                        roadCenter,
+                        center - offset * (HexMetrics.InnerToOuter * 0.7f)
+                    );
+                }
+
             }
 
             Vector3 mL = Vector3.Lerp(roadCenter, e.V1, interpolators.x);

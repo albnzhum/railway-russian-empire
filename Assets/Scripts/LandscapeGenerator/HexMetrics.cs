@@ -38,6 +38,8 @@ namespace LandscapeGenerator
         public const float wallElevationOffset = VerticalTerraceStepSize;
         public const float wallTowerThreshold = 0.5f;
         public const float wallYOffset = -1f;
+        
+        public const float bridgeDesignLength = 7f;
 
         static HexHash[] hashGrid;
 

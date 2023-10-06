@@ -24,8 +24,8 @@ namespace LandscapeGenerator
 
         private int _brushSize;
 
-        private int activeUrbanLevel, activeFarmLevel, activePlantLevel;
-        private bool applyUrbanLevel, applyFarmLevel, applyPlantLevel;
+        private int activeUrbanLevel, activeFarmLevel, activePlantLevel, activeSpecialIndex;
+        private bool applyUrbanLevel, applyFarmLevel, applyPlantLevel, applySpecialIndex;
 
         #region UI Variables
 
@@ -48,6 +48,9 @@ namespace LandscapeGenerator
         [Space] 
         [SerializeField] private Toggle farmToggle;
         [SerializeField] private Slider farmLevelSlider;
+        [Space] 
+        [SerializeField] private Toggle specialToggle;
+        [SerializeField] private Slider specialIndexSlider;
 
         #endregion
 
@@ -152,16 +155,17 @@ namespace LandscapeGenerator
                 if (_applyWaterLevel) {
                     cell.WaterLevel = _activeWaterLevel;
                 }
-                if (applyUrbanLevel)
-                {
+
+                if (applySpecialIndex) {
+                    cell.SpecialIndex = activeSpecialIndex;
+                }
+                if (applyUrbanLevel) {
                     cell.UrbanLevel = activeUrbanLevel;
                 }
-                if (applyFarmLevel)
-                {
+                if (applyFarmLevel) {
                     cell.FarmLevel = activeFarmLevel;
                 }
-                if (applyPlantLevel)
-                {
+                if (applyPlantLevel) {
                     cell.PlantLevel = activePlantLevel;
                 }
                 if (_riverMode == OptionalToggle.No) {
@@ -228,6 +232,12 @@ namespace LandscapeGenerator
             else applyPlantLevel = false;
         }
 
+        public void SetApplySpecialIndex()
+        {
+            if (specialToggle.isOn) applySpecialIndex = true;
+            else applySpecialIndex = false;
+        }
+
         #endregion
 
         #region Set Level Methods
@@ -273,6 +283,11 @@ namespace LandscapeGenerator
         public void SetPlantLevel()
         {
             activePlantLevel = (int)plantLevelSlider.value;
+        }
+
+        public void SetSpecialIndex()
+        {
+            activeSpecialIndex = (int)specialIndexSlider.value;
         }
 
         #endregion

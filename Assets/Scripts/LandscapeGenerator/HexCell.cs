@@ -16,6 +16,7 @@ namespace LandscapeGenerator
         private int _waterLevel;
         private int urbanLevel, farmLevel, plantLevel;
         private bool walled;
+        private int specialIndex;
 
         [SerializeField] HexCell[] neighbors;
 
@@ -172,6 +173,21 @@ namespace LandscapeGenerator
             }
         }
 
+        public int SpecialIndex
+        {
+            get => specialIndex;
+            set
+            {
+                if (specialIndex != value && !HasRiver) {
+                    specialIndex = value;
+                    RemoveRoads();
+                    RefreshSelfOnly();
+                }
+            }
+        }
+
+        public bool IsSpecial => specialIndex > 0;
+
         #endregion
 
         #region Rivers
@@ -225,10 +241,12 @@ namespace LandscapeGenerator
 
             HasOutgoingRiver = true;
             OutgoingRiver = direction;
-            
+            specialIndex = 0;
+
             neighbor.RemoveIncomingRiver();
             neighbor.HasIncomingRiver = true;
             neighbor.IncomingRiver = direction.Opposite();
+            neighbor.specialIndex = 0;
             
             SetRoad((int)direction, false);
         }
@@ -297,8 +315,9 @@ namespace LandscapeGenerator
 
         public void AddRoad(HexDirection direction)
         {
-            if (!roads[(int)direction] && !HasRiverThroughEdge(direction)
-                && GetElevationDifference(direction) <= 1)
+            if (!roads[(int)direction] && !HasRiverThroughEdge(direction) &&
+                !IsSpecial && !GetNeighbor(direction).IsSpecial &&
+                GetElevationDifference(direction) <= 1)
             {
                 SetRoad((int)direction, true);
             }
