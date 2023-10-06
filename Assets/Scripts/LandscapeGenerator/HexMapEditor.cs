@@ -15,15 +15,18 @@ namespace LandscapeGenerator
         private Color activeColor;
 
         private int activeElevation;
+        int activeWaterLevel;
 
         private bool applyColor;
         private bool applyElevation = true;
+        bool applyWaterLevel = true;
 
         private int brushSize;
 
         [Header("UI")]
         [SerializeField] private Slider elevationSlider;
         [SerializeField] private Slider brushSizeSlider;
+        [SerializeField] private Slider waterLevelSlider;
         [SerializeField] private Toggle elevationToggle;
         [SerializeField] private Toggle labelsVisibility;
 
@@ -122,6 +125,9 @@ namespace LandscapeGenerator
                 if (applyElevation) {
                     cell.Elevation = activeElevation;
                 }
+                if (applyWaterLevel) {
+                    cell.WaterLevel = activeWaterLevel;
+                }
                 if (riverMode == OptionalToggle.No) {
                     cell.RemoveRiver();
                 }
@@ -193,6 +199,14 @@ namespace LandscapeGenerator
         public void SetRoadMode(int mode)
         {
             roadMode = (OptionalToggle)mode;
+        }
+        
+        public void SetApplyWaterLevel (bool toggle) {
+            applyWaterLevel = toggle;
+        }
+	
+        public void SetWaterLevel () {
+            activeWaterLevel = (int)waterLevelSlider.value;
         }
     }
 }

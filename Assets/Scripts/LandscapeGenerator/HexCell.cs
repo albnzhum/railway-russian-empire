@@ -17,6 +17,7 @@ namespace LandscapeGenerator
         Color color;
 
         int elevation = int.MinValue;
+        int waterLevel;
 
         [SerializeField] HexCell[] neighbors;
 
@@ -26,7 +27,7 @@ namespace LandscapeGenerator
 
         public Color Color
         {
-            get { return color; }
+            get => color;
             set
             {
                 if (color == value)
@@ -92,8 +93,12 @@ namespace LandscapeGenerator
         public float StreamDebY => (elevation + HexMetrics.streamBedElevationOffset) 
                                    * HexMetrics.elevationStep;
 
-        public float RiverSurfaceY => (elevation + HexMetrics.riverSurfaceElevationOffset) 
+        public float RiverSurfaceY => (elevation + HexMetrics.waterElevationOffset) 
                                       * HexMetrics.elevationStep;
+        
+        public float WaterSurfaceY =>
+            (waterLevel + HexMetrics.waterElevationOffset) *
+            HexMetrics.elevationStep;
 
         public bool HasRoads
         {
@@ -109,6 +114,20 @@ namespace LandscapeGenerator
                 return false;
             }
         }
+        public HexDirection RiverBeginOrEndDirection => 
+            hasIncomingRiver ? incomingRiver : outgoingRiver;
+        
+        public int WaterLevel {
+            get => waterLevel;
+            set {
+                if (waterLevel == value) {
+                    return;
+                }
+                waterLevel = value;
+                Refresh();
+            }
+        }
+        public bool IsUnderwater => waterLevel > elevation;
 
         #endregion
 
