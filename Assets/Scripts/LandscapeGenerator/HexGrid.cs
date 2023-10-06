@@ -24,17 +24,24 @@ namespace LandscapeGenerator
         public int chunkCountX = 4, chunkCountZ = 3;
         public HexGridChunk chunkPrefab;
         private HexGridChunk[] _chunks;
+
+        public int seed;
         
 #region UNITY_ENGINE
         
         private void OnEnable()
         {
-            HexMetrics.NoiseSource = noiseSource;
+            if (!HexMetrics.NoiseSource)
+            {
+                HexMetrics.NoiseSource = noiseSource;
+                HexMetrics.InitializeHashGrid(seed);
+            }
         }
 
         private void Awake()
         {
             HexMetrics.NoiseSource = noiseSource;
+            HexMetrics.InitializeHashGrid(seed);
 
             _cellCountX = chunkCountX * HexMetrics.ChunkSizeX;
             _cellCountZ = chunkCountZ * HexMetrics.ChunkSizeZ;

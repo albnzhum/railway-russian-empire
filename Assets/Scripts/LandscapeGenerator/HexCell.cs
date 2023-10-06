@@ -14,6 +14,7 @@ namespace LandscapeGenerator
 
         private int _elevation = int.MinValue;
         private int _waterLevel;
+        private int urbanLevel;
 
         [SerializeField] HexCell[] neighbors;
 
@@ -117,6 +118,19 @@ namespace LandscapeGenerator
             }
         }
         public bool IsUnderwater => _waterLevel > _elevation;
+
+        public int UrbanLevel
+        {
+            get => urbanLevel;
+            set
+            {
+                if (urbanLevel != value)
+                {
+                    urbanLevel = value;
+                    RefreshSelfOnly();
+                }
+            }
+        }
 
         #endregion
 

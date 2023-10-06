@@ -30,6 +30,10 @@ namespace LandscapeGenerator
         public const float WaterElevationOffset = -0.5f;
         private const float WaterFactor = 0.6f;
         private const float WaterBlendFactor = 1f - WaterFactor;
+        
+        public const int hashGridSize = 256;
+
+        static HexHash[] hashGrid;
 
         private static readonly Vector3[] Corners =
         {
@@ -65,6 +69,29 @@ namespace LandscapeGenerator
         }
 
         #endregion
+        
+        public static void InitializeHashGrid (int seed) {
+            hashGrid = new HexHash[hashGridSize * hashGridSize];
+            Random.State currentState = Random.state;
+            Random.InitState(seed);
+            for (int i = 0; i < hashGrid.Length; i++) {
+                hashGrid[i] = HexHash.Create();
+            }
+            Random.state = currentState;
+        }
+        
+        public const float hashGridScale = 0.25f;
+        public static HexHash SampleHashGrid (Vector3 position) {
+            int x = (int)(position.x * hashGridScale) % hashGridSize;
+            if (x < 0) {
+                x += hashGridSize;
+            }
+            int z = (int)(position.z * hashGridScale) % hashGridSize;
+            if (z < 0) {
+                z += hashGridSize;
+            }
+            return hashGrid[x + z * hashGridSize];
+        }
         
         public static Vector3 GetBridge (HexDirection direction) {
             return (Corners[(int)direction] + Corners[(int)direction + 1]) *
@@ -121,7 +148,9 @@ namespace LandscapeGenerator
             position.z += (sample.z * 2f - 1f) * CellPerturbStrength;
             return position;
         }
-        
+
+        #region Water
+
         public static Vector3 GetFirstWaterCorner (HexDirection direction) {
             return Corners[(int)direction] * WaterFactor;
         }
@@ -134,6 +163,8 @@ namespace LandscapeGenerator
             return (Corners[(int)direction] + Corners[(int)direction + 1]) *
                    WaterBlendFactor;
         }
+
+        #endregion
         
     }
 }

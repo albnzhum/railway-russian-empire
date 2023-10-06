@@ -7,6 +7,7 @@ namespace LandscapeGenerator
         private HexCell[] _cells;
         public HexMesh terrain, rivers, roads, water, waterShore, estuaries;
         private Canvas _gridCanvas;
+        public HexFeatureManager features;
 
         private void Awake()
         {
@@ -49,6 +50,7 @@ namespace LandscapeGenerator
             water.Clear();
             waterShore.Clear();
             estuaries.Clear();
+            features.Clear();
 
             for (int i = 0; i < _cells.Length; i++)
             {
@@ -60,6 +62,7 @@ namespace LandscapeGenerator
             water.Apply();
             waterShore.Apply();
             estuaries.Apply();
+            features.Apply();
         }
         
         /// <summary>
@@ -71,6 +74,9 @@ namespace LandscapeGenerator
             {
                 Triangulate(d, cell);
             }
+            /*if (!cell.IsUnderwater && !cell.HasRiver && !cell.HasRoads) {
+                features.AddFeature(cell.Position);
+            }*/
         }
         
         /// <summary>
@@ -100,6 +106,9 @@ namespace LandscapeGenerator
             }
             else {
                 TriangulateWithoutRiver(direction, cell, center, e);
+                if (!cell.IsUnderwater && !cell.HasRoadThroughEdge(direction)) {
+                    features.AddFeature(cell, (center + e.V1 + e.V5) * (1f / 3f));
+                }
             }
 
             if (direction <= HexDirection.Se) {
@@ -368,12 +377,6 @@ namespace LandscapeGenerator
         /// <summary>
         /// Triangulates a boundary triangle
         /// </summary>
-        /// <param name="begin"></param>
-        /// <param name="beginCell"></param>
-        /// <param name="left"></param>
-        /// <param name="leftCell"></param>
-        /// <param name="boundary"></param>
-        /// <param name="boundaryColor"></param>
         void TriangulateBoundaryTriangle(
             Vector3 begin, HexCell beginCell,
             Vector3 left, HexCell leftCell,
@@ -546,6 +549,10 @@ namespace LandscapeGenerator
 
             TriangulateEdgeStrip(m, cell.Color, e, cell.Color);
             TriangulateEdgeFan(center, m, cell.Color);
+            
+            if (!cell.IsUnderwater && !cell.HasRoadThroughEdge(direction)) {
+                features.AddFeature(cell, (center + e.V1 + e.V5) * (1f / 3f));
+            }
         }
 
         private void TriangulateWithRiverBeginOrEnd (

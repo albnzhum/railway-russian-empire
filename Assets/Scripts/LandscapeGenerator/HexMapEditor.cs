@@ -24,11 +24,16 @@ namespace LandscapeGenerator
 
         private int _brushSize;
 
+        private int activeUrbanLevel;
+        private bool applyUrbanLevel;
+
         [Header("UI")]
         [SerializeField] private Slider elevationSlider;
         [SerializeField] private Slider brushSizeSlider;
         [SerializeField] private Slider waterLevelSlider;
+        [SerializeField] private Slider urbalLevelSlider;
         [SerializeField] private Toggle elevationToggle;
+        [SerializeField] private Toggle urbanToggle;
         [SerializeField] private Toggle waterToggle;
         [SerializeField] private Toggle labelsVisibility;
 
@@ -133,6 +138,11 @@ namespace LandscapeGenerator
                 if (_applyWaterLevel) {
                     cell.WaterLevel = _activeWaterLevel;
                 }
+
+                if (applyUrbanLevel)
+                {
+                    cell.UrbanLevel = activeUrbanLevel;
+                }
                 if (_riverMode == OptionalToggle.No) {
                     cell.RemoveRiver();
                 }
@@ -219,6 +229,21 @@ namespace LandscapeGenerator
 	
         public void SetWaterLevel () {
             _activeWaterLevel = (int)waterLevelSlider.value;
+        }
+        
+        public void SetApplyUrbanLevel () {
+            if (urbanToggle.isOn)
+            {
+                applyUrbanLevel = true;
+            }
+            else
+            {
+                applyUrbanLevel = false;
+            }
+        }
+	
+        public void SetUrbanLevel () {
+            activeUrbanLevel = (int)urbalLevelSlider.value;
         }
     }
 }
