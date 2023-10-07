@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
+using System.IO;
 using UnityEngine.UI;
 
 namespace LandscapeGenerator
@@ -12,13 +12,10 @@ namespace LandscapeGenerator
     public class HexMapEditor : MonoBehaviour
     {
         public Color[] colors;
-        [FormerlySerializedAs("HexGrid")] public HexGrid hexGrid;
-        private Color _activeColor;
-
+        public HexGrid hexGrid;
+        
         private int _activeElevation;
         private int _activeWaterLevel;
-
-        private bool _applyColor;
         private bool _applyElevation = true;
         private bool _applyWaterLevel = true;
 
@@ -26,6 +23,8 @@ namespace LandscapeGenerator
 
         private int activeUrbanLevel, activeFarmLevel, activePlantLevel, activeSpecialIndex;
         private bool applyUrbanLevel, applyFarmLevel, applyPlantLevel, applySpecialIndex;
+
+        private int activeTerrainTypeIndex;
 
         #region UI Variables
 
@@ -64,11 +63,6 @@ namespace LandscapeGenerator
         private HexDirection _dragDirection;
         private HexCell _previousCell;
 
-        private void Awake()
-        {
-            SelectColor(0);
-        }
-
         private void Update()
         {
             if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
@@ -79,6 +73,11 @@ namespace LandscapeGenerator
             {
                 _previousCell = null;
             }
+        }
+
+        public void SetTerrainTypeIndex(int index)
+        {
+            activeTerrainTypeIndex = index;
         }
 
         private void HandleInput()
@@ -146,8 +145,8 @@ namespace LandscapeGenerator
         private void EditCell(HexCell cell)
         {
             if (cell) {
-                if (_applyColor) {
-                    cell.Color = _activeColor;
+                if (activeTerrainTypeIndex >= 0) {
+                    cell.TerrainTypeIndex = activeTerrainTypeIndex;
                 }
                 if (_applyElevation) {
                     cell.Elevation = _activeElevation;
@@ -292,13 +291,29 @@ namespace LandscapeGenerator
 
         #endregion
 
-        public void SelectColor(int index)
+        public void Save()
         {
-            _applyColor = index >= 0;
-            if (_applyColor)
+            string path = Path.Combine(Application.persistentDataPath, "test.map");
+            using (BinaryWriter writer = new BinaryWriter(File.Open(path, FileMode.Create)))
             {
-                _activeColor = colors[index];
+                writer.Write(0);
+                hexGrid.Save(writer);
             }
+        }
+
+        public void Load() {
+            string path = Path.Combine(Application.persistentDataPath, "test.map");
+            using (BinaryReader reader = new BinaryReader(File.OpenRead(path)))
+            {
+                int header = reader.ReadInt32();
+                if (header == 0) {
+                    hexGrid.Load(reader);
+                }
+                else {
+                    Debug.LogWarning("Unknown map format " + header);
+                }
+            }
+            
         }
 
         public void ShowUI()

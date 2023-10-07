@@ -4,6 +4,8 @@ namespace LandscapeGenerator
 {
     public static class HexMetrics
     {
+        public static Color[] colors;
+        
         private const float OuterToInner = 0.866025404f;
         public const float InnerToOuter = 1f / OuterToInner;
         public const float OuterRadius = 10f;

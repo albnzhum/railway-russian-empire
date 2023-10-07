@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-using UnityEngine.Serialization;
+using System.IO;
 using UnityEngine.UI;
 
 namespace LandscapeGenerator
@@ -26,15 +26,18 @@ namespace LandscapeGenerator
         private HexGridChunk[] _chunks;
 
         public int seed;
-        
-#region UNITY_ENGINE
-        
+        public Color[] colors;
+
+
+        #region UNITY_ENGINE
+
         private void OnEnable()
         {
             if (!HexMetrics.NoiseSource)
             {
                 HexMetrics.NoiseSource = noiseSource;
                 HexMetrics.InitializeHashGrid(seed);
+                HexMetrics.colors = colors;
             }
         }
 
@@ -42,6 +45,7 @@ namespace LandscapeGenerator
         {
             HexMetrics.NoiseSource = noiseSource;
             HexMetrics.InitializeHashGrid(seed);
+            HexMetrics.colors = colors;
 
             _cellCountX = chunkCountX * HexMetrics.ChunkSizeX;
             _cellCountZ = chunkCountZ * HexMetrics.ChunkSizeZ;
@@ -49,7 +53,28 @@ namespace LandscapeGenerator
             CreateCells();
         }
 
-#endregion
+        #endregion
+
+        public void Save(BinaryWriter writer)
+        {
+            for (int i = 0; i < _cells.Length; i++)
+            {
+                _cells[i].Save(writer);
+            }
+        }
+
+        public void Load(BinaryReader reader)
+        {
+            for (int i = 0; i < _cells.Length; i++)
+            {
+                _cells[i].Load(reader);
+            }
+
+            for (int i = 0; i < _cells.Length; i++)
+            {
+                _chunks[i].Refresh();
+            }
+        }
 
         void CreateChunks()
         {
@@ -87,21 +112,26 @@ namespace LandscapeGenerator
             cell.transform.SetParent(transform, false);
             cell.transform.localPosition = position;
             cell.coordinates = HexCoordinates.FromOffsetCoordinates(x, z);
-            cell.Color = defaultColor;
-
-            if (x > 0) {
+            if (x > 0)
+            {
                 cell.SetNeighbor(HexDirection.W, _cells[i - 1]);
             }
-            if (z > 0) {
-                if ((z & 1) == 0) {
+
+            if (z > 0)
+            {
+                if ((z & 1) == 0)
+                {
                     cell.SetNeighbor(HexDirection.Se, _cells[i - _cellCountX]);
-                    if (x > 0) {
+                    if (x > 0)
+                    {
                         cell.SetNeighbor(HexDirection.SW, _cells[i - _cellCountX - 1]);
                     }
                 }
-                else {
+                else
+                {
                     cell.SetNeighbor(HexDirection.SW, _cells[i - _cellCountX]);
-                    if (x < _cellCountX - 1) {
+                    if (x < _cellCountX - 1)
+                    {
                         cell.SetNeighbor(HexDirection.Se, _cells[i - _cellCountX + 1]);
                     }
                 }
@@ -125,7 +155,7 @@ namespace LandscapeGenerator
             int localZ = z - chunkZ * HexMetrics.ChunkSizeZ;
             chunk.AddCell(localX + localZ * HexMetrics.ChunkSizeX, cell);
         }
-        
+
 
         /// <summary>
         /// Returns the cell at a specified position
@@ -147,12 +177,14 @@ namespace LandscapeGenerator
             {
                 return null;
             }
+
             int x = coordinates.X + z / 2;
-            
+
             if (x < 0 || x >= _cellCountX)
             {
                 return null;
             }
+
             return _cells[x + z * _cellCountX];
         }
 
@@ -163,7 +195,5 @@ namespace LandscapeGenerator
                 _chunks[i].ShowUI(visible);
             }
         }
-        
-        
     }
 }

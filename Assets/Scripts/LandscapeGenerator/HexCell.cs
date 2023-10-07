@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.IO;
 
 namespace LandscapeGenerator
 {
@@ -10,10 +11,10 @@ namespace LandscapeGenerator
 
         public HexGridChunk chunk;
 
-        private Color _color;
+        private int terrainTypeIndex;
 
-        private int _elevation = int.MinValue;
-        private int _waterLevel;
+        private int elevation = int.MinValue;
+        private int waterLevel;
         private int urbanLevel, farmLevel, plantLevel;
         private bool walled;
         private int specialIndex;
@@ -26,8 +27,8 @@ namespace LandscapeGenerator
 
         public Color Color
         {
-            get => _color;
-            set
+            get => HexMetrics.colors[terrainTypeIndex];
+            /*set
             {
                 if (_color == value)
                 {
@@ -36,30 +37,32 @@ namespace LandscapeGenerator
 
                 _color = value;
                 Refresh();
+            }*/
+        }
+
+        public int TerrainTypeIndex
+        {
+            get => terrainTypeIndex;
+            set
+            {
+                if (terrainTypeIndex != value)
+                {
+                    terrainTypeIndex = value;
+                    Refresh();
+                }
             }
         }
 
         public int Elevation
         {
-            get => _elevation;
+            get => elevation;
             set
             {
-                if (_elevation == value)
-                {
+                if (elevation == value) {
                     return;
                 }
-
-                _elevation = value;
-                Vector3 position = transform.localPosition;
-                position.y = value * HexMetrics.ElevationStep;
-                position.y +=
-                    (HexMetrics.SampleNoise(position).y * 2f - 1f) *
-                    HexMetrics.ElevationPerturbStrength;
-                transform.localPosition = position;
-
-                Vector3 uiPosition = uiRect.localPosition;
-                uiPosition.z = -position.y;
-                uiRect.localPosition = uiPosition;
+                elevation = value;
+                RefreshPosition();
                 ValidateRivers();
 
                 for (int i = 0; i < roads.Length; i++)
@@ -84,14 +87,14 @@ namespace LandscapeGenerator
 
         public bool HasRiver => HasIncomingRiver || HasOutgoingRiver;
         public bool HasRiverBeginOrEnd => HasIncomingRiver != HasOutgoingRiver;
-        public float StreamDebY => (_elevation + HexMetrics.StreamBedElevationOffset) 
+        public float StreamDebY => (elevation + HexMetrics.StreamBedElevationOffset) 
                                    * HexMetrics.ElevationStep;
 
-        public float RiverSurfaceY => (_elevation + HexMetrics.WaterElevationOffset) 
+        public float RiverSurfaceY => (elevation + HexMetrics.WaterElevationOffset) 
                                       * HexMetrics.ElevationStep;
 
         public float WaterSurfaceY =>
-            (_waterLevel + HexMetrics.WaterElevationOffset) *
+            (waterLevel + HexMetrics.WaterElevationOffset) *
             HexMetrics.ElevationStep;
 
         public bool HasRoads
@@ -109,17 +112,17 @@ namespace LandscapeGenerator
             HasIncomingRiver ? IncomingRiver : OutgoingRiver;
         
         public int WaterLevel {
-            get => _waterLevel;
+            get => waterLevel;
             set {
-                if (_waterLevel == value) {
+                if (waterLevel == value) {
                     return;
                 }
-                _waterLevel = value;
+                waterLevel = value;
                 ValidateRivers();
                 Refresh();
             }
         }
-        public bool IsUnderwater => _waterLevel > _elevation;
+        public bool IsUnderwater => waterLevel > elevation;
 
         public int UrbanLevel
         {
@@ -190,6 +193,76 @@ namespace LandscapeGenerator
 
         #endregion
 
+        public void Save(BinaryWriter writer)
+        {
+            writer.Write((byte)terrainTypeIndex);
+            writer.Write((byte)elevation);
+            writer.Write((byte)waterLevel);
+            writer.Write((byte)urbanLevel);
+            writer.Write((byte)farmLevel);
+            writer.Write((byte)plantLevel);
+            writer.Write((byte)specialIndex);
+            writer.Write(walled);
+
+            if (HasIncomingRiver) {
+                writer.Write((byte)(IncomingRiver + 128));
+            }
+            else {
+                writer.Write((byte)0);
+            }
+
+            if (HasOutgoingRiver) {
+                writer.Write((byte)(OutgoingRiver + 128));
+            }
+            else {
+                writer.Write((byte)0);
+            }
+
+            int roadFlags = 0;
+            for (int i = 0; i < roads.Length; i++) {
+                if (roads[i]) {
+                    roadFlags |= 1 << i;
+                }
+            }
+            writer.Write((byte)roadFlags);
+        }
+
+        public void Load(BinaryReader reader)
+        {
+            terrainTypeIndex = reader.ReadByte();
+            elevation = reader.ReadByte();
+            RefreshPosition();
+            waterLevel = reader.ReadByte();
+            urbanLevel = reader.ReadByte();
+            farmLevel = reader.ReadByte();
+            plantLevel = reader.ReadByte();
+            specialIndex = reader.ReadByte();
+            walled = reader.ReadBoolean();
+
+            byte riverData = reader.ReadByte();
+            if (riverData >= 128) {
+                HasIncomingRiver = true;
+                IncomingRiver = (HexDirection)(riverData - 128);
+            }
+            else {
+                HasIncomingRiver = false;
+            }
+
+            riverData = reader.ReadByte();
+            if (riverData >= 128) {
+                HasOutgoingRiver = true;
+                OutgoingRiver = (HexDirection)(riverData - 128);
+            }
+            else {
+                HasOutgoingRiver = false;
+            }
+
+            int roadFlags = reader.ReadByte();
+            for (int i = 0; i < roads.Length; i++) {
+                roads[i] = (roadFlags & (1 << i)) != 0;
+            }
+        }
+
         #region Rivers
 
         public bool HasRiverThroughEdge(HexDirection direction)
@@ -253,7 +326,7 @@ namespace LandscapeGenerator
         
         bool IsValidRiverDestination (HexCell neighbor) {
             return neighbor && (
-                _elevation >= neighbor._elevation || _waterLevel == neighbor._elevation
+                elevation >= neighbor.elevation || waterLevel == neighbor.elevation
             );
         }
         
@@ -278,6 +351,19 @@ namespace LandscapeGenerator
         {
             chunk.Refresh();
         }
+        
+        void RefreshPosition () {
+            Vector3 position = transform.localPosition;
+            position.y = elevation * HexMetrics.ElevationStep;
+            position.y +=
+                (HexMetrics.SampleNoise(position).y * 2f - 1f) *
+                HexMetrics.ElevationPerturbStrength;
+            transform.localPosition = position;
+
+            Vector3 uiPosition = uiRect.localPosition;
+            uiPosition.z = -position.y;
+            uiRect.localPosition = uiPosition;
+        }
 
         public Vector3 Position => transform.localPosition;
 
@@ -295,14 +381,14 @@ namespace LandscapeGenerator
         public HexEdgeType GetEdgeType(HexDirection direction)
         {
             return HexMetrics.GetEdgeType(
-                _elevation, neighbors[(int)direction]._elevation
+                elevation, neighbors[(int)direction].elevation
             );
         }
 
         public HexEdgeType GetEdgeType(HexCell otherCell)
         {
             return HexMetrics.GetEdgeType(
-                _elevation, otherCell._elevation
+                elevation, otherCell.elevation
             );
         }
 
@@ -333,7 +419,7 @@ namespace LandscapeGenerator
 
         private int GetElevationDifference(HexDirection direction)
         {
-            int difference = _elevation - GetNeighbor(direction)._elevation;
+            int difference = elevation - GetNeighbor(direction).elevation;
             return difference >= 0 ? difference : -difference;
         }
 
