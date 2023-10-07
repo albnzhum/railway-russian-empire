@@ -69,11 +69,12 @@ namespace LandscapeGenerator
 
         Vector3 ClampPosition(Vector3 position)
         {
-            float xMax = (grid.chunkCountX * HexMetrics.ChunkSizeX - 0.5f)* (2f * HexMetrics.InnerRadius);
+            float xMax = (grid.cellCountX - 0.5f) * (2f * HexMetrics.InnerRadius);
             position.x = Mathf.Clamp(position.x, 0f, xMax);
 
-            float zMax = (grid.chunkCountZ * HexMetrics.ChunkSizeZ - 1) * (1.5f * HexMetrics.OuterRadius);
+            float zMax = (grid.cellCountZ - 1) * (1.5f * HexMetrics.OuterRadius);
             position.z = Mathf.Clamp(position.z, 0f, zMax);
+
             return position;
         }
 

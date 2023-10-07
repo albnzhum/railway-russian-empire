@@ -2,7 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SettingsScreen : Screen
+namespace UI
 {
-    
+    public class SettingsScreen : Screen
+    {
+        public override void Show(bool state = true)
+        {
+            base.Show(state);
+        }
+    }
 }

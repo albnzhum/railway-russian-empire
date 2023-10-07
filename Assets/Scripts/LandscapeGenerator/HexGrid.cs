@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using System.IO;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace LandscapeGenerator
@@ -10,7 +11,7 @@ namespace LandscapeGenerator
     /// </summary>
     public class HexGrid : MonoBehaviour
     {
-        int _cellCountX, _cellCountZ;
+        int _chunkCountX, _chunkCountZ;
 
         public HexCell cellPrefab;
         public Text cellLabelPrefab;
@@ -21,7 +22,8 @@ namespace LandscapeGenerator
 
         public Texture2D noiseSource;
 
-        public int chunkCountX = 4, chunkCountZ = 3;
+        public int cellCountX = 4;
+        public int cellCountZ = 3;
         public HexGridChunk chunkPrefab;
         private HexGridChunk[] _chunks;
 
@@ -47,14 +49,38 @@ namespace LandscapeGenerator
             HexMetrics.InitializeHashGrid(seed);
             HexMetrics.colors = colors;
 
-            _cellCountX = chunkCountX * HexMetrics.ChunkSizeX;
-            _cellCountZ = chunkCountZ * HexMetrics.ChunkSizeZ;
-            CreateChunks();
-            CreateCells();
+            CreateMap(cellCountX, cellCountZ);
         }
 
         #endregion
 
+        public void CreateMap(int x, int z)
+        {
+            if (
+                x <= 0 || x % HexMetrics.ChunkSizeX != 0 ||
+                z <= 0 || z % HexMetrics.ChunkSizeZ != 0
+            ) {
+                Debug.LogError("Unsupported map size.");
+                return;
+            }
+            
+            if (_chunks != null)
+            {
+                for (int i = 0; i < _chunks.Length; i++)
+                {
+                    Destroy(_chunks[i].gameObject);
+                }
+            }
+
+            cellCountX = x;
+            cellCountZ = z;
+            
+            _chunkCountX = cellCountX / HexMetrics.ChunkSizeX;
+            _chunkCountZ = cellCountZ / HexMetrics.ChunkSizeZ;
+            CreateChunks();
+            CreateCells();
+        }
+        
         public void Save(BinaryWriter writer)
         {
             for (int i = 0; i < _cells.Length; i++)
@@ -78,10 +104,10 @@ namespace LandscapeGenerator
 
         void CreateChunks()
         {
-            _chunks = new HexGridChunk[chunkCountX * chunkCountZ];
-            for (int z = 0, i = 0; z < chunkCountZ; z++)
+            _chunks = new HexGridChunk[cellCountX * cellCountZ];
+            for (int z = 0, i = 0; z < cellCountZ; z++)
             {
-                for (int x = 0; x < chunkCountX; x++)
+                for (int x = 0; x < cellCountX; x++)
                 {
                     HexGridChunk chunk = _chunks[i++] = Instantiate(chunkPrefab);
                     chunk.transform.SetParent(transform);
@@ -91,10 +117,10 @@ namespace LandscapeGenerator
 
         void CreateCells()
         {
-            _cells = new HexCell[_cellCountZ * _cellCountX];
-            for (int z = 0, i = 0; z < _cellCountZ; z++)
+            _cells = new HexCell[_chunkCountZ * _chunkCountX];
+            for (int z = 0, i = 0; z < _chunkCountZ; z++)
             {
-                for (int x = 0; x < _cellCountX; x++)
+                for (int x = 0; x < _chunkCountX; x++)
                 {
                     CreateCell(x, z, i++);
                 }
@@ -121,18 +147,18 @@ namespace LandscapeGenerator
             {
                 if ((z & 1) == 0)
                 {
-                    cell.SetNeighbor(HexDirection.Se, _cells[i - _cellCountX]);
+                    cell.SetNeighbor(HexDirection.Se, _cells[i - _chunkCountX]);
                     if (x > 0)
                     {
-                        cell.SetNeighbor(HexDirection.SW, _cells[i - _cellCountX - 1]);
+                        cell.SetNeighbor(HexDirection.SW, _cells[i - _chunkCountX - 1]);
                     }
                 }
                 else
                 {
-                    cell.SetNeighbor(HexDirection.SW, _cells[i - _cellCountX]);
-                    if (x < _cellCountX - 1)
+                    cell.SetNeighbor(HexDirection.SW, _cells[i - _chunkCountX]);
+                    if (x < _chunkCountX - 1)
                     {
-                        cell.SetNeighbor(HexDirection.Se, _cells[i - _cellCountX + 1]);
+                        cell.SetNeighbor(HexDirection.Se, _cells[i - _chunkCountX + 1]);
                     }
                 }
             }
@@ -149,7 +175,7 @@ namespace LandscapeGenerator
         {
             int chunkX = x / HexMetrics.ChunkSizeX;
             int chunkZ = z / HexMetrics.ChunkSizeZ;
-            HexGridChunk chunk = _chunks[chunkX + chunkZ * chunkCountX];
+            HexGridChunk chunk = _chunks[chunkX + chunkZ * cellCountX];
 
             int localX = x - chunkX * HexMetrics.ChunkSizeX;
             int localZ = z - chunkZ * HexMetrics.ChunkSizeZ;
@@ -166,26 +192,26 @@ namespace LandscapeGenerator
         {
             position = transform.InverseTransformPoint(position);
             HexCoordinates coordinates = HexCoordinates.FromPosition(position);
-            int index = coordinates.X + coordinates.Z * _cellCountX + coordinates.Z / 2;
+            int index = coordinates.X + coordinates.Z * _chunkCountX + coordinates.Z / 2;
             return _cells[index];
         }
 
         public HexCell GetCell(HexCoordinates coordinates)
         {
             int z = coordinates.Z;
-            if (z < 0 || z >= _cellCountZ)
+            if (z < 0 || z >= _chunkCountZ)
             {
                 return null;
             }
 
             int x = coordinates.X + z / 2;
 
-            if (x < 0 || x >= _cellCountX)
+            if (x < 0 || x >= _chunkCountX)
             {
                 return null;
             }
 
-            return _cells[x + z * _cellCountX];
+            return _cells[x + z * _chunkCountX];
         }
 
         public void ShowUI(bool visible)

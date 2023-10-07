@@ -2,7 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MainMenuScreen : Screen
+namespace UI
 {
-    
+    public class MainMenuScreen : Screen
+    {
+
+    }
 }

@@ -2,7 +2,7 @@ using Observers;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace UI.Button
+namespace UI
 {
     public interface IButtonAction
     {

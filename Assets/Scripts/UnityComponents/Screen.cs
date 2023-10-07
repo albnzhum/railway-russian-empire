@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Screen : MonoBehaviour
+namespace UI
 {
-    public virtual void Show(bool state = true)
+    public class Screen : MonoBehaviour
     {
-        gameObject.SetActive(state);
+        public virtual void Show(bool state = true)
+        {
+            gameObject.SetActive(state);
+        }
     }
 }
