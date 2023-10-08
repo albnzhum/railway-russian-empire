@@ -14,6 +14,13 @@
       "dependencies": {},
       "hash": "0709e936b4ee68ad834276d5a75a3931ed7dcbbe"
     },
+    "com.leopotam.ecslite.extendedsystems": {
+      "version": "https://github.com/Leopotam/ecslite-extendedsystems.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "007a5af4aaa1c4993523232f306a5f02e1de7c0f"
+    },
     "com.leopotam.ecslite.unity.ugui": {
       "version": "https://github.com/Leopotam/ecslite-unity-ugui.git",
       "depth": 0,

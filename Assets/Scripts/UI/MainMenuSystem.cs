@@ -2,13 +2,15 @@ using Leopotam.EcsLite.Unity.Ugui;
 using UnityEngine.SceneManagement;
 using UnityEngine.Scripting;
 using Leopotam.EcsLite;
+using Leopotam.EcsLite.Di;
 using UnityEngine;
 
 namespace UI
 {
-    public class MainMenuSystem : EcsUguiCallbackSystem 
+    public class MainMenuSystem : EcsUguiCallbackSystem, IEcsRunSystem
     {
-        //[EcsUguiNamed("Settings")] GameObject _settingsCanvas;
+        private EcsPoolInject<ShowScreenRequest> _showScreenPool = default;
+        
         [Preserve]
         [EcsUguiClickEvent("NewGame")]
         void OnNewGameClick(in EcsUguiClickEvent evt)
@@ -41,6 +43,11 @@ namespace UI
         void OnButtonClick(in EcsUguiClickEvent evt)
         {
             Debug.Log("Load Game Clicked");
+        }
+
+        public void Run(IEcsSystems systems)
+        {
+            
         }
     }
 }
