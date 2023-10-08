@@ -1,11 +1,18 @@
 {
   "dependencies": {
-    "com.leopotam.ecs": {
-      "version": "https://github.com/voody2506/ecs.git",
+    "com.leopotam.ecslite": {
+      "version": "https://github.com/Leopotam/ecslite.git",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "d2cbf428cf7977eebf9df51fb9b3b9a62090575c"
+      "hash": "8e714f2caf4450757637f1d31001d0961f66288d"
+    },
+    "com.leopotam.ecslite.unity.ugui": {
+      "version": "https://github.com/Leopotam/ecslite-unity-ugui.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "18a643c67639838e3d74c06b83316e98d0ac17a0"
     },
     "com.unity.2d.sprite": {
       "version": "1.0.0",

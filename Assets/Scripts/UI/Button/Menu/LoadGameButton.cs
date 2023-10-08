@@ -1,7 +1,7 @@
 ﻿using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
-namespace UI.Button.Menu
+namespace UI
 {
     public class LoadGameButton : ButtonTypeComponent
     {

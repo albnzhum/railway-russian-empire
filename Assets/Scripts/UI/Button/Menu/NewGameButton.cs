@@ -2,7 +2,7 @@ using UnityEngine.Device;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
-namespace UI.Button.Menu
+namespace UI
 {
     public class NewGameButton : ButtonTypeComponent
     {

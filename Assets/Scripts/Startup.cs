@@ -1,30 +1,38 @@
 using UnityEngine;
-using Leopotam.Ecs;
+using Leopotam.EcsLite;
+using Leopotam.EcsLite.Unity.Ugui;
+using UI;
 
 public class Startup : MonoBehaviour
 {
+    [SerializeField] private EcsUguiEmitter _uguiEmitter;
     private EcsWorld _world;
-    private EcsSystems _systems;
+    private IEcsSystems _systems;
 
     private void Start()
     {
         _world = new EcsWorld();
         _systems = new EcsSystems(_world);
-        
-        /*systems
-            .Add()*/
+
+        _systems
+            .Add(new MainMenuSystem())
+            .InjectUgui(_uguiEmitter)
+            .Init();
     }
 
     private void Update()
     {
         _systems?.Run();
+        //print("working");
     }
 
     private void OnDestroy()
     {
-        _systems?.Destroy();
-        _systems = null;
-        _world?.Destroy();
-        _world = null;
+        if (_systems != null) {
+            _systems.GetWorld ("ugui-events").Destroy ();
+            _systems.Destroy ();
+            _systems.GetWorld ().Destroy ();
+            _systems = null;
+        }
     }
 }

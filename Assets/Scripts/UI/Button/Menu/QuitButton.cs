@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace UI.Button.Menu
+namespace UI
 {
     public class QuitButton : ButtonTypeComponent
     {
