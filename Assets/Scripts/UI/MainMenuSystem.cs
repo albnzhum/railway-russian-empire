@@ -42,9 +42,5 @@ namespace UI
         {
             Debug.Log("Load Game Clicked");
         }
-        
-        /*public void Init (IEcsSystems systems) {
-            
-        }*/
     }
 }
