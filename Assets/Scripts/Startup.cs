@@ -17,7 +17,7 @@ public class Startup : MonoBehaviour
     {
         _world = new EcsWorld();
         _systems = new EcsSystems(_world);
-        _screens = new ScreenStorage();
+        //_screens = new ScreenStorage();
 
         _systems
             .Add(new MainMenuSystem())

@@ -4,6 +4,7 @@ namespace UI
 {
     public class EcsUGuiMediator : MonoBehaviour
     {
-        [SerializeField] private MainMenuScreen _mainMenuScreen;
+        [SerializeField] public MainMenuScreen MainMenuScreen;
+        [SerializeField] public SettingsScreen SettingsScreen;
     }
 }
