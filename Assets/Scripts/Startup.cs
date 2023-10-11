@@ -20,6 +20,8 @@ public class Startup : MonoBehaviour
             .Add(new MainMenuSystem())
             .InjectUgui(_uguiEmitter)
             .Init();
+        
+        DontDestroyOnLoad(this);
     }
 
     private void Update()
