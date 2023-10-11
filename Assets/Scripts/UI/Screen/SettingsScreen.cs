@@ -4,8 +4,11 @@ using UnityEngine;
 
 namespace UI
 {
-    public class SettingsScreen : ScreenBase
+    public class SettingsScreen : View
     {
-        
+        public override void Initialize()
+        {
+            
+        }
     }
 }

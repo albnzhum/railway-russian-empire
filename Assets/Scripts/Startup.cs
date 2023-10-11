@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using JimboA.Plugins.EcsProviders;
 using UnityEngine;
 using Leopotam.EcsLite;
 using Leopotam.EcsLite.Di;
@@ -8,26 +10,20 @@ using UI;
 public class Startup : MonoBehaviour
 {
     [SerializeField] private EcsUguiEmitter _uguiEmitter;
-    [SerializeField] private EcsUGuiMediator _uguiMediator;
     private EcsWorld _world;
     private IEcsSystems _systems;
-    private ScreenStorage _screens;
-
     private void Start()
     {
         _world = new EcsWorld();
         _systems = new EcsSystems(_world);
-        //_screens = new ScreenStorage();
-
         _systems
+            .AddWorld(_world, "Events")
+
             .Add(new MainMenuSystem())
-            .DelHere<ShowScreenRequest>()
-            .DelHere<HideScreenRequest>()
-            
-            .Inject(_screens)
             .InjectUgui(_uguiEmitter)
             .Init();
     }
+    
 
     private void Update()
     {
@@ -43,5 +39,20 @@ public class Startup : MonoBehaviour
             _systems.GetWorld ().Destroy ();
             _systems = null;
         }
+    }
+}
+
+public static class EcsSystemGroupExtensions
+{
+    public static List<IEcsSystem> AddToGroup(this List<IEcsSystem> systemGroup, IEcsSystem system)
+    {
+        systemGroup.Add(system);
+        return systemGroup;
+    }
+        
+    public static List<IEcsSystem> DelHere<TComponent>(this List<IEcsSystem> systemGroup, EcsWorld world) where TComponent : struct
+    {
+        systemGroup.Add(new DelHereSystem<TComponent>(world));
+        return systemGroup;
     }
 }

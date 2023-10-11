@@ -11,7 +11,6 @@ namespace UI
     public class HoverTextVisual : MonoBehaviour
     {
         [SerializeField] private PointerObserver pointerObserver;
-        [SerializeField] private GameObject image;
         private TMP_Text _text;
         private Animator _textHover;
         private bool _isHovering;
@@ -31,15 +30,13 @@ namespace UI
             _isHovering = false;
             _textHover.SetBool(IsHovering, _isHovering);
             _text.color = new Color(192, 192, 192, 255);
-            image.SetActive(false);
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
             _isHovering = true;
             _textHover.SetBool(IsHovering, _isHovering);
-            _text.color = Color.black;
-            image.SetActive(true);
+            _text.color = Color.black; 
         }
 
     }
