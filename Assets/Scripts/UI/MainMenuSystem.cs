@@ -2,7 +2,6 @@ using Leopotam.EcsLite.Unity.Ugui;
 using UnityEngine.SceneManagement;
 using UnityEngine.Scripting;
 using Leopotam.EcsLite;
-using Leopotam.EcsLite.Di;
 using Client;
 using UnityEngine;
 

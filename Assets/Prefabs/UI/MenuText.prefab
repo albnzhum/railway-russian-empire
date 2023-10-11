@@ -16,7 +16,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 0
 --- !u!224 &6313363907969376593
 RectTransform:
@@ -35,7 +35,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 12.399988, y: -22.9}
-  m_SizeDelta: {x: 27, y: 27}
+  m_SizeDelta: {x: 27, y: 28}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8000160943605889914
 CanvasRenderer:
@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 8a9ddcb092385bd4bbd38126a76fa258, type: 3}
+  m_Sprite: {fileID: -1244070304, guid: 4b7738aea8ecb2844a6884c24408fdbb, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -86,6 +86,7 @@ GameObject:
   - component: {fileID: 2554905645032839776}
   - component: {fileID: 2795760538761573679}
   - component: {fileID: 6131034316006645346}
+  - component: {fileID: 9134131534370053196}
   m_Layer: 5
   m_Name: MenuText
   m_TagString: Untagged
@@ -179,6 +180,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &9134131534370053196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4636931619929117551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43cdeac96d0815f498a98daeae3e097a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6101420009042620436
 GameObject:
   m_ObjectHideFlags: 0

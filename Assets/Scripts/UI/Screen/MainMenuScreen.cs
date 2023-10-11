@@ -1,5 +1,3 @@
-using Leopotam.EcsLite;
-using Leopotam.EcsLite.Di;
 
 namespace UI
 {
