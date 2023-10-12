@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace LandscapeGenerator
 {
+    /// <summary>
+    /// Represents a set of vertices that define an edge
+    /// </summary>
     public struct EdgeVertices
     {
         public Vector3 v1, v2, v3, v4, v5;

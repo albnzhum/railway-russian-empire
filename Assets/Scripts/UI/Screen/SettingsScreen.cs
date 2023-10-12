@@ -9,7 +9,6 @@ namespace UI
     {
         public override void Initialize()
         {
-            
         }
 
         private void Update()

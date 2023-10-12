@@ -38,7 +38,5 @@ namespace UI
         {
             Application.Quit();
         }
-        
-
     }
 }

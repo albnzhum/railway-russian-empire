@@ -15,6 +15,7 @@ namespace UI
     public class ButtonTypeComponent : MonoBehaviour, IButtonAction
     {
         [SerializeField] protected PointerObserver pointerObserver;
+
         protected void OnEnable()
         {
             pointerObserver.PointerClicked += OnButtonClickHandler;

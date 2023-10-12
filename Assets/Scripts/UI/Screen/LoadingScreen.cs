@@ -23,9 +23,9 @@ namespace UI
                 StartCoroutine(LoadSceneAsync());
             }
         }
-    
+
         IEnumerator LoadSceneAsync()
-        { 
+        {
             _operation = SceneManager.LoadSceneAsync("Game");
             _operation.allowSceneActivation = false;
             yield return _operation;

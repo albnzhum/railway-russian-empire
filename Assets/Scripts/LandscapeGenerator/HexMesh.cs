@@ -9,7 +9,6 @@ namespace LandscapeGenerator
     /// Generates a mesh for hexagonal grid
     /// </summary>
     [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
-
     public class HexMesh : MonoBehaviour
     {
         private Mesh _hexMesh;
@@ -24,6 +23,7 @@ namespace LandscapeGenerator
         [NonSerialized] List<Vector3> vertices, terrainTypes;
 
         [NonSerialized] private List<Vector2> _uvs, _uv2s;
+
         private void Awake()
         {
             GetComponent<MeshFilter>().mesh = _hexMesh = new Mesh();
@@ -31,6 +31,7 @@ namespace LandscapeGenerator
             {
                 _meshCollider = gameObject.AddComponent<MeshCollider>();
             }
+
             _hexMesh.name = "Hex Mesh";
         }
 
@@ -52,9 +53,12 @@ namespace LandscapeGenerator
             {
                 _uv2s = ListPool<Vector2>.Get();
             }
-            if (useTerrainTypes) {
+
+            if (useTerrainTypes)
+            {
                 terrainTypes = ListPool<Vector3>.Get();
             }
+
             _triangles = ListPool<int>.Get();
         }
 
@@ -79,10 +83,13 @@ namespace LandscapeGenerator
                 _hexMesh.SetUVs(1, _uv2s);
                 ListPool<Vector2>.Add(_uv2s);
             }
-            if (useTerrainTypes) {
+
+            if (useTerrainTypes)
+            {
                 _hexMesh.SetUVs(2, terrainTypes);
                 ListPool<Vector3>.Add(terrainTypes);
             }
+
             _hexMesh.SetTriangles(_triangles, 0);
             ListPool<int>.Add(_triangles);
             _hexMesh.RecalculateNormals();
@@ -94,9 +101,6 @@ namespace LandscapeGenerator
 
         #region Adds methods
 
-        /// <summary>
-        /// Adds a triangle to the mesh
-        /// </summary>
         public void AddTriangle(Vector3 v1, Vector3 v2, Vector3 v3)
         {
             int vertexIndex = _vertices.Count;
@@ -108,22 +112,22 @@ namespace LandscapeGenerator
             _triangles.Add(vertexIndex + 2);
         }
 
-        /// <summary>
-        /// Adds color for a single triangle
-        /// </summary>
-        public void AddTriangleColor (Color color) {
+        public void AddTriangleColor(Color color)
+        {
             _colors.Add(color);
             _colors.Add(color);
             _colors.Add(color);
         }
 
-        public void AddTriangleColor (Color c1, Color c2, Color c3) {
+        public void AddTriangleColor(Color c1, Color c2, Color c3)
+        {
             _colors.Add(c1);
             _colors.Add(c2);
             _colors.Add(c3);
         }
-        
-        public void AddQuad (Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4) {
+
+        public void AddQuad(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4)
+        {
             int vertexIndex = _vertices.Count;
             _vertices.Add(HexMetrics.Perturb(v1));
             _vertices.Add(HexMetrics.Perturb(v2));
@@ -136,22 +140,25 @@ namespace LandscapeGenerator
             _triangles.Add(vertexIndex + 2);
             _triangles.Add(vertexIndex + 3);
         }
-        
-        public void AddQuadColor (Color c1) {
+
+        public void AddQuadColor(Color c1)
+        {
             _colors.Add(c1);
             _colors.Add(c1);
             _colors.Add(c1);
             _colors.Add(c1);
         }
 
-        public void AddQuadColor (Color c1, Color c2) {
+        public void AddQuadColor(Color c1, Color c2)
+        {
             _colors.Add(c1);
             _colors.Add(c1);
             _colors.Add(c2);
             _colors.Add(c2);
         }
-        
-        public void AddQuadColor (Color c1, Color c2, Color c3, Color c4) {
+
+        public void AddQuadColor(Color c1, Color c2, Color c3, Color c4)
+        {
             _colors.Add(c1);
             _colors.Add(c2);
             _colors.Add(c3);
@@ -191,10 +198,11 @@ namespace LandscapeGenerator
             _uvs.Add(new Vector2(uMin, vMax));
             _uvs.Add(new Vector2(uMax, vMax));
         }
-        
-        public void AddQuadUnperturbed (
+
+        public void AddQuadUnperturbed(
             Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4
-        ) {
+        )
+        {
             int vertexIndex = _vertices.Count;
             _vertices.Add(v1);
             _vertices.Add(v2);
@@ -207,40 +215,45 @@ namespace LandscapeGenerator
             _triangles.Add(vertexIndex + 2);
             _triangles.Add(vertexIndex + 3);
         }
-        
-        public void AddTriangleUV2 (Vector2 uv1, Vector2 uv2, Vector3 uv3) {
+
+        public void AddTriangleUV2(Vector2 uv1, Vector2 uv2, Vector3 uv3)
+        {
             _uv2s.Add(uv1);
             _uv2s.Add(uv2);
             _uv2s.Add(uv3);
         }
-	
-        public void AddQuadUV2 (Vector2 uv1, Vector2 uv2, Vector3 uv3, Vector3 uv4) {
+
+        public void AddQuadUV2(Vector2 uv1, Vector2 uv2, Vector3 uv3, Vector3 uv4)
+        {
             _uv2s.Add(uv1);
             _uv2s.Add(uv2);
             _uv2s.Add(uv3);
             _uv2s.Add(uv4);
         }
 
-        public void AddQuadUV2 (float uMin, float uMax, float vMin, float vMax) {
+        public void AddQuadUV2(float uMin, float uMax, float vMin, float vMax)
+        {
             _uv2s.Add(new Vector2(uMin, vMin));
             _uv2s.Add(new Vector2(uMax, vMin));
             _uv2s.Add(new Vector2(uMin, vMax));
             _uv2s.Add(new Vector2(uMax, vMax));
         }
-        
-        public void AddTriangleTerrainTypes (Vector3 types) {
+
+        public void AddTriangleTerrainTypes(Vector3 types)
+        {
             terrainTypes.Add(types);
             terrainTypes.Add(types);
             terrainTypes.Add(types);
         }
-        
-        public void AddQuadTerrainTypes  (Vector3 types) {
+
+        public void AddQuadTerrainTypes(Vector3 types)
+        {
             terrainTypes.Add(types);
             terrainTypes.Add(types);
             terrainTypes.Add(types);
             terrainTypes.Add(types);
         }
-            #endregion
-            
+
+        #endregion
     }
 }

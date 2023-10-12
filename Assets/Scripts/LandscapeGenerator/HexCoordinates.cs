@@ -5,28 +5,34 @@ namespace LandscapeGenerator
     [System.Serializable]
     public struct HexCoordinates
     {
-        [SerializeField]
-        private int x, z;
+        [SerializeField] private int x, z;
 
-        public int X {
-            get {
+        public int X
+        {
+            get
+            {
                 return x;
             }
         }
 
-        public int Z {
-            get {
+        public int Z
+        {
+            get
+            {
                 return z;
             }
         }
 
-        public int Y {
-            get {
+        public int Y
+        {
+            get
+            {
                 return -X - Z;
             }
         }
 
-        public HexCoordinates (int x, int z) {
+        public HexCoordinates(int x, int z)
+        {
             this.x = x;
             this.z = z;
         }
@@ -45,7 +51,7 @@ namespace LandscapeGenerator
             y -= offset;
             int iX = Mathf.RoundToInt(x);
             int iY = Mathf.RoundToInt(y);
-            int iZ = Mathf.RoundToInt(-x -y);
+            int iZ = Mathf.RoundToInt(-x - y);
 
             if (iX + iY + iZ != 0)
             {
@@ -62,7 +68,7 @@ namespace LandscapeGenerator
                     iZ = -iX - iY;
                 }
             }
-		
+
             return new HexCoordinates(iX, iZ);
         }
 

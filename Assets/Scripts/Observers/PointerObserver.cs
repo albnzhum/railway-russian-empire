@@ -15,8 +15,5 @@ namespace Observers
         public void OnPointerEnter(PointerEventData eventData) => PointerEntered?.Invoke(eventData);
 
         public void OnPointerExit(PointerEventData eventData) => PointerExited?.Invoke(eventData);
-
-
-
     }
 }

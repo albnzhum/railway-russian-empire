@@ -9,18 +9,17 @@ public class Startup : MonoBehaviour
     [SerializeField] private EcsUguiEmitter _uguiEmitter;
     private EcsWorld _world;
     private IEcsSystems _systems;
-    
+
     private void Start()
     {
         _world = new EcsWorld();
         _systems = new EcsSystems(_world);
         _systems
             .AddWorld(_world, "Events")
-
             .Add(new MainMenuSystem())
             .InjectUgui(_uguiEmitter)
             .Init();
-        
+
         DontDestroyOnLoad(this);
     }
 
@@ -31,10 +30,11 @@ public class Startup : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (_systems != null) {
-            _systems.GetWorld ("ugui-events").Destroy ();
-            _systems.Destroy ();
-            _systems.GetWorld ().Destroy ();
+        if (_systems != null)
+        {
+            _systems.GetWorld("ugui-events").Destroy();
+            _systems.Destroy();
+            _systems.GetWorld().Destroy();
             _systems = null;
         }
     }

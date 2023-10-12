@@ -19,7 +19,7 @@ namespace UI
         private void Awake()
         {
             _textHover = GetComponentInChildren<Animator>();
-            
+
             pointerObserver.PointerEntered += OnPointerEnter;
             pointerObserver.PointerExited += OnPointerExit;
         }
@@ -35,6 +35,5 @@ namespace UI
             _isHovering = true;
             _textHover.SetBool(IsHovering, _isHovering);
         }
-
     }
 }

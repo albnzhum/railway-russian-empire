@@ -4,33 +4,33 @@ namespace LandscapeGenerator
 {
     public static class HexMetrics
     {
-        private const float outerToInner = 0.866025404f;
+        const float outerToInner = 0.866025404f;
         public const float innerToOuter = 1f / outerToInner;
         public const float outerRadius = 10f;
         public const float innerRadius = outerRadius * outerToInner;
 
-        private const float solidFactor = 0.8f;
-        private const float blendFactor = 1f-solidFactor;
+        const float solidFactor = 0.8f;
+        const float blendFactor = 1f - solidFactor;
 
         public const float elevationStep = 3f;
 
-        private const int terracesPerSlope = 2;
+       const int terracesPerSlope = 2;
         public const int terraceSteps = terracesPerSlope * 2 + 1;
-        private const float horizontalTerraceStepSize = 1f / terraceSteps;
-        private const float verticalTerraceStepSize = 1f / (terracesPerSlope + 1);
+        const float horizontalTerraceStepSize = 1f / terraceSteps;
+        const float verticalTerraceStepSize = 1f / (terracesPerSlope + 1);
 
         public static Texture2D noiseSource;
-        private const float cellPerturbStrength = 4f;
-        private const float noiseScale = 0.003f;
+        const float cellPerturbStrength = 4f;
+        const float noiseScale = 0.003f;
         public const float elevationPerturbStrength = 1.5f;
 
         public const int chunkSizeX = 5, chunkSizeZ = 5;
 
         public const float StreamBedElevationOffset = -1.75f;
         public const float WaterElevationOffset = -0.5f;
-        private const float WaterFactor = 0.6f;
-        private const float WaterBlendFactor = 1f - WaterFactor;
-        
+        const float WaterFactor = 0.6f;
+        const float WaterBlendFactor = 1f - WaterFactor;
+
         public const int hashGridSize = 256;
 
         public const float wallHeight = 4f;
@@ -38,12 +38,12 @@ namespace LandscapeGenerator
         public const float wallElevationOffset = verticalTerraceStepSize;
         public const float wallTowerThreshold = 0.5f;
         public const float wallYOffset = -1f;
-        
+
         public const float bridgeDesignLength = 7f;
 
         static HexHash[] hashGrid;
 
-        private static readonly Vector3[] Corners =
+        static readonly Vector3[] Corners =
         {
             new Vector3(0f, 0f, outerRadius),
             new Vector3(innerRadius, 0f, 0.5f * outerRadius),
@@ -53,14 +53,16 @@ namespace LandscapeGenerator
             new Vector3(-innerRadius, 0f, 0.5f * outerRadius),
             new Vector3(0f, 0f, outerRadius)
         };
-        
-        static float[][] featureThresholds = {
-            new float[] {0.0f, 0.0f, 0.4f},
-            new float[] {0.0f, 0.4f, 0.6f},
-            new float[] {0.4f, 0.6f, 0.8f}
+
+        static float[][] featureThresholds =
+        {
+            new float[] { 0.0f, 0.0f, 0.4f },
+            new float[] { 0.0f, 0.4f, 0.6f },
+            new float[] { 0.4f, 0.6f, 0.8f }
         };
-						
-        public static float[] GetFeatureThresholds (int level) {
+
+        public static float[] GetFeatureThresholds(int level)
+        {
             return featureThresholds[level];
         }
 
@@ -72,8 +74,9 @@ namespace LandscapeGenerator
             offset.z = far.z - near.z;
             return offset.normalized * (wallThickness * 0.5f);
         }
-        
-        public static Vector3 WallLerp (Vector3 near, Vector3 far) {
+
+        public static Vector3 WallLerp(Vector3 near, Vector3 far)
+        {
             near.x += (far.x - near.x) * 0.5f;
             near.z += (far.z - near.z) * 0.5f;
             float v =
@@ -105,31 +108,41 @@ namespace LandscapeGenerator
         }
 
         #endregion
-        
-        public static void InitializeHashGrid (int seed) {
+
+        public static void InitializeHashGrid(int seed)
+        {
             hashGrid = new HexHash[hashGridSize * hashGridSize];
             Random.State currentState = Random.state;
             Random.InitState(seed);
-            for (int i = 0; i < hashGrid.Length; i++) {
+            for (int i = 0; i < hashGrid.Length; i++)
+            {
                 hashGrid[i] = HexHash.Create();
             }
+
             Random.state = currentState;
         }
-        
+
         public const float hashGridScale = 0.25f;
-        public static HexHash SampleHashGrid (Vector3 position) {
+
+        public static HexHash SampleHashGrid(Vector3 position)
+        {
             int x = (int)(position.x * hashGridScale) % hashGridSize;
-            if (x < 0) {
+            if (x < 0)
+            {
                 x += hashGridSize;
             }
+
             int z = (int)(position.z * hashGridScale) % hashGridSize;
-            if (z < 0) {
+            if (z < 0)
+            {
                 z += hashGridSize;
             }
+
             return hashGrid[x + z * hashGridSize];
         }
-        
-        public static Vector3 GetBridge (HexDirection direction) {
+
+        public static Vector3 GetBridge(HexDirection direction)
+        {
             return (Corners[(int)direction] + Corners[(int)direction + 1]) *
                    blendFactor;
         }
@@ -171,14 +184,16 @@ namespace LandscapeGenerator
             return noiseSource.GetPixelBilinear(
                 position.x * noiseScale, position.z * noiseScale);
         }
-        
-        public static Vector3 GetSolidEdgeMiddle (HexDirection direction) {
+
+        public static Vector3 GetSolidEdgeMiddle(HexDirection direction)
+        {
             return
                 (Corners[(int)direction] + Corners[(int)direction + 1]) *
                 (0.5f * solidFactor);
         }
-        
-        public static Vector3 Perturb (Vector3 position) {
+
+        public static Vector3 Perturb(Vector3 position)
+        {
             Vector4 sample = SampleNoise(position);
             position.x += (sample.x * 2f - 1f) * cellPerturbStrength;
             position.z += (sample.z * 2f - 1f) * cellPerturbStrength;
@@ -187,20 +202,22 @@ namespace LandscapeGenerator
 
         #region Water
 
-        public static Vector3 GetFirstWaterCorner (HexDirection direction) {
+        public static Vector3 GetFirstWaterCorner(HexDirection direction)
+        {
             return Corners[(int)direction] * WaterFactor;
         }
 
-        public static Vector3 GetSecondWaterCorner (HexDirection direction) {
+        public static Vector3 GetSecondWaterCorner(HexDirection direction)
+        {
             return Corners[(int)direction + 1] * WaterFactor;
         }
-        
-        public static Vector3 GetWaterBridge (HexDirection direction) {
+
+        public static Vector3 GetWaterBridge(HexDirection direction)
+        {
             return (Corners[(int)direction] + Corners[(int)direction + 1]) *
                    WaterBlendFactor;
         }
 
         #endregion
-        
     }
 }

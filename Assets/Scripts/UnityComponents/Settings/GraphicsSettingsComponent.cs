@@ -6,6 +6,5 @@ namespace Settings
 {
     public struct GraphicsSettingsComponent
     {
-        
     }
 }

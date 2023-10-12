@@ -13,43 +13,35 @@ namespace LandscapeGenerator
     {
         public Color[] colors;
         public HexGrid hexGrid;
-        
-        private int _activeElevation;
-        private int _activeWaterLevel;
-        private bool _applyElevation = true;
-        private bool _applyWaterLevel = true;
 
-        private int _brushSize;
+        int _activeElevation;
+        int _activeWaterLevel;
+        bool _applyElevation = true;
+        bool _applyWaterLevel = true;
 
-        private int activeUrbanLevel, activeFarmLevel, activePlantLevel, activeSpecialIndex;
-        private bool applyUrbanLevel, applyFarmLevel, applyPlantLevel, applySpecialIndex;
+        int _brushSize;
 
-        private int activeTerrainTypeIndex;
+        int activeUrbanLevel, activeFarmLevel, activePlantLevel, activeSpecialIndex;
+        bool applyUrbanLevel, applyFarmLevel, applyPlantLevel, applySpecialIndex;
+
+        int activeTerrainTypeIndex;
 
         #region UI Variables
 
-        [Header("UI")]
-        [SerializeField] private Slider elevationSlider;
-        [SerializeField] private Toggle elevationToggle;
-        [Space]
-        [SerializeField] private Slider brushSizeSlider;
-        [Space]
-        [SerializeField] private Slider waterLevelSlider;
-        [SerializeField] private Toggle waterToggle;
-        [Space]
-        [SerializeField] private Slider urbanLevelSlider;
-        [SerializeField] private Toggle urbanToggle;
-        [Space]
-        [SerializeField] private Toggle labelsVisibility; 
-        [Space] 
-        [SerializeField] private Toggle plantToggle;
-        [SerializeField] private Slider plantLevelSlider;
-        [Space] 
-        [SerializeField] private Toggle farmToggle;
-        [SerializeField] private Slider farmLevelSlider;
-        [Space] 
-        [SerializeField] private Toggle specialToggle;
-        [SerializeField] private Slider specialIndexSlider;
+        [Header("UI")] [SerializeField] Slider elevationSlider;
+        [SerializeField] Toggle elevationToggle;
+        [Space] [SerializeField] Slider brushSizeSlider;
+        [Space] [SerializeField] Slider waterLevelSlider;
+        [SerializeField] Toggle waterToggle;
+        [Space] [SerializeField] Slider urbanLevelSlider;
+        [SerializeField] Toggle urbanToggle;
+        [Space] [SerializeField] Toggle labelsVisibility;
+        [Space] [SerializeField] Toggle plantToggle;
+        [SerializeField] Slider plantLevelSlider;
+        [Space] [SerializeField] Toggle farmToggle;
+        [SerializeField] Slider farmLevelSlider;
+        [Space] [SerializeField] Toggle specialToggle;
+        [SerializeField] Slider specialIndexSlider;
 
         #endregion
 
@@ -58,12 +50,12 @@ namespace LandscapeGenerator
             Ignore, Yes, No
         }
 
-        private OptionalToggle _riverMode, _roadMode, _walledMode;
-        private bool _isDrag;
-        private HexDirection _dragDirection;
-        private HexCell _previousCell;
+        OptionalToggle _riverMode, _roadMode, _walledMode;
+        bool _isDrag;
+        HexDirection _dragDirection;
+        HexCell _previousCell;
 
-        private void Update()
+        void Update()
         {
             if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
             {
@@ -80,7 +72,7 @@ namespace LandscapeGenerator
             activeTerrainTypeIndex = index;
         }
 
-        private void HandleInput()
+        void HandleInput()
         {
             if (Camera.main != null)
             {
@@ -97,6 +89,7 @@ namespace LandscapeGenerator
                     {
                         _isDrag = false;
                     }
+
                     EditCells(currentCell);
                     _previousCell = currentCell;
                     _isDrag = true;
@@ -104,7 +97,7 @@ namespace LandscapeGenerator
             }
         }
 
-        private void ValidateDrag(HexCell currentCell)
+        void ValidateDrag(HexCell currentCell)
         {
             for (
                 _dragDirection = HexDirection.NE;
@@ -121,7 +114,7 @@ namespace LandscapeGenerator
             _isDrag = false;
         }
 
-        private void EditCells(HexCell center)
+        void EditCells(HexCell center)
         {
             int centerX = center.coordinates.X;
             int centerZ = center.coordinates.Z;
@@ -133,6 +126,7 @@ namespace LandscapeGenerator
                     EditCell(hexGrid.GetCell(new HexCoordinates(x, z)));
                 }
             }
+
             for (int r = 0, z = centerZ + _brushSize; z > centerZ; z--, r++)
             {
                 for (int x = centerX - _brushSize; x <= centerX + r; x++)
@@ -142,49 +136,72 @@ namespace LandscapeGenerator
             }
         }
 
-        private void EditCell(HexCell cell)
+        void EditCell(HexCell cell)
         {
-            if (cell) {
-                if (activeTerrainTypeIndex >= 0) {
+            if (cell)
+            {
+                if (activeTerrainTypeIndex >= 0)
+                {
                     cell.TerrainTypeIndex = activeTerrainTypeIndex;
                 }
-                if (_applyElevation) {
+
+                if (_applyElevation)
+                {
                     cell.Elevation = _activeElevation;
                 }
-                if (_applyWaterLevel) {
+
+                if (_applyWaterLevel)
+                {
                     cell.WaterLevel = _activeWaterLevel;
                 }
 
-                if (applySpecialIndex) {
+                if (applySpecialIndex)
+                {
                     cell.SpecialIndex = activeSpecialIndex;
                 }
-                if (applyUrbanLevel) {
+
+                if (applyUrbanLevel)
+                {
                     cell.UrbanLevel = activeUrbanLevel;
                 }
-                if (applyFarmLevel) {
+
+                if (applyFarmLevel)
+                {
                     cell.FarmLevel = activeFarmLevel;
                 }
-                if (applyPlantLevel) {
+
+                if (applyPlantLevel)
+                {
                     cell.PlantLevel = activePlantLevel;
                 }
-                if (_riverMode == OptionalToggle.No) {
+
+                if (_riverMode == OptionalToggle.No)
+                {
                     cell.RemoveRiver();
                 }
-                if (_roadMode == OptionalToggle.No) {
+
+                if (_roadMode == OptionalToggle.No)
+                {
                     cell.RemoveRoads();
                 }
 
                 if (_walledMode != OptionalToggle.Ignore)
                 {
                     cell.Walled = _walledMode == OptionalToggle.Yes;
-                } 
-                if (_isDrag) {
+                }
+
+                if (_isDrag)
+                {
                     HexCell otherCell = cell.GetNeighbor(_dragDirection.Opposite());
-                    if (otherCell) {
-                        if (_riverMode == OptionalToggle.Yes) {
+                    if (otherCell)
+                    {
+                        if (_riverMode == OptionalToggle.Yes)
+                        {
                             otherCell.SetOutgoingRiver(_dragDirection);
                         }
-                        if (_roadMode == OptionalToggle.Yes) {
+
+                        if (_roadMode == OptionalToggle.Yes)
+                        {
                             otherCell.AddRoad(_dragDirection);
                         }
                     }
@@ -196,25 +213,36 @@ namespace LandscapeGenerator
 
         public void SetApplyElevation()
         {
-            if (elevationToggle.isOn) {
+            if (elevationToggle.isOn)
+            {
                 _applyElevation = true;
-            } else {
+            }
+            else
+            {
                 _applyElevation = false;
             }
         }
-        
-        public void SetApplyWaterLevel () {
-            if (waterToggle.isOn) {
+
+        public void SetApplyWaterLevel()
+        {
+            if (waterToggle.isOn)
+            {
                 _applyWaterLevel = true;
-            } else {
+            }
+            else
+            {
                 _applyWaterLevel = false;
             }
         }
-        
-        public void SetApplyUrbanLevel () {
-            if (urbanToggle.isOn) {
+
+        public void SetApplyUrbanLevel()
+        {
+            if (urbanToggle.isOn)
+            {
                 applyUrbanLevel = true;
-            } else {
+            }
+            else
+            {
                 applyUrbanLevel = false;
             }
         }
@@ -245,7 +273,7 @@ namespace LandscapeGenerator
         {
             _activeElevation = (int)elevationSlider.value;
         }
-        
+
         public void SetRiverMode(int mode)
         {
             _riverMode = (OptionalToggle)mode;
@@ -260,17 +288,19 @@ namespace LandscapeGenerator
         {
             _walledMode = (OptionalToggle)mode;
         }
-        
+
         public void SetBrushSize()
         {
             _brushSize = (int)brushSizeSlider.value;
         }
-        
-        public void SetWaterLevel () {
+
+        public void SetWaterLevel()
+        {
             _activeWaterLevel = (int)waterLevelSlider.value;
         }
 
-        public void SetUrbanLevel () {
+        public void SetUrbanLevel()
+        {
             activeUrbanLevel = (int)urbanLevelSlider.value;
         }
 
@@ -290,7 +320,7 @@ namespace LandscapeGenerator
         }
 
         #endregion
-        
+
 
         public void ShowUI()
         {
@@ -303,7 +333,5 @@ namespace LandscapeGenerator
                 hexGrid.ShowUI(false);
             }
         }
-        
-        
     }
 }

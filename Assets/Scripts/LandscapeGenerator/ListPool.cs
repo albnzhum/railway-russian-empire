@@ -10,6 +10,7 @@ public static class ListPool<T>
         {
             return Stack.Pop();
         }
+
         return new List<T>();
     }
 

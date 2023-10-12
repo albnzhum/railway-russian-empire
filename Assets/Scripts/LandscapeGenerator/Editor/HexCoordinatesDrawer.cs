@@ -1,4 +1,3 @@
-
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEditor;
@@ -6,7 +5,6 @@ using UnityEditor;
 namespace LandscapeGenerator
 {
     [CustomPropertyDrawer(typeof(HexCoordinates))]
-
     public class HexCoordinatesDrawer : PropertyDrawer
     {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
