@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.IO;
 
 namespace LandscapeGenerator
@@ -11,13 +12,14 @@ namespace LandscapeGenerator
 
         public HexGridChunk chunk;
 
-        private int terrainTypeIndex;
+        int terrainTypeIndex;
 
-        private int elevation = int.MinValue;
-        private int waterLevel;
-        private int urbanLevel, farmLevel, plantLevel;
-        private bool walled;
-        private int specialIndex;
+        int elevation = int.MinValue;
+        int waterLevel;
+        int urbanLevel, farmLevel, plantLevel;
+        bool walled;
+        int specialIndex;
+        int distance;
 
         [SerializeField] HexCell[] neighbors;
 
@@ -191,6 +193,14 @@ namespace LandscapeGenerator
         }
 
         public bool IsSpecial => specialIndex > 0;
+
+        public int Distance {
+            get => distance;
+            set {
+                distance = value;
+                UpdateDistanceLabel();
+            }
+        }
 
         #endregion
 
@@ -471,6 +481,11 @@ namespace LandscapeGenerator
             return HexMetrics.GetEdgeType(
                 elevation, otherCell.elevation
             );
+        }
+
+        void UpdateDistanceLabel () {
+            Text label = uiRect.GetComponent<Text>();
+            label.text = distance == int.MaxValue ? "" : distance.ToString();
         }
     }
 }

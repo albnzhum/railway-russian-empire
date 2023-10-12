@@ -7,29 +7,11 @@ namespace LandscapeGenerator
     {
         [SerializeField] private int x, z;
 
-        public int X
-        {
-            get
-            {
-                return x;
-            }
-        }
+        public int X => x;
 
-        public int Z
-        {
-            get
-            {
-                return z;
-            }
-        }
+        public int Z => z;
 
-        public int Y
-        {
-            get
-            {
-                return -X - Z;
-            }
-        }
+        public int Y => -X - Z;
 
         public HexCoordinates(int x, int z)
         {
@@ -81,6 +63,13 @@ namespace LandscapeGenerator
         public string ToStringOnSeparateLines()
         {
             return X.ToString() + "\n" + Z.ToString();
+        }
+
+        public int DistanceTo (HexCoordinates other) {
+            return
+                ((x < other.x ? other.x - x : x - other.x) +
+                 (Y < other.Y ? other.Y - Y : Y - other.Y) +
+                 (z < other.z ? other.z - z : z - other.z)) / 2;
         }
     }
 }

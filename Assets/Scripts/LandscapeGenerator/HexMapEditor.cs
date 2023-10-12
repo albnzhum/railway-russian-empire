@@ -37,7 +37,6 @@ namespace LandscapeGenerator
         [SerializeField] Toggle waterToggle;
         [Space] [SerializeField] Slider urbanLevelSlider;
         [SerializeField] Toggle urbanToggle;
-        [Space] [SerializeField] Toggle labelsVisibility;
         [Space] [SerializeField] Toggle plantToggle;
         [SerializeField] Slider plantLevelSlider;
         [Space] [SerializeField] Toggle farmToggle;
@@ -45,6 +44,7 @@ namespace LandscapeGenerator
         [Space] [SerializeField] Toggle specialToggle;
         [SerializeField] Slider specialIndexSlider;
         [Space] [SerializeField] Toggle gridToggle;
+        [Space] [SerializeField] Toggle editModeToggle;
 
         #endregion
 
@@ -94,7 +94,9 @@ namespace LandscapeGenerator
                 if (editMode) {
                     EditCells(currentCell);
                 }
-                _previousCell = currentCell;
+                else {
+                    hexGrid.FindDistancesTo(currentCell);
+                }
             }
             else {
                 _previousCell = null;
@@ -215,9 +217,17 @@ namespace LandscapeGenerator
 
         #region Set Apply Methods
 
-        public void SetEditMode (bool toggle) {
-            editMode = toggle;
-            hexGrid.ShowUI(!toggle);
+        public void SetEditMode () {
+            if (editModeToggle.isOn)
+            {
+                editMode = true;
+                hexGrid.ShowUI(false);
+            }
+            else
+            {
+                editMode = false;
+                hexGrid.ShowUI(true);
+            }
         }
         public void SetApplyElevation()
         {
@@ -328,18 +338,6 @@ namespace LandscapeGenerator
         }
 
         #endregion
-
-        public void ShowUI()
-        {
-            if (labelsVisibility.isOn)
-            {
-                hexGrid.ShowUI(true);
-            }
-            else
-            {
-                hexGrid.ShowUI(false);
-            }
-        }
 
         public void ShowGrid ()
         {
