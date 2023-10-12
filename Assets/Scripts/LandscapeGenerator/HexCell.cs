@@ -31,21 +31,6 @@ namespace LandscapeGenerator
             }
         }
 
-        public Color Color
-        {
-            get => HexMetrics.colors[terrainTypeIndex];
-            /*set
-            {
-                if (_color == value)
-                {
-                    return;
-                }
-
-                _color = value;
-                Refresh();
-            }*/
-        }
-
         public int TerrainTypeIndex
         {
             get => terrainTypeIndex;

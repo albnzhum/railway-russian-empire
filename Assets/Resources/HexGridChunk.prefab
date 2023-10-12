@@ -100,6 +100,7 @@ MonoBehaviour:
   useColors: 0
   useUVCoordinates: 0
   useUV2Coordinates: 0
+  useTerrainTypes: 0
 --- !u!1 &1015383124176869621
 GameObject:
   m_ObjectHideFlags: 0
@@ -283,6 +284,7 @@ MonoBehaviour:
   useColors: 0
   useUVCoordinates: 1
   useUV2Coordinates: 0
+  useTerrainTypes: 0
 --- !u!1 &4271138460488626754
 GameObject:
   m_ObjectHideFlags: 0
@@ -443,6 +445,7 @@ MonoBehaviour:
   useColors: 0
   useUVCoordinates: 1
   useUV2Coordinates: 0
+  useTerrainTypes: 0
 --- !u!1 &5129897747853081074
 GameObject:
   m_ObjectHideFlags: 0
@@ -543,6 +546,7 @@ MonoBehaviour:
   useColors: 0
   useUVCoordinates: 1
   useUV2Coordinates: 1
+  useTerrainTypes: 0
 --- !u!1 &6158508592248369249
 GameObject:
   m_ObjectHideFlags: 0
@@ -643,6 +647,7 @@ MonoBehaviour:
   useColors: 0
   useUVCoordinates: 0
   useUV2Coordinates: 0
+  useTerrainTypes: 0
 --- !u!1 &6768624058538431079
 GameObject:
   m_ObjectHideFlags: 0
@@ -743,6 +748,7 @@ MonoBehaviour:
   useColors: 0
   useUVCoordinates: 1
   useUV2Coordinates: 0
+  useTerrainTypes: 0
 --- !u!1 &7606345623593087608
 GameObject:
   m_ObjectHideFlags: 0
@@ -843,6 +849,7 @@ MonoBehaviour:
   useColors: 1
   useUVCoordinates: 0
   useUV2Coordinates: 0
+  useTerrainTypes: 1
 --- !u!1 &7754543241476171133
 GameObject:
   m_ObjectHideFlags: 0
@@ -920,3 +927,4 @@ MonoBehaviour:
   walls: {fileID: 8126920766527162952}
   wallTower: {fileID: 2218200166149097026, guid: 657a71614127c4a49a7d53346f795ce7, type: 3}
   bridge: {fileID: 3302346790679891679, guid: 5cd790b95581d8c45bfa3fdb67096094, type: 3}
+  special: []

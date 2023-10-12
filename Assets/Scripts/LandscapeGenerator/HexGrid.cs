@@ -16,9 +16,7 @@ namespace LandscapeGenerator
 		public Texture2D noiseSource;
 
 		public int seed;
-
-		public Color[] colors;
-
+		
 		HexGridChunk[] chunks;
 		HexCell[] cells;
 
@@ -28,7 +26,6 @@ namespace LandscapeGenerator
 		{
 			HexMetrics.noiseSource = noiseSource;
 			HexMetrics.InitializeHashGrid(seed);
-			HexMetrics.colors = colors;
 			CreateMap(cellCountX, cellCountZ);
 		}
 
@@ -93,7 +90,6 @@ namespace LandscapeGenerator
 			{
 				HexMetrics.noiseSource = noiseSource;
 				HexMetrics.InitializeHashGrid(seed);
-				HexMetrics.colors = colors;
 			}
 		}
 
