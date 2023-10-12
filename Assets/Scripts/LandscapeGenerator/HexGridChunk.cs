@@ -21,7 +21,6 @@ namespace LandscapeGenerator
             gridCanvas = GetComponentInChildren<Canvas>();
 
             cells = new HexCell[HexMetrics.chunkSizeX * HexMetrics.chunkSizeZ];
-            ShowUI(false);
         }
 
         void LateUpdate()
@@ -339,9 +338,9 @@ namespace LandscapeGenerator
         }
 
         #endregion
-        
+
         #region [Triangulate roads]
-        
+
         void TriangulateRoad(
             Vector3 center, Vector3 mL, Vector3 mR,
             EdgeVertices e, bool hasRoadThroughCellEdge)
@@ -379,7 +378,7 @@ namespace LandscapeGenerator
             roads.AddQuadUV(0f, 1f, 0f, 0f);
             roads.AddQuadUV(1f, 0f, 0f, 0f);
         }
-        
+
         void TriangulateRoadAdjacentToRiver(
             HexDirection direction, HexCell cell, Vector3 center, EdgeVertices e)
         {
@@ -506,7 +505,7 @@ namespace LandscapeGenerator
                 TriangulateRoadEdge(roadCenter, mR, center);
             }
         }
-        
+
         Vector2 GetRoadInterpolators(HexDirection direction, HexCell cell)
         {
             Vector2 interpolators;
@@ -770,7 +769,7 @@ namespace LandscapeGenerator
             rivers.AddQuadUnperturbed(v1, v2, v3, v4);
             rivers.AddQuadUV(0f, 1f, 0.8f, 1f);
         }
-        
+
         void TriangulateRiverQuad(
             Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4,
             float y, float v, bool reversed)

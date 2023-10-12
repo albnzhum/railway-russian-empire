@@ -13,6 +13,7 @@ namespace LandscapeGenerator
     {
         public Color[] colors;
         public HexGrid hexGrid;
+        public Material terrainMaterial;
 
         int _activeElevation;
         int _activeWaterLevel;
@@ -25,6 +26,7 @@ namespace LandscapeGenerator
         bool applyUrbanLevel, applyFarmLevel, applyPlantLevel, applySpecialIndex;
 
         int activeTerrainTypeIndex;
+        bool editMode;
 
         #region UI Variables
 
@@ -42,6 +44,7 @@ namespace LandscapeGenerator
         [SerializeField] Slider farmLevelSlider;
         [Space] [SerializeField] Toggle specialToggle;
         [SerializeField] Slider specialIndexSlider;
+        [Space] [SerializeField] Toggle gridToggle;
 
         #endregion
 
@@ -67,6 +70,10 @@ namespace LandscapeGenerator
             }
         }
 
+        void Awake () {
+            terrainMaterial.DisableKeyword("GRID_ON");
+        }
+
         public void SetTerrainTypeIndex(int index)
         {
             activeTerrainTypeIndex = index;
@@ -74,26 +81,23 @@ namespace LandscapeGenerator
 
         void HandleInput()
         {
-            if (Camera.main != null)
-            {
-                Ray inputRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit;
-                if (Physics.Raycast(inputRay, out hit))
-                {
-                    HexCell currentCell = hexGrid.GetCell(hit.point);
-                    if (_previousCell && _previousCell != currentCell)
-                    {
-                        ValidateDrag(currentCell);
-                    }
-                    else
-                    {
-                        _isDrag = false;
-                    }
-
-                    EditCells(currentCell);
-                    _previousCell = currentCell;
-                    _isDrag = true;
+            Ray inputRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(inputRay, out hit)) {
+                HexCell currentCell = hexGrid.GetCell(hit.point);
+                if (_previousCell && _previousCell != currentCell) {
+                    ValidateDrag(currentCell);
                 }
+                else {
+                    _isDrag = false;
+                }
+                if (editMode) {
+                    EditCells(currentCell);
+                }
+                _previousCell = currentCell;
+            }
+            else {
+                _previousCell = null;
             }
         }
 
@@ -211,6 +215,10 @@ namespace LandscapeGenerator
 
         #region Set Apply Methods
 
+        public void SetEditMode (bool toggle) {
+            editMode = toggle;
+            hexGrid.ShowUI(!toggle);
+        }
         public void SetApplyElevation()
         {
             if (elevationToggle.isOn)
@@ -321,7 +329,6 @@ namespace LandscapeGenerator
 
         #endregion
 
-
         public void ShowUI()
         {
             if (labelsVisibility.isOn)
@@ -331,6 +338,16 @@ namespace LandscapeGenerator
             else
             {
                 hexGrid.ShowUI(false);
+            }
+        }
+
+        public void ShowGrid ()
+        {
+            if (gridToggle.isOn) {
+                terrainMaterial.EnableKeyword("GRID_ON");
+            }
+            else {
+                terrainMaterial.DisableKeyword("GRID_ON");
             }
         }
     }
