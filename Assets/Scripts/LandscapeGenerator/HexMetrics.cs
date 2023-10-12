@@ -6,27 +6,27 @@ namespace LandscapeGenerator
     {
         public static Color[] colors;
         
-        private const float OuterToInner = 0.866025404f;
-        public const float InnerToOuter = 1f / OuterToInner;
-        public const float OuterRadius = 10f;
-        public const float InnerRadius = OuterRadius * OuterToInner;
+        private const float outerToInner = 0.866025404f;
+        public const float innerToOuter = 1f / outerToInner;
+        public const float outerRadius = 10f;
+        public const float innerRadius = outerRadius * outerToInner;
 
-        private const float SolidFactor = 0.8f;
-        private const float BlendFactor = 1f-SolidFactor;
+        private const float solidFactor = 0.8f;
+        private const float blendFactor = 1f-solidFactor;
 
-        public const float ElevationStep = 3f;
+        public const float elevationStep = 3f;
 
-        private const int TerracesPerSlope = 2;
-        public const int TerraceSteps = TerracesPerSlope * 2 + 1;
-        private const float HorizontalTerraceStepSize = 1f / TerraceSteps;
-        private const float VerticalTerraceStepSize = 1f / (TerracesPerSlope + 1);
+        private const int terracesPerSlope = 2;
+        public const int terraceSteps = terracesPerSlope * 2 + 1;
+        private const float horizontalTerraceStepSize = 1f / terraceSteps;
+        private const float verticalTerraceStepSize = 1f / (terracesPerSlope + 1);
 
-        public static Texture2D NoiseSource;
-        private const float CellPerturbStrength = 4f;
-        private const float NoiseScale = 0.003f;
-        public const float ElevationPerturbStrength = 1.5f;
+        public static Texture2D noiseSource;
+        private const float cellPerturbStrength = 4f;
+        private const float noiseScale = 0.003f;
+        public const float elevationPerturbStrength = 1.5f;
 
-        public const int ChunkSizeX = 5, ChunkSizeZ = 5;
+        public const int chunkSizeX = 5, chunkSizeZ = 5;
 
         public const float StreamBedElevationOffset = -1.75f;
         public const float WaterElevationOffset = -0.5f;
@@ -37,7 +37,7 @@ namespace LandscapeGenerator
 
         public const float wallHeight = 4f;
         public const float wallThickness = 0.75f;
-        public const float wallElevationOffset = VerticalTerraceStepSize;
+        public const float wallElevationOffset = verticalTerraceStepSize;
         public const float wallTowerThreshold = 0.5f;
         public const float wallYOffset = -1f;
         
@@ -47,13 +47,13 @@ namespace LandscapeGenerator
 
         private static readonly Vector3[] Corners =
         {
-            new Vector3(0f, 0f, OuterRadius),
-            new Vector3(InnerRadius, 0f, 0.5f * OuterRadius),
-            new Vector3(InnerRadius, 0f, -0.5f * OuterRadius),
-            new Vector3(0f, 0f, -OuterRadius),
-            new Vector3(-InnerRadius, 0f, -0.5f * OuterRadius),
-            new Vector3(-InnerRadius, 0f, 0.5f * OuterRadius),
-            new Vector3(0f, 0f, OuterRadius)
+            new Vector3(0f, 0f, outerRadius),
+            new Vector3(innerRadius, 0f, 0.5f * outerRadius),
+            new Vector3(innerRadius, 0f, -0.5f * outerRadius),
+            new Vector3(0f, 0f, -outerRadius),
+            new Vector3(-innerRadius, 0f, -0.5f * outerRadius),
+            new Vector3(-innerRadius, 0f, 0.5f * outerRadius),
+            new Vector3(0f, 0f, outerRadius)
         };
         
         static float[][] featureThresholds = {
@@ -98,12 +98,12 @@ namespace LandscapeGenerator
 
         public static Vector3 GetFirstSolidCorner(HexDirection direction)
         {
-            return Corners[(int)direction] * SolidFactor;
+            return Corners[(int)direction] * solidFactor;
         }
 
         public static Vector3 GetSecondSolidCorner(HexDirection direction)
         {
-            return Corners[(int)direction + 1] * SolidFactor;
+            return Corners[(int)direction + 1] * solidFactor;
         }
 
         #endregion
@@ -133,22 +133,22 @@ namespace LandscapeGenerator
         
         public static Vector3 GetBridge (HexDirection direction) {
             return (Corners[(int)direction] + Corners[(int)direction + 1]) *
-                   BlendFactor;
+                   blendFactor;
         }
 
         public static Vector3 TerraceLerp(Vector3 a, Vector3 b, int step)
         {
-            float h = step * HexMetrics.HorizontalTerraceStepSize;
+            float h = step * HexMetrics.horizontalTerraceStepSize;
             a.x += (b.x - a.x) * h;
             a.z += (b.z - a.z) * h;
-            var v = ((step + 1) / 2) * HexMetrics.VerticalTerraceStepSize;
+            var v = ((step + 1) / 2) * HexMetrics.verticalTerraceStepSize;
             a.y += (b.y - a.y) * v;
             return a;
         }
 
         public static Color TerraceLerp(Color a, Color b, int step)
         {
-            float h = step * HexMetrics.HorizontalTerraceStepSize;
+            float h = step * HexMetrics.horizontalTerraceStepSize;
             return Color.Lerp(a, b, h);
         }
 
@@ -170,20 +170,20 @@ namespace LandscapeGenerator
 
         public static Vector4 SampleNoise(Vector3 position)
         {
-            return NoiseSource.GetPixelBilinear(
-                position.x * NoiseScale, position.z * NoiseScale);
+            return noiseSource.GetPixelBilinear(
+                position.x * noiseScale, position.z * noiseScale);
         }
         
         public static Vector3 GetSolidEdgeMiddle (HexDirection direction) {
             return
                 (Corners[(int)direction] + Corners[(int)direction + 1]) *
-                (0.5f * SolidFactor);
+                (0.5f * solidFactor);
         }
         
         public static Vector3 Perturb (Vector3 position) {
             Vector4 sample = SampleNoise(position);
-            position.x += (sample.x * 2f - 1f) * CellPerturbStrength;
-            position.z += (sample.z * 2f - 1f) * CellPerturbStrength;
+            position.x += (sample.x * 2f - 1f) * cellPerturbStrength;
+            position.z += (sample.z * 2f - 1f) * cellPerturbStrength;
             return position;
         }
 

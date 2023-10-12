@@ -102,16 +102,16 @@ namespace LandscapeGenerator
                 !nearCell.IsUnderwater && !farCell.IsUnderwater &&
                 nearCell.GetEdgeType(farCell) != HexEdgeType.Cliff)
             {
-                AddWallSegment(near.V1, far.V1, near.V2, far.V2);
+                AddWallSegment(near.v1, far.v1, near.v2, far.v2);
                 if (hasRiver || hasRoad) {
-                    AddWallCap(near.V2, far.V2);
-                    AddWallCap(far.V4, near.V4);
+                    AddWallCap(near.v2, far.v2);
+                    AddWallCap(far.v4, near.v4);
                 }
                 else {
-                    AddWallSegment(near.V2, far.V2, near.V3, far.V3);
-                    AddWallSegment(near.V3, far.V3, near.V4, far.V4);
+                    AddWallSegment(near.v2, far.v2, near.v3, far.v3);
+                    AddWallSegment(near.v3, far.v3, near.v4, far.v4);
                 }
-                AddWallSegment(near.V4, far.V4, near.V5, far.V5);
+                AddWallSegment(near.v4, far.v4, near.v5, far.v5);
             }
         }
         

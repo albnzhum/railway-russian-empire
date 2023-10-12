@@ -107,8 +107,8 @@ namespace LandscapeGenerator
         private void ValidateDrag(HexCell currentCell)
         {
             for (
-                _dragDirection = HexDirection.Ne;
-                _dragDirection <= HexDirection.Nw;
+                _dragDirection = HexDirection.NE;
+                _dragDirection <= HexDirection.NW;
                 _dragDirection++)
             {
                 if (_previousCell.GetNeighbor(_dragDirection) == currentCell)

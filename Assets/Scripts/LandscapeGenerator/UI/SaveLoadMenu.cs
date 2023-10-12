@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,6 +10,10 @@ namespace LandscapeGenerator
         public Text menuLabel, actionButtonLabel;
         public InputField nameInput;
         public HexGrid hexGrid;
+        
+        public RectTransform listContent;
+	
+        public SaveLoadItem itemPrefab;
 
         public void Open () {
             gameObject.SetActive(true);
@@ -19,7 +24,36 @@ namespace LandscapeGenerator
             gameObject.SetActive(false);
             HexMapCamera.Locked = false;
         }
+
+        void FillList()
+        {
+            for (int i = 0; i < listContent.childCount; i++) {
+                Destroy(listContent.GetChild(i).gameObject);
+            }
+            string[] paths =
+                Directory.GetFiles(Application.persistentDataPath, "*.map");
+            Array.Sort(paths);
+            for (int i = 0; i < paths.Length; i++)
+            {
+                SaveLoadItem item = Instantiate(itemPrefab);
+                item.menu = this;
+                item.MapName = Path.GetFileNameWithoutExtension(paths[i]);
+                item.transform.SetParent(listContent, false);
+            }
+        }
         
+        public void Delete () {
+            string path = GetSelectedPath();
+            if (path == null) {
+                return;
+            }
+            if (File.Exists(path)) {
+                File.Delete(path);
+            }
+            nameInput.text = "";
+            FillList();
+        }
+
         public void Action () {
             string path = GetSelectedPath();
             if (path == null) {
@@ -50,6 +84,7 @@ namespace LandscapeGenerator
                 menuLabel.text = "Load Map";
                 actionButtonLabel.text = "Load";
             }
+            FillList();
             gameObject.SetActive(true);
             HexMapCamera.Locked = true;
         }

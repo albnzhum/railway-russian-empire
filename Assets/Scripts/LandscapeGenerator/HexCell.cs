@@ -24,6 +24,12 @@ namespace LandscapeGenerator
         [SerializeField] private bool[] roads;
 
         #region Public Properties
+        
+        public Vector3 Position {
+            get {
+                return transform.localPosition;
+            }
+        }
 
         public Color Color
         {
@@ -87,15 +93,15 @@ namespace LandscapeGenerator
 
         public bool HasRiver => HasIncomingRiver || HasOutgoingRiver;
         public bool HasRiverBeginOrEnd => HasIncomingRiver != HasOutgoingRiver;
-        public float StreamDebY => (elevation + HexMetrics.StreamBedElevationOffset) 
-                                   * HexMetrics.ElevationStep;
+        public float StreamBedY => (elevation + HexMetrics.StreamBedElevationOffset) 
+                                   * HexMetrics.elevationStep;
 
         public float RiverSurfaceY => (elevation + HexMetrics.WaterElevationOffset) 
-                                      * HexMetrics.ElevationStep;
+                                      * HexMetrics.elevationStep;
 
         public float WaterSurfaceY =>
             (waterLevel + HexMetrics.WaterElevationOffset) *
-            HexMetrics.ElevationStep;
+            HexMetrics.elevationStep;
 
         public bool HasRoads
         {
@@ -354,18 +360,16 @@ namespace LandscapeGenerator
         
         void RefreshPosition () {
             Vector3 position = transform.localPosition;
-            position.y = elevation * HexMetrics.ElevationStep;
+            position.y = elevation * HexMetrics.elevationStep;
             position.y +=
                 (HexMetrics.SampleNoise(position).y * 2f - 1f) *
-                HexMetrics.ElevationPerturbStrength;
+                HexMetrics.elevationPerturbStrength;
             transform.localPosition = position;
 
             Vector3 uiPosition = uiRect.localPosition;
             uiPosition.z = -position.y;
             uiRect.localPosition = uiPosition;
         }
-
-        public Vector3 Position => transform.localPosition;
 
         public HexCell GetNeighbor(HexDirection direction)
         {

@@ -29,9 +29,7 @@ namespace LandscapeGenerator
         public void CreateLargeMap () {
             CreateMap(80, 60);
         }
-        
-        
-        
+
         void CreateMap (int x, int z) {
             hexGrid.CreateMap(x, z);
             HexMapCamera.ValidatePosition();
