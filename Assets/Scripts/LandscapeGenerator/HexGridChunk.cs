@@ -5,7 +5,6 @@ namespace LandscapeGenerator
 {
     public class HexGridChunk : MonoBehaviour
     {
-
         public HexMesh terrain, rivers, roads, water, waterShore, estuaries;
 
         public HexFeatureManager features;
@@ -140,6 +139,8 @@ namespace LandscapeGenerator
             }
         }
 
+        #region Triangulate water
+
         void TriangulateWater(
             HexDirection direction, HexCell cell, Vector3 center)
         {
@@ -238,101 +239,34 @@ namespace LandscapeGenerator
             }
         }
 
-        void TriangulateEstuary(
-            EdgeVertices e1, EdgeVertices e2, bool incomingRiver)
+        #endregion
+
+        #region Triangulate rivers and waterfall
+
+        void TriangulateRiverQuad(
+            Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4,
+            float y, float v, bool reversed
+        )
         {
-            waterShore.AddTriangle(e2.v1, e1.v2, e1.v1);
-            waterShore.AddTriangle(e2.v5, e1.v5, e1.v4);
-            waterShore.AddTriangleUV(
-                new Vector2(0f, 1f), new Vector2(0f, 0f), new Vector2(0f, 0f)
-            );
-            waterShore.AddTriangleUV(
-                new Vector2(0f, 1f), new Vector2(0f, 0f), new Vector2(0f, 0f)
-            );
+            TriangulateRiverQuad(v1, v2, v3, v4, y, y, v, reversed);
+        }
 
-            estuaries.AddQuad(e2.v1, e1.v2, e2.v2, e1.v3);
-            estuaries.AddTriangle(e1.v3, e2.v2, e2.v4);
-            estuaries.AddQuad(e1.v3, e1.v4, e2.v4, e2.v5);
-
-            estuaries.AddQuadUV(
-                new Vector2(0f, 1f), new Vector2(0f, 0f),
-                new Vector2(1f, 1f), new Vector2(0f, 0f)
-            );
-            estuaries.AddTriangleUV(
-                new Vector2(0f, 0f), new Vector2(1f, 1f), new Vector2(1f, 1f)
-            );
-            estuaries.AddQuadUV(
-                new Vector2(0f, 0f), new Vector2(0f, 0f),
-                new Vector2(1f, 1f), new Vector2(0f, 1f)
-            );
-
-            if (incomingRiver)
+        void TriangulateRiverQuad(
+            Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4,
+            float y1, float y2, float v, bool reversed
+        )
+        {
+            v1.y = v2.y = y1;
+            v3.y = v4.y = y2;
+            rivers.AddQuad(v1, v2, v3, v4);
+            if (reversed)
             {
-                estuaries.AddQuadUV2(
-                    new Vector2(1.5f, 1f), new Vector2(0.7f, 1.15f),
-                    new Vector2(1f, 0.8f), new Vector2(0.5f, 1.1f)
-                );
-                estuaries.AddTriangleUV2(
-                    new Vector2(0.5f, 1.1f),
-                    new Vector2(1f, 0.8f),
-                    new Vector2(0f, 0.8f)
-                );
-                estuaries.AddQuadUV2(
-                    new Vector2(0.5f, 1.1f), new Vector2(0.3f, 1.15f),
-                    new Vector2(0f, 0.8f), new Vector2(-0.5f, 1f)
-                );
+                rivers.AddQuadUV(1f, 0f, 0.8f - v, 0.6f - v);
             }
             else
             {
-                estuaries.AddQuadUV2(
-                    new Vector2(-0.5f, -0.2f), new Vector2(0.3f, -0.35f),
-                    new Vector2(0f, 0f), new Vector2(0.5f, -0.3f)
-                );
-                estuaries.AddTriangleUV2(
-                    new Vector2(0.5f, -0.3f),
-                    new Vector2(0f, 0f),
-                    new Vector2(1f, 0f)
-                );
-                estuaries.AddQuadUV2(
-                    new Vector2(0.5f, -0.3f), new Vector2(0.7f, -0.35f),
-                    new Vector2(1f, 0f), new Vector2(1.5f, -0.2f)
-                );
+                rivers.AddQuadUV(0f, 1f, v, v + 0.2f);
             }
-        }
-
-        void TriangulateWithoutRiver(
-            HexDirection direction, HexCell cell, Vector3 center, EdgeVertices e)
-        {
-            TriangulateEdgeFan(center, e, cell.TerrainTypeIndex);
-
-            if (cell.HasRoads)
-            {
-                Vector2 interpolators = GetRoadInterpolators(direction, cell);
-                TriangulateRoad(
-                    center,
-                    Vector3.Lerp(center, e.v1, interpolators.x),
-                    Vector3.Lerp(center, e.v5, interpolators.y),
-                    e, cell.HasRoadThroughEdge(direction)
-                );
-            }
-        }
-
-        Vector2 GetRoadInterpolators(HexDirection direction, HexCell cell)
-        {
-            Vector2 interpolators;
-            if (cell.HasRoadThroughEdge(direction))
-            {
-                interpolators.x = interpolators.y = 0.5f;
-            }
-            else
-            {
-                interpolators.x =
-                    cell.HasRoadThroughEdge(direction.Previous()) ? 0.5f : 0.25f;
-                interpolators.y =
-                    cell.HasRoadThroughEdge(direction.Next()) ? 0.5f : 0.25f;
-            }
-
-            return interpolators;
         }
 
         void TriangulateAdjacentToRiver(
@@ -628,6 +562,170 @@ namespace LandscapeGenerator
             }
         }
 
+        void TriangulateEstuary(
+            EdgeVertices e1, EdgeVertices e2, bool incomingRiver)
+        {
+            waterShore.AddTriangle(e2.v1, e1.v2, e1.v1);
+            waterShore.AddTriangle(e2.v5, e1.v5, e1.v4);
+            waterShore.AddTriangleUV(
+                new Vector2(0f, 1f), new Vector2(0f, 0f), new Vector2(0f, 0f)
+            );
+            waterShore.AddTriangleUV(
+                new Vector2(0f, 1f), new Vector2(0f, 0f), new Vector2(0f, 0f)
+            );
+
+            estuaries.AddQuad(e2.v1, e1.v2, e2.v2, e1.v3);
+            estuaries.AddTriangle(e1.v3, e2.v2, e2.v4);
+            estuaries.AddQuad(e1.v3, e1.v4, e2.v4, e2.v5);
+
+            estuaries.AddQuadUV(
+                new Vector2(0f, 1f), new Vector2(0f, 0f),
+                new Vector2(1f, 1f), new Vector2(0f, 0f)
+            );
+            estuaries.AddTriangleUV(
+                new Vector2(0f, 0f), new Vector2(1f, 1f), new Vector2(1f, 1f)
+            );
+            estuaries.AddQuadUV(
+                new Vector2(0f, 0f), new Vector2(0f, 0f),
+                new Vector2(1f, 1f), new Vector2(0f, 1f)
+            );
+
+            if (incomingRiver)
+            {
+                estuaries.AddQuadUV2(
+                    new Vector2(1.5f, 1f), new Vector2(0.7f, 1.15f),
+                    new Vector2(1f, 0.8f), new Vector2(0.5f, 1.1f)
+                );
+                estuaries.AddTriangleUV2(
+                    new Vector2(0.5f, 1.1f),
+                    new Vector2(1f, 0.8f),
+                    new Vector2(0f, 0.8f)
+                );
+                estuaries.AddQuadUV2(
+                    new Vector2(0.5f, 1.1f), new Vector2(0.3f, 1.15f),
+                    new Vector2(0f, 0.8f), new Vector2(-0.5f, 1f)
+                );
+            }
+            else
+            {
+                estuaries.AddQuadUV2(
+                    new Vector2(-0.5f, -0.2f), new Vector2(0.3f, -0.35f),
+                    new Vector2(0f, 0f), new Vector2(0.5f, -0.3f)
+                );
+                estuaries.AddTriangleUV2(
+                    new Vector2(0.5f, -0.3f),
+                    new Vector2(0f, 0f),
+                    new Vector2(1f, 0f)
+                );
+                estuaries.AddQuadUV2(
+                    new Vector2(0.5f, -0.3f), new Vector2(0.7f, -0.35f),
+                    new Vector2(1f, 0f), new Vector2(1.5f, -0.2f)
+                );
+            }
+        }
+
+        void TriangulateWithoutRiver(
+            HexDirection direction, HexCell cell, Vector3 center, EdgeVertices e)
+        {
+            TriangulateEdgeFan(center, e, cell.TerrainTypeIndex);
+
+            if (cell.HasRoads)
+            {
+                Vector2 interpolators = GetRoadInterpolators(direction, cell);
+                TriangulateRoad(
+                    center,
+                    Vector3.Lerp(center, e.v1, interpolators.x),
+                    Vector3.Lerp(center, e.v5, interpolators.y),
+                    e, cell.HasRoadThroughEdge(direction)
+                );
+            }
+        }
+
+        void TriangulateWaterfallInWater(
+            Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4,
+            float y1, float y2, float waterY)
+        {
+            v1.y = v2.y = y1;
+            v3.y = v4.y = y2;
+            v1 = HexMetrics.Perturb(v1);
+            v2 = HexMetrics.Perturb(v2);
+            v3 = HexMetrics.Perturb(v3);
+            v4 = HexMetrics.Perturb(v4);
+            float t = (waterY - y2) / (y1 - y2);
+            v3 = Vector3.Lerp(v3, v1, t);
+            v4 = Vector3.Lerp(v4, v2, t);
+            rivers.AddQuadUnperturbed(v1, v2, v3, v4);
+            rivers.AddQuadUV(0f, 1f, 0.8f, 1f);
+        }
+
+
+        #endregion
+
+        #region Triangulate roads
+
+        void TriangulateRoad(
+            Vector3 center, Vector3 mL, Vector3 mR,
+            EdgeVertices e, bool hasRoadThroughCellEdge
+        )
+        {
+            if (hasRoadThroughCellEdge)
+            {
+                Vector3 mC = Vector3.Lerp(mL, mR, 0.5f);
+                TriangulateRoadSegment(mL, mC, mR, e.v2, e.v3, e.v4);
+                roads.AddTriangle(center, mL, mC);
+                roads.AddTriangle(center, mC, mR);
+                roads.AddTriangleUV(
+                    new Vector2(1f, 0f), new Vector2(0f, 0f), new Vector2(1f, 0f)
+                );
+                roads.AddTriangleUV(
+                    new Vector2(1f, 0f), new Vector2(1f, 0f), new Vector2(0f, 0f)
+                );
+            }
+            else
+            {
+                TriangulateRoadEdge(center, mL, mR);
+            }
+        }
+
+        void TriangulateRoadEdge(Vector3 center, Vector3 mL, Vector3 mR)
+        {
+            roads.AddTriangle(center, mL, mR);
+            roads.AddTriangleUV(
+                new Vector2(1f, 0f), new Vector2(0f, 0f), new Vector2(0f, 0f)
+            );
+        }
+
+        void TriangulateRoadSegment(
+            Vector3 v1, Vector3 v2, Vector3 v3,
+            Vector3 v4, Vector3 v5, Vector3 v6
+        )
+        {
+            roads.AddQuad(v1, v2, v4, v5);
+            roads.AddQuad(v2, v3, v5, v6);
+            roads.AddQuadUV(0f, 1f, 0f, 0f);
+            roads.AddQuadUV(1f, 0f, 0f, 0f);
+        }
+
+        #endregion
+
+        Vector2 GetRoadInterpolators(HexDirection direction, HexCell cell)
+        {
+            Vector2 interpolators;
+            if (cell.HasRoadThroughEdge(direction))
+            {
+                interpolators.x = interpolators.y = 0.5f;
+            }
+            else
+            {
+                interpolators.x =
+                    cell.HasRoadThroughEdge(direction.Previous()) ? 0.5f : 0.25f;
+                interpolators.y =
+                    cell.HasRoadThroughEdge(direction.Next()) ? 0.5f : 0.25f;
+            }
+
+            return interpolators;
+        }
+
         void TriangulateConnection(
             HexDirection direction, HexCell cell, EdgeVertices e1)
         {
@@ -731,23 +829,6 @@ namespace LandscapeGenerator
                     );
                 }
             }
-        }
-
-        void TriangulateWaterfallInWater(
-            Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4,
-            float y1, float y2, float waterY)
-        {
-            v1.y = v2.y = y1;
-            v3.y = v4.y = y2;
-            v1 = HexMetrics.Perturb(v1);
-            v2 = HexMetrics.Perturb(v2);
-            v3 = HexMetrics.Perturb(v3);
-            v4 = HexMetrics.Perturb(v4);
-            float t = (waterY - y2) / (y1 - y2);
-            v3 = Vector3.Lerp(v3, v1, t);
-            v4 = Vector3.Lerp(v4, v2, t);
-            rivers.AddQuadUnperturbed(v1, v2, v3, v4);
-            rivers.AddQuadUV(0f, 1f, 0.8f, 1f);
         }
 
         void TriangulateCorner(
@@ -1046,75 +1127,6 @@ namespace LandscapeGenerator
             {
                 TriangulateRoadSegment(e1.v2, e1.v3, e1.v4, e2.v2, e2.v3, e2.v4);
             }
-        }
-
-        void TriangulateRiverQuad(
-            Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4,
-            float y, float v, bool reversed
-        )
-        {
-            TriangulateRiverQuad(v1, v2, v3, v4, y, y, v, reversed);
-        }
-
-        void TriangulateRiverQuad(
-            Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4,
-            float y1, float y2, float v, bool reversed
-        )
-        {
-            v1.y = v2.y = y1;
-            v3.y = v4.y = y2;
-            rivers.AddQuad(v1, v2, v3, v4);
-            if (reversed)
-            {
-                rivers.AddQuadUV(1f, 0f, 0.8f - v, 0.6f - v);
-            }
-            else
-            {
-                rivers.AddQuadUV(0f, 1f, v, v + 0.2f);
-            }
-        }
-
-        void TriangulateRoad(
-            Vector3 center, Vector3 mL, Vector3 mR,
-            EdgeVertices e, bool hasRoadThroughCellEdge
-        )
-        {
-            if (hasRoadThroughCellEdge)
-            {
-                Vector3 mC = Vector3.Lerp(mL, mR, 0.5f);
-                TriangulateRoadSegment(mL, mC, mR, e.v2, e.v3, e.v4);
-                roads.AddTriangle(center, mL, mC);
-                roads.AddTriangle(center, mC, mR);
-                roads.AddTriangleUV(
-                    new Vector2(1f, 0f), new Vector2(0f, 0f), new Vector2(1f, 0f)
-                );
-                roads.AddTriangleUV(
-                    new Vector2(1f, 0f), new Vector2(1f, 0f), new Vector2(0f, 0f)
-                );
-            }
-            else
-            {
-                TriangulateRoadEdge(center, mL, mR);
-            }
-        }
-
-        void TriangulateRoadEdge(Vector3 center, Vector3 mL, Vector3 mR)
-        {
-            roads.AddTriangle(center, mL, mR);
-            roads.AddTriangleUV(
-                new Vector2(1f, 0f), new Vector2(0f, 0f), new Vector2(0f, 0f)
-            );
-        }
-
-        void TriangulateRoadSegment(
-            Vector3 v1, Vector3 v2, Vector3 v3,
-            Vector3 v4, Vector3 v5, Vector3 v6
-        )
-        {
-            roads.AddQuad(v1, v2, v4, v5);
-            roads.AddQuad(v2, v3, v5, v6);
-            roads.AddQuadUV(0f, 1f, 0f, 0f);
-            roads.AddQuadUV(1f, 0f, 0f, 0f);
         }
     }
 }

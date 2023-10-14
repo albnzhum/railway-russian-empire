@@ -221,6 +221,8 @@ namespace LandscapeGenerator
 
         public int SearchPhase { get; set; }
 
+        public HexUnit Unit { get; set; }
+
         #endregion
 
         public HexCell GetNeighbor(HexDirection direction)
@@ -417,12 +419,20 @@ namespace LandscapeGenerator
                         neighbor.chunk.Refresh();
                     }
                 }
+                if (Unit)
+                {
+                    Unit.ValidateLocation();
+                }
             }
         }
 
         void RefreshSelfOnly()
         {
             chunk.Refresh();
+            if (Unit)
+            {
+                Unit.ValidateLocation();
+            }
         }
 
         public void Save(BinaryWriter writer)

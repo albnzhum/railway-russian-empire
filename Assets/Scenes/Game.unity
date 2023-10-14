@@ -256,6 +256,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5201697}
   m_CullTransparentMesh: 1
+--- !u!1 &27165439
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 27165440}
+  - component: {fileID: 27165441}
+  m_Layer: 0
+  m_Name: GameUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &27165440
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 27165439}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1218682051}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &27165441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 27165439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffbd9f57770fabe48be5e24a13a18656, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grid: {fileID: 1601569355}
+  editModeToggle: {fileID: 1173481814}
 --- !u!1 &55498284
 GameObject:
   m_ObjectHideFlags: 0
@@ -8955,6 +9001,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 27165441}
+        m_TargetAssemblyTypeName: LandscapeGenerator.HexGameUi, Assembly-CSharp
+        m_MethodName: SetEditMode
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   m_IsOn: 1
 --- !u!1 &1182797911
 GameObject:
@@ -9330,6 +9388,7 @@ Transform:
   - {fileID: 1935815948}
   - {fileID: 735026262}
   - {fileID: 2071786147}
+  - {fileID: 27165440}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1222686767
@@ -11899,6 +11958,7 @@ MonoBehaviour:
   chunkPrefab: {fileID: 8333785696989814075, guid: 9f93132ec3de7584098d8376e2154e07, type: 3}
   noiseSource: {fileID: 2800000, guid: 87cb8b0c4d8ee64408d70c612f8d22b9, type: 3}
   seed: 1234
+  hexUnit: {fileID: 4846377640033662481, guid: 8f3f2c459d6752b41bc908a3e147ffaf, type: 3}
 --- !u!4 &1601569356
 Transform:
   m_ObjectHideFlags: 0

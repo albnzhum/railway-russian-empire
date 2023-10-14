@@ -97,6 +97,8 @@ namespace LandscapeGenerator
             }
         }
 
+        #region Add triangle
+
         public void AddTriangle(Vector3 v1, Vector3 v2, Vector3 v3)
         {
             int vertexIndex = vertices.Count;
@@ -153,6 +155,10 @@ namespace LandscapeGenerator
             terrainTypes.Add(types);
             terrainTypes.Add(types);
         }
+
+        #endregion
+
+        #region Add quad
 
         public void AddQuad(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4)
         {
@@ -249,5 +255,7 @@ namespace LandscapeGenerator
             terrainTypes.Add(types);
             terrainTypes.Add(types);
         }
+
+        #endregion
     }
 }

@@ -26,9 +26,6 @@ namespace LandscapeGenerator
         bool applyUrbanLevel, applyFarmLevel, applyPlantLevel, applySpecialIndex;
 
         int activeTerrainTypeIndex;
-        bool editMode;
-
-        HexCell previousCell, searchFromCell, searchToCell;
 
         #region UI Variables
 
@@ -62,17 +59,34 @@ namespace LandscapeGenerator
 
         void Update()
         {
-            if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
+            if (!EventSystem.current.IsPointerOverGameObject())
             {
-                HandleInput();
+                if (Input.GetMouseButton(0))
+                {
+                    HandleInput();
+                    return;
+                }
+
+                if (Input.GetKeyDown(KeyCode.U))
+                {
+                    if (Input.GetKey(KeyCode.LeftShift))
+                    {
+                        DestroyUnit();
+                    }
+                    else
+                    {
+                        CreateUnit();
+                    }
+
+                    return;
+                }
             }
-            else
-            {
-                _previousCell = null;
-            }
+
+            _previousCell = null;
         }
 
-        void Awake () {
+        void Awake()
+        {
             terrainMaterial.DisableKeyword("GRID_ON");
         }
 
@@ -83,44 +97,49 @@ namespace LandscapeGenerator
 
         void HandleInput()
         {
-            Ray inputRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(inputRay, out hit)) {
-                HexCell currentCell = hexGrid.GetCell(hit.point);
-                if (_previousCell && _previousCell != currentCell) {
+            HexCell currentCell = GetCellUnderCursor();
+            if (currentCell)
+            {
+                if (_previousCell && _previousCell != currentCell)
+                {
                     ValidateDrag(currentCell);
                 }
-                else {
+                else
+                {
                     _isDrag = false;
                 }
-                if (editMode) {
-                    EditCells(currentCell);
-                }
-                else if (
-                    Input.GetKey(KeyCode.LeftShift)  && searchToCell != currentCell
-                ) {
-                    if (searchFromCell != currentCell) {
-                        if (searchFromCell) {
-                            searchFromCell.DisableHighlight();
-                        }
-                        searchFromCell = currentCell;
-                        searchFromCell.EnableHighlight(Color.blue);
-                        if (searchToCell) {
-                            hexGrid.FindPath(searchFromCell, searchToCell, 24);
-                        }
-                    }
-                }
-                else if (searchFromCell && searchFromCell != currentCell) {
-                    if (searchToCell != currentCell) {
-                        searchToCell = currentCell;
-                        hexGrid.FindPath(searchFromCell, searchToCell, 24);
-                    }
-                }
+
+                EditCells(currentCell);
+
                 _previousCell = currentCell;
             }
-            else {
+            else
+            {
                 _previousCell = null;
             }
+        }
+
+        void CreateUnit()
+        {
+            HexCell cell = GetCellUnderCursor();
+            if (cell && !cell.Unit)
+            {
+                hexGrid.AddUnit(Instantiate(HexUnit.unitPrefab), cell, Random.Range(0f, 360f));
+            }
+        }
+
+        void DestroyUnit()
+        {
+            HexCell cell = GetCellUnderCursor();
+            if (cell && cell.Unit)
+            {
+                hexGrid.RemoveUnit(cell.Unit);
+            }
+        }
+
+        HexCell GetCellUnderCursor()
+        {
+            return hexGrid.GetCell(Camera.main.ScreenPointToRay(Input.mousePosition));
         }
 
         void ValidateDrag(HexCell currentCell)
@@ -237,70 +256,39 @@ namespace LandscapeGenerator
 
         #region Set Apply Methods
 
-        public void SetEditMode () {
-            if (editModeToggle.isOn)
-            {
-                editMode = true;
-                hexGrid.ShowUI(!true);
-            }
-            else
-            {
-                editMode = false;
-                hexGrid.ShowUI(!false);
-            }
+        public void SetEditMode()
+        {
+            enabled = editModeToggle.isOn ? true : false;
         }
+
         public void SetApplyElevation()
         {
-            if (elevationToggle.isOn)
-            {
-                _applyElevation = true;
-            }
-            else
-            {
-                _applyElevation = false;
-            }
+            _applyElevation = elevationToggle.isOn ? true : false;
         }
 
         public void SetApplyWaterLevel()
         {
-            if (waterToggle.isOn)
-            {
-                _applyWaterLevel = true;
-            }
-            else
-            {
-                _applyWaterLevel = false;
-            }
+            _applyWaterLevel = waterToggle.isOn ? true : false;
         }
 
         public void SetApplyUrbanLevel()
         {
-            if (urbanToggle.isOn)
-            {
-                applyUrbanLevel = true;
-            }
-            else
-            {
-                applyUrbanLevel = false;
-            }
+            applyUrbanLevel = urbanToggle.isOn ? true : false;
         }
 
         public void SetApplyFarmLevel()
         {
-            if (farmToggle.isOn) applyFarmLevel = true;
-            else applyFarmLevel = false;
+            applyFarmLevel = farmToggle.isOn ? true : false;
         }
 
         public void SetApplyPlantLevel()
         {
-            if (plantToggle.isOn) applyPlantLevel = true;
-            else applyPlantLevel = false;
+            applyPlantLevel = plantToggle.isOn ? true : false;
         }
 
         public void SetApplySpecialIndex()
         {
-            if (specialToggle.isOn) applySpecialIndex = true;
-            else applySpecialIndex = false;
+            applySpecialIndex = specialToggle.isOn ? true : false;
         }
 
         #endregion
@@ -359,12 +347,14 @@ namespace LandscapeGenerator
 
         #endregion
 
-        public void ShowGrid ()
+        public void ShowGrid()
         {
-            if (gridToggle.isOn) {
+            if (gridToggle.isOn)
+            {
                 terrainMaterial.EnableKeyword("GRID_ON");
             }
-            else {
+            else
+            {
                 terrainMaterial.DisableKeyword("GRID_ON");
             }
         }

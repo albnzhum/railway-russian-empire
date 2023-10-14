@@ -2,6 +2,9 @@ using System.Collections.Generic;
 
 namespace LandscapeGenerator
 {
+    /// <summary>
+    /// Priority queue implementation
+    /// </summary>
     public class HexCellPriorityQueue
     {
         List<HexCell> list = new List<HexCell>();

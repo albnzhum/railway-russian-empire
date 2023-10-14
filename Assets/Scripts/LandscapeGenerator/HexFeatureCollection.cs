@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace LandscapeGenerator
 {
+    /// <summary>
+    /// Store a collection of prefabs used in a hex grid
+    /// </summary>
     [System.Serializable]
     public struct HexFeatureCollection
     {

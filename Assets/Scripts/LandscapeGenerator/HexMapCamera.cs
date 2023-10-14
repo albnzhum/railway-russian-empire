@@ -25,14 +25,14 @@ namespace LandscapeGenerator
             set => instance.enabled = !value;
         }
 
-        private void Awake()
+        void Awake()
         {
             instance = this;
             _swivel = transform.GetChild(0);
             _stick = _swivel.GetChild(0);
         }
 
-        private void Update()
+        void Update()
         {
             float zoomDelta = Input.GetAxis("Mouse ScrollWheel");
             if (zoomDelta != 0f)

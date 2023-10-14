@@ -3,6 +3,9 @@ using UnityEngine.Serialization;
 
 namespace LandscapeGenerator
 {
+    /// <summary>
+    /// Class for managing various features
+    /// </summary>
     public class HexFeatureManager : MonoBehaviour
     {
         public HexFeatureCollection[] urbanCollections, farmCollections, plantCollections;

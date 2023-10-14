@@ -127,29 +127,24 @@ namespace LandscapeGenerator
                 new BinaryWriter(File.Open(path, FileMode.Create))
             )
             {
-                writer.Write(1);
+                writer.Write(2);
                 hexGrid.Save(writer);
             }
         }
 
         public void Load(string path)
         {
-            if (!File.Exists(path))
-            {
+            if (!File.Exists(path)) {
                 Debug.LogError("File does not exist " + path);
                 return;
             }
-
-            using (BinaryReader reader = new BinaryReader(File.OpenRead(path)))
-            {
+            using (BinaryReader reader = new BinaryReader(File.OpenRead(path))) {
                 int header = reader.ReadInt32();
-                if (header <= 1)
-                {
+                if (header <= 2) {
                     hexGrid.Load(reader, header);
                     HexMapCamera.ValidatePosition();
                 }
-                else
-                {
+                else {
                     Debug.LogWarning("Unknown map format " + header);
                 }
             }
