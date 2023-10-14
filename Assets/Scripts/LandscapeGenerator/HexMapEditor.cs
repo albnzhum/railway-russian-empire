@@ -110,6 +110,7 @@ namespace LandscapeGenerator
                     searchToCell = currentCell;
                     hexGrid.FindPath(searchFromCell, searchToCell);
                 }
+                _previousCell = currentCell;
             }
             else {
                 _previousCell = null;
@@ -234,12 +235,12 @@ namespace LandscapeGenerator
             if (editModeToggle.isOn)
             {
                 editMode = true;
-                hexGrid.ShowUI(false);
+                hexGrid.ShowUI(!true);
             }
             else
             {
                 editMode = false;
-                hexGrid.ShowUI(true);
+                hexGrid.ShowUI(!false);
             }
         }
         public void SetApplyElevation()

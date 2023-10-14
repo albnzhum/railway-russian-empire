@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
+using UnityEngine.UI;
 
 namespace LandscapeGenerator
 {
@@ -206,13 +207,11 @@ namespace LandscapeGenerator
         public int Distance
         {
             get => distance;
-            set
-            {
+            set {
                 distance = value;
                 UpdateDistanceLabel();
             }
         }
-
         public HexCell PathFrom { get; set; }
 
         public int SearchHeuristic { get; set; }

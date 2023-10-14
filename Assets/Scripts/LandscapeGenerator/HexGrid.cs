@@ -43,6 +43,7 @@ namespace LandscapeGenerator
             else {
                 searchFrontier.Clear();
             }
+
             for (int i = 0; i < cells.Length; i++) {
                 cells[i].Distance = int.MaxValue;
                 cells[i].DisableHighlight();
@@ -56,6 +57,7 @@ namespace LandscapeGenerator
             while (searchFrontier.Count > 0) {
                 yield return delay;
                 HexCell current = searchFrontier.Dequeue();
+
                 if (current == toCell) {
                     current = current.PathFrom;
                     while (current != fromCell) {
@@ -64,6 +66,7 @@ namespace LandscapeGenerator
                     }
                     break;
                 }
+
                 for (HexDirection d = HexDirection.NE; d <= HexDirection.NW; d++) {
                     HexCell neighbor = current.GetNeighbor(d);
                     if (neighbor == null) {
