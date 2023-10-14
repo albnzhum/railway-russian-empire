@@ -45,6 +45,7 @@ namespace LandscapeGenerator
         [Space] [SerializeField] Toggle specialToggle;
         [SerializeField] Slider specialIndexSlider;
         [Space] [SerializeField] Toggle gridToggle;
+        [Space] [SerializeField] Toggle editModeToggle;
 
         #endregion
 
@@ -93,6 +94,9 @@ namespace LandscapeGenerator
                 }
                 if (editMode) {
                     EditCells(currentCell);
+                }
+                else {
+                    hexGrid.FindDistancesTo(currentCell);
                 }
                 _previousCell = currentCell;
             }
@@ -215,9 +219,17 @@ namespace LandscapeGenerator
 
         #region Set Apply Methods
 
-        public void SetEditMode (bool toggle) {
-            editMode = toggle;
-            hexGrid.ShowUI(!toggle);
+        public void SetEditMode () {
+            if (editModeToggle.isOn)
+            {
+                editMode = true;
+                hexGrid.ShowUI(!true);
+            }
+            else
+            {
+                editMode = false;
+                hexGrid.ShowUI(!false);
+            }
         }
         public void SetApplyElevation()
         {
@@ -329,17 +341,6 @@ namespace LandscapeGenerator
 
         #endregion
 
-        public void ShowUI()
-        {
-            if (labelsVisibility.isOn)
-            {
-                hexGrid.ShowUI(true);
-            }
-            else
-            {
-                hexGrid.ShowUI(false);
-            }
-        }
 
         public void ShowGrid ()
         {

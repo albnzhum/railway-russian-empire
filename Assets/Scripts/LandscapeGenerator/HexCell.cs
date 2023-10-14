@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.IO;
+using UnityEngine.UI;
 
 namespace LandscapeGenerator
 {
@@ -22,6 +23,8 @@ namespace LandscapeGenerator
         [SerializeField] HexCell[] neighbors;
 
         [SerializeField] private bool[] roads;
+
+        int distance;
 
         #region Public Properties
 
@@ -191,6 +194,14 @@ namespace LandscapeGenerator
         }
 
         public bool IsSpecial => specialIndex > 0;
+
+        public int Distance {
+            get => distance;
+            set {
+                distance = value;
+                UpdateDistanceLabel();
+            }
+        }
 
         #endregion
 
@@ -471,6 +482,11 @@ namespace LandscapeGenerator
             return HexMetrics.GetEdgeType(
                 elevation, otherCell.elevation
             );
+        }
+
+        void UpdateDistanceLabel () {
+            Text label = uiRect.GetComponent<Text>();
+            label.text = distance == int.MaxValue ? "" : distance.ToString();
         }
     }
 }

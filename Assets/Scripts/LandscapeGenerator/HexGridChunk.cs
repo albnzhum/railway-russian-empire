@@ -19,7 +19,6 @@ namespace LandscapeGenerator
         void Awake()
         {
             gridCanvas = GetComponentInChildren<Canvas>();
-
             cells = new HexCell[HexMetrics.chunkSizeX * HexMetrics.chunkSizeZ];
         }
 
