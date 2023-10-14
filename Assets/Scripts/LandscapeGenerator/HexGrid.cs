@@ -23,6 +23,10 @@ namespace LandscapeGenerator
 
         int chunkCountX, chunkCountZ;
         HexCellPriorityQueue searchFrontier;
+        int searchFrontierPhase;
+
+        HexCell currentPathFrom, currentPathTo;
+        bool currentPathExists;
 
         void Awake()
         {
@@ -31,12 +35,16 @@ namespace LandscapeGenerator
             CreateMap(cellCountX, cellCountZ);
         }
 
-        public void FindPath (HexCell fromCell, HexCell toCell) {
-            StopAllCoroutines();
-            StartCoroutine(Search(fromCell, toCell));
+        public void FindPath (HexCell fromCell, HexCell toCell, int speed) {
+            ClearPath();
+            currentPathFrom = fromCell;
+            currentPathTo = toCell;
+            currentPathExists = Search(fromCell, toCell, speed);
+            ShowPath(speed);
         }
 
-        IEnumerator Search (HexCell fromCell, HexCell toCell) {
+        bool Search (HexCell fromCell, HexCell toCell, int speed) {
+            searchFrontierPhase += 2;
             if (searchFrontier == null) {
                 searchFrontier = new HexCellPriorityQueue();
             }
@@ -44,32 +52,25 @@ namespace LandscapeGenerator
                 searchFrontier.Clear();
             }
 
-            for (int i = 0; i < cells.Length; i++) {
-                cells[i].Distance = int.MaxValue;
-                cells[i].DisableHighlight();
-            }
-            fromCell.EnableHighlight(Color.blue);
-            toCell.EnableHighlight(Color.red);
-
-            WaitForSeconds delay = new WaitForSeconds(1 / 60f);
+            fromCell.SearchPhase = searchFrontierPhase;
             fromCell.Distance = 0;
             searchFrontier.Enqueue(fromCell);
             while (searchFrontier.Count > 0) {
-                yield return delay;
                 HexCell current = searchFrontier.Dequeue();
+                current.SearchPhase += 1;
 
-                if (current == toCell) {
-                    current = current.PathFrom;
-                    while (current != fromCell) {
-                        current.EnableHighlight(Color.white);
-                        current = current.PathFrom;
-                    }
-                    break;
+                if (current == toCell)
+                {
+                    return false;
                 }
 
+                int currentTurn = current.Distance / speed;
                 for (HexDirection d = HexDirection.NE; d <= HexDirection.NW; d++) {
                     HexCell neighbor = current.GetNeighbor(d);
-                    if (neighbor == null) {
+                    if (
+                        neighbor == null ||
+                        neighbor.SearchPhase > searchFrontierPhase
+                    ) {
                         continue;
                     }
                     if (neighbor.IsUnderwater) {
@@ -79,19 +80,28 @@ namespace LandscapeGenerator
                     if (edgeType == HexEdgeType.Cliff) {
                         continue;
                     }
-                    int distance = current.Distance;
+
+                    int moveCost;
                     if (current.HasRoadThroughEdge(d)) {
-                        distance += 1;
+                        moveCost = 1;
                     }
                     else if (current.Walled != neighbor.Walled) {
                         continue;
                     }
                     else {
-                        distance += edgeType == HexEdgeType.Flat ? 5 : 10;
-                        distance += neighbor.UrbanLevel + neighbor.FarmLevel +
+                        moveCost = edgeType == HexEdgeType.Flat ? 5 : 10;
+                        moveCost += neighbor.UrbanLevel + neighbor.FarmLevel +
                                     neighbor.PlantLevel;
                     }
-                    if (neighbor.Distance == int.MaxValue) {
+
+                    int distance = current.Distance + moveCost;
+                    int turn = distance / speed;
+                    if (turn > currentTurn)
+                    {
+                        distance = turn * speed + moveCost;
+                    }
+                    if (neighbor.SearchPhase < searchFrontierPhase) {
+                        neighbor.SearchPhase = searchFrontierPhase;
                         neighbor.Distance = distance;
                         neighbor.PathFrom = current;
                         neighbor.SearchHeuristic =
@@ -106,6 +116,36 @@ namespace LandscapeGenerator
                     }
                 }
             }
+
+            return false;
+        }
+
+        void ShowPath (int speed) {
+            if (currentPathExists) {
+                HexCell current = currentPathTo;
+                while (current != currentPathFrom) {
+                    int turn = current.Distance / speed;
+                    current.SetLabel(turn.ToString());
+                    current.EnableHighlight(Color.white);
+                    current = current.PathFrom;
+                }
+            }
+            currentPathFrom.EnableHighlight(Color.blue);
+            currentPathTo.EnableHighlight(Color.red);
+        }
+
+        void ClearPath () {
+            if (currentPathExists) {
+                HexCell current = currentPathTo;
+                while (current != currentPathFrom) {
+                    current.SetLabel(null);
+                    current.DisableHighlight();
+                    current = current.PathFrom;
+                }
+                current.DisableHighlight();
+                currentPathExists = false;
+            }
+            currentPathFrom = currentPathTo = null;
         }
 
         public bool CreateMap(int x, int z)
@@ -119,10 +159,9 @@ namespace LandscapeGenerator
                 return false;
             }
 
-            if (chunks != null)
-            {
-                for (int i = 0; i < chunks.Length; i++)
-                {
+            ClearPath();
+            if (chunks != null) {
+                for (int i = 0; i < chunks.Length; i++) {
                     Destroy(chunks[i].gameObject);
                 }
             }
@@ -276,7 +315,7 @@ namespace LandscapeGenerator
 
         public void Load(BinaryReader reader, int header)
         {
-            StopAllCoroutines();
+            ClearPath();
             int x = 20, z = 15;
             if (header >= 1)
             {

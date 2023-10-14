@@ -209,7 +209,6 @@ namespace LandscapeGenerator
             get => distance;
             set {
                 distance = value;
-                UpdateDistanceLabel();
             }
         }
         public HexCell PathFrom { get; set; }
@@ -219,6 +218,8 @@ namespace LandscapeGenerator
         public int SearchPriority => distance + SearchHeuristic;
 
         public HexCell NextWithSamePriority { get; set; }
+
+        public int SearchPhase { get; set; }
 
         #endregion
 
@@ -506,10 +507,10 @@ namespace LandscapeGenerator
             }
         }
 
-        void UpdateDistanceLabel()
+        public void SetLabel(string text)
         {
             Text label = uiRect.GetComponent<Text>();
-            label.text = distance == int.MaxValue ? "" : distance.ToString();
+            label.text = text;
         }
 
         public void DisableHighlight () {
