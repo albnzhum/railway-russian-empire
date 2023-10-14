@@ -9195,7 +9195,7 @@ MonoBehaviour:
       - m_Target: {fileID: 1935815949}
         m_TargetAssemblyTypeName: LandscapeGenerator.HexMapEditor, Assembly-CSharp
         m_MethodName: SetEditMode
-        m_Mode: 6
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -13949,6 +13949,7 @@ MonoBehaviour:
   specialToggle: {fileID: 0}
   specialIndexSlider: {fileID: 0}
   gridToggle: {fileID: 983135803}
+  editModeToggle: {fileID: 1173481814}
 --- !u!114 &1935815950
 MonoBehaviour:
   m_ObjectHideFlags: 0
