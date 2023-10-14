@@ -142,8 +142,7 @@ namespace LandscapeGenerator
         }
 
         void TriangulateWater(
-            HexDirection direction, HexCell cell, Vector3 center
-        )
+            HexDirection direction, HexCell cell, Vector3 center)
         {
             center.y = cell.WaterSurfaceY;
 
@@ -159,8 +158,7 @@ namespace LandscapeGenerator
         }
 
         void TriangulateOpenWater(
-            HexDirection direction, HexCell cell, HexCell neighbor, Vector3 center
-        )
+            HexDirection direction, HexCell cell, HexCell neighbor, Vector3 center)
         {
             Vector3 c1 = center + HexMetrics.GetFirstWaterCorner(direction);
             Vector3 c2 = center + HexMetrics.GetSecondWaterCorner(direction);
@@ -191,8 +189,7 @@ namespace LandscapeGenerator
         }
 
         void TriangulateWaterShore(
-            HexDirection direction, HexCell cell, HexCell neighbor, Vector3 center
-        )
+            HexDirection direction, HexCell cell, HexCell neighbor, Vector3 center)
         {
             EdgeVertices e1 = new EdgeVertices(
                 center + HexMetrics.GetFirstWaterCorner(direction),
@@ -243,8 +240,7 @@ namespace LandscapeGenerator
         }
 
         void TriangulateEstuary(
-            EdgeVertices e1, EdgeVertices e2, bool incomingRiver
-        )
+            EdgeVertices e1, EdgeVertices e2, bool incomingRiver)
         {
             waterShore.AddTriangle(e2.v1, e1.v2, e1.v1);
             waterShore.AddTriangle(e2.v5, e1.v5, e1.v4);
@@ -306,8 +302,7 @@ namespace LandscapeGenerator
         }
 
         void TriangulateWithoutRiver(
-            HexDirection direction, HexCell cell, Vector3 center, EdgeVertices e
-        )
+            HexDirection direction, HexCell cell, Vector3 center, EdgeVertices e)
         {
             TriangulateEdgeFan(center, e, cell.TerrainTypeIndex);
 
@@ -342,8 +337,7 @@ namespace LandscapeGenerator
         }
 
         void TriangulateAdjacentToRiver(
-            HexDirection direction, HexCell cell, Vector3 center, EdgeVertices e
-        )
+            HexDirection direction, HexCell cell, Vector3 center, EdgeVertices e)
         {
             if (cell.HasRoads)
             {
@@ -358,16 +352,14 @@ namespace LandscapeGenerator
                               (HexMetrics.innerToOuter * 0.5f);
                 }
                 else if (
-                    cell.HasRiverThroughEdge(direction.Previous2())
-                )
+                    cell.HasRiverThroughEdge(direction.Previous2()))
                 {
                     center += HexMetrics.GetFirstSolidCorner(direction) * 0.25f;
                 }
             }
             else if (
                 cell.HasRiverThroughEdge(direction.Previous()) &&
-                cell.HasRiverThroughEdge(direction.Next2())
-            )
+                cell.HasRiverThroughEdge(direction.Next2()))
             {
                 center += HexMetrics.GetSecondSolidCorner(direction) * 0.25f;
             }
@@ -390,8 +382,7 @@ namespace LandscapeGenerator
         }
 
         void TriangulateRoadAdjacentToRiver(
-            HexDirection direction, HexCell cell, Vector3 center, EdgeVertices e
-        )
+            HexDirection direction, HexCell cell, Vector3 center, EdgeVertices e)
         {
             bool hasRoadThroughEdge = cell.HasRoadThroughEdge(direction);
             bool previousHasRiver = cell.HasRiverThroughEdge(direction.Previous());
@@ -639,8 +630,7 @@ namespace LandscapeGenerator
         }
 
         void TriangulateConnection(
-            HexDirection direction, HexCell cell, EdgeVertices e1
-        )
+            HexDirection direction, HexCell cell, EdgeVertices e1)
         {
             HexCell neighbor = cell.GetNeighbor(direction);
             if (neighbor == null)
@@ -746,8 +736,7 @@ namespace LandscapeGenerator
 
         void TriangulateWaterfallInWater(
             Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4,
-            float y1, float y2, float waterY
-        )
+            float y1, float y2, float waterY)
         {
             v1.y = v2.y = y1;
             v3.y = v4.y = y2;
@@ -765,8 +754,7 @@ namespace LandscapeGenerator
         void TriangulateCorner(
             Vector3 bottom, HexCell bottomCell,
             Vector3 left, HexCell leftCell,
-            Vector3 right, HexCell rightCell
-        )
+            Vector3 right, HexCell rightCell)
         {
             HexEdgeType leftEdgeType = bottomCell.GetEdgeType(leftCell);
             HexEdgeType rightEdgeType = bottomCell.GetEdgeType(rightCell);

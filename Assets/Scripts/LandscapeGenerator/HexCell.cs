@@ -12,6 +12,27 @@ namespace LandscapeGenerator
         public RectTransform uiRect;
 
         public HexGridChunk chunk;
+        int terrainTypeIndex;
+
+        int elevation = int.MinValue;
+        int waterLevel;
+
+        int urbanLevel, farmLevel, plantLevel;
+
+        int specialIndex;
+
+        int distance;
+
+        bool walled;
+
+        bool hasIncomingRiver, hasOutgoingRiver;
+        HexDirection incomingRiver, outgoingRiver;
+
+        [SerializeField] HexCell[] neighbors;
+
+        [SerializeField] bool[] roads;
+
+        #region Public Properties
 
         public int Elevation
         {
@@ -88,7 +109,6 @@ namespace LandscapeGenerator
         public HexDirection OutgoingRiver => outgoingRiver;
 
         public Vector3 Position => transform.localPosition;
-
 
         public float StreamBedY =>
             (elevation + HexMetrics.StreamBedElevationOffset) *
@@ -193,25 +213,15 @@ namespace LandscapeGenerator
             }
         }
 
-        int terrainTypeIndex;
+        public HexCell PathFrom { get; set; }
 
-        int elevation = int.MinValue;
-        int waterLevel;
+        public int SearchHeuristic { get; set; }
 
-        int urbanLevel, farmLevel, plantLevel;
+        public int SearchPriority => distance + SearchHeuristic;
 
-        int specialIndex;
+        public HexCell NextWithSamePriority { get; set; }
 
-        int distance;
-
-        bool walled;
-
-        bool hasIncomingRiver, hasOutgoingRiver;
-        HexDirection incomingRiver, outgoingRiver;
-
-        [SerializeField] HexCell[] neighbors;
-
-        [SerializeField] bool[] roads;
+        #endregion
 
         public HexCell GetNeighbor(HexDirection direction)
         {
@@ -501,6 +511,17 @@ namespace LandscapeGenerator
         {
             Text label = uiRect.GetComponent<Text>();
             label.text = distance == int.MaxValue ? "" : distance.ToString();
+        }
+
+        public void DisableHighlight () {
+            Image highlight = uiRect.GetChild(0).GetComponent<Image>();
+            highlight.enabled = false;
+        }
+
+        public void EnableHighlight (Color color) {
+            Image highlight = uiRect.GetChild(0).GetComponent<Image>();
+            highlight.color = color;
+            highlight.enabled = true;
         }
     }
 }

@@ -28,6 +28,8 @@ namespace LandscapeGenerator
         int activeTerrainTypeIndex;
         bool editMode;
 
+        HexCell previousCell, searchFromCell, searchToCell;
+
         #region UI Variables
 
         [Header("UI")] [SerializeField] Slider elevationSlider;
@@ -94,8 +96,19 @@ namespace LandscapeGenerator
                 if (editMode) {
                     EditCells(currentCell);
                 }
-                else {
-                    hexGrid.FindDistancesTo(currentCell);
+                else if (Input.GetKey(KeyCode.LeftShift) && searchToCell != currentCell) {
+                    if (searchFromCell) {
+                        searchFromCell.DisableHighlight();
+                    }
+                    searchFromCell = currentCell;
+                    searchFromCell.EnableHighlight(Color.blue);
+                    if (searchToCell) {
+                        hexGrid.FindPath(searchFromCell, searchToCell);
+                    }
+                }
+                else if (searchFromCell && searchFromCell != currentCell) {
+                    searchToCell = currentCell;
+                    hexGrid.FindPath(searchFromCell, searchToCell);
                 }
             }
             else {

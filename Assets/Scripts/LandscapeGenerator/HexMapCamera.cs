@@ -22,10 +22,7 @@ namespace LandscapeGenerator
 
         public static bool Locked
         {
-            set
-            {
-                instance.enabled = !value;
-            }
+            set => instance.enabled = !value;
         }
 
         private void Awake()
