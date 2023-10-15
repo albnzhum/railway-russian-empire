@@ -34,6 +34,8 @@ namespace LandscapeGenerator
 
         List<HexUnit> units = new List<HexUnit>();
 
+        HexCellShaderData cellShaderData;
+
         public bool HasPath => currentPathExists;
 
         void Awake()
@@ -41,6 +43,7 @@ namespace LandscapeGenerator
             HexMetrics.noiseSource = noiseSource;
             HexMetrics.InitializeHashGrid(seed);
             HexUnit.unitPrefab = hexUnit;
+            cellShaderData = gameObject.AddComponent<HexCellShaderData>();
             CreateMap(cellCountX, cellCountZ);
         }
 
@@ -211,6 +214,7 @@ namespace LandscapeGenerator
             cellCountZ = z;
             chunkCountX = cellCountX / HexMetrics.chunkSizeX;
             chunkCountZ = cellCountZ / HexMetrics.chunkSizeZ;
+            cellShaderData.Initialize(cellCountX, cellCountZ);
             CreateChunks();
             CreateCells();
             return true;
@@ -253,6 +257,8 @@ namespace LandscapeGenerator
             HexCell cell = cells[i] = Instantiate<HexCell>(cellPrefab);
             cell.transform.localPosition = position;
             cell.coordinates = HexCoordinates.FromOffsetCoordinates(x, z);
+            cell.Index = i;
+            cell.ShaderData = cellShaderData;
 
             if (x > 0)
             {

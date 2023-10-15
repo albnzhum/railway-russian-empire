@@ -27,9 +27,13 @@ namespace LandscapeGenerator
 
         void Awake()
         {
-            instance = this;
             _swivel = transform.GetChild(0);
             _stick = _swivel.GetChild(0);
+        }
+
+        void OnEnable()
+        {
+            instance = this;
         }
 
         void Update()

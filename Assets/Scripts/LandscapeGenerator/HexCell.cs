@@ -199,7 +199,7 @@ namespace LandscapeGenerator
                 if (terrainTypeIndex != value)
                 {
                     terrainTypeIndex = value;
-                    Refresh();
+                    ShaderData.RefreshTerrain(this);
                 }
             }
         }
@@ -222,6 +222,10 @@ namespace LandscapeGenerator
         public int SearchPhase { get; set; }
 
         public HexUnit Unit { get; set; }
+
+        public HexCellShaderData ShaderData { get; set; }
+
+        public int Index { get; set; }
 
         #endregion
 
@@ -479,6 +483,7 @@ namespace LandscapeGenerator
         public void Load(BinaryReader reader)
         {
             terrainTypeIndex = reader.ReadByte();
+            ShaderData.RefreshTerrain(this);
             elevation = reader.ReadByte();
             RefreshPosition();
             waterLevel = reader.ReadByte();
