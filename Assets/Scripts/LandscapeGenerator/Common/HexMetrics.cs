@@ -9,18 +9,18 @@ namespace LandscapeGenerator
         public const float outerRadius = 10f;
         public const float innerRadius = outerRadius * outerToInner;
 
-        const float solidFactor = 0.8f;
+        const float solidFactor = 0.6f;
         const float blendFactor = 1f - solidFactor;
 
-        public const float elevationStep = 3f;
+        public const float elevationStep = 5f;
 
-       const int terracesPerSlope = 2;
+       const int terracesPerSlope = 5;
         public const int terraceSteps = terracesPerSlope * 2 + 1;
         const float horizontalTerraceStepSize = 1f / terraceSteps;
         const float verticalTerraceStepSize = 1f / (terracesPerSlope + 1);
 
         public static Texture2D noiseSource;
-        const float cellPerturbStrength = 4f;
+        const float cellPerturbStrength = 1f;
         const float noiseScale = 0.003f;
         public const float elevationPerturbStrength = 1.5f;
 
@@ -196,6 +196,7 @@ namespace LandscapeGenerator
         {
             Vector4 sample = SampleNoise(position);
             position.x += (sample.x * 2f - 1f) * cellPerturbStrength;
+            position.y += (sample.y * 2f - 1f) * cellPerturbStrength;
             position.z += (sample.z * 2f - 1f) * cellPerturbStrength;
             return position;
         }

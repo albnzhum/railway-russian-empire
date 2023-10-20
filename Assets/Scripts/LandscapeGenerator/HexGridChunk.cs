@@ -917,6 +917,7 @@ namespace LandscapeGenerator
                 Color c1 = c2;
                 e2 = EdgeVertices.TerraceLerp(begin, end, i);
                 c2 = HexMetrics.TerraceLerp(weights1, weights2, i);
+
                 TriangulateEdgeStrip(e1, c1, t1, e2, c2, t2, hasRoad);
             }
 
