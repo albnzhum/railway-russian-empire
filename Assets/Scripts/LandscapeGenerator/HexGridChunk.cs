@@ -91,6 +91,19 @@ namespace LandscapeGenerator
             }
         }
 
+        void DivideTriangleIntoRectangles(Vector3 A, Vector3 B, Vector3 C)
+        {
+            // Найдите середины рёбер треугольника
+            Vector3 M = (A + B) * 0.5f;
+            Vector3 N = (B + C) * 0.5f;
+            Vector3 P = (A + C) * 0.5f;
+
+            // Создайте прямоугольники
+            terrain.AddQuad(A, M, P, N);
+            terrain.AddQuad(M, B, N, P);
+            terrain.AddQuad(P, N, C, A);
+        }
+
         void Triangulate(HexDirection direction, HexCell cell)
         {
             Vector3 center = cell.Position;
@@ -98,6 +111,8 @@ namespace LandscapeGenerator
                 center + HexMetrics.GetFirstSolidCorner(direction),
                 center + HexMetrics.GetSecondSolidCorner(direction)
             );
+
+            //DivideTriangleIntoRectangles(e.v1, e.v2, e.v3);
 
             if (cell.HasRiver)
             {
@@ -932,6 +947,8 @@ namespace LandscapeGenerator
         {
             Vector3 v3 = HexMetrics.TerraceLerp(begin, left, 1);
             Vector3 v4 = HexMetrics.TerraceLerp(begin, right, 1);
+
+
             Color w3 = HexMetrics.TerraceLerp(weights1, weights2, 1);
             Color w4 = HexMetrics.TerraceLerp(weights1, weights3, 1);
             Vector3 indices;
@@ -950,6 +967,7 @@ namespace LandscapeGenerator
                 Color w2 = w4;
                 v3 = HexMetrics.TerraceLerp(begin, left, i);
                 v4 = HexMetrics.TerraceLerp(begin, right, i);
+
                 w3 = HexMetrics.TerraceLerp(weights1, weights2, i);
                 w4 = HexMetrics.TerraceLerp(weights1, weights3, i);
                 terrain.AddQuad(v1, v2, v3, v4);

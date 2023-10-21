@@ -9,12 +9,12 @@ namespace LandscapeGenerator
         public const float outerRadius = 10f;
         public const float innerRadius = outerRadius * outerToInner;
 
-        const float solidFactor = 0.6f;
+        const float solidFactor = 0.5f;
         const float blendFactor = 1f - solidFactor;
 
         public const float elevationStep = 5f;
 
-       const int terracesPerSlope = 5;
+       const int terracesPerSlope = 3;
         public const int terraceSteps = terracesPerSlope * 2 + 1;
         const float horizontalTerraceStepSize = 1f / terraceSteps;
         const float verticalTerraceStepSize = 1f / (terracesPerSlope + 1);

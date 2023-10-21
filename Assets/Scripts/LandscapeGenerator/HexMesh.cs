@@ -96,12 +96,14 @@ namespace LandscapeGenerator
         public void AddTriangle(Vector3 v1, Vector3 v2, Vector3 v3)
         {
             int vertexIndex = vertices.Count;
+            //DivideTriangleIntoRectangles(v1, v2, v3);
             vertices.Add(HexMetrics.Perturb(v1));
             vertices.Add(HexMetrics.Perturb(v2));
             vertices.Add(HexMetrics.Perturb(v3));
             triangles.Add(vertexIndex);
             triangles.Add(vertexIndex + 1);
             triangles.Add(vertexIndex + 2);
+
         }
 
         public void AddTriangleUnperturbed(Vector3 v1, Vector3 v2, Vector3 v3)

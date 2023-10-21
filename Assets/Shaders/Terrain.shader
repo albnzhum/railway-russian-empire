@@ -57,8 +57,6 @@ Shader "Custom/Terrain"
 			data.terrain.x = cell0.w;
 			data.terrain.y = cell1.w;
 			data.terrain.z = cell2.w;
-
-            
         }
 
         float4 GetTerrainColor(Input IN, int index)
