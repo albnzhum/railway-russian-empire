@@ -14,7 +14,7 @@ namespace LandscapeGenerator
 
         public const float elevationStep = 5f;
 
-       const int terracesPerSlope = 3;
+       const int terracesPerSlope = 2;
         public const int terraceSteps = terracesPerSlope * 2 + 1;
         const float horizontalTerraceStepSize = 1f / terraceSteps;
         const float verticalTerraceStepSize = 1f / (terracesPerSlope + 1);

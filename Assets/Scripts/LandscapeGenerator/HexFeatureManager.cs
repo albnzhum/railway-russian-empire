@@ -134,7 +134,7 @@ namespace LandscapeGenerator
                     AddWallSegment(near.v3, far.v3, near.v4, far.v4);
                 }
 
-                AddWallSegment(near.v4, far.v4, near.v5, far.v5);
+                AddWallSegment(near.v4, far.v4, near.v8, far.v8);
             }
         }
 
