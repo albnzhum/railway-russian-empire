@@ -29,17 +29,17 @@ namespace LandscapeGenerator
 
         void FillList()
         {
-            for (int i = 0; i < listContent.childCount; i++)
+            for (var i = 0; i < listContent.childCount; i++)
             {
                 Destroy(listContent.GetChild(i).gameObject);
             }
 
-            string[] paths =
+            var paths =
                 Directory.GetFiles(Application.persistentDataPath, "*.map");
             Array.Sort(paths);
-            for (int i = 0; i < paths.Length; i++)
+            for (var i = 0; i < paths.Length; i++)
             {
-                SaveLoadItem item = Instantiate(itemPrefab);
+                var item = Instantiate(itemPrefab);
                 item.menu = this;
                 item.MapName = Path.GetFileNameWithoutExtension(paths[i]);
                 item.transform.SetParent(listContent, false);
@@ -48,7 +48,7 @@ namespace LandscapeGenerator
 
         public void Delete()
         {
-            string path = GetSelectedPath();
+            var path = GetSelectedPath();
             if (path == null)
             {
                 return;
@@ -65,7 +65,7 @@ namespace LandscapeGenerator
 
         public void Action()
         {
-            string path = GetSelectedPath();
+            var path = GetSelectedPath();
             if (path == null)
             {
                 return;
@@ -111,7 +111,7 @@ namespace LandscapeGenerator
 
         string GetSelectedPath()
         {
-            string mapName = nameInput.text;
+            var mapName = nameInput.text;
             if (mapName.Length == 0)
             {
                 return null;
@@ -123,7 +123,7 @@ namespace LandscapeGenerator
         public void Save(string path)
         {
             using (
-                BinaryWriter writer =
+                var writer =
                 new BinaryWriter(File.Open(path, FileMode.Create))
             )
             {
@@ -138,8 +138,8 @@ namespace LandscapeGenerator
                 Debug.LogError("File does not exist " + path);
                 return;
             }
-            using (BinaryReader reader = new BinaryReader(File.OpenRead(path))) {
-                int header = reader.ReadInt32();
+            using (var reader = new BinaryReader(File.OpenRead(path))) {
+                var header = reader.ReadInt32();
                 if (header <= 2) {
                     hexGrid.Load(reader, header);
                     HexMapCamera.ValidatePosition();

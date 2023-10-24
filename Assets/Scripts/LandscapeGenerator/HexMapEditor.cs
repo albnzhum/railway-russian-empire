@@ -97,7 +97,7 @@ namespace LandscapeGenerator
 
         void HandleInput()
         {
-            HexCell currentCell = GetCellUnderCursor();
+            var currentCell = GetCellUnderCursor();
             if (currentCell)
             {
                 if (_previousCell && _previousCell != currentCell)
@@ -121,7 +121,7 @@ namespace LandscapeGenerator
 
         void CreateUnit()
         {
-            HexCell cell = GetCellUnderCursor();
+            var cell = GetCellUnderCursor();
             if (cell && !cell.Unit)
             {
                 hexGrid.AddUnit(Instantiate(HexUnit.unitPrefab), cell, Random.Range(0f, 360f));
@@ -130,7 +130,7 @@ namespace LandscapeGenerator
 
         void DestroyUnit()
         {
-            HexCell cell = GetCellUnderCursor();
+            var cell = GetCellUnderCursor();
             if (cell && cell.Unit)
             {
                 hexGrid.RemoveUnit(cell.Unit);
@@ -161,12 +161,12 @@ namespace LandscapeGenerator
 
         void EditCells(HexCell center)
         {
-            int centerX = center.coordinates.X;
-            int centerZ = center.coordinates.Z;
+            var centerX = center.coordinates.X;
+            var centerZ = center.coordinates.Z;
 
             for (int r = 0, z = centerZ - _brushSize; z <= centerZ; z++, r++)
             {
-                for (int x = centerX - r; x <= centerX + _brushSize; x++)
+                for (var x = centerX - r; x <= centerX + _brushSize; x++)
                 {
                     EditCell(hexGrid.GetCell(new HexCoordinates(x, z)));
                 }
@@ -174,7 +174,7 @@ namespace LandscapeGenerator
 
             for (int r = 0, z = centerZ + _brushSize; z > centerZ; z--, r++)
             {
-                for (int x = centerX - _brushSize; x <= centerX + r; x++)
+                for (var x = centerX - _brushSize; x <= centerX + r; x++)
                 {
                     EditCell(hexGrid.GetCell(new HexCoordinates(x, z)));
                 }
@@ -237,7 +237,7 @@ namespace LandscapeGenerator
 
                 if (_isDrag)
                 {
-                    HexCell otherCell = cell.GetNeighbor(_dragDirection.Opposite());
+                    var otherCell = cell.GetNeighbor(_dragDirection.Opposite());
                     if (otherCell)
                     {
                         if (_riverMode == OptionalToggle.Yes)

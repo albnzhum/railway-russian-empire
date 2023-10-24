@@ -38,7 +38,7 @@ namespace LandscapeGenerator
 
         bool UpdateCurrentCell()
         {
-            HexCell cell = grid.GetCell(Camera.main.ScreenPointToRay(Input.mousePosition));
+            var cell = grid.GetCell(Camera.main.ScreenPointToRay(Input.mousePosition));
             if (cell != currentCell)
             {
                 currentCell = cell;

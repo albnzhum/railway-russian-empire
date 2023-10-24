@@ -17,7 +17,7 @@ namespace UI
 
         public static T GetView<T>() where T : View
         {
-            for (int i = 0; i < s_instance._views.Length; i++)
+            for (var i = 0; i < s_instance._views.Length; i++)
             {
                 if (s_instance._views[i] is T tView)
                 {
@@ -30,7 +30,7 @@ namespace UI
 
         public static void Show<T>(bool remember = true) where T : View
         {
-            for (int i = 0; i < s_instance._views.Length; i++)
+            for (var i = 0; i < s_instance._views.Length; i++)
             {
                 if (s_instance._views[i] is T)
                 {
@@ -80,7 +80,7 @@ namespace UI
 
         private void Start()
         {
-            for (int i = 0; i < _views.Length; i++)
+            for (var i = 0; i < _views.Length; i++)
             {
                 _views[i].Initialize();
 

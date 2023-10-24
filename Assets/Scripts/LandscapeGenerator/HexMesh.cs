@@ -96,7 +96,7 @@ namespace LandscapeGenerator
 
         public void AddTriangle(Vector3 v1, Vector3 v2, Vector3 v3)
         {
-            int vertexIndex = vertices.Count;
+            var vertexIndex = vertices.Count;
             vertices.Add(HexMetrics.Perturb(v1));
             vertices.Add(HexMetrics.Perturb(v2));
             vertices.Add(HexMetrics.Perturb(v3));
@@ -108,7 +108,7 @@ namespace LandscapeGenerator
 
         public void AddTriangleUnperturbed(Vector3 v1, Vector3 v2, Vector3 v3)
         {
-            int vertexIndex = vertices.Count;
+            var vertexIndex = vertices.Count;
             vertices.Add(v1);
             vertices.Add(v2);
             vertices.Add(v3);
@@ -152,7 +152,7 @@ namespace LandscapeGenerator
 
         public void AddQuad(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4)
         {
-            int vertexIndex = vertices.Count;
+            var vertexIndex = vertices.Count;
             vertices.Add(HexMetrics.Perturb(v1));
             vertices.Add(HexMetrics.Perturb(v2));
             vertices.Add(HexMetrics.Perturb(v3));
@@ -169,7 +169,7 @@ namespace LandscapeGenerator
             Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4
         )
         {
-            int vertexIndex = vertices.Count;
+            var vertexIndex = vertices.Count;
             vertices.Add(v1);
             vertices.Add(v2);
             vertices.Add(v3);

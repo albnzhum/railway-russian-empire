@@ -38,20 +38,20 @@ namespace LandscapeGenerator
 
         void Update()
         {
-            float zoomDelta = Input.GetAxis("Mouse ScrollWheel");
+            var zoomDelta = Input.GetAxis("Mouse ScrollWheel");
             if (zoomDelta != 0f)
             {
                 AdjustZoom(zoomDelta);
             }
 
-            float rotationDelta = Input.GetAxis("Rotation");
+            var rotationDelta = Input.GetAxis("Rotation");
             if (rotationDelta != 0f)
             {
                 AdjustRotation(rotationDelta);
             }
 
-            float xDelta = Input.GetAxis("Horizontal");
-            float zDelta = Input.GetAxis("Vertical");
+            var xDelta = Input.GetAxis("Horizontal");
+            var zDelta = Input.GetAxis("Vertical");
             if (xDelta != 0f || zDelta != 0f)
             {
                 AdjustPosition(xDelta, zDelta);
@@ -67,30 +67,30 @@ namespace LandscapeGenerator
         {
             _zoom = Mathf.Clamp01(_zoom + delta);
 
-            float distance = Mathf.Lerp(stickMinZoom, stickMaxZoom, _zoom);
+            var distance = Mathf.Lerp(stickMinZoom, stickMaxZoom, _zoom);
             _stick.localPosition = new Vector3(0f, 0f, distance);
 
-            float angle = Mathf.Lerp(swivelMinZoom, swivelMaxZoom, _zoom);
+            var angle = Mathf.Lerp(swivelMinZoom, swivelMaxZoom, _zoom);
             _swivel.localRotation = Quaternion.Euler(angle, 0f, 0f);
         }
 
         void AdjustPosition(float xDelta, float zDelta)
         {
-            Vector3 direction = transform.localRotation * new Vector3(xDelta, 0f, zDelta).normalized;
-            float damping = Mathf.Max(Mathf.Abs(xDelta), Mathf.Abs(zDelta));
-            float distance = Mathf.Lerp(moveSpeedMinZoom, moveSpeedMaxZoom, _zoom) * damping * Time.deltaTime;
+            var direction = transform.localRotation * new Vector3(xDelta, 0f, zDelta).normalized;
+            var damping = Mathf.Max(Mathf.Abs(xDelta), Mathf.Abs(zDelta));
+            var distance = Mathf.Lerp(moveSpeedMinZoom, moveSpeedMaxZoom, _zoom) * damping * Time.deltaTime;
 
-            Vector3 position = transform.localPosition;
+            var position = transform.localPosition;
             position += direction * distance;
             transform.localPosition = ClampPosition(position);
         }
 
         Vector3 ClampPosition(Vector3 position)
         {
-            float xMax = (grid.cellCountX - 0.5f) * (2f * HexMetrics.innerRadius);
+            var xMax = (grid.cellCountX - 0.5f) * (2f * HexMetrics.InnerRadius);
             position.x = Mathf.Clamp(position.x, 0f, xMax);
 
-            float zMax = (grid.cellCountZ - 1) * (1.5f * HexMetrics.outerRadius);
+            var zMax = (grid.cellCountZ - 1) * (1.5f * HexMetrics.OuterRadius);
             position.z = Mathf.Clamp(position.z, 0f, zMax);
 
             return position;

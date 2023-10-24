@@ -17,7 +17,7 @@ namespace LandscapeGenerator
         public void Enqueue(HexCell cell)
         {
             count += 1;
-            int priority = cell.SearchPriority;
+            var priority = cell.SearchPriority;
             if (priority < minimum)
             {
                 minimum = priority;
@@ -36,7 +36,7 @@ namespace LandscapeGenerator
             count -= 1;
             for (; minimum < list.Count; minimum++)
             {
-                HexCell cell = list[minimum];
+                var cell = list[minimum];
                 if (cell != null)
                 {
                     list[minimum] = cell.NextWithSamePriority;
@@ -48,8 +48,8 @@ namespace LandscapeGenerator
 
         public void Change(HexCell cell, int oldPriority)
         {
-            HexCell current = list[oldPriority];
-            HexCell next = current.NextWithSamePriority;
+            var current = list[oldPriority];
+            var next = current.NextWithSamePriority;
             if (current == cell) {
                 list[oldPriority] = next;
             }

@@ -49,7 +49,7 @@ namespace LandscapeGenerator
                 RefreshPosition();
                 ValidateRivers();
 
-                for (int i = 0; i < roads.Length; i++)
+                for (var i = 0; i < roads.Length; i++)
                 {
                     if (roads[i] && GetElevationDifference((HexDirection)i) > 1)
                     {
@@ -93,7 +93,7 @@ namespace LandscapeGenerator
         {
             get
             {
-                for (int i = 0; i < roads.Length; i++)
+                for (var i = 0; i < roads.Length; i++)
                 {
                     if (roads[i])
                     {
@@ -113,15 +113,15 @@ namespace LandscapeGenerator
 
         public float StreamBedY =>
             (elevation + HexMetrics.StreamBedElevationOffset) *
-            HexMetrics.elevationStep;
+            HexMetrics.ElevationStep;
 
         public float RiverSurfaceY =>
             (elevation + HexMetrics.WaterElevationOffset) *
-            HexMetrics.elevationStep;
+            HexMetrics.ElevationStep;
 
         public float WaterSurfaceY =>
             (waterLevel + HexMetrics.WaterElevationOffset) *
-            HexMetrics.elevationStep;
+            HexMetrics.ElevationStep;
 
         public int UrbanLevel
         {
@@ -261,7 +261,7 @@ namespace LandscapeGenerator
                 hasOutgoingRiver && outgoingRiver == direction;
         }
 
-        public void RemoveIncomingRiver()
+        void RemoveIncomingRiver()
         {
             if (!hasIncomingRiver)
             {
@@ -271,12 +271,12 @@ namespace LandscapeGenerator
             hasIncomingRiver = false;
             RefreshSelfOnly();
 
-            HexCell neighbor = GetNeighbor(incomingRiver);
+            var neighbor = GetNeighbor(incomingRiver);
             neighbor.hasOutgoingRiver = false;
             neighbor.RefreshSelfOnly();
         }
 
-        public void RemoveOutgoingRiver()
+        void RemoveOutgoingRiver()
         {
             if (!hasOutgoingRiver)
             {
@@ -286,7 +286,7 @@ namespace LandscapeGenerator
             hasOutgoingRiver = false;
             RefreshSelfOnly();
 
-            HexCell neighbor = GetNeighbor(outgoingRiver);
+            var neighbor = GetNeighbor(outgoingRiver);
             neighbor.hasIncomingRiver = false;
             neighbor.RefreshSelfOnly();
         }
@@ -304,7 +304,7 @@ namespace LandscapeGenerator
                 return;
             }
 
-            HexCell neighbor = GetNeighbor(direction);
+            var neighbor = GetNeighbor(direction);
             if (!IsValidRiverDestination(neighbor))
             {
                 return;
@@ -347,7 +347,7 @@ namespace LandscapeGenerator
 
         public void RemoveRoads()
         {
-            for (int i = 0; i < neighbors.Length; i++)
+            for (var i = 0; i < neighbors.Length; i++)
             {
                 if (roads[i])
                 {
@@ -356,9 +356,9 @@ namespace LandscapeGenerator
             }
         }
 
-        public int GetElevationDifference(HexDirection direction)
+        int GetElevationDifference(HexDirection direction)
         {
-            int difference = elevation - GetNeighbor(direction).elevation;
+            var difference = elevation - GetNeighbor(direction).elevation;
             return difference >= 0 ? difference : -difference;
         }
 
@@ -398,15 +398,44 @@ namespace LandscapeGenerator
 
         void RefreshPosition()
         {
-            Vector3 position = transform.localPosition;
-            position.y = elevation * HexMetrics.elevationStep;
-            position.y +=
-                (HexMetrics.SampleNoise(position).y * 2f - 1f) *
-                HexMetrics.elevationPerturbStrength;
-            transform.localPosition = position;
+            var center = this.Position;
+            for (var d = HexDirection.NE; d <= HexDirection.NW; d++)
+            {
+                var e = new EdgeVertices(
+                    center + HexMetrics.GetFirstSolidCorner(d),
+                    center + HexMetrics.GetSecondSolidCorner(d)
+                );
 
-            Vector3 uiPosition = uiRect.localPosition;
-            uiPosition.z = -position.y;
+                center.y = elevation * HexMetrics.ElevationStep;
+                center.y +=
+                    (HexMetrics.SampleNoise(center).y ) *
+                    HexMetrics.ElevationPerturbStrength;
+
+                e.v1.y = elevation * HexMetrics.ElevationStep;
+                e.v1.y +=
+                    (HexMetrics.SampleNoise(center).y) * 5;
+                e.v2.y = elevation * HexMetrics.ElevationStep;
+                e.v2.y +=
+                    (HexMetrics.SampleNoise(center).y ) * 5;
+                e.v3.y = elevation * HexMetrics.ElevationStep;
+                e.v3.y +=
+                    (HexMetrics.SampleNoise(center).y ) * 5;
+                e.v4.y = elevation * HexMetrics.ElevationStep;
+                e.v4.y +=
+                    (HexMetrics.SampleNoise(center).y ) * 5;
+                e.v5.y = elevation * HexMetrics.ElevationStep;
+                e.v5.y +=
+                    (HexMetrics.SampleNoise(center).y ) * 5;
+
+                InnerEdgeVertices innerEdgeVertices = new InnerEdgeVertices(center, e.v1, e.v2);
+                InnerEdgeVertices innerEdgeVertices1 = new InnerEdgeVertices(center, e.v2, e.v3);
+                InnerEdgeVertices innerEdgeVertices3 = new InnerEdgeVertices(center, e.v3, e.v4);
+                InnerEdgeVertices innerEdgeVertices4 = new InnerEdgeVertices(center, e.v4, e.v5);
+                transform.localPosition = center;
+            }
+
+            var uiPosition = uiRect.localPosition;
+            //uiPosition.z = -position.y;
             uiRect.localPosition = uiPosition;
         }
 
@@ -415,9 +444,9 @@ namespace LandscapeGenerator
             if (chunk)
             {
                 chunk.Refresh();
-                for (int i = 0; i < neighbors.Length; i++)
+                for (var i = 0; i < neighbors.Length; i++)
                 {
-                    HexCell neighbor = neighbors[i];
+                    var neighbor = neighbors[i];
                     if (neighbor != null && neighbor.chunk != chunk)
                     {
                         neighbor.chunk.Refresh();
@@ -468,8 +497,8 @@ namespace LandscapeGenerator
                 writer.Write((byte)0);
             }
 
-            int roadFlags = 0;
-            for (int i = 0; i < roads.Length; i++)
+            var roadFlags = 0;
+            for (var i = 0; i < roads.Length; i++)
             {
                 if (roads[i])
                 {
@@ -493,7 +522,7 @@ namespace LandscapeGenerator
             specialIndex = reader.ReadByte();
             walled = reader.ReadBoolean();
 
-            byte riverData = reader.ReadByte();
+            var riverData = reader.ReadByte();
             if (riverData >= 128)
             {
                 hasIncomingRiver = true;
@@ -516,7 +545,7 @@ namespace LandscapeGenerator
             }
 
             int roadFlags = reader.ReadByte();
-            for (int i = 0; i < roads.Length; i++)
+            for (var i = 0; i < roads.Length; i++)
             {
                 roads[i] = (roadFlags & (1 << i)) != 0;
             }
@@ -524,17 +553,17 @@ namespace LandscapeGenerator
 
         public void SetLabel(string text)
         {
-            Text label = uiRect.GetComponent<Text>();
+            var label = uiRect.GetComponent<Text>();
             label.text = text;
         }
 
         public void DisableHighlight () {
-            Image highlight = uiRect.GetChild(0).GetComponent<Image>();
+            var highlight = uiRect.GetChild(0).GetComponent<Image>();
             highlight.enabled = false;
         }
 
         public void EnableHighlight (Color color) {
-            Image highlight = uiRect.GetChild(0).GetComponent<Image>();
+            var highlight = uiRect.GetChild(0).GetComponent<Image>();
             highlight.color = color;
             highlight.enabled = true;
         }

@@ -75,14 +75,14 @@ namespace LandscapeGenerator
             transform.localPosition = c;
             yield return LookAt(pathToTravel[1].Position);
 
-            float t = Time.deltaTime * travelSpeed;
-            for (int i = 1; i < pathToTravel.Count; i++) {
+            var t = Time.deltaTime * travelSpeed;
+            for (var i = 1; i < pathToTravel.Count; i++) {
                 a = c;
                 b = pathToTravel[i - 1].Position;
                 c = (b + pathToTravel[i].Position) * 0.5f;
                 for (; t < 1f; t += Time.deltaTime * travelSpeed) {
                     transform.localPosition = Bezier.GetPoint(a, b, c, t);
-                    Vector3 d = Bezier.GetDerivative(a, b, c, t);
+                    var d = Bezier.GetDerivative(a, b, c, t);
                     d.y = 0f;
                     transform.localRotation = Quaternion.LookRotation(d);
                     yield return null;
@@ -95,7 +95,7 @@ namespace LandscapeGenerator
             c = b;
             for (; t < 1f; t += Time.deltaTime * travelSpeed) {
                 transform.localPosition = Bezier.GetPoint(a, b, c, t);
-                Vector3 d = Bezier.GetDerivative(a, b, c, t);
+                var d = Bezier.GetDerivative(a, b, c, t);
                 d.y = 0f;
                 transform.localRotation = Quaternion.LookRotation(d);
                 yield return null;
@@ -108,13 +108,13 @@ namespace LandscapeGenerator
 
         IEnumerator LookAt (Vector3 point) {
             point.y = transform.localPosition.y;
-            Quaternion fromRotation = transform.localRotation;
-            Quaternion toRotation =
+            var fromRotation = transform.localRotation;
+            var toRotation =
                 Quaternion.LookRotation(point - transform.localPosition);
-            float speed = rotationSpeed / Quaternion.Angle(fromRotation, toRotation);
+            var speed = rotationSpeed / Quaternion.Angle(fromRotation, toRotation);
 
             for (
-                float t = Time.deltaTime * speed;
+                var t = Time.deltaTime * speed;
                 t < 1f;
                 t += Time.deltaTime * speed
             ) {
@@ -135,8 +135,8 @@ namespace LandscapeGenerator
 
         public static void Load(BinaryReader reader, HexGrid grid)
         {
-            HexCoordinates coordinates = HexCoordinates.Load(reader);
-            float orientation = reader.ReadSingle();
+            var coordinates = HexCoordinates.Load(reader);
+            var orientation = reader.ReadSingle();
             grid.AddUnit(Instantiate(unitPrefab), grid.GetCell(coordinates), orientation);
         }
     }

@@ -36,8 +36,8 @@ namespace LandscapeGenerator
         {
             if (level > 0)
             {
-                float[] thresholds = HexMetrics.GetFeatureThresholds(level - 1);
-                for (int i = 0; i < thresholds.Length; i++)
+                var thresholds = HexMetrics.GetFeatureThresholds(level - 1);
+                for (var i = 0; i < thresholds.Length; i++)
                 {
                     if (hash < thresholds[i])
                     {
@@ -56,12 +56,12 @@ namespace LandscapeGenerator
                 return;
             }
 
-            HexHash hash = HexMetrics.SampleHashGrid(position);
-            Transform prefab = PickPrefab(
+            var hash = HexMetrics.SampleHashGrid(position);
+            var prefab = PickPrefab(
                 urbanCollections, cell.UrbanLevel, hash.a, hash.d);
-            Transform otherPrefab = PickPrefab(
+            var otherPrefab = PickPrefab(
                 farmCollections, cell.FarmLevel, hash.b, hash.d);
-            float usedHash = hash.a;
+            var usedHash = hash.a;
             if (prefab)
             {
                 if (otherPrefab && hash.b < hash.a)
@@ -95,7 +95,7 @@ namespace LandscapeGenerator
                 return;
             }
 
-            Transform instance = Instantiate(prefab);
+            var instance = Instantiate(prefab);
             instance.SetParent(container, false);
             position.y += instance.localScale.y * 0.5f;
             instance.localPosition = HexMetrics.Perturb(position);
@@ -104,9 +104,9 @@ namespace LandscapeGenerator
 
         public void AddSpecialFeature(HexCell cell, Vector3 position)
         {
-            Transform instance = Instantiate(special[cell.SpecialIndex - 1]);
+            var instance = Instantiate(special[cell.SpecialIndex - 1]);
             instance.localPosition = HexMetrics.Perturb(position);
-            HexHash hash = HexMetrics.SampleHashGrid(position);
+            var hash = HexMetrics.SampleHashGrid(position);
             instance.localRotation = Quaternion.Euler(0f, 360f * hash.e, 0f);
             instance.SetParent(container, false);
         }
@@ -134,7 +134,7 @@ namespace LandscapeGenerator
                     AddWallSegment(near.v3, far.v3, near.v4, far.v4);
                 }
 
-                AddWallSegment(near.v4, far.v4, near.v8, far.v8);
+                AddWallSegment(near.v4, far.v4, near.v5, far.v5);
             }
         }
 
@@ -188,14 +188,14 @@ namespace LandscapeGenerator
             nearRight = HexMetrics.Perturb(nearRight);
             farRight = HexMetrics.Perturb(farRight);
 
-            Vector3 left = HexMetrics.WallLerp(nearLeft, farLeft);
-            Vector3 right = HexMetrics.WallLerp(nearRight, farRight);
+            var left = HexMetrics.WallLerp(nearLeft, farLeft);
+            var right = HexMetrics.WallLerp(nearRight, farRight);
 
-            Vector3 leftThicknessOffset = HexMetrics.WallThicknessOffset(nearLeft, farLeft);
-            Vector3 rightThicknessOffset = HexMetrics.WallThicknessOffset(nearRight, farRight);
+            var leftThicknessOffset = HexMetrics.WallThicknessOffset(nearLeft, farLeft);
+            var rightThicknessOffset = HexMetrics.WallThicknessOffset(nearRight, farRight);
 
-            float leftTop = left.y + HexMetrics.wallHeight;
-            float rightTop = right.y + HexMetrics.wallHeight;
+            var leftTop = left.y + HexMetrics.WallHeight;
+            var rightTop = right.y + HexMetrics.WallHeight;
 
             Vector3 v1, v2, v3, v4;
             v1 = v3 = left - leftThicknessOffset;
@@ -216,9 +216,9 @@ namespace LandscapeGenerator
 
             if (addTower)
             {
-                Transform towerInstance = Instantiate(wallTower);
+                var towerInstance = Instantiate(wallTower);
                 towerInstance.transform.localPosition = (left + right) * 0.5f;
-                Vector3 rightDirection = right - left;
+                var rightDirection = right - left;
                 rightDirection.y = 0f;
                 towerInstance.transform.right = rightDirection;
                 towerInstance.SetParent(container, false);
@@ -235,22 +235,22 @@ namespace LandscapeGenerator
                 return;
             }
 
-            bool hasLeftWall = !leftCell.IsUnderwater &&
-                               pivotCell.GetEdgeType(leftCell) != HexEdgeType.Cliff;
-            bool hasRighWall = !rightCell.IsUnderwater &&
-                               pivotCell.GetEdgeType(rightCell) != HexEdgeType.Cliff;
+            var hasLeftWall = !leftCell.IsUnderwater &&
+                              pivotCell.GetEdgeType(leftCell) != HexEdgeType.Cliff;
+            var hasRighWall = !rightCell.IsUnderwater &&
+                              pivotCell.GetEdgeType(rightCell) != HexEdgeType.Cliff;
 
             if (hasLeftWall)
             {
                 if (hasRighWall)
                 {
-                    bool hasTower = false;
+                    var hasTower = false;
                     if (leftCell.Elevation == rightCell.Elevation)
                     {
-                        HexHash hash = HexMetrics.SampleHashGrid(
+                        var hash = HexMetrics.SampleHashGrid(
                             (pivot + left + right) * (1f / 3f)
                         );
-                        hasTower = hash.e < HexMetrics.wallTowerThreshold;
+                        hasTower = hash.e < HexMetrics.WallTowerThreshold;
                     }
 
                     AddWallSegment(pivot, left, pivot, right, hasTower);
@@ -282,14 +282,14 @@ namespace LandscapeGenerator
             near = HexMetrics.Perturb(near);
             far = HexMetrics.Perturb(far);
 
-            Vector3 center = HexMetrics.WallLerp(near, far);
-            Vector3 thickness = HexMetrics.WallThicknessOffset(near, far);
+            var center = HexMetrics.WallLerp(near, far);
+            var thickness = HexMetrics.WallThicknessOffset(near, far);
 
             Vector3 v1, v2, v3, v4;
 
             v1 = v3 = center - thickness;
             v2 = v4 = center + thickness;
-            v3.y = v4.y = center.y + HexMetrics.wallHeight;
+            v3.y = v4.y = center.y + HexMetrics.WallHeight;
             walls.AddQuadUnperturbed(v1, v2, v3, v4);
         }
 
@@ -299,16 +299,16 @@ namespace LandscapeGenerator
             far = HexMetrics.Perturb(far);
             point = HexMetrics.Perturb(point);
 
-            Vector3 center = HexMetrics.WallLerp(near, far);
-            Vector3 thickness = HexMetrics.WallThicknessOffset(near, far);
+            var center = HexMetrics.WallLerp(near, far);
+            var thickness = HexMetrics.WallThicknessOffset(near, far);
 
             Vector3 v1, v2, v3, v4;
-            Vector3 pointTop = point;
+            var pointTop = point;
             point.y = center.y;
 
             v1 = v3 = center - thickness;
             v2 = v4 = center + thickness;
-            v3.y = v4.y = pointTop.y = center.y + HexMetrics.wallHeight;
+            v3.y = v4.y = pointTop.y = center.y + HexMetrics.WallHeight;
 
             walls.AddQuadUnperturbed(v1, point, v3, pointTop);
             walls.AddQuadUnperturbed(point, v2, pointTop, v4);
@@ -321,12 +321,12 @@ namespace LandscapeGenerator
         {
             roadCenter1 = HexMetrics.Perturb(roadCenter1);
             roadCenter2 = HexMetrics.Perturb(roadCenter2);
-            Transform instance = Instantiate(bridge);
+            var instance = Instantiate(bridge);
             instance.localPosition = (roadCenter1 + roadCenter2) * 0.5f;
             instance.forward = roadCenter2 - roadCenter1;
-            float length = Vector3.Distance(roadCenter1, roadCenter2);
+            var length = Vector3.Distance(roadCenter1, roadCenter2);
             instance.localScale = new Vector3(
-                1f, 1f, length * (1f / HexMetrics.bridgeDesignLength)
+                1f, 1f, length * (1f / HexMetrics.BridgeDesignLength)
             );
             instance.SetParent(container, false);
         }
