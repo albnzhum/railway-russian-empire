@@ -22,6 +22,7 @@ namespace LandscapeGenerator
         public static Texture2D NoiseSource;
         const float CellPerturbStrength = 1f;
         const float NoiseScale = 0.003f;
+       // const float NoiseScale = 125f;
         public const float ElevationPerturbStrength = 1.5f;
 
         public const int ChunkSizeX = 5, ChunkSizeZ = 5;
@@ -151,8 +152,8 @@ namespace LandscapeGenerator
             var h = step * HorizontalTerraceStepSize;
             a.x += (b.x - a.x) * h;
             a.z += (b.z - a.z) * h;
-            var v = ((step + 1) / 2) * VerticalTerraceStepSize;
-            a.y += (b.y - a.y) * v;
+            var v = (step ) * VerticalTerraceStepSize;
+            a.y += (b.y - a.y) * h;
             return a;
         }
 

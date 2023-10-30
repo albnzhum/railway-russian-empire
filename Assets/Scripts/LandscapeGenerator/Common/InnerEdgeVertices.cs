@@ -11,18 +11,20 @@ namespace LandscapeGenerator
         public InnerEdgeVertices(Vector3 corner, Vector3 left, Vector3 right)
         {
             vL = new Vector3[10];
-            for (int i = 0; i < 9; i++)
+            vL[0] = corner;
+            for (int i = 1; i < 9; i++)
             {
-                float t = 0.1f * (i + 1);
+                float t = 0.1f * i;
                 vL[i] = Vector3.Lerp(corner, left, t);
             }
 
             vL[9] = left;
 
             vR = new Vector3[10];
-            for (int i = 0; i < 9; i++)
+            vR[0] = corner;
+            for (int i = 1; i < 9; i++)
             {
-                float t = 0.1f * (i + 1);
+                float t = 0.1f * i;
                 vR[i] = Vector3.Lerp(corner, right, t);
             }
 
@@ -32,20 +34,30 @@ namespace LandscapeGenerator
         public InnerEdgeVertices(Vector3 corner, Vector3 left, Vector3 right, float angle)
         {
             vL = new Vector3[10];
-            for (int i = 0; i < 9; i++)
+            vL[0] = corner;
+            for (int i = 1; i < 9; i++)
             {
-                float t = 0.1f * (i + 1);
+                float t = 0.1f * i;
                 vL[i] = Vector3.Lerp(corner, left, t);
+            }
+
+            for (int i = 0; i < 10; i++)
+            {
                 vL[i].y += angle;
             }
 
             vL[9] = left;
 
             vR = new Vector3[10];
-            for (int i = 0; i < 9; i++)
+            vR[0] = corner;
+            for (int i = 1; i < 9; i++)
             {
-                float t = 0.1f * (i + 1);
+                float t = 0.1f * i;
                 vR[i] = Vector3.Lerp(corner, right, t);
+            }
+
+            for (int i = 0; i < 10; i++)
+            {
                 vR[i].y += angle;
             }
 
@@ -56,7 +68,5 @@ namespace LandscapeGenerator
         {
             return Quaternion.Euler(0, angleInDegrees, 0) * originalVector;
         }
-
-
     }
 }

@@ -1071,6 +1071,7 @@ namespace LandscapeGenerator
             terrain.AddTriangleCellData(indices, w2, leftWeight, boundaryWeights);
         }
 
+        //TODO: Отрефакторить код
         void TriangulateWithoutRiver(
             HexDirection direction, HexCell cell, Vector3 center, EdgeVertices e)
         {
@@ -1088,11 +1089,12 @@ namespace LandscapeGenerator
             }
             else
             {
-                center.y += cell.Elevation + 0.5f;
-                InnerEdgeVertices innerEdgeR1 = new InnerEdgeVertices(center, e.v1, e.v2);
-                InnerEdgeVertices innerEdgeR2 = new InnerEdgeVertices(center, e.v2, e.v3);
-                InnerEdgeVertices innerEdgeR3 = new InnerEdgeVertices(center, e.v3, e.v4);
-                InnerEdgeVertices innerEdgeR4 = new InnerEdgeVertices(center, e.v4, e.v5);
+                center.y += cell.Elevation +1;
+                InnerEdgeVertices innerEdgeR1 = new InnerEdgeVertices(center, e.v1, e.v2, 1f);
+                InnerEdgeVertices innerEdgeR2 = new InnerEdgeVertices(center, e.v2, e.v3, 1f);
+                InnerEdgeVertices innerEdgeR3 = new InnerEdgeVertices(center, e.v3, e.v4, 1f);
+                InnerEdgeVertices innerEdgeR4 = new InnerEdgeVertices(center, e.v4, e.v5, 1f);
+                center.y += 1f;
 
                 TriangulateEdgeFan(center, cell.Index, innerEdgeR1);
                 TriangulateEdgeFan(center, cell.Index, innerEdgeR2);
@@ -1112,12 +1114,13 @@ namespace LandscapeGenerator
             }
         }
 
+        //TODO: Понять как изменять координаты InnerEdgeVertices
         void TriangulateInTriangle(Vector3 bottom, Vector3 indices, InnerEdgeVertices innerEdge)
         {
-            Vector3 mLeft = Vector3.Lerp(bottom, innerEdge.vL[9], 0.1f);
-            Vector3 mRight = Vector3.Lerp(bottom, innerEdge.vR[9], 0.1f);
+            Vector3 mLeft = Vector3.Lerp(innerEdge.vL[0], innerEdge.vL[9], 0.1f);
+            Vector3 mRight = Vector3.Lerp(innerEdge.vL[0], innerEdge.vR[9], 0.1f);
 
-            terrain.AddTriangle(bottom, mLeft, mRight);
+            terrain.AddTriangle(innerEdge.vL[0], mLeft, mRight);
             terrain.AddTriangleCellData(indices, weights1);
 
             for (int i = 1; i < 10; i++)

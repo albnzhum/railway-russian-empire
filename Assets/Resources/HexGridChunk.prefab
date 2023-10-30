@@ -100,6 +100,11 @@ MonoBehaviour:
   useCellData: 0
   useUVCoordinates: 0
   useUV2Coordinates: 0
+  intensity: 0.5
+  type: 0
+  times: 3
+  hcAlpha: 0.5
+  hcBeta: 0.5
 --- !u!1 &1015383124176869621
 GameObject:
   m_ObjectHideFlags: 0
@@ -283,6 +288,11 @@ MonoBehaviour:
   useCellData: 0
   useUVCoordinates: 1
   useUV2Coordinates: 0
+  intensity: 0.5
+  type: 0
+  times: 3
+  hcAlpha: 0.5
+  hcBeta: 0.5
 --- !u!1 &4271138460488626754
 GameObject:
   m_ObjectHideFlags: 0
@@ -443,6 +453,11 @@ MonoBehaviour:
   useCellData: 0
   useUVCoordinates: 1
   useUV2Coordinates: 0
+  intensity: 0.5
+  type: 0
+  times: 3
+  hcAlpha: 0.5
+  hcBeta: 0.5
 --- !u!1 &5129897747853081074
 GameObject:
   m_ObjectHideFlags: 0
@@ -543,6 +558,11 @@ MonoBehaviour:
   useCellData: 0
   useUVCoordinates: 1
   useUV2Coordinates: 1
+  intensity: 0.5
+  type: 0
+  times: 3
+  hcAlpha: 0.5
+  hcBeta: 0.5
 --- !u!1 &6158508592248369249
 GameObject:
   m_ObjectHideFlags: 0
@@ -643,6 +663,11 @@ MonoBehaviour:
   useCellData: 0
   useUVCoordinates: 0
   useUV2Coordinates: 0
+  intensity: 0.5
+  type: 0
+  times: 3
+  hcAlpha: 0.5
+  hcBeta: 0.5
 --- !u!1 &6768624058538431079
 GameObject:
   m_ObjectHideFlags: 0
@@ -743,6 +768,11 @@ MonoBehaviour:
   useCellData: 0
   useUVCoordinates: 1
   useUV2Coordinates: 0
+  intensity: 0.5
+  type: 0
+  times: 3
+  hcAlpha: 0.5
+  hcBeta: 0.5
 --- !u!1 &7606345623593087608
 GameObject:
   m_ObjectHideFlags: 0
@@ -843,6 +873,11 @@ MonoBehaviour:
   useCellData: 1
   useUVCoordinates: 0
   useUV2Coordinates: 0
+  intensity: 1
+  type: 0
+  times: 4
+  hcAlpha: 0.5
+  hcBeta: 0.5
 --- !u!1 &7754543241476171133
 GameObject:
   m_ObjectHideFlags: 0

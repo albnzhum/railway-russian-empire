@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 using Vector3 = UnityEngine.Vector3;
 
 namespace LandscapeGenerator
