@@ -417,20 +417,6 @@ namespace LandscapeGenerator
                 e.v2.y = elevation * HexMetrics.ElevationStep;
                 e.v2.y +=
                     (HexMetrics.SampleNoise(center).y ) * 5;
-                e.v3.y = elevation * HexMetrics.ElevationStep;
-                e.v3.y +=
-                    (HexMetrics.SampleNoise(center).y ) * 5;
-                e.v4.y = elevation * HexMetrics.ElevationStep;
-                e.v4.y +=
-                    (HexMetrics.SampleNoise(center).y ) * 5;
-                e.v5.y = elevation * HexMetrics.ElevationStep;
-                e.v5.y +=
-                    (HexMetrics.SampleNoise(center).y ) * 5;
-
-                InnerEdgeVertices innerEdgeVertices = new InnerEdgeVertices(center, e.v1, e.v2);
-                InnerEdgeVertices innerEdgeVertices1 = new InnerEdgeVertices(center, e.v2, e.v3);
-                InnerEdgeVertices innerEdgeVertices3 = new InnerEdgeVertices(center, e.v3, e.v4);
-                InnerEdgeVertices innerEdgeVertices4 = new InnerEdgeVertices(center, e.v4, e.v5);
                 transform.localPosition = center;
             }
 

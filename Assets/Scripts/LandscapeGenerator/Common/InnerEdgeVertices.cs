@@ -27,7 +27,6 @@ namespace LandscapeGenerator
                 float t = 0.1f * i;
                 vR[i] = Vector3.Lerp(corner, right, t);
             }
-
             vR[9] = right;
         }
 

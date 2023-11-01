@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using Subdiv;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
@@ -61,6 +63,7 @@ namespace LandscapeGenerator
 
         public void Apply()
         {
+
             hexMesh.SetVertices(vertices);
             ListPool<Vector3>.Add(vertices);
             if (useCellData)
@@ -86,7 +89,13 @@ namespace LandscapeGenerator
             hexMesh.SetTriangles(triangles, 0);
             ListPool<int>.Add(triangles);
             hexMesh.RecalculateNormals();
-            hexMesh.Optimize();
+            //hexMesh.Optimize();
+            MeshUtility.Optimize(hexMesh);
+
+            /*
+            var mesh = SubdivisionSurface.Subdivide(SubdivisionSurface.Weld(hexMesh, 1f, hexMesh.bounds.size.x), 1, true);
+            mesh = hexMesh;*/
+
             if (useCollider)
             {
                 meshCollider.sharedMesh = hexMesh;

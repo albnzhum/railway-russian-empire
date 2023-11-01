@@ -195,9 +195,9 @@ namespace LandscapeGenerator
         public static Vector3 Perturb(Vector3 position)
         {
             var sample = SampleNoise(position);
-            position.x += (sample.x * 2f - 1f) * CellPerturbStrength;
-            position.y += (sample.y * 2f - 1f) * CellPerturbStrength;
-            position.z += (sample.z * 2f - 1f) * CellPerturbStrength;
+            position.x += (sample.x * 2f) * CellPerturbStrength;
+            position.y += (sample.y * 2f) * CellPerturbStrength;
+            position.z += (sample.z * 2f) * CellPerturbStrength;
             return position;
         }
 
