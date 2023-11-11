@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using Subdiv;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Serialization;
-using Random = UnityEngine.Random;
 using Vector3 = UnityEngine.Vector3;
 
 namespace LandscapeGenerator
@@ -23,6 +21,8 @@ namespace LandscapeGenerator
         [NonSerialized] List<Color> cellWeights;
         [NonSerialized] List<Vector2> uvs, uv2s;
         [NonSerialized] List<int> triangles;
+
+        [SerializeField] protected ComputeShader subdivCompute;
 
         Mesh hexMesh;
         MeshCollider meshCollider;
@@ -63,7 +63,6 @@ namespace LandscapeGenerator
 
         public void Apply()
         {
-
             hexMesh.SetVertices(vertices);
             ListPool<Vector3>.Add(vertices);
             if (useCellData)
@@ -91,10 +90,6 @@ namespace LandscapeGenerator
             hexMesh.RecalculateNormals();
             //hexMesh.Optimize();
             MeshUtility.Optimize(hexMesh);
-
-            /*
-            var mesh = SubdivisionSurface.Subdivide(SubdivisionSurface.Weld(hexMesh, 1f, hexMesh.bounds.size.x), 1, true);
-            mesh = hexMesh;*/
 
             if (useCollider)
             {

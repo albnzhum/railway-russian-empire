@@ -13,7 +13,7 @@ namespace Subdiv
     //      http://www.cs.cmu.edu/afs/cs/academic/class/15462-s14/www/lec_slides/Subdivision.pdf
     //      https://pages.mtu.edu/~shene/COURSES/cs3621/SLIDES/Subdivision.pdf
     //      https://graphics.stanford.edu/~mdfisher/subdivision.html
-    public class SubdivisionSurface 
+    public class SubdivisionSurface
     {
 
         public static Mesh Subdivide(Mesh source, int details = 1, bool weld = false)
@@ -111,20 +111,6 @@ namespace Subdiv
             mesh.RecalculateNormals();
 
             return mesh;
-        }
-
-        public Edge GetEdge(List<Edge> edges, Vertex v0, Vertex v1)
-        {
-            var match = v0.edges.Find(e => {
-                return e.Has(v1);
-            });
-            if (match != null) return match;
-
-            var ne = new Edge(v0, v1);
-            v0.AddEdge(ne);
-            v1.AddEdge(ne);
-            edges.Add(ne);
-            return ne;
         }
 
         Model Divide(Model model)
