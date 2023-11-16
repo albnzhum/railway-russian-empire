@@ -44,10 +44,10 @@ namespace TGS.Geom {
 																for (int k = 0; k < segmentCount; k++) {
 																				Segment s = segments [k];
 																				if (!s.deleted) {
-																								x += s.start.x;
-																								y += s.start.y;
-																								x += s.end.x;
-																								y += s.end.y;
+																								x += s.start.X;
+																								y += s.start.Y;
+																								x += s.end.X;
+																								y += s.end.Y;
 																								count += 2;
 																				}
 																}

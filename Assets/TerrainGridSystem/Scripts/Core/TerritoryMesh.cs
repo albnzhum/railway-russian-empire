@@ -5,9 +5,9 @@ namespace TGS
 {
 	public class TerritoryMesh
 	{
-		public int territoryIndex;
-		public Vector3[][] territoryMeshBorders;
-		public int[][] territoryMeshIndices;
+		public int TerritoryIndex;
+		public Vector3[][] TerritoryMeshBorders;
+		public int[][] TerritoryMeshIndices;
 	}
 
 }

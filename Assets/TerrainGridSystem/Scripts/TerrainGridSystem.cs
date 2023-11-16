@@ -58,7 +58,7 @@ namespace TGS {
 		/// <summary>
 		/// Returns the terrain center in world space.
 		/// </summary>
-		public Vector3 TerrainCenter => _terrain.transform.position + new Vector3(terrainWidth * 0.5f, 0, terrainDepth * 0.5f);
+		public Vector3 TerrainCenter => _terrain.transform.position + new Vector3(_terrainWidth * 0.5f, 0, _terrainDepth * 0.5f);
 
         public Texture2D canvasTexture;
 
@@ -136,7 +136,7 @@ namespace TGS {
 			get
             {
                 if (_gridTopology == GRID_TOPOLOGY.Irregular) {
-					return _numCells;
+					return numCells;
 				}
                 return _cellRowCount * _cellColumnCount;
             }
@@ -634,8 +634,8 @@ namespace TGS {
 			}
 			if (Terrain != null) {
 				position -= TerrainCenter;
-				position.x /= terrainWidth;
-				position.z /= terrainDepth;
+				position.x /= _terrainWidth;
+				position.z /= _terrainDepth;
 				GridCenter = new Vector2(position.x, position.z);
 			} else {
 				transform.position = position;
@@ -672,7 +672,7 @@ namespace TGS {
 				if (snapToCenter) {
 					Cell cell = CellGetAtPosition(position);
 					if (cell != null) {
-						position = cell.scaledCenter;
+						position = cell.ScaledCenter;
 					}
 				} else {
 					float qx = 1f + (_cellColumnCount - 1f) * 3f / 4f;
@@ -699,7 +699,7 @@ namespace TGS {
 				// try to get cell under position and returns its center
 				Cell c = CellGetAtPosition(position);
 				if (c != null) {
-					position = c.center;
+					position = c.Center;
 				}
 			}
 			if (worldSpace) position = transform.TransformPoint(position);

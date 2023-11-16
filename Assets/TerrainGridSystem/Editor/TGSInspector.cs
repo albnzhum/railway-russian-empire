@@ -57,9 +57,9 @@ namespace TGS_Editor {
 
 		public override void OnInspectorGUI () {
 			EditorGUILayout.Separator ();
-			GUI.skin.label.alignment = TextAnchor.MiddleCenter;  
+			GUI.skin.label.alignment = TextAnchor.MiddleCenter;
 			GUILayout.Label (_headerTexture, GUILayout.ExpandWidth (true));
-			GUI.skin.label.alignment = TextAnchor.MiddleLeft;  
+			GUI.skin.label.alignment = TextAnchor.MiddleLeft;
 
 
 			EditorGUILayout.BeginVertical ();
@@ -79,13 +79,13 @@ namespace TGS_Editor {
 
 			EditorGUILayout.BeginHorizontal ();
 			GUILayout.Label ("Territories", GUILayout.Width (120));
-			tgs.numTerritories = EditorGUILayout.IntSlider (tgs.numTerritories, 1, Mathf.Min (tgs.numCells, TerrainGridSystem.MAX_TERRITORIES));
+			tgs.numTerritories = EditorGUILayout.IntSlider (tgs.numTerritories, 1, Mathf.Min (tgs.NumCells, TerrainGridSystem.MaxTerritories));
 			EditorGUILayout.EndHorizontal ();
 
 			if (tgs.GridTopology == GRID_TOPOLOGY.Irregular) {
 				EditorGUILayout.BeginHorizontal ();
 				GUILayout.Label ("Cells (aprox.)", GUILayout.Width (120));
-				tgs.numCells = EditorGUILayout.IntField (tgs.numCells, GUILayout.Width (60));
+				tgs.NumCells = EditorGUILayout.IntField (tgs.NumCells, GUILayout.Width (60));
 				EditorGUILayout.EndHorizontal ();
 			} else {
 				EditorGUILayout.BeginHorizontal ();
@@ -115,17 +115,17 @@ namespace TGS_Editor {
 			}
 
 			if (tgs.GridTopology == GRID_TOPOLOGY.Irregular) {
-				if (tgs.numCells > 10000) {
+				if (tgs.NumCells > 10000) {
 					EditorGUILayout.HelpBox ("Total cell count exceeds recommended maximum of 10.000!", MessageType.Warning);
 				}
-			} else if (tgs.numCells > 50000) {
+			} else if (tgs.NumCells > 50000) {
 				EditorGUILayout.HelpBox ("Total cell count exceeds recommended maximum of 50.000!", MessageType.Warning);
 			}
 
 			EditorGUILayout.BeginHorizontal ();
 			GUILayout.Label ("Curvature", GUILayout.Width (120));
-			if (tgs.numCells > TerrainGridSystem.MAX_CELLS_FOR_CURVATURE) {
-				DrawInfoLabel ("not available with >" + TerrainGridSystem.MAX_CELLS_FOR_CURVATURE + " cells");
+			if (tgs.NumCells > TerrainGridSystem.MaxCellsForCurvature) {
+				DrawInfoLabel ("not available with >" + TerrainGridSystem.MaxCellsForCurvature + " cells");
 			} else {
 				tgs.GridCurvature = EditorGUILayout.Slider (tgs.GridCurvature, 0, 0.1f);
 			}
@@ -135,8 +135,8 @@ namespace TGS_Editor {
 			GUILayout.Label ("Relaxation", GUILayout.Width (120));
 			if (tgs.GridTopology != GRID_TOPOLOGY.Irregular) {
 				DrawInfoLabel ("only available with irregular topology");
-			} else if (tgs.numCells > TerrainGridSystem.MAX_CELLS_FOR_RELAXATION) {
-				DrawInfoLabel ("not available with >" + TerrainGridSystem.MAX_CELLS_FOR_RELAXATION + " cells");
+			} else if (tgs.NumCells > TerrainGridSystem.MaxCellsForRelaxation) {
+				DrawInfoLabel ("not available with >" + TerrainGridSystem.MaxCellsForRelaxation + " cells");
 			} else {
 				tgs.GridRelaxation = EditorGUILayout.IntSlider (tgs.GridRelaxation, 1, 32);
 			}
@@ -160,13 +160,13 @@ namespace TGS_Editor {
 			if (tgs.Terrain != null) {
 				EditorGUILayout.BeginHorizontal ();
 				GUILayout.Label ("Max Slope", GUILayout.Width (120));
-				tgs.cellsMaxSlope = EditorGUILayout.Slider (tgs.cellsMaxSlope, 0, 1f);
+				tgs.CellsMaxSlope = EditorGUILayout.Slider (tgs.CellsMaxSlope, 0, 1f);
 				EditorGUILayout.EndHorizontal ();
-			
+
 				EditorGUILayout.BeginHorizontal ();
 				GUILayout.Label ("Minimum Altitude", GUILayout.Width (120));
-				tgs.cellsMinimumAltitude = EditorGUILayout.FloatField (tgs.cellsMinimumAltitude, GUILayout.Width (120));
-				if (tgs.cellsMinimumAltitude == 0)
+				tgs.CellsMinimumAltitude = EditorGUILayout.FloatField (tgs.CellsMinimumAltitude, GUILayout.Width (120));
+				if (tgs.CellsMinimumAltitude == 0)
 					DrawInfoLabel ("(0 = not used)");
 				EditorGUILayout.EndHorizontal ();
 			}
@@ -195,12 +195,12 @@ namespace TGS_Editor {
 			}
 			EditorGUILayout.EndHorizontal ();
 
-			int cellsCreated = tgs.cells == null ? 0 : tgs.cells.Count;
+			int cellsCreated = tgs.Cells == null ? 0 : tgs.Cells.Count;
 			int territoriesCreated = tgs.territories == null ? 0 : tgs.territories.Count;
 
 			EditorGUILayout.BeginHorizontal ();
 			GUILayout.FlexibleSpace ();
-			DrawInfoLabel ("Cells Created: " + cellsCreated + " / Territories Created: " + territoriesCreated + " / Vertex Count: " + tgs.lastVertexCount);
+			DrawInfoLabel ("Cells Created: " + cellsCreated + " / Territories Created: " + territoriesCreated + " / Vertex Count: " + tgs.LastVertexCount);
 			GUILayout.FlexibleSpace ();
 			EditorGUILayout.EndHorizontal ();
 
@@ -245,7 +245,7 @@ namespace TGS_Editor {
 			GUILayout.Label ("Mesh Depth Offset", GUILayout.Width (120));
 			tgs.GridMeshDepthOffset = EditorGUILayout.IntSlider (tgs.GridMeshDepthOffset, -100, 0);
 			EditorGUILayout.EndHorizontal ();
-			
+
 			EditorGUILayout.BeginHorizontal ();
 			GUILayout.Label ("Colored Depth Offset", GUILayout.Width (120));
 			tgs.GridSurfaceDepthOffset = EditorGUILayout.IntSlider (tgs.GridSurfaceDepthOffset, -100, 0);
@@ -310,15 +310,15 @@ namespace TGS_Editor {
 
 			EditorGUILayout.BeginHorizontal ();
 			GUILayout.Label ("Show Cells", GUILayout.Width (120));
-			tgs.showCells = EditorGUILayout.Toggle (tgs.showCells);
-			if (tgs.showCells) {
+			tgs.ShowCells = EditorGUILayout.Toggle (tgs.ShowCells);
+			if (tgs.ShowCells) {
 				GUILayout.Label ("Border Color", GUILayout.Width (120));
-				tgs.cellBorderColor = EditorGUILayout.ColorField (tgs.cellBorderColor, GUILayout.Width (50));
+				tgs.CellBorderColor = EditorGUILayout.ColorField (tgs.CellBorderColor, GUILayout.Width (50));
 				EditorGUILayout.EndHorizontal ();
 				EditorGUILayout.BeginHorizontal ();
 				GUILayout.Label ("  Thickness", GUILayout.Width (120));
-				tgs.cellBorderThickness = EditorGUILayout.Slider (tgs.cellBorderThickness, 1f, 5f);
-				if (tgs.cellBorderThickness > 1f) {
+				tgs.CellBorderThickness = EditorGUILayout.Slider (tgs.CellBorderThickness, 1f, 5f);
+				if (tgs.CellBorderThickness > 1f) {
 					EditorGUILayout.EndHorizontal ();
 					EditorGUILayout.BeginHorizontal ();
 					EditorGUILayout.HelpBox ("Setting thickness value greater than 1 uses geometry shader (shader model 4.0 required, might not work on some mobile devices)", MessageType.Info);
@@ -328,7 +328,7 @@ namespace TGS_Editor {
 
 			EditorGUILayout.BeginHorizontal ();
 			GUILayout.Label ("  Highlight Color", GUILayout.Width (120));
-			tgs.cellHighlightColor = EditorGUILayout.ColorField (tgs.cellHighlightColor, GUILayout.Width (50));
+			tgs.CellHighlightColor = EditorGUILayout.ColorField (tgs.CellHighlightColor, GUILayout.Width (50));
 			EditorGUILayout.EndHorizontal ();
 
 			EditorGUILayout.BeginHorizontal ();
@@ -399,7 +399,7 @@ namespace TGS_Editor {
 			EditorGUILayout.EndVertical ();
 			EditorGUILayout.Separator ();
 			EditorGUILayout.BeginVertical ();
-				
+
 			DrawTitleLabel ("Grid Behaviour");
 
 			EditorGUILayout.BeginHorizontal ();
@@ -419,7 +419,7 @@ namespace TGS_Editor {
 
 			EditorGUILayout.BeginHorizontal ();
 			GUILayout.Label ("  Include Invisible Cells", GUILayout.Width (120));
-			tgs.cellHighlightNonVisible = EditorGUILayout.Toggle (tgs.cellHighlightNonVisible, GUILayout.Width (40));
+			tgs.CellHighlightNonVisible = EditorGUILayout.Toggle (tgs.CellHighlightNonVisible, GUILayout.Width (40));
 			GUILayout.Label (new GUIContent ("Minimum Distance", "Minimum distance of cell/territory to camera to be selectable. Useful in first person view to prevent selecting cells already under character."), GUILayout.Width (120));
 			tgs.HighlightMinimumTerrainDistance = EditorGUILayout.FloatField (tgs.HighlightMinimumTerrainDistance, GUILayout.Width (60));
 			EditorGUILayout.EndHorizontal ();
@@ -428,7 +428,7 @@ namespace TGS_Editor {
 			GUILayout.Label ("Overlay Mode", GUILayout.Width (120));
 			tgs.OverlayMode = (OVERLAY_MODE)EditorGUILayout.Popup ((int)tgs.OverlayMode, overlayModeOptions);
 			EditorGUILayout.EndHorizontal ();
-			
+
 			EditorGUILayout.BeginHorizontal ();
 			GUILayout.Label ("Respect Other UI", GUILayout.Width (120));
 			tgs.RespectOtherUI = EditorGUILayout.Toggle (tgs.RespectOtherUI);
@@ -437,9 +437,9 @@ namespace TGS_Editor {
 			EditorGUILayout.EndVertical ();
 			EditorGUILayout.Separator ();
 			EditorGUILayout.BeginVertical ();
-			
+
 			DrawTitleLabel ("Path Finding");
-			
+
 			EditorGUILayout.BeginHorizontal ();
 			GUILayout.Label ("Algorithm", GUILayout.Width (120));
 			tgs.pathFindingHeuristicFormula = (TGS.PathFinding.HeuristicFormula)EditorGUILayout.EnumPopup (tgs.pathFindingHeuristicFormula);
@@ -504,7 +504,7 @@ namespace TGS_Editor {
 								return;
 							}
 						}
-					
+
 						int cellSelectedIndex = cellSelectedIndices [0];
 						EditorGUILayout.BeginHorizontal ();
 						if (selectedCount == 1) {
@@ -526,27 +526,27 @@ namespace TGS_Editor {
 							}
 						}
 						EditorGUILayout.EndHorizontal ();
-			
+
 						bool needsRedraw = false;
 
 						EditorGUILayout.BeginHorizontal ();
 						GUILayout.Label ("  Visible", GUILayout.Width (120));
-						Cell selectedCell = tgs.cells [cellSelectedIndex];
-						bool cellVisible = selectedCell.visible;
-						selectedCell.visible = EditorGUILayout.Toggle (cellVisible);
-						if (selectedCell.visible != cellVisible) {
+						Cell selectedCell = tgs.Cells [cellSelectedIndex];
+						bool cellVisible = selectedCell.Visible;
+						selectedCell.Visible = EditorGUILayout.Toggle (cellVisible);
+						if (selectedCell.Visible != cellVisible) {
 							for (int k = 0; k < selectedCount; k++) {
-								tgs.cells [cellSelectedIndices [k]].visible = selectedCell.visible;
+								tgs.Cells [cellSelectedIndices [k]].Visible = selectedCell.Visible;
 							}
 							needsRedraw = true;
 						}
 						EditorGUILayout.EndHorizontal ();
-			
+
 						if (selectedCount == 1) {
 							EditorGUILayout.BeginHorizontal ();
 							GUILayout.Label ("  Tag", GUILayout.Width (120));
 							cellTag = EditorGUILayout.IntField (cellTag, GUILayout.Width (60));
-							if (cellTag == selectedCell.tag)
+							if (cellTag == selectedCell.Tag)
 								GUI.enabled = false;
 							if (GUILayout.Button ("Set Tag", GUILayout.Width (60))) {
 								tgs.CellSetTag (cellSelectedIndex, cellTag);
@@ -557,7 +557,7 @@ namespace TGS_Editor {
 						EditorGUILayout.BeginHorizontal ();
 						GUILayout.Label ("  Territory Index", GUILayout.Width (120));
 						cellTerritoryIndex = EditorGUILayout.IntField (cellTerritoryIndex, GUILayout.Width (40));
-						if (cellTerritoryIndex == selectedCell.territoryIndex)
+						if (cellTerritoryIndex == selectedCell.TerritoryIndex)
 							GUI.enabled = false;
 						if (GUILayout.Button ("Set Territory", GUILayout.Width (100))) {
 							for (int k = 0; k < selectedCount; k++) {
@@ -665,8 +665,8 @@ namespace TGS_Editor {
 			}
 			Event e = Event.current;
 			bool gridHit = tgs.CheckRay (HandleUtility.GUIPointToWorldRay (e.mousePosition));
-			if (cellHighlightedIndex != tgs.cellHighlightedIndex) {
-				cellHighlightedIndex = tgs.cellHighlightedIndex;
+			if (cellHighlightedIndex != tgs.CellHighlightedIndex) {
+				cellHighlightedIndex = tgs.CellHighlightedIndex;
 				SceneView.RepaintAll ();
 			}
 			int controlID = GUIUtility.GetControlID (FocusType.Passive);
@@ -726,7 +726,7 @@ namespace TGS_Editor {
 				EditorUtility.SetSelectedRenderState (rr [k], EditorSelectedRenderState.Hidden);
 				#else
 				EditorUtility.SetSelectedWireframeHidden (rr [k], true);
-				#endif			
+				#endif
 			}
 		}
 

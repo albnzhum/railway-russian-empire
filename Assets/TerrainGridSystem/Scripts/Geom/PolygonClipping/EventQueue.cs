@@ -42,16 +42,16 @@ namespace TGS.Geom {
 		int CompareSweepEvent (SweepEvent e1, SweepEvent e2) {
 			if (e1.Equals(e2)) return 0; 
 
-			if (e1.p.x - e2.p.x > Point.PRECISION) // Different x coordinate
+			if (e1.p.X - e2.p.X > Point.Precision) // Different x coordinate
 				return -1;
 			
-			if (e1.p.x - e2.p.x <  -Point.PRECISION) // Different x coordinate
+			if (e1.p.X - e2.p.X <  -Point.Precision) // Different x coordinate
 				return 1;
 
-			if ( e1.p.y - e2.p.y > Point.PRECISION) // Different points, but same x coordinate. The event with lower y coordinate is processed first
+			if ( e1.p.Y - e2.p.Y > Point.Precision) // Different points, but same x coordinate. The event with lower y coordinate is processed first
 				return -1;
 
-			if ( e1.p.y - e2.p.y < -Point.PRECISION ) // Different points, but same x coordinate. The event with lower y coordinate is processed first
+			if ( e1.p.Y - e2.p.Y < -Point.Precision ) // Different points, but same x coordinate. The event with lower y coordinate is processed first
 				return 1;
 
 			if (e1.isLeft != e2.isLeft) // Same point, but one is a left endpoint and the other a right endpoint. The right endpoint is processed first

@@ -25,7 +25,7 @@ namespace TGS
 	
 		[SerializeField]
 		HeuristicFormula
-			_pathFindingHeuristicFormula = HeuristicFormula.EuclideanNoSQR;
+			_pathFindingHeuristicFormula = HeuristicFormula.EuclideanNoSqr;
 
 		/// <summary>
 		/// The path finding heuristic formula to estimate distance from current position to destination
@@ -140,14 +140,14 @@ namespace TGS
 		public List<int> FindPath (int cellIndexStart, int cellIndexEnd, out int totalCost, int maxSearchCost = 0, int maxSteps = 0, int cellGroupMask = -1)
 		{
 			totalCost = 0;
-			Cell startCell = cells [cellIndexStart];
-			Cell endCell = cells [cellIndexEnd];
-			if (!startCell.canCross || !endCell.canCross)
+			Cell startCell = Cells [cellIndexStart];
+			Cell endCell = Cells [cellIndexEnd];
+			if (!startCell.CanCross || !endCell.CanCross)
 				return null;
 			List<int> routePoints = null;
 			if (cellIndexStart != cellIndexEnd) {
-				PathFindingPoint startingPoint = new PathFindingPoint (startCell.column, startCell.row);
-				PathFindingPoint endingPoint = new PathFindingPoint (endCell.column, endCell.row);
+				PathFindingPoint startingPoint = new PathFindingPoint (startCell.Column, startCell.Row);
+				PathFindingPoint endingPoint = new PathFindingPoint (endCell.Column, endCell.Row);
 				ComputeRouteMatrix ();
 				finder.Formula = _pathFindingHeuristicFormula;
 				finder.MaxSearchCost = maxSearchCost > 0 ? maxSearchCost : _pathFindingMaxCost;
@@ -165,7 +165,7 @@ namespace TGS
 				if (route != null) {
 					routePoints = new List<int> (route.Count);
 					for (int r = route.Count - 2; r >= 0; r--) {
-						int cellIndex = route [r].PY * _cellColumnCount + route [r].PX;
+						int cellIndex = route [r].Py * _cellColumnCount + route [r].Px;
 						routePoints.Add (cellIndex);
 					}
 					routePoints.Add (cellIndexEnd);

@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
-
 
 namespace TGS {
 
@@ -29,8 +27,5 @@ namespace TGS {
 			o.hideFlags = HideFlags.DontSave;
 			disposeObjects.Add(o);
 		}
-
-
-	}
-
+    }
 }

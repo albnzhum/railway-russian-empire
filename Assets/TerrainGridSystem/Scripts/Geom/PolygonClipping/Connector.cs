@@ -127,7 +127,7 @@ namespace TGS.Geom {
 								//          <0 for P2 right of the line
 								//    From http://geomalgorithms.com/a01-_area.html#isLeft()
 								double isLeft (Point p0, Point p1, Point p2) {
-												return ((p1.x - p0.x) * (p2.y - p0.y) - (p2.x - p0.x) * (p1.y - p0.y));
+												return ((p1.X - p0.X) * (p2.Y - p0.Y) - (p2.X - p0.X) * (p1.Y - p0.Y));
 								}
 
 								// orientation2D_Polygon(): test the orientation of a simple 2D polygon
@@ -143,21 +143,21 @@ namespace TGS.Geom {
 												for (int j = 0; j < V.contours.Count; j++) {
 																Contour r = V.contours [j];
 																int rmin = 0;
-																double xmin = r.points [0].x;
-																double ymin = r.points [0].y;
+																double xmin = r.points [0].X;
+																double ymin = r.points [0].Y;
 																int rPointsCount = r.points.Count;
 																for (int i = 0; i < rPointsCount; i++) {
 																				Point p = r.points [i];
-																				if (p.y > ymin) {
+																				if (p.Y > ymin) {
 																								continue;
-																				} else if (p.y == ymin) { // just as low
-																								if (p.x < xmin) { // and to left
+																				} else if (p.Y == ymin) { // just as low
+																								if (p.X < xmin) { // and to left
 																												continue;
 																								}
 																				}
 																				rmin = i; // a new rightmost lowest vertex
-																				xmin = p.x;
-																				ymin = p.y;
+																				xmin = p.X;
+																				ymin = p.Y;
 																}
 				
 																// test orientation at the rmin vertex

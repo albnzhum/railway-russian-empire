@@ -18,13 +18,13 @@ namespace LandscapeGenerator
         public void Open()
         {
             gameObject.SetActive(true);
-            HexMapCamera.Locked = true;
+            //HexMapCamera.Locked = true;
         }
 
         public void Close()
         {
             gameObject.SetActive(false);
-            HexMapCamera.Locked = false;
+            //HexMapCamera.Locked = false;
         }
 
         void FillList()
@@ -106,7 +106,7 @@ namespace LandscapeGenerator
 
             FillList();
             gameObject.SetActive(true);
-            HexMapCamera.Locked = true;
+            //HexMapCamera.Locked = true;
         }
 
         string GetSelectedPath()
@@ -142,7 +142,7 @@ namespace LandscapeGenerator
                 var header = reader.ReadInt32();
                 if (header <= 2) {
                     hexGrid.Load(reader, header);
-                    HexMapCamera.ValidatePosition();
+                    //HexMapCamera.ValidatePosition();
                 }
                 else {
                     Debug.LogWarning("Unknown map format " + header);

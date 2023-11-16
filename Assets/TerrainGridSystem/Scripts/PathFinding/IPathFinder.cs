@@ -2,57 +2,32 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace TGS.PathFinding {
+namespace TGS.PathFinding
+{
+    public delegate int OnCellCross(int location);
 
-				public delegate int OnCellCross (int location);
+    interface IPathFinder
+    {
+        HeuristicFormula Formula { get; set; }
 
-				interface IPathFinder {
+        bool Diagonals { get; set; }
 
-								HeuristicFormula Formula {
-												get;
-												set;
-								}
+        bool HeavyDiagonals { get; set; }
 
-								bool Diagonals {
-												get;
-												set;
-								}
+        bool HexagonalGrid { get; set; }
 
-								bool HeavyDiagonals {
-												get;
-												set;
-								}
+        int HeuristicEstimate { get; set; }
 
-								bool HexagonalGrid {
-												get;
-												set;
-								}
+        int MaxSearchCost { get; set; }
 
-								int HeuristicEstimate {
-												get;
-												set;
-								}
+        int MaxSteps { get; set; }
 
-								int MaxSearchCost {
-												get;
-												set;
-								}
+        int CellGroupMask { get; set; }
 
-								int MaxSteps {
-												get;
-												set;
-								}
+        List<PathFinderNode> FindPath(PathFindingPoint start, PathFindingPoint end, out int cost, bool evenLayout);
 
-								int CellGroupMask {
-												get;
-												set;
-								}
+        void SetCalcMatrix(int[] grid);
 
-								List<PathFinderNode> FindPath (PathFindingPoint start, PathFindingPoint end, out int cost, bool evenLayout);
-
-								void SetCalcMatrix (int[] grid);
-
-								OnCellCross OnCellCross { get; set; }
-
-				}
+        OnCellCross OnCellCross { get; set; }
+    }
 }

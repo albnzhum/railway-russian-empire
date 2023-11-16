@@ -27,18 +27,18 @@ namespace TGS.Geom {
 		}
 
 		public Rectangle Union(Rectangle o) {
-			double minX = this.minX < o.minX + Point.PRECISION ? this.minX: o.minX;
-			double maxX = this.right > o.right - Point.PRECISION ? this.right: o.right;
-			double minY = this.minY < o.minY+ Point.PRECISION ? this.minY: o.minY;
-			double maxY = this.top > o.top - Point.PRECISION ? this.top: o.top;
+			double minX = this.minX < o.minX + Point.Precision ? this.minX: o.minX;
+			double maxX = this.right > o.right - Point.Precision ? this.right: o.right;
+			double minY = this.minY < o.minY+ Point.Precision ? this.minY: o.minY;
+			double maxY = this.top > o.top - Point.Precision ? this.top: o.top;
 			return new Rectangle(minX, minY, maxX-minX, maxY-minY);
 		}
 
 		public bool Intersects(Rectangle o) {
-			if (o.minX>right + Point.PRECISION) return false;
-			if (o.right<minX - Point.PRECISION) return false;
-			if (o.minY>top + Point.PRECISION) return false;
-			if (o.top<minY - Point.PRECISION) return false;
+			if (o.minX>right + Point.Precision) return false;
+			if (o.right<minX - Point.Precision) return false;
+			if (o.minY>top + Point.Precision) return false;
+			if (o.top<minY - Point.Precision) return false;
 			return true;
 		}
 

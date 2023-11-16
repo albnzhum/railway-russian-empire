@@ -46,29 +46,29 @@ namespace TGS.Geom {
 																Point p = cells [k].center;
 																// Checks that p is not near than PRECISION from other point
 																while (hit.ContainsKey (p)) {
-																				if (p.x > 0) {
-																								p.x -= Point.PRECISION * 2.0f;
+																				if (p.X > 0) {
+																								p.X -= Point.Precision * 2.0f;
 																				} else {
-																								p.x += Point.PRECISION * 2.0f;
+																								p.X += Point.Precision * 2.0f;
 																				}
 																}
 																hit[p] = true; //.Add (p, true);
 																Event siteEvent = new Event (EVENT_TYPE.SiteEvent);
 																siteEvent.p = p;
-																siteEvent.x = p.x;
+																siteEvent.x = p.X;
 																siteEvent.cell = cells [k];
 																eventQueue.Add (siteEvent);
 																eventQueueCount++;
 												}
 
 												eventQueue.Sort ((Event e1, Event e2) => {
-																if (e1.x < e2.x - Point.PRECISION)
+																if (e1.x < e2.x - Point.Precision)
 																				return -1;
-																else if (e1.x > e2.x + Point.PRECISION)
+																else if (e1.x > e2.x + Point.Precision)
 																				return 1;
-																else if (e1.p.y < e2.p.y - Point.PRECISION)
+																else if (e1.p.Y < e2.p.Y - Point.Precision)
 																				return -1;
-																else if (e1.p.y > e2.p.y + Point.PRECISION)
+																else if (e1.p.Y > e2.p.Y + Point.Precision)
 																				return 1;
 																else
 																				return 0;
@@ -99,9 +99,9 @@ namespace TGS.Geom {
 //					max = midPoint;
 //				}
 
-																if (ev2.x < ev.x - Point.PRECISION) {
+																if (ev2.x < ev.x - Point.Precision) {
 																				min = midPoint + 1;
-																} else if (ev2.x - ev.x < Point.PRECISION && ev2.x - ev.x > -Point.PRECISION && ev2.p.y < ev.p.y - Point.PRECISION) {
+																} else if (ev2.x - ev.x < Point.Precision && ev2.x - ev.x > -Point.Precision && ev2.p.Y < ev.p.Y - Point.Precision) {
 																				min = midPoint + 1;
 																} else {
 																				max = midPoint;
@@ -162,9 +162,9 @@ namespace TGS.Geom {
 																				i.cell.segments.Add (i.next.s0);
 
 																				// Check for new circle events around the new arc:
-																				CheckCircleEvent (i, p.x);
-																				CheckCircleEvent (i.prev, p.x);
-																				CheckCircleEvent (i.next, p.x);
+																				CheckCircleEvent (i, p.X);
+																				CheckCircleEvent (i.prev, p.X);
+																				CheckCircleEvent (i.next, p.X);
 																				return;
 																}
 												}
@@ -175,7 +175,7 @@ namespace TGS.Geom {
 												i.next = new Arc (ev.cell, p, i);
 
 												// Insert segment between p and i
-												Point start = new Point (X0 - 1, (i.next.p.y + i.p.y) / 2);
+												Point start = new Point (X0 - 1, (i.next.p.Y + i.p.Y) / 2);
 												i.next.s0 = i.s1 = new Segment (start);
 												i.next.cell.segments.Add (i.next.s0);
 												i.cell.segments.Add (i.next.s0);
@@ -215,7 +215,7 @@ namespace TGS.Geom {
 
 								void CheckCircleEvent (Arc i, double x0) {
 												// Invalidate any old event.
-												if (i.e != null && (i.e.x - x0 < Point.PRECISION || i.e.x - x0 > Point.PRECISION)) {
+												if (i.e != null && (i.e.x - x0 < Point.Precision || i.e.x - x0 > Point.Precision)) {
 																i.e.valid = false;
 												}
 												i.e = null;
@@ -226,7 +226,7 @@ namespace TGS.Geom {
 												double x;
 												Point o;
 
-												if (Circle (i.prev.p, i.p, i.next.p, out x, out o) && x >= x0 - Point.PRECISION) {
+												if (Circle (i.prev.p, i.p, i.next.p, out x, out o) && x >= x0 - Point.Precision) {
 																// Create new event.
 																i.e = new Event (EVENT_TYPE.CircleEvent, x, o, i);
 																AddEvent (i.e);
@@ -237,38 +237,38 @@ namespace TGS.Geom {
 								bool Circle (Point a, Point b, Point c, out double x, out Point o) {
 												// Check that bc is a "right turn" from ab.
 												x = 0;
-												o = Point.zero;
-												double cv = (b.x - a.x) * (c.y - a.y) - (c.x - a.x) * (b.y - a.y);
+												o = Point.Zero;
+												double cv = (b.X - a.X) * (c.Y - a.Y) - (c.X - a.X) * (b.Y - a.Y);
 												if (cv >= 0) {
 																return false;
 												}
 
 												// Algorithm from O'Rourke 2ed p. 189.
-												double A = b.x - a.x;
-												double B = b.y - a.y;
-												double C = c.x - a.x;
-												double D = c.y - a.y;
-												double E = A * (a.x + b.x) + B * (a.y + b.y);
-												double F = C * (a.x + c.x) + D * (a.y + c.y);
-												double G = 2 * (A * (c.y - b.y) - B * (c.x - b.x)); // changed to double to prevent precision problems
+												double A = b.X - a.X;
+												double B = b.Y - a.Y;
+												double C = c.X - a.X;
+												double D = c.Y - a.Y;
+												double E = A * (a.X + b.X) + B * (a.Y + b.Y);
+												double F = C * (a.X + c.X) + D * (a.Y + c.Y);
+												double G = 2 * (A * (c.Y - b.Y) - B * (c.X - b.X)); // changed to double to prevent precision problems
 
-												if (G < Point.PRECISION && G > -Point.PRECISION) {
+												if (G < Point.Precision && G > -Point.Precision) {
 																return false;  // Points are co-linear.
 												}
 			
 												// Point o is the center of the circle.
-												o.x = (D * E - B * F) / G;
-												o.y = (A * F - C * E) / G;
+												o.X = (D * E - B * F) / G;
+												o.Y = (A * F - C * E) / G;
 
 												// o.x plus radius equals max x coordinate.
-												x = o.x + Math.Sqrt ((a.x - o.x) * (a.x - o.x) + (a.y - o.y) * (a.y - o.y));
+												x = o.X + Math.Sqrt ((a.X - o.X) * (a.X - o.X) + (a.Y - o.Y) * (a.Y - o.Y));
 												return true;
 								}
 
 								// Will a new parabola at point p intersect with arc i?
 								bool Intersect (Point p, Arc i, out Point res) {
-												res = Point.zero;
-												if ((i.p.x - p.x) < Point.PRECISION && (i.p.x - p.x) > -Point.PRECISION) {
+												res = Point.Zero;
+												if ((i.p.X - p.X) < Point.Precision && (i.p.X - p.X) > -Point.Precision) {
 																return false;
 												}
 
@@ -278,19 +278,19 @@ namespace TGS.Geom {
 
 //												if (i.prev != null) { // Get the intersection of i->prev, i.
 												if (prevIsNotNull) { // Get the intersection of i->prev, i.
-																a = Intersection (i.prev.p, i.p, p.x).y;
+																a = Intersection (i.prev.p, i.p, p.X).Y;
 												}
 //												if (i.next != null) { // Get the intersection of i->next, i.
 												if (nextIsNotNull) { // Get the intersection of i->next, i.
-																b = Intersection (i.p, i.next.p, p.x).y;
+																b = Intersection (i.p, i.next.p, p.X).Y;
 												}
 
 //												if ((i.prev == null || a <= p.y) && (i.next == null || p.y < b)) {
-												if ((!prevIsNotNull || a <= p.y) && (!nextIsNotNull || p.y < b)) {
-																res.y = p.y;
+												if ((!prevIsNotNull || a <= p.Y) && (!nextIsNotNull || p.Y < b)) {
+																res.Y = p.Y;
 																// Plug it back into the parabola equation.
-																res.x = ((i.p.x * i.p.x + (i.p.y - res.y) * (i.p.y - res.y) - p.x * p.x)
-																/ (2 * i.p.x - 2 * p.x));
+																res.X = ((i.p.X * i.p.X + (i.p.Y - res.Y) * (i.p.Y - res.Y) - p.X * p.X)
+																/ (2 * i.p.X - 2 * p.X));
 
 																return true;
 												}
@@ -301,27 +301,27 @@ namespace TGS.Geom {
 								Point Intersection (Point p0, Point p1, double l) {
 												Point res = new Point (), p = p0;
 
-												if (p0.x == p1.x)
-																res.y = (p0.y + p1.y) / 2;
-												else if (p1.x == l)
-																res.y = p1.y;
-												else if (p0.x == l) {
-																res.y = p0.y;
+												if (p0.X == p1.X)
+																res.Y = (p0.Y + p1.Y) / 2;
+												else if (p1.X == l)
+																res.Y = p1.Y;
+												else if (p0.X == l) {
+																res.Y = p0.Y;
 																p = p1;
 												} else {
 																// Use the quadratic formula.
-																double z0 = 2 * (p0.x - l);
-																double z1 = 2 * (p1.x - l);
+																double z0 = 2 * (p0.X - l);
+																double z1 = 2 * (p1.X - l);
 				
 																double a = 1 / z0 - 1 / z1;
-																double b = -2 * (p0.y / z0 - p1.y / z1);
-																double c = (p0.y * p0.y + p0.x * p0.x - l * l) / z0
-																           - (p1.y * p1.y + p1.x * p1.x - l * l) / z1;
+																double b = -2 * (p0.Y / z0 - p1.Y / z1);
+																double c = (p0.Y * p0.Y + p0.X * p0.X - l * l) / z0
+																           - (p1.Y * p1.Y + p1.X * p1.X - l * l) / z1;
 
-																res.y = (-b - Math.Sqrt (b * b - 4 * a * c)) / (2 * a);
+																res.Y = (-b - Math.Sqrt (b * b - 4 * a * c)) / (2 * a);
 												}
 												// Plug back into one of the parabola equations.
-												res.x = (p.x * p.x + (p.y - res.y) * (p.y - res.y) - l * l) / (2 * p.x - 2 * l);
+												res.X = (p.X * p.X + (p.Y - res.Y) * (p.Y - res.Y) - l * l) / (2 * p.X - 2 * l);
 												return res;
 								}
 
@@ -346,7 +346,7 @@ namespace TGS.Geom {
 																for (int k = 0; k < segmentCount; k++) {
 																				Segment s = cell.segments [k];
 																				// is the segment completely outside?
-																				if (!s.done || (s.start.x < X0 && s.end.x < X0) || (s.start.y < Y0 && s.end.y < Y0) || (s.start.x > X1 && s.end.x > X1) || (s.start.y > Y1 && s.end.y > Y1) ||
+																				if (!s.done || (s.start.X < X0 && s.end.X < X0) || (s.start.Y < Y0 && s.end.Y < Y0) || (s.start.X > X1 && s.end.X > X1) || (s.start.Y > Y1 && s.end.Y > Y1) ||
 																				    Point.EqualsBoth (s.start, s.end)) {
 																								s.deleted = true;
 																								continue;
@@ -406,7 +406,7 @@ namespace TGS.Geom {
 								bool GetNearestSegmentPointToCorner (Point corner, List<Segment> segments, bool leftOrRightSides, out Point nearest) {
 												double dist, minDist = double.MaxValue;
 												Point p;
-												nearest = Point.zero;
+												nearest = Point.Zero;
 												int segmentCount = segments.Count;
 												for (int k = 0; k < segmentCount; k++) {
 																Segment s = segments [k];
@@ -415,8 +415,8 @@ namespace TGS.Geom {
 																p = s.start;
 																if (Point.EqualsBoth (p, corner))
 																				continue;
-																if ((Math.Abs (corner.x - p.x) < Point.PRECISION && leftOrRightSides) || (Math.Abs (corner.y - p.y) < Point.PRECISION && !leftOrRightSides)) {
-																				dist = (p - corner).sqrMagnitude;
+																if ((Math.Abs (corner.X - p.X) < Point.Precision && leftOrRightSides) || (Math.Abs (corner.Y - p.Y) < Point.Precision && !leftOrRightSides)) {
+																				dist = (p - corner).SqrMagnitude;
 																				if (dist < minDist) {
 																								minDist = dist;
 																								nearest = p;
@@ -425,8 +425,8 @@ namespace TGS.Geom {
 																p = segments [k].end;
 																if (Point.EqualsBoth (p, corner))
 																				continue;
-																if ((Math.Abs (corner.x - p.x) < Point.PRECISION && leftOrRightSides) || (Math.Abs (corner.y - p.y) < Point.PRECISION && !leftOrRightSides)) {
-																				dist = (p - corner).sqrMagnitude;
+																if ((Math.Abs (corner.X - p.X) < Point.Precision && leftOrRightSides) || (Math.Abs (corner.Y - p.Y) < Point.Precision && !leftOrRightSides)) {
+																				dist = (p - corner).SqrMagnitude;
 																				if (dist < minDist) {
 																								minDist = dist;
 																								nearest = p;
@@ -442,7 +442,7 @@ namespace TGS.Geom {
 												int nearest = -1;
 												for (int k = 0; k < cells.Length; k++) {
 																Point center = cells [k].center; // new Point(cells [k].center.x, cells [k].center.y);
-																double dist = (center.x - point.x) * (center.x - point.x) + (center.y - point.y) * (center.y - point.y);
+																double dist = (center.X - point.X) * (center.X - point.X) + (center.Y - point.Y) * (center.Y - point.Y);
 																if (dist < minDist) {
 																				minDist = dist;
 																				nearest = k;
@@ -452,7 +452,7 @@ namespace TGS.Geom {
 								}
 
 								bool PointInsideRect (Point p) {
-												return p.x > X0 && p.x < X1 && p.y > Y0 && p.y < Y1;
+												return p.X > X0 && p.X < X1 && p.Y > Y0 && p.Y < Y1;
 								}
 
 
@@ -460,34 +460,34 @@ namespace TGS.Geom {
 												// Get line parameters
 												Point start = s.start, end = s.end;
 
-												double dy = (end.y - start.y) / (end.x - start.x);
-												if (point.x < X0) {
-																point.y += dy * (X0 - point.x);
-																point.x = X0;
-												} else if (point.x > X1) {
-																point.y += dy * (X1 - point.x);
-																point.x = X1;
+												double dy = (end.Y - start.Y) / (end.X - start.X);
+												if (point.X < X0) {
+																point.Y += dy * (X0 - point.X);
+																point.X = X0;
+												} else if (point.X > X1) {
+																point.Y += dy * (X1 - point.X);
+																point.X = X1;
 												}
-												if (point.y < Y0) {
-																point.x += (Y0 - point.y) * (1.0f / dy);
-																point.y = Y0;
-												} else if (point.y > Y1) {
-																point.x += (Y1 - point.y) * (1.0f / dy);
-																point.y = Y1;
+												if (point.Y < Y0) {
+																point.X += (Y0 - point.Y) * (1.0f / dy);
+																point.Y = Y0;
+												} else if (point.Y > Y1) {
+																point.X += (Y1 - point.Y) * (1.0f / dy);
+																point.Y = Y1;
 												}
-												if (DoublesAreEqual (point.x, X0))
+												if (DoublesAreEqual (point.X, X0))
 																cell.left.Add (point);
-												if (DoublesAreEqual (point.x, X1))
+												if (DoublesAreEqual (point.X, X1))
 																cell.right.Add (point);
-												if (DoublesAreEqual (point.y, Y0))
+												if (DoublesAreEqual (point.Y, Y0))
 																cell.bottom.Add (point);
-												if (DoublesAreEqual (point.y, Y1))
+												if (DoublesAreEqual (point.Y, Y1))
 																cell.top.Add (point);
 												return point;
 								}
 
 								bool DoublesAreEqual (double d1, double d2) {
-												return (d1 - d2 > -Point.PRECISION && d1 - d2 < Point.PRECISION);
+												return (d1 - d2 > -Point.Precision && d1 - d2 < Point.Precision);
 								}
 
 				}

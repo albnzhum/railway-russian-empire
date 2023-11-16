@@ -21,14 +21,14 @@ float Waves(float2 worldXZ, sampler2D noiseTex)
 {
     float2 uv1 = worldXZ;
     uv1.y += _Time.y;
-    float4 noise1 = tex2D(noiseTex, uv1 * 0.025);
+    float4 noise1 = tex2D(noiseTex, uv1 * 0.0025);
 
     float2 uv2 = worldXZ;
     uv2.x += _Time.y;
-    float4 noise2 = tex2D(noiseTex, uv2 * 0.025);
+    float4 noise2 = tex2D(noiseTex, uv2 * 0.0205);
 
     float blendWave = sin(
-        (worldXZ.x + worldXZ.y) * 0.1 +
+        (worldXZ.x + worldXZ.y) * 0.5 +
         (noise1.y + noise2.z) + _Time.y
     );
     blendWave *= blendWave;

@@ -6,13 +6,13 @@ using TGS.Geom;
 namespace TGS {
 	public interface IAdmin {
 
-		string name { get; set; }
+		string Name { get; set; }
 
-		Region region { get; set; }
+		Region Region { get; set; }
 
-		Polygon polygon { get; set; }
+		Polygon Polygon { get; set; }
 
-		bool visible { get; set; }
+		bool Visible { get; set; }
 
 	}
 }

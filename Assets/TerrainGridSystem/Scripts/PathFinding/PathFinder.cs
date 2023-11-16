@@ -24,8 +24,8 @@ namespace TGS.PathFinding {
         public int     H;  // f = gone + heuristic
         public int     X;
         public int     Y;
-        public int     PX; // Parent
-        public int     PY;
+        public int     Px; // Parent
+        public int     Py;
     }
 
     public enum PathFinderNodeType
@@ -41,14 +41,14 @@ namespace TGS.PathFinding {
     public enum HeuristicFormula
     {
         Manhattan           = 1,
-        MaxDXDY             = 2,
+        MaxDxdy             = 2,
         DiagonalShortCut    = 3,
         Euclidean           = 4,
-        EuclideanNoSQR      = 5,
+        EuclideanNoSqr      = 5,
         Custom1             = 6
     }
 
-	internal class ComparePFNode : IComparer<PathFinderNode>
+	internal class ComparePfNode : IComparer<PathFinderNode>
 	{
 		public int Compare(PathFinderNode x, PathFinderNode y)
 		{

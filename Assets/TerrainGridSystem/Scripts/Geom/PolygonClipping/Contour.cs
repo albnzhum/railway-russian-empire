@@ -40,8 +40,8 @@ namespace TGS.Geom {
 								public List<Vector2>GetVector2Points (Vector2 offset, Vector2 scale) {
 												List<Vector2> np = new List<Vector2> (points.Count);
 												for (int k = 0; k < points.Count; k++) {
-																float x = (float)Math.Round (points [k].x, 7);
-																float y = (float)Math.Round (points [k].y, 7);
+																float x = (float)Math.Round (points [k].X, 7);
+																float y = (float)Math.Round (points [k].Y, 7);
 																np.Add (new Vector2 (x * scale.x + offset.x, y * scale.y + offset.y));
 												}
 												return np;
@@ -59,14 +59,14 @@ namespace TGS.Geom {
 																int pointCount = points.Count;
 																for (int k = 0; k < pointCount; k++) {
 																				Point p = points [k];
-																				if (p.x > maxX)
-																								maxX = p.x;
-																				if (p.x < minX)
-																								minX = p.x;
-																				if (p.y > maxY)
-																								maxY = p.y;
-																				if (p.y < minY)
-																								minY = p.y;
+																				if (p.X > maxX)
+																								maxX = p.X;
+																				if (p.X < minX)
+																								minX = p.X;
+																				if (p.Y > maxY)
+																								maxY = p.Y;
+																				if (p.Y < minY)
+																								minY = p.Y;
 																}
 																bounds = new Rectangle (minX, minY, maxX - minX, maxY - minY);
 																return bounds;
@@ -97,15 +97,15 @@ namespace TGS.Geom {
 																Point curr = points [i];
 																Point next = (i == points.Count - 1) ? points [0] : points [i + 1];
 
-																if ((p.y >= next.y || p.y <= curr.y) && (p.y >= curr.y || p.y <= next.y)) {
+																if ((p.Y >= next.Y || p.Y <= curr.Y) && (p.Y >= curr.Y || p.Y <= next.Y)) {
 																				continue;
 																}
 
 																// Edge is from curr to next.
-																if (p.x < Math.Max (curr.x, next.x) && next.y != curr.y) {
+																if (p.X < Math.Max (curr.X, next.X) && next.Y != curr.Y) {
 																				// Find where the line intersects...
-																				double xInt = (p.y - curr.y) * (next.x - curr.x) / (next.y - curr.y) + curr.x;
-																				if (curr.x == next.x || p.x <= xInt)
+																				double xInt = (p.Y - curr.Y) * (next.X - curr.X) / (next.Y - curr.Y) + curr.X;
+																				if (curr.X == next.X || p.X <= xInt)
 																								intersections++;
 																}
 												}

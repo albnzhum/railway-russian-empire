@@ -11,13 +11,13 @@ namespace LandscapeGenerator
         public void Open()
         {
             gameObject.SetActive(true);
-            HexMapCamera.Locked = true;
+            //HexMapCamera.Locked = true;
         }
 
         public void Close()
         {
             gameObject.SetActive(false);
-            HexMapCamera.Locked = false;
+            //HexMapCamera.Locked = false;
         }
 
         public void CreateSmallMap()
@@ -38,7 +38,7 @@ namespace LandscapeGenerator
         void CreateMap(int x, int z)
         {
             hexGrid.CreateMap(x, z);
-            HexMapCamera.ValidatePosition();
+            //HexMapCamera.ValidatePosition();
             Close();
         }
     }

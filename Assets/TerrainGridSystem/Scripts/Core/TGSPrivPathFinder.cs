@@ -37,8 +37,8 @@ namespace TGS
 				int jj = j * _cellColumnCount;
 				for (int k = 0; k < _cellColumnCount; k++) {
 					int cellIndex = jj + k;
-					if (cells [cellIndex].canCross && cells [cellIndex].visible) {	// set navigation bit
-						routeMatrix [cellIndex] = cells [cellIndex].group;
+					if (Cells [cellIndex].CanCross && Cells [cellIndex].Visible) {	// set navigation bit
+						routeMatrix [cellIndex] = Cells [cellIndex].Group;
 					} else {		// clear navigation bit
 						routeMatrix [cellIndex] = 0;
 					}

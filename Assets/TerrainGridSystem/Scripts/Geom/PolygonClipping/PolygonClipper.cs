@@ -71,11 +71,11 @@ namespace TGS.Geom {
 			SweepEvent e2 = new SweepEvent(segment.end, true, polygonType, e1);
 			e1.otherSE = e2;
 
-			if (e1.p.x < e2.p.x - Point.PRECISION ) {
+			if (e1.p.X < e2.p.X - Point.Precision ) {
 				e2.isLeft = false;
-			} else if (e1.p.x > e2.p.x + Point.PRECISION) {
+			} else if (e1.p.X > e2.p.X + Point.Precision) {
 				e1.isLeft = false;
-			} else if (e1.p.y < e2.p.y - Point.PRECISION) { // the segment is vertical. The bottom endpoint is processed before the top endpoint 
+			} else if (e1.p.Y < e2.p.Y - Point.Precision) { // the segment is vertical. The bottom endpoint is processed before the top endpoint 
 				e2.isLeft = false;
 			} else {
 				e1.isLeft = false;
@@ -144,7 +144,7 @@ namespace TGS.Geom {
 			// by sweeping from left to right.
 			SweepEventSet S = new SweepEventSet();
 			
-			double MINMAX_X = Math.Min(subjectBB.right, clippingBB.right) + Point.PRECISION;
+			double MINMAX_X = Math.Min(subjectBB.right, clippingBB.right) + Point.Precision;
 			
 			SweepEvent prev, next;
 
@@ -161,10 +161,10 @@ namespace TGS.Geom {
 				
 				SweepEvent e = eventQueue.Dequeue();
 				
-				if ((operation == PolygonOp.INTERSECTION && e.p.x > MINMAX_X) || (operation == PolygonOp.DIFFERENCE && e.p.x > subjectBB.right + Point.PRECISION)) 
+				if ((operation == PolygonOp.INTERSECTION && e.p.X > MINMAX_X) || (operation == PolygonOp.DIFFERENCE && e.p.X > subjectBB.right + Point.Precision)) 
 					return connector.ToPolygonFromLargestLineStrip();
 				
-				if (operation == PolygonOp.UNION && e.p.x > MINMAX_X) {
+				if (operation == PolygonOp.UNION && e.p.X > MINMAX_X) {
 					// add all the non-processed line segments to the result
 					if (!e.isLeft)
 						connector.Add(e.segment);
@@ -277,23 +277,23 @@ namespace TGS.Geom {
 
 
 		IntersectResult FindIntersection(Segment seg0, Segment seg1) {
-			Point pi0 = Point.zero;
-			Point pi1 = Point.zero;
+			Point pi0 = Point.Zero;
+			Point pi1 = Point.Zero;
 			
 			Point p0 = seg0.start;
-			double d0x = seg0.end.x - p0.x;
-			double d0y = seg0.end.y - p0.y;
+			double d0x = seg0.end.X - p0.X;
+			double d0y = seg0.end.Y - p0.Y;
 
 			Point p1 = seg1.start;
-			double d1x = seg1.end.x - p1.x;
-			double d1y = seg1.end.y - p1.y;
+			double d1x = seg1.end.X - p1.X;
+			double d1y = seg1.end.Y - p1.Y;
 
-			double Ex = p1.x - p0.x;
-			double Ey =  p1.y - p0.y;
+			double Ex = p1.X - p0.X;
+			double Ey =  p1.Y - p0.Y;
 
 			double kross = d0x * d1y - d0y * d1x;
 
-			if (kross > Point.PRECISION || kross < -Point.PRECISION) { //sqrEpsilon) { // * sqrLen0 * sqrLen1) {
+			if (kross > Point.Precision || kross < -Point.Precision) { //sqrEpsilon) { // * sqrLen0 * sqrLen1) {
 				// lines of the segments are not parallel
 				double s = (Ex * d1y - Ey * d1x) / kross;
 				if (s < 0 || s > 1) {
@@ -304,15 +304,15 @@ namespace TGS.Geom {
 					return new IntersectResult (max: 0, point1: pi0, point2: pi1);
 				}
 				// intersection of lines is a point an each segment
-				pi0.x = p0.x + s * d0x;
-				pi0.y = p0.y + s * d0y;
+				pi0.X = p0.X + s * d0x;
+				pi0.Y = p0.Y + s * d0y;
 				
 				return new IntersectResult ( max: 1, point1: pi0, point2: pi1 );
 			}
 			
 			// lines of the segments are parallel
 			kross = Ex * d0y - Ey * d0x;
-			if (kross > Point.PRECISION || kross < -Point.PRECISION) { // sqrEpsilon ) { //* sqrLen0 * sqrLenE) {
+			if (kross > Point.Precision || kross < -Point.Precision) { // sqrEpsilon ) { //* sqrLen0 * sqrLenE) {
 				// lines of the segment are different
 				return new IntersectResult ( max: 0, point1: pi0, point2: pi1 );
 			}
@@ -327,11 +327,11 @@ namespace TGS.Geom {
 			int imax = FindIntersection2(0, 1, smin, smax, w);
 			
 			if (imax > 0) {
-				pi0.x = p0.x + w[0] * d0x;
-				pi0.y = p0.y + w[0] * d0y;
+				pi0.X = p0.X + w[0] * d0x;
+				pi0.Y = p0.Y + w[0] * d0y;
 				if (imax > 1) {
-					pi1.x = p0.x + w[1] * d0x;
-					pi1.y = p0.y + w[1] * d0y;
+					pi1.X = p0.X + w[1] * d0x;
+					pi1.Y = p0.Y + w[1] * d0y;
 				}
 			}
 			return new IntersectResult (max: imax, point1: pi0, point2: pi1);
@@ -439,13 +439,13 @@ namespace TGS.Geom {
 		
 		bool Sec(SweepEvent e1, SweepEvent e2) {
 			// Different x coordinate
-			if ( e1.p.x - e2.p.x > Point.PRECISION ||  e1.p.x - e2.p.x < -Point.PRECISION ) {
-				return e1.p.x > e2.p.x;
+			if ( e1.p.X - e2.p.X > Point.Precision ||  e1.p.X - e2.p.X < -Point.Precision ) {
+				return e1.p.X > e2.p.X;
 			}
 			
 			// Same x coordinate. The event with lower y coordinate is processed first
-			if ( e1.p.y -  e2.p.y > Point.PRECISION || e1.p.y -  e2.p.y < -Point.PRECISION) {
-				return e1.p.y > e2.p.y;
+			if ( e1.p.Y -  e2.p.Y > Point.Precision || e1.p.Y -  e2.p.Y < -Point.Precision) {
+				return e1.p.Y > e2.p.Y;
 			}
 
 			// Same point, but one is a left endpoint and the other a right endpoint. The right endpoint is processed first

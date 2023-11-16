@@ -38,7 +38,7 @@ namespace TGS.Geom {
 		}
 		
 		double signedArea (Point p0, Point p1, Point p2) {
-			return (p0.x - p2.x) * (p1.y - p2.y) - (p1.x - p2.x) * (p0.y - p2.y);
+			return (p0.X - p2.X) * (p1.Y - p2.Y) - (p1.X - p2.X) * (p0.Y - p2.Y);
 		}
 
 		private bool SegmentCompare (SweepEvent e1, SweepEvent e2) {
@@ -66,14 +66,14 @@ namespace TGS.Geom {
 		
 		// Should only be called by segmentCompare
 		private bool CompareSweepEvent (SweepEvent e1, SweepEvent e2) {
-			if (e1.p.x > e2.p.x) // Different x coordinate
+			if (e1.p.X > e2.p.X) // Different x coordinate
 				return true;
 			
-			if (e2.p.x > e1.p.x) // Different x coordinate
+			if (e2.p.X > e1.p.X) // Different x coordinate
 				return false;
 			
 			if (e1.p != e2.p) // Different points, but same x coordinate. The event with lower y coordinate is processed first
-				return e1.p.y > e2.p.y;
+				return e1.p.Y > e2.p.Y;
 			
 			if (e1.isLeft != e2.isLeft) // Same point, but one is a left endpoint and the other a right endpoint. The right endpoint is processed first
 				return e1.isLeft;

@@ -11,7 +11,7 @@ namespace TGS {
 		static Rect dummyRect = new Rect();
 
 		public static GameObject CreateSurface(string name, Vector3[] surfPoints, int[] indices, Material material, DisposalManager disposalManager) {
-			return CreateSurface(name, surfPoints, indices, material, dummyRect, Misc.Vector2one, Misc.Vector2zero, 0, false, disposalManager);
+			return CreateSurface(name, surfPoints, indices, material, dummyRect, Misc.Vector2One, Misc.Vector2Zero, 0, false, disposalManager);
 		}
 
 		/// <summary>
@@ -48,7 +48,7 @@ namespace TGS {
 					if (rotateInLocalSpace) {
 						normCoor = new Vector2((coor.x - rect.xMin) / rect.width, (coor.y - rect.yMin) / rect.height);
 						if (textureRotation != 0) {
-							normCoor = RotatePoint(normCoor, Misc.Vector2half, textureRotation);
+							normCoor = RotatePoint(normCoor, Misc.Vector2Half, textureRotation);
 						}
 						normCoor.x = 0.5f + (normCoor.x - 0.5f) / textureScale.x;
 						normCoor.y = 0.5f + (normCoor.y - 0.5f) / textureScale.y;
