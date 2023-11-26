@@ -1,6 +1,7 @@
-using System.Collections.Generic;
 using UnityEngine;
 using Leopotam.EcsLite;
+using Leopotam.EcsLite.Di;
+using Voody.UniLeo.Lite;
 using Leopotam.EcsLite.Unity.Ugui;
 using UI;
 
@@ -8,15 +9,23 @@ public class Startup : MonoBehaviour
 {
     [SerializeField] private EcsUguiEmitter _uguiEmitter;
     private EcsWorld _world;
-    private IEcsSystems _systems;
+    private EcsSystems _systems;
+    
+    public StaticData configuration;
 
     private void Start()
     {
         _world = new EcsWorld();
         _systems = new EcsSystems(_world);
         _systems
+            .ConvertScene()
             .AddWorld(_world, "Events")
             .Add(new MainMenuSystem())
+            .Add(new CellTerrainTypesSystem())
+            .Add(new MouseInputSystem())
+            .Add(new ChooseBuildingSystem())
+            .Add(new TimeSystem())
+            .Inject(configuration)
             .InjectUgui(_uguiEmitter)
             .Init();
 
@@ -32,7 +41,7 @@ public class Startup : MonoBehaviour
     {
         if (_systems != null)
         {
-            _systems.GetWorld("ugui-events").Destroy();
+           // _systems.GetWorld("ugui-events").Destroy();
             _systems.Destroy();
             _systems.GetWorld().Destroy();
             _systems = null;

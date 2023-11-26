@@ -1469,6 +1469,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _uguiEmitter: {fileID: 1627384843}
+  configuration: {fileID: 11400000, guid: dc54f770a70c80a4c9f44f7686dc1e4c, type: 2}
 --- !u!4 &1607229998
 Transform:
   m_ObjectHideFlags: 0

@@ -15,6 +15,8 @@ namespace UI
         private float _targetValue;
         private AsyncOperation _operation;
 
+        [SerializeField] private StaticData _staticData;
+
         private void Start()
         {
             loadingSlider.value = 0.0f;
@@ -49,6 +51,7 @@ namespace UI
 
                 if ((int)(loadingSlider.value * 100) == 100)
                 {
+                    _staticData.isReady = true;
                     _operation.allowSceneActivation = true;
                 }
             }

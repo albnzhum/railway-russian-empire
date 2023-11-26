@@ -39,7 +39,8 @@ namespace TGS
         /// </summary>
         public int Tag;
 
-
+        public Building Building;
+        
         public int Row, Column;
 
         /// <summary>

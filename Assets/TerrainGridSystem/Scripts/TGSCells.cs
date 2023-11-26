@@ -1137,6 +1137,55 @@ namespace TGS
         }
 
         /// <summary>
+        /// Add a type of building on a cell
+        /// </summary>
+        public void CellSetBuildingType(Cell cell, Building building)
+        {
+            if (_cellTypes.ContainsKey(cell.Building))
+            {
+                _cellTypes.Remove(cell.Building);
+            }
+
+            if (_cellTypes.ContainsKey(building))
+            {
+                _cellTypes.Remove(building);
+            }
+
+            _cellTypes.Add(building, cell);
+            cell.Building = building;
+        }
+
+        /// <summary>
+        /// Add a type of building on a cell
+        /// </summary>
+        public void CellSetBuildingType(int cellIndex, Building building)
+        {
+            if (cellIndex < 0 || cellIndex >= Cells.Count)
+                return;
+            CellSetBuildingType(Cells[cellIndex], building);
+        }
+
+        /// <summary>
+        /// Return the building type of a given cell
+        /// </summary>
+        public Building CellGetBuildingType(int cellIndex)
+        {
+            if (cellIndex < 0 || cellIndex >= Cells.Count)
+                return default(Building);
+            return Cells[cellIndex].Building;
+        }
+
+        /// <summary>
+        /// Returns Cell object with associated building type
+        /// </summary>
+        public Cell CellGetWithBuildingType(Building building)
+        {
+            Cell cell;
+            if (_cellTypes.TryGetValue(building, out cell)) return cell;
+            return null;
+        }
+
+        /// <summary>
         /// Tags a cell with a user-defined integer tag. Cell can be later retrieved very quickly using CellGetWithTag.
         /// </summary>
         public void CellSetTag(Cell cell, int tag)
@@ -1187,7 +1236,6 @@ namespace TGS
                 return cell;
             return null;
         }
-
 
         /// <summary>
         /// Specifies if a given cell can be crossed by using the pathfinding engine.

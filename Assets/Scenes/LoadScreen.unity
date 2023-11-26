@@ -361,6 +361,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loadingSlider: {fileID: 1026966819}
+  _staticData: {fileID: 11400000, guid: dc54f770a70c80a4c9f44f7686dc1e4c, type: 2}
 --- !u!114 &391997992
 MonoBehaviour:
   m_ObjectHideFlags: 0

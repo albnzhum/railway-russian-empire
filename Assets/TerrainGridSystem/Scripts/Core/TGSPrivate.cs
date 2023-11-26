@@ -41,6 +41,7 @@ namespace TGS {
 		private float _meshStep;
 		private bool _recreateCells, _recreateTerritories;
 		private Dictionary<int,Cell> _cellTagged;
+		private Dictionary<Building, Cell> _cellTypes;
 		private bool _needUpdateTerritories;
 
 		// Territory mesh data
@@ -609,10 +610,20 @@ namespace TGS {
 			} else {
 				Cells.Clear ();
 			}
+			
 			if (_cellTagged == null)
 				_cellTagged = new Dictionary<int, Cell> ();
 			else
 				_cellTagged.Clear ();
+			
+			if (_cellTypes == null)
+			{
+				_cellTypes = new Dictionary<Building, Cell>();
+			}
+			else
+			{
+				_cellTypes.Clear();
+			}
 			_lastCellLookupCount = -1;
 
 			switch (_gridTopology) {
