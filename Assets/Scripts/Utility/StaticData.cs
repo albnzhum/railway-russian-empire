@@ -16,5 +16,4 @@ public class StaticData : ScriptableObject
 
     public CityComponent City;
     public LevelDifficulty LevelDifficulty;
-    public bool isReady;
 }

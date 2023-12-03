@@ -9,5 +9,11 @@ namespace Client
             public const string Settings = "Settings";
             public const string Exit = "Exit";
         }
+
+        public static class SystemGroupName
+        {
+            public const string MainMenuGroup = "MainMenuSystemGroup";
+            public const string GameGroup = "GameSystemGroup";
+        }
     }
 }

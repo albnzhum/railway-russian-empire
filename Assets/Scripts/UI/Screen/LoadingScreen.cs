@@ -51,7 +51,6 @@ namespace UI
 
                 if ((int)(loadingSlider.value * 100) == 100)
                 {
-                    _staticData.isReady = true;
                     _operation.allowSceneActivation = true;
                 }
             }
