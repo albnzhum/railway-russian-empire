@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91099009e3d10e44a954b8a06065dcc2, type: 3}
+  m_Name: Saint-Petersburg
+  m_EditorClassIdentifier: 
+  Name: Saint-Petersburg
+  Population: 1500
+  Resources:
+    Workers: 12
+    Money: 53
+    Food: 42
+    Church: 21
+    SpeedBuilding: 52

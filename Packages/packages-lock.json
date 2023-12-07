@@ -7,40 +7,21 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
-    "com.leopotam.ecslite": {
-      "version": "https://github.com/Leopotam/ecslite.git",
+    "com.codewriter.triinspector": {
+      "version": "https://github.com/codewriter-packages/Tri-Inspector.git",
       "depth": 0,
       "source": "git",
-      "dependencies": {},
-      "hash": "984856664a3ae7cff5b8a16eb7ab26ec02cb47d5"
+      "dependencies": {
+        "com.unity.localization": "1.0.0"
+      },
+      "hash": "86fed7a83099b9d8f5b9f82b5c146873023a6e5c"
     },
-    "com.leopotam.ecslite.di": {
-      "version": "https://github.com/Leopotam/ecslite-di.git",
+    "com.scellecs.morpeh": {
+      "version": "https://github.com/scellecs/morpeh.git",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "0709e936b4ee68ad834276d5a75a3931ed7dcbbe"
-    },
-    "com.leopotam.ecslite.extendedsystems": {
-      "version": "https://github.com/Leopotam/ecslite-extendedsystems.git",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "007a5af4aaa1c4993523232f306a5f02e1de7c0f"
-    },
-    "com.leopotam.ecslite.unity.ugui": {
-      "version": "https://github.com/Leopotam/ecslite-unity-ugui.git",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "18a643c67639838e3d74c06b83316e98d0ac17a0"
-    },
-    "com.leopotam.ecslite.unityeditor": {
-      "version": "https://github.com/Leopotam/ecslite-unityeditor.git",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "480dbdfd0d73591f93ca010ea1a52bfa8e4cc06e"
+      "hash": "bb2949621f912a89222df3de1dea341b016cc877"
     },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
@@ -126,7 +107,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.rider": {
-      "version": "3.0.26",
+      "version": "3.0.27",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -150,9 +131,26 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+    "com.unity.localization": {
+      "version": "1.4.4",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.addressables": "1.21.8",
+        "com.unity.nuget.newtonsoft-json": "3.0.2"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.unity.mathematics": {
       "version": "1.2.6",
       "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.nuget.newtonsoft-json": {
+      "version": "3.2.1",
+      "depth": 2,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
@@ -329,13 +327,6 @@
         "com.unity.modules.jsonserialize": "1.0.0"
       },
       "url": "https://packages.unity.com"
-    },
-    "com.voody.unileo.lite": {
-      "version": "https://github.com/voody2506/UniLeo-Lite.git",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "3726d31b5acbdf683edb372ea1efb74a12321c17"
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",

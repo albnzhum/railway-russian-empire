@@ -25,7 +25,7 @@ public class TestInput : MonoBehaviour
 
                 if (cell != null)
                 {
-                    CellComponent.Instance.Cell = cell;
+                   // CellComponent.Instance.Cell = cell;
                 }
             }
         }
