@@ -7,22 +7,6 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
-    "com.codewriter.triinspector": {
-      "version": "https://github.com/codewriter-packages/Tri-Inspector.git",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {
-        "com.unity.localization": "1.0.0"
-      },
-      "hash": "86fed7a83099b9d8f5b9f82b5c146873023a6e5c"
-    },
-    "com.scellecs.morpeh": {
-      "version": "https://github.com/scellecs/morpeh.git",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "bb2949621f912a89222df3de1dea341b016cc877"
-    },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
       "depth": 0,
@@ -131,26 +115,9 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
-    "com.unity.localization": {
-      "version": "1.4.4",
-      "depth": 1,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.addressables": "1.21.8",
-        "com.unity.nuget.newtonsoft-json": "3.0.2"
-      },
-      "url": "https://packages.unity.com"
-    },
     "com.unity.mathematics": {
       "version": "1.2.6",
       "depth": 1,
-      "source": "registry",
-      "dependencies": {},
-      "url": "https://packages.unity.com"
-    },
-    "com.unity.nuget.newtonsoft-json": {
-      "version": "3.2.1",
-      "depth": 2,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"

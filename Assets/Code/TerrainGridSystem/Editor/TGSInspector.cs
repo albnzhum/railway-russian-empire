@@ -27,7 +27,7 @@ namespace TGS_Editor {
 
 		void OnEnable () {
 
-			_headerTexture = Resources.Load<Texture2D> ("EditorHeader");
+			_headerTexture = UnityEngine.Resources.Load<Texture2D> ("EditorHeader");
 
 			selectionModeOptions = new string[] {
 				"None",

@@ -22,6 +22,7 @@ namespace UI
         
         private void Start()
         {
+            Debug.Log(_config.City.name);
             locationName = _config.City.name;
             loadingSlider.value = 0.0f;
             if (SceneManager.GetActiveScene().name == "LoadScreen")

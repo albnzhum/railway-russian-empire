@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Events
+  m_EditorClassIdentifier: 
+  m_GroupName: Events
+  m_Data:
+    m_SerializedData: []
+  m_GUID: cf3c3e1281f332f4bbd5e49a2e39b305
+  m_SerializeEntries:
+  - m_GUID: bdd67925e9d4f954f804df113717a83e
+    m_Address: Assets/Data/SceneData/MenuEvent.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: b20ad9a8f53f5f148bd06decdd74ead8, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 00d7f9a2719997b46bf533acf3a52bcb, type: 2}
+    - {fileID: 11400000, guid: 36dc8889aaa205d459cc96f94d0be519, type: 2}
