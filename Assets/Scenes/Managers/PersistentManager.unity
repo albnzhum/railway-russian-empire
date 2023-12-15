@@ -256,6 +256,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2073765972}
+  - component: {fileID: 2073765973}
   m_Layer: 0
   m_Name: SceneLoader
   m_TagString: Untagged
@@ -278,6 +279,25 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2073765973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2073765971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38c7770f1b6588b459c6ecc3beb038b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gamePlayScene: {fileID: 11400000, guid: 74ce840b40ea47f4ab2d57b01bf216b8, type: 2}
+  _loadLocation: {fileID: 11400000, guid: dd80533d2f533314592ef71cee9851e8, type: 2}
+  _loadMenu: {fileID: 11400000, guid: bdd67925e9d4f954f804df113717a83e, type: 2}
+  _coldStartupLocation: {fileID: 11400000, guid: 340c8c16243cb5e4b8f809c62d80ab58, type: 2}
+  _toggleLoadingScreen: {fileID: 11400000, guid: 76570dde864db4644866ac7ae1d4ae2d, type: 2}
+  _onSceneReady: {fileID: 11400000, guid: e57acfe03ba0ac049b18c2cb922e0621, type: 2}
+  _fadeRequestChannel: {fileID: 11400000, guid: 9477835d77e25c848a01a6775155ccf3, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
