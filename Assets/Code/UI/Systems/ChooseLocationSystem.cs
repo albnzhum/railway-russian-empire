@@ -8,7 +8,7 @@ using Zenject;
 
 public class ChooseLocationSystem : MonoBehaviour
 {
-    [Inject] private Configuration _config;
+    //[Inject] private Configuration _config;
     
     private int _difficulty;
     
@@ -17,7 +17,7 @@ public class ChooseLocationSystem : MonoBehaviour
         _difficulty = id;
     }
 
-    public void SetDifficulty()
+    /*public void SetDifficulty()
     {
         if (_config != null)
         {
@@ -31,9 +31,9 @@ public class ChooseLocationSystem : MonoBehaviour
     {
         AsyncOperationHandle<CityComponent> handle = Addressables.LoadAssetAsync<CityComponent>("Installers/" + name);
         handle.Completed += OnLoadComplete;
-    }
+    }*/
 
-    private async void OnLoadComplete(AsyncOperationHandle<CityComponent> handle)
+    /*private async void OnLoadComplete(AsyncOperationHandle<CityComponent> handle)
     {
         await handle.Task;
         if (handle.Status == AsyncOperationStatus.Succeeded)
@@ -49,5 +49,5 @@ public class ChooseLocationSystem : MonoBehaviour
         }
 
         Addressables.Release(handle);
-    }
+    }*/
 }
