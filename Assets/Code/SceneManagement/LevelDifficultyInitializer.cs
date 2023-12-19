@@ -1,8 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Railway.Components;
 using Railway.Events;
+using Railway.Gameplay;
 using UnityEngine;
 
 namespace Railway.SceneManagement
@@ -10,17 +8,19 @@ namespace Railway.SceneManagement
     public class LevelDifficultyInitializer : MonoBehaviour
     {
         [SerializeField] private VoidEventChannelSO _onChangeLevelDifficulty;
+        [SerializeField] private GameSetupEventSO _onGameSetup;
         
-        [HideInInspector] public MissionInitializer mission;
-        [HideInInspector] public LocationSO location;
+        [SerializeField] public MissionInitializer mission;
+        [SerializeField] public LocationSO location;
+        
         [HideInInspector] public LocationTeleporter Teleporter;
+        
+        private LevelDifficulty _levelDifficulty;
 
         private void ScalingFactor(float scaleFactor)
         {
-            // Проверяем, были ли уже сохранены оригинальные значения
             if (!mission.isOriginalResourcesSaved)
             {
-                // Сохраняем оригинальные значения перед первым масштабированием
                 mission.originalResources = new MissionInitializer.Resources
                 {
                     Gold = mission.resources.Gold,
@@ -31,7 +31,6 @@ namespace Railway.SceneManagement
                 mission.isOriginalResourcesSaved = true;
             }
 
-            // Масштабирование относительно оригинальных значений
             mission.resources.Gold = mission.originalResources.Gold * scaleFactor;
             mission.resources.Workers = mission.originalResources.Workers * scaleFactor;
             mission.resources.Church = mission.originalResources.Church * scaleFactor;
@@ -40,25 +39,33 @@ namespace Railway.SceneManagement
         
         public void NormalLevelDifficulty()
         {
-            ScalingFactor(1.5f);
+            ScalingFactor(1f);
+            _levelDifficulty = LevelDifficulty.Easy;
             _onChangeLevelDifficulty.RaiseEvent();
         }
         
         public void MediumLevelDifficulty()
         {
             ScalingFactor(2f);
+            _levelDifficulty = LevelDifficulty.Medium;
             _onChangeLevelDifficulty.RaiseEvent();
         }
         
         public void HardLevelDifficulty()
         {
             ScalingFactor(2.5f);
+            _levelDifficulty = LevelDifficulty.Hard;
             _onChangeLevelDifficulty.RaiseEvent();
         }
 
         public void LoadLocation()
         {
-            Teleporter.Teleport(location);
+            _onGameSetup.RaiseEvent(mission, _levelDifficulty);
+
+            if (Teleporter!= null) 
+            {
+                Teleporter.Teleport(location);
+            }
         }
 
     }

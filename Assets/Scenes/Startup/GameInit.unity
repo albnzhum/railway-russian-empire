@@ -2493,6 +2493,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _loadLocationRequest: {fileID: 11400000, guid: dd80533d2f533314592ef71cee9851e8, type: 2}
+  _onSceneReady: {fileID: 11400000, guid: e57acfe03ba0ac049b18c2cb922e0621, type: 2}
   locationTeleporterInfo: {fileID: 154094669}
   levelDifficulty: {fileID: 9148294502610504187}
 --- !u!114 &8409363386022006279
@@ -2687,6 +2688,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _onChangeLevelDifficulty: {fileID: 11400000, guid: 4130e7856e3cb8241a6cff99ce510daf, type: 2}
+  _onGameSetup: {fileID: 11400000, guid: d8c0ecb9074a06640b4b8bd4b70bdc75, type: 2}
   mission: {fileID: 0}
   location: {fileID: 0}
   Teleporter: {fileID: 0}
