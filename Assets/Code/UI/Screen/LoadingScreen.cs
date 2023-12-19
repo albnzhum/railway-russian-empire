@@ -12,18 +12,12 @@ namespace UI
     public class LoadingScreen : MonoBehaviour
     {
         [SerializeField] private Slider loadingSlider;
-        [Inject] private Configuration _config;
-        
         private readonly float _loadingSpeed = 1;
         private float _targetValue;
         private AsyncOperation _operation;
-
-        private string locationName;
         
         private void Start()
         {
-            Debug.Log(_config.City.name);
-            locationName = _config.City.name;
             loadingSlider.value = 0.0f;
             if (SceneManager.GetActiveScene().name == "LoadScreen")
             {
@@ -33,7 +27,7 @@ namespace UI
 
         IEnumerator LoadSceneAsync()
         {
-            _operation = SceneManager.LoadSceneAsync(locationName);
+            //_operation = SceneManager.LoadSceneAsync(locationName);
             _operation.allowSceneActivation = false;
             yield return _operation;
         }

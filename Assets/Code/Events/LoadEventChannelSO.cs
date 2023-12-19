@@ -10,7 +10,7 @@ namespace Railway.Events
 
     public class LoadEventChannelSO : ScriptableObject
     {
-        public UnityAction<GameSceneSO, bool, bool> OnLoadingRequested;
+        public event UnityAction<GameSceneSO, bool, bool> OnLoadingRequested;
 
         public void RaiseEvent(GameSceneSO locationToLoad, bool showLoadingScreen = false, bool fadeScreen = false)
         {

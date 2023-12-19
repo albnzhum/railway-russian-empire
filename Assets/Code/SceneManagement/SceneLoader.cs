@@ -21,8 +21,7 @@ namespace Railway.SceneManagement
 
         [Header("Broadcasting on")] [SerializeField]
         private BoolEventChannelSO _toggleLoadingScreen = default;
-
-        [SerializeField] private VoidEventChannelSO _onSceneReady;
+        
         [SerializeField] private FadeChannelSO _fadeRequestChannel = default;
 
         private AsyncOperationHandle<SceneInstance> _loadingOperationHandle;
@@ -115,7 +114,7 @@ namespace Railway.SceneManagement
                 _gameplayManagerLoadingOperationHandle.WaitForCompletion();
                 _gameplayManagerSceneInstance = _gameplayManagerLoadingOperationHandle.Result;
 
-                StartGameplay();
+                //StartGameplay();
             }
         }
 #endif
@@ -169,12 +168,12 @@ namespace Railway.SceneManagement
 
             _fadeRequestChannel.FadeIn(_fadeDuration);
 
-            StartGameplay();
+            //StartGameplay();
         }
 
-        private void StartGameplay()
+        /*private void StartGameplay()
         {
             _onSceneReady.RaiseEvent();
-        }
+        }*/
     }
 }
