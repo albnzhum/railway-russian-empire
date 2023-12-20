@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace Railway.Idents.II
+namespace Railway.Idents.UI
 {
     public static class UITextFormat
     {

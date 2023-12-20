@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18ef95bffa03be0418cc72c0953c6131, type: 3}
+  m_Name: NewWorker1
+  m_EditorClassIdentifier: 
+  Price: 0
+  Prefab: {fileID: 2073659720406782437, guid: 36ddfad9e6a56e14ea948e704e186706, type: 3}
+  Name: "\u041A\u0440\u0435\u0441\u0442\u044C\u044F\u043D\u0435"
+  Count: 100
+  Salary: 1
+  Provision: 123
+  Satisfication: 2
+  SpeedBuilding: 10
+  WorkerType: 0
+  Prefab: {fileID: 2073659720406782437, guid: 36ddfad9e6a56e14ea948e704e186706, type: 3}

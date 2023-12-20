@@ -1,9 +1,8 @@
-using System;
+using Railway.Components;
 using Railway.Events;
-using Railway.Idents.II;
+using Railway.Idents.UI;
 using UnityEngine;
 using UnityEngine.UI;
-using Resources = Railway.Components.MissionInitializer.Resources;
 
 namespace Railway.Gameplay.UI
 {
@@ -18,8 +17,8 @@ namespace Railway.Gameplay.UI
         [SerializeField] private Text _churchText;
         [SerializeField] private Text _speedBuildingText;
 
-        [Header("Listening to")] [SerializeField]
-        private ResourcesUpdateEventSO _onResourcesUpdated;
+        [Header("Listening to")] 
+        [SerializeField] private ResourcesUpdateEventSO _onResourcesUpdated;
 
         private void OnEnable()
         {
@@ -31,7 +30,7 @@ namespace Railway.Gameplay.UI
             _onResourcesUpdated.OnResourcesUpdated -= ShowResources;
         }
 
-        private void ShowResources(Resources resources)
+        private void ShowResources(MissionInitializer.Resources resources)
         {
             Resources.SetActive(true);
             

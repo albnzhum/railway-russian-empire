@@ -1,10 +1,4 @@
-using Components;
-using UI;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
-using UnityEngine.SceneManagement;
-using Zenject;
 
 public class ChooseLocationSystem : MonoBehaviour
 {
