@@ -1,10 +1,7 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Railway.Components;
 using Railway.Events;
+using Railway.Input;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Resources = Railway.Components.MissionInitializer.Resources;
 
@@ -13,6 +10,7 @@ namespace Railway.SceneManagement
     public class LocationTeleporterInfo : MonoBehaviour
     {
         [SerializeField] private GameObject Canvas;
+        [SerializeField] private InputReader _inputReader;
 
         [Header("UI Mission")]
         [SerializeField] private Text _missionName;
@@ -33,6 +31,11 @@ namespace Railway.SceneManagement
             _onChangeLevelDifficulty.OnEventRaised += RefreshResources;
         }
 
+        private void OnEnable()
+        {
+            
+        }
+
         private void OnDisable()
         {
             _onChangeLevelDifficulty.OnEventRaised -= RefreshResources;
@@ -40,11 +43,11 @@ namespace Railway.SceneManagement
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.C))
+            /*if (Input.GetKeyDown(KeyCode.C))
             {
                 gameObject.SetActive(false);
                 isActive = false;
-            }
+            }*/
 
             if (!isActive)
             {

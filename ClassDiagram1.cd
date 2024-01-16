@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Comment CommentText="В рамках разработки приложения был использован паттерн 'Событие-канал' для обеспечения эффективного взаимодействия между различными частями системы. Для реализации данного паттерна был создан ScriptableObject, названный VoidEventChannelSO, который предоставляет механизм подписки и уведомления о событии типа 'Void'.">
+    <Position X="7.791" Y="8.538" Height="1.467" Width="3.313" />
+  </Comment>
+  <Class Name="Railway.SceneManagement.InitializationLoader">
+    <Position X="5.5" Y="3.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>CAAAIAAAACAAAAAAAAAAABAAAAAAAAAQAAAAAAAQAAA=</HashCode>
+      <FileName>Assets\Code\SceneManagement\InitializationLoader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Railway.SceneManagement.LevelDifficultyInitializer">
+    <Position X="7.5" Y="3.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AMAAAAQAAEAAAEAAAAAIASgCAAAAAAAAAAAAAAgAAAA=</HashCode>
+      <FileName>Assets\Code\SceneManagement\LevelDifficultyInitializer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Railway.SceneManagement.StartGame">
+    <Position X="9.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAEAKAAAAQAAAAAAAAEAAAQAAAAAAAACAAAgAA=</HashCode>
+      <FileName>Assets\Code\SceneManagement\StartGame.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Railway.Events.LoadEventChannelSO">
+    <Position X="3.75" Y="8.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>Assets\Code\Events\LoadEventChannelSO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Railway.Events.VoidEventChannelSO">
+    <Position X="5.75" Y="8.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>Assets\Code\Events\VoidEventChannelSO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Railway.Gameplay.GameInitializer">
+    <Position X="3.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAgAAACEAAAAAAAAAAAAAAAAAAAAAYAAACAgAACAA=</HashCode>
+      <FileName>Assets\Code\Gameplay\GameInitializer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UnityEngine.ScriptableObject" Collapsed="true">
+    <Position X="3.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

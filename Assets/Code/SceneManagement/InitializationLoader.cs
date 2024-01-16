@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using Railway.Events;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -9,6 +7,10 @@ using UnityEngine.SceneManagement;
 
 namespace Railway.SceneManagement
 {
+    /// <summary>
+    /// Class for game initialization
+    /// Used for Initializer scene
+    /// </summary>
     public class InitializationLoader : MonoBehaviour
     {
         [SerializeField] private GameSceneSO _managersScene = default;

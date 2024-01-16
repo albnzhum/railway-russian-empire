@@ -67,6 +67,5 @@ namespace Railway.SceneManagement
                 Teleporter.Teleport(location);
             }
         }
-
     }
 }

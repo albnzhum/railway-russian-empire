@@ -9,12 +9,15 @@ using UnityEngine.SceneManagement;
 
 namespace Railway.SceneManagement
 {
+    /// <summary>
+    /// Class for control of loading and unloading scenes
+    /// </summary>
     public class SceneLoader : MonoBehaviour
     {
         [SerializeField] private GameSceneSO _gamePlayScene;
 
-        [Header("Listening To")] [SerializeField]
-        private LoadEventChannelSO _loadLocation;
+        [Header("Listening To")] 
+        [SerializeField] private LoadEventChannelSO _loadLocation;
 
         [SerializeField] private LoadEventChannelSO _loadMenu;
         [SerializeField] private LoadEventChannelSO _coldStartupLocation;
@@ -39,7 +42,6 @@ namespace Railway.SceneManagement
         {
             _loadLocation.OnLoadingRequested += LoadLocation;
             _loadMenu.OnLoadingRequested += LoadMenu;
-
 #if UNITY_EDITOR
             _coldStartupLocation.OnLoadingRequested += LocationColdStartup;
 #endif
@@ -55,6 +57,12 @@ namespace Railway.SceneManagement
 #endif
         }
 
+        /// <summary>
+        /// Starts loading the specified menu
+        /// </summary>
+        /// <param name="menuToLoad"></param>
+        /// <param name="showLoadingScreen"></param>
+        /// <param name="fadeScreen"></param>
         private void LoadMenu(GameSceneSO menuToLoad, bool showLoadingScreen, bool fadeScreen)
         {
             if (_isLoading) return;
@@ -71,6 +79,12 @@ namespace Railway.SceneManagement
             StartCoroutine(UnloadPreviousScene());
         }
 
+        /// <summary>
+        /// Starts loading the specified location
+        /// </summary>
+        /// <param name="locationToLoad"></param>
+        /// <param name="showLoadingScreen"></param>
+        /// <param name="fadeScreen"></param>
         private void LoadLocation(GameSceneSO locationToLoad, bool showLoadingScreen, bool fadeScreen)
         {
             if (_isLoading)
@@ -80,7 +94,6 @@ namespace Railway.SceneManagement
             _showLoadingScreen = showLoadingScreen;
             _isLoading = true;
 
-            //In case we are coming from the main menu, we need to load the Gameplay manager scene first
             if (_gameplayManagerSceneInstance.Scene == null
                 || !_gameplayManagerSceneInstance.Scene.isLoaded)
             {
@@ -94,6 +107,10 @@ namespace Railway.SceneManagement
             }
         }
 
+        /// <summary>
+        /// Start after the gameplay manager completes loading.
+        /// </summary>
+        /// <param name="obj"></param>
         private void OnGameplayManagersLoaded(AsyncOperationHandle<SceneInstance> obj)
         {
             _gameplayManagerSceneInstance = _gameplayManagerLoadingOperationHandle.Result;
@@ -119,6 +136,10 @@ namespace Railway.SceneManagement
         }
 #endif
 
+        /// <summary>
+        /// Starts uploading the previous scene
+        /// </summary>
+        /// <returns></returns>
         private IEnumerator UnloadPreviousScene()
         {
             _fadeRequestChannel.FadeOut(_fadeDuration);
@@ -142,6 +163,9 @@ namespace Railway.SceneManagement
             LoadNewScene();
         }
 
+        /// <summary>
+        /// Starts loading a new scene
+        /// </summary>
         private void LoadNewScene()
         {
             if (_showLoadingScreen)
@@ -153,6 +177,10 @@ namespace Railway.SceneManagement
             _loadingOperationHandle.Completed += OnNewSceneLoaded;
         }
 
+        /// <summary>
+        /// Sets the new scene as current, activates it, and completes the boot process
+        /// </summary>
+        /// <param name="obj"></param>
         private void OnNewSceneLoaded(AsyncOperationHandle<SceneInstance> obj)
         {
             _currentlyLoadedScene = _sceneToLoad;
@@ -167,13 +195,6 @@ namespace Railway.SceneManagement
             }
 
             _fadeRequestChannel.FadeIn(_fadeDuration);
-
-            //StartGameplay();
         }
-
-        /*private void StartGameplay()
-        {
-            _onSceneReady.RaiseEvent();
-        }*/
     }
 }

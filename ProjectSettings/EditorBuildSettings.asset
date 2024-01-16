@@ -8,14 +8,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Initializer.unity
     guid: e3c00424d18b739459dd2ba5ab48edd0
-  - enabled: 1
-    path: Assets/Scenes/Startup/Menu.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 1
-    path: Assets/Scenes/LoadScreen.unity
-    guid: 5bba168da027c7e42b3bbe6b6e3dfc3f
-  - enabled: 0
-    path: Assets/Scenes/Locations/Saint-Petersburg.unity
-    guid: f91302df7ff712a4d84f7fffd065abd9
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: ee678a7add0f33c408db9b8caf8eeafb, type: 2}
+    com.unity.input.settings: {fileID: 11400000, guid: ba85e97107b3369409b6a952ee3f6a53, type: 2}

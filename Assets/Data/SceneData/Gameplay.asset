@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ebf59a1357eeaf4fbd5b9cc3a7dfd10, type: 3}
   m_Name: Gameplay
   m_EditorClassIdentifier: 
-  sceneType: 0
+  sceneType: 4
   sceneReference:
     m_AssetGUID: c281d244d8282d94e8a0a68af636028e
     m_SubObjectName: 
