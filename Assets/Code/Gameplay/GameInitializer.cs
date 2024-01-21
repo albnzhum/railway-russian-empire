@@ -6,18 +6,12 @@ using UnityEngine.Serialization;
 
 namespace Railway.Gameplay
 {
-    public enum LevelDifficulty
-    {
-        Easy,
-        Medium,
-        Hard
-    }
-    
+
     public class GameInitializer : MonoBehaviour
     {
         [Header("Game Setup")]
         [SerializeField] private MissionInitializer _mission;
-        [SerializeField] private LevelDifficulty _levelDifficulty;
+        [SerializeField] private LevelDifficultySO _levelDifficulty;
         
         [Header("Listening To")]
         [SerializeField] private GameSetupEventSO _gameSetupEvent;
@@ -44,7 +38,7 @@ namespace Railway.Gameplay
         private void Setup(MissionInitializer mission, LevelDifficulty levelDifficulty)
         {
             _mission = mission;
-            _levelDifficulty = levelDifficulty;
+            _levelDifficulty._LevelDifficulty = levelDifficulty;
         }
     }
 
