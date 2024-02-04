@@ -1,48 +1,27 @@
-using System;
 using UnityEngine;
 
 namespace Railway.Shop.Data
 {
-    [Serializable]
-    public enum Country
-    {
-        Russia,
-        England,
-        France
-    }
-
-    [Serializable]
-    public enum Factory
-    {
-        SomeFactory1,
-        SomeFactory2
-    }
-
-    [Serializable]
-    public enum TechnicalState
-    {
-        New,
-        Excellent,
-        Good,
-        Medium,
-        Used,
-        Old,
-        Critical,
-        Faulty
-    }
-    
     [CreateAssetMenu(fileName = "New Locomotive Item", menuName = "Shop Data/Locomotive")]
     public class LocomotiveSO : ShopItem
     {
         [Header("Metrics")]
-        public Country Country;
-        public Factory Factory;
-        public int LifeSpan;
-        public int Power;
-        public TechnicalState TechnicalState;
+        private Country _country;
+        private Factory _factory;
+        private int _lifeSpan;
+        private int _power;
+        private TechnicalState _technicalState;
 
         [Header("General")] 
-        public int MonthsBeforeMaintenance;
+        private int _monthsBeforeMaintenance;
+        
+        public Country Country => _country;
+        public Factory _Factory => _factory;
+        public int LifeSpan => _lifeSpan;
+        public int Power => _power;
+        public TechnicalState TechnicalState => _technicalState;
+
+        public int MonthsBeforeMaintenance => _monthsBeforeMaintenance;
 
     }
 }

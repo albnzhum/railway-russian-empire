@@ -53,6 +53,24 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MouseControlCamera"",
+                    ""type"": ""Button"",
+                    ""id"": ""6a617f29-1936-4e07-85c7-615264ba3903"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RotateCamera"",
+                    ""type"": ""Value"",
+                    ""id"": ""4578fa80-0e1f-4657-8cdd-4a116121d05c"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -86,6 +104,28 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""611ebd6e-4b60-4405-9a28-3e8ed64eedff"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseControlCamera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d5424760-2632-4eeb-baea-7d84b84eca23"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RotateCamera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -144,6 +184,15 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
                     ""name"": ""Submit"",
                     ""type"": ""Button"",
                     ""id"": ""38d5bc3a-6754-47d1-a981-82977ee7c14b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ChangeTab"",
+                    ""type"": ""Button"",
+                    ""id"": ""2a262c05-f088-44ed-af0b-6d2052776977"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -216,6 +265,87 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
                     ""action"": ""Submit"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""LeftRight [Keyboard]"",
+                    ""id"": ""e1031c40-3773-45a8-9774-e9f548c80dad"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeTab"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""237e30ab-10f2-46dd-a893-bf2d7d411134"",
+                    ""path"": ""<Keyboard>/t"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeTab"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""6571f604-2384-47f8-9be4-a3ac9a3f3467"",
+                    ""path"": ""<Keyboard>/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeTab"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                }
+            ]
+        },
+        {
+            ""name"": ""Tutorials"",
+            ""id"": ""a693ed08-6ad4-4cd9-9928-e76dfa2466fb"",
+            ""actions"": [
+                {
+                    ""name"": ""ChooseCell"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""5d441699-b142-48c9-8c57-17b378c2c9b9"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OpenShop"",
+                    ""type"": ""Button"",
+                    ""id"": ""1adce0b1-51e6-4c88-b719-3d3a1866a5bb"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""ec8fc99d-33b0-4c16-be90-8b590d63dfe5"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChooseCell"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""81e24c49-d7b4-4237-a899-045a9624e7cf"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OpenShop"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -227,6 +357,8 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
         m_Gameplay_ChooseCell = m_Gameplay.FindAction("ChooseCell", throwIfNotFound: true);
         m_Gameplay_OpenShop = m_Gameplay.FindAction("OpenShop", throwIfNotFound: true);
         m_Gameplay_Pause = m_Gameplay.FindAction("Pause", throwIfNotFound: true);
+        m_Gameplay_MouseControlCamera = m_Gameplay.FindAction("MouseControlCamera", throwIfNotFound: true);
+        m_Gameplay_RotateCamera = m_Gameplay.FindAction("RotateCamera", throwIfNotFound: true);
         // Menus
         m_Menus = asset.FindActionMap("Menus", throwIfNotFound: true);
         m_Menus_CloseShop = m_Menus.FindAction("CloseShop", throwIfNotFound: true);
@@ -235,6 +367,11 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
         m_Menus_RightClick = m_Menus.FindAction("RightClick", throwIfNotFound: true);
         m_Menus_Click = m_Menus.FindAction("Click", throwIfNotFound: true);
         m_Menus_Submit = m_Menus.FindAction("Submit", throwIfNotFound: true);
+        m_Menus_ChangeTab = m_Menus.FindAction("ChangeTab", throwIfNotFound: true);
+        // Tutorials
+        m_Tutorials = asset.FindActionMap("Tutorials", throwIfNotFound: true);
+        m_Tutorials_ChooseCell = m_Tutorials.FindAction("ChooseCell", throwIfNotFound: true);
+        m_Tutorials_OpenShop = m_Tutorials.FindAction("OpenShop", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -299,6 +436,8 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_ChooseCell;
     private readonly InputAction m_Gameplay_OpenShop;
     private readonly InputAction m_Gameplay_Pause;
+    private readonly InputAction m_Gameplay_MouseControlCamera;
+    private readonly InputAction m_Gameplay_RotateCamera;
     public struct GameplayActions
     {
         private @RailwayInputs m_Wrapper;
@@ -306,6 +445,8 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
         public InputAction @ChooseCell => m_Wrapper.m_Gameplay_ChooseCell;
         public InputAction @OpenShop => m_Wrapper.m_Gameplay_OpenShop;
         public InputAction @Pause => m_Wrapper.m_Gameplay_Pause;
+        public InputAction @MouseControlCamera => m_Wrapper.m_Gameplay_MouseControlCamera;
+        public InputAction @RotateCamera => m_Wrapper.m_Gameplay_RotateCamera;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -324,6 +465,12 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
             @Pause.started += instance.OnPause;
             @Pause.performed += instance.OnPause;
             @Pause.canceled += instance.OnPause;
+            @MouseControlCamera.started += instance.OnMouseControlCamera;
+            @MouseControlCamera.performed += instance.OnMouseControlCamera;
+            @MouseControlCamera.canceled += instance.OnMouseControlCamera;
+            @RotateCamera.started += instance.OnRotateCamera;
+            @RotateCamera.performed += instance.OnRotateCamera;
+            @RotateCamera.canceled += instance.OnRotateCamera;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -337,6 +484,12 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
             @Pause.started -= instance.OnPause;
             @Pause.performed -= instance.OnPause;
             @Pause.canceled -= instance.OnPause;
+            @MouseControlCamera.started -= instance.OnMouseControlCamera;
+            @MouseControlCamera.performed -= instance.OnMouseControlCamera;
+            @MouseControlCamera.canceled -= instance.OnMouseControlCamera;
+            @RotateCamera.started -= instance.OnRotateCamera;
+            @RotateCamera.performed -= instance.OnRotateCamera;
+            @RotateCamera.canceled -= instance.OnRotateCamera;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -364,6 +517,7 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Menus_RightClick;
     private readonly InputAction m_Menus_Click;
     private readonly InputAction m_Menus_Submit;
+    private readonly InputAction m_Menus_ChangeTab;
     public struct MenusActions
     {
         private @RailwayInputs m_Wrapper;
@@ -374,6 +528,7 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
         public InputAction @RightClick => m_Wrapper.m_Menus_RightClick;
         public InputAction @Click => m_Wrapper.m_Menus_Click;
         public InputAction @Submit => m_Wrapper.m_Menus_Submit;
+        public InputAction @ChangeTab => m_Wrapper.m_Menus_ChangeTab;
         public InputActionMap Get() { return m_Wrapper.m_Menus; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -401,6 +556,9 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
             @Submit.started += instance.OnSubmit;
             @Submit.performed += instance.OnSubmit;
             @Submit.canceled += instance.OnSubmit;
+            @ChangeTab.started += instance.OnChangeTab;
+            @ChangeTab.performed += instance.OnChangeTab;
+            @ChangeTab.canceled += instance.OnChangeTab;
         }
 
         private void UnregisterCallbacks(IMenusActions instance)
@@ -423,6 +581,9 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
             @Submit.started -= instance.OnSubmit;
             @Submit.performed -= instance.OnSubmit;
             @Submit.canceled -= instance.OnSubmit;
+            @ChangeTab.started -= instance.OnChangeTab;
+            @ChangeTab.performed -= instance.OnChangeTab;
+            @ChangeTab.canceled -= instance.OnChangeTab;
         }
 
         public void RemoveCallbacks(IMenusActions instance)
@@ -440,11 +601,67 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
         }
     }
     public MenusActions @Menus => new MenusActions(this);
+
+    // Tutorials
+    private readonly InputActionMap m_Tutorials;
+    private List<ITutorialsActions> m_TutorialsActionsCallbackInterfaces = new List<ITutorialsActions>();
+    private readonly InputAction m_Tutorials_ChooseCell;
+    private readonly InputAction m_Tutorials_OpenShop;
+    public struct TutorialsActions
+    {
+        private @RailwayInputs m_Wrapper;
+        public TutorialsActions(@RailwayInputs wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ChooseCell => m_Wrapper.m_Tutorials_ChooseCell;
+        public InputAction @OpenShop => m_Wrapper.m_Tutorials_OpenShop;
+        public InputActionMap Get() { return m_Wrapper.m_Tutorials; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(TutorialsActions set) { return set.Get(); }
+        public void AddCallbacks(ITutorialsActions instance)
+        {
+            if (instance == null || m_Wrapper.m_TutorialsActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_TutorialsActionsCallbackInterfaces.Add(instance);
+            @ChooseCell.started += instance.OnChooseCell;
+            @ChooseCell.performed += instance.OnChooseCell;
+            @ChooseCell.canceled += instance.OnChooseCell;
+            @OpenShop.started += instance.OnOpenShop;
+            @OpenShop.performed += instance.OnOpenShop;
+            @OpenShop.canceled += instance.OnOpenShop;
+        }
+
+        private void UnregisterCallbacks(ITutorialsActions instance)
+        {
+            @ChooseCell.started -= instance.OnChooseCell;
+            @ChooseCell.performed -= instance.OnChooseCell;
+            @ChooseCell.canceled -= instance.OnChooseCell;
+            @OpenShop.started -= instance.OnOpenShop;
+            @OpenShop.performed -= instance.OnOpenShop;
+            @OpenShop.canceled -= instance.OnOpenShop;
+        }
+
+        public void RemoveCallbacks(ITutorialsActions instance)
+        {
+            if (m_Wrapper.m_TutorialsActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(ITutorialsActions instance)
+        {
+            foreach (var item in m_Wrapper.m_TutorialsActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_TutorialsActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public TutorialsActions @Tutorials => new TutorialsActions(this);
     public interface IGameplayActions
     {
         void OnChooseCell(InputAction.CallbackContext context);
         void OnOpenShop(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
+        void OnMouseControlCamera(InputAction.CallbackContext context);
+        void OnRotateCamera(InputAction.CallbackContext context);
     }
     public interface IMenusActions
     {
@@ -454,5 +671,11 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
         void OnRightClick(InputAction.CallbackContext context);
         void OnClick(InputAction.CallbackContext context);
         void OnSubmit(InputAction.CallbackContext context);
+        void OnChangeTab(InputAction.CallbackContext context);
+    }
+    public interface ITutorialsActions
+    {
+        void OnChooseCell(InputAction.CallbackContext context);
+        void OnOpenShop(InputAction.CallbackContext context);
     }
 }

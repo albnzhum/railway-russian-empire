@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df3046930c9576945989d69bb35d7aa6, type: 3}
   m_Name: SO_Carriage_01
   m_EditorClassIdentifier: 
-  Name: 
-  Price: 2
-  Prefab: {fileID: 1593523160879460115, guid: a567999fed3aad54387ccade4ac42c74, type: 3}
-  ItemType: 3
+  _name: "\u0412\u0430\u0433\u043E\u043D1"
+  _price: 0
+  _prefab: {fileID: 0}
+  _itemType: {fileID: 11400000, guid: 5e2181829f3953241977ad0de7ee7320, type: 2}

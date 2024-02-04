@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace Railway.Gameplay.Shop.UI
+namespace Railway.Shop.UI
 {
     public class UIShopTab : MonoBehaviour
     {

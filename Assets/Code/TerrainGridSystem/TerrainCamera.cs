@@ -1,28 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
+using Railway.Input;
 using UnityEngine;
 
 namespace TGS
 {
     public class TerrainCamera : MonoBehaviour
     {
+        public InputReader _inputReader;
         public float ScreenEdgeBorderThickness = 5.0f; // distance from screen edge. Used for mouse movement
-        
-        [Header("Camera Mode")] 
-        [Space] 
-        public bool RTSMode = true;
-        public bool FlyCameraMode = false;
-        
-        [Header("Movement Speeds")] 
-        [Space] 
-        public float minPanSpeed;
+
+        [Header("Movement Speeds")] [Space] public float minPanSpeed;
         public float maxPanSpeed;
         public float secToMaxSpeed; //seconds taken to reach max speed;
         public float zoomSpeed;
-        
-        [Header("Movement Limits")] 
-        [Space] 
-        public bool enableMovementLimits;
+
+        [Header("Movement Limits")] [Space] public bool enableMovementLimits;
         public Vector2 heightLimit;
         public Vector2 lenghtLimit;
         public Vector2 widthLimit;
@@ -36,28 +27,104 @@ namespace TGS
         private Vector3 lastMousePosition;
         private Quaternion initialRot;
         private float panIncrease = 0.0f;
-        
-        [Header("Rotation")] [Space] public bool rotationEnabled;
+
+        [Header("Rotation")] 
+        [Space] public bool rotationEnabled;
         public float rotateSpeed;
+
+        private Vector3 velocity = Vector3.zero;
+
+        private void OnEnable()
+        {
+            _inputReader.CameraMoveEvent += OnCameraMove;
+            _inputReader.EnableMouseControlCameraEvent += OnEnableMouseControlCamera;
+            _inputReader.DisableMouseControlCameraEvent += OnDisableMouseControlCamera;
+        }
+
+        private void OnDisable()
+        {
+            _inputReader.CameraMoveEvent -= OnCameraMove;
+            _inputReader.EnableMouseControlCameraEvent -= OnEnableMouseControlCamera;
+            _inputReader.DisableMouseControlCameraEvent -= OnDisableMouseControlCamera;
+        }
 
         void Start()
         {
             initialPos = transform.position;
             initialRot = transform.rotation;
-            /*zoomLimit.x = 15;
-            zoomLimit.y = 65;*/
         }
 
-        void Update()
+        private void OnDisableMouseControlCamera()
         {
-            # region Camera Mode
+            throw new System.NotImplementedException();
+        }
 
-            //check that ony one mode is choosen
-            if (RTSMode == true) FlyCameraMode = false;
-            if (FlyCameraMode == true) RTSMode = false;
+        private void OnEnableMouseControlCamera()
+        {
+            throw new System.NotImplementedException();
+        }
 
-            # endregion
+        //TODO: Улучшить сглаживание передвижения камеры
+        private void OnCameraMove(Vector2 movePosition, bool isDeviceMouse)
+        {
+            panMovement = Vector3.zero;
+            
+            float deviceMultiplier = isDeviceMouse ? 0.03f : Time.deltaTime;
+            
+            if (movePosition.y >= Screen.height - ScreenEdgeBorderThickness)
+            {
+                panMovement += Vector3.forward * panSpeed * Time.deltaTime;
+            }
 
+            if (movePosition.y <= ScreenEdgeBorderThickness)
+            {
+                panMovement -= Vector3.forward * panSpeed * Time.deltaTime;
+            }
+
+            if (movePosition.x <= ScreenEdgeBorderThickness)
+            {
+                panMovement += Vector3.left * panSpeed * Time.deltaTime;
+            }
+
+            if (movePosition.x >= Screen.width - ScreenEdgeBorderThickness)
+            {
+                panMovement += Vector3.right * panSpeed * Time.deltaTime;
+            }
+            
+            transform.Translate(panMovement, Space.World);
+            
+            if (movePosition.y >= Screen.height - ScreenEdgeBorderThickness
+                || movePosition.y <= ScreenEdgeBorderThickness
+                || movePosition.x <= ScreenEdgeBorderThickness
+                || movePosition.x >= Screen.width - ScreenEdgeBorderThickness)
+            {
+                panIncrease += deviceMultiplier / secToMaxSpeed;
+                panSpeed = Mathf.Lerp(minPanSpeed, maxPanSpeed, panIncrease);
+            }
+            else
+            {
+                panIncrease = 0;
+                panSpeed = minPanSpeed;
+            }
+            
+            #region boundaries
+
+            if (enableMovementLimits)
+            {
+                //movement limits
+                pos = transform.position;
+                pos.y = Mathf.Clamp(pos.y, heightLimit.x, heightLimit.y);
+                pos.z = Mathf.Clamp(pos.z, lenghtLimit.x, lenghtLimit.y);
+                pos.x = Mathf.Clamp(pos.x, widthLimit.x, widthLimit.y);
+                transform.position = pos;
+            }
+
+            #endregion
+            
+        }
+
+        /*void Update()
+        {
             #region Movement
 
             panMovement = Vector3.zero;
@@ -92,9 +159,8 @@ namespace TGS
                 panMovement += Vector3.down * panSpeed * Time.deltaTime;
             }
 
-            if (RTSMode) transform.Translate(panMovement, Space.World);
-            else if (FlyCameraMode) transform.Translate(panMovement, Space.Self);
-            //increase pan speed
+            transform.Translate(panMovement, Space.World);
+
             if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S)
                                         || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)
                                         || Input.GetKey(KeyCode.E) || Input.GetKey(KeyCode.Q)
@@ -121,46 +187,6 @@ namespace TGS
 
             #endregion
 
-            #region mouse rotation
-
-            if (rotationEnabled)
-            {
-                // Mouse Rotation
-                if (Input.GetMouseButton(0))
-                {
-                    rotationActive = true;
-                    Vector3 mouseDelta;
-                    if (lastMousePosition.x >= 0 &&
-                        lastMousePosition.y >= 0 &&
-                        lastMousePosition.x <= Screen.width &&
-                        lastMousePosition.y <= Screen.height)
-                        mouseDelta = Input.mousePosition - lastMousePosition;
-                    else
-                    {
-                        mouseDelta = Vector3.zero;
-                    }
-
-                    var rotation = Vector3.up * Time.deltaTime * rotateSpeed * mouseDelta.x;
-                    rotation += Vector3.left * Time.deltaTime * rotateSpeed * mouseDelta.y;
-                    transform.Rotate(rotation, Space.World);
-                    // Make sure z rotation stays locked
-                    rotation = transform.rotation.eulerAngles;
-                    rotation.z = 0;
-                    transform.rotation = Quaternion.Euler(rotation);
-                }
-
-                if (Input.GetMouseButtonUp(0))
-                {
-                    rotationActive = false;
-                    if (RTSMode)
-                        transform.rotation = Quaternion.Slerp(transform.rotation, initialRot, 0.5f * Time.time);
-                }
-
-                lastMousePosition = Input.mousePosition;
-            }
-
-            #endregion
-
             #region boundaries
 
             if (enableMovementLimits == true)
@@ -174,6 +200,6 @@ namespace TGS
             }
 
             #endregion
-        }
+        }*/
     }
 }

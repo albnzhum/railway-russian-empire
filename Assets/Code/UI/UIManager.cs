@@ -1,19 +1,18 @@
 using System;
 using Railway.Events;
-using Railway.Gameplay.Shop.UI;
 using Railway.Input;
 using Railway.SceneManagement;
 using Railway.UI;
+using Railway.Gameplay;
 using UnityEngine;
 
-namespace Railway.Gameplay.UI
+namespace Railway.Shop.UI
 {
     public class UIManager : MonoBehaviour
     {
         [Header("Scene UI")] 
         [SerializeField] private UIPopup _popupPanel;
         [SerializeField] private UIShop _shopPanel;
-        //[SerializeField] private UIPause _pauseScreen;
         [SerializeField] private UISettingsController _settingsScreen;
 
         [Header("Gameplay")] 
@@ -30,7 +29,7 @@ namespace Railway.Gameplay.UI
 
         private void OnEnable()
         {
-            
+            _inputReader.EnableGameplayInput();
             _inputReader.OpenShopEvent += SetShopScreen;
             _shopPanel.Closed += CloseShopScreen;
         }
@@ -40,14 +39,6 @@ namespace Railway.Gameplay.UI
             _shopPanel.Closed -= CloseShopScreen;
             _inputReader.OpenShopEvent -= SetShopScreen;
         }
-
-        /*private void Update()
-        {
-            if (UnityEngine.Input.GetKeyDown(KeyCode.X))
-            {
-                SetShopScreen();
-            }
-        }*/
 
         private void SetShopScreen()
         {
@@ -61,19 +52,18 @@ namespace Railway.Gameplay.UI
         private void OpenShopScreen()
         {
             _shopPanel.FillInventory();
+            
             _shopPanel.gameObject.SetActive(true);
             _inputReader.EnableMenuInput();
-            Debug.Log("shop opened");
             
             _gameStateManager.UpdateGameState(GameState.Shop);
         }
 
         private void CloseShopScreen()
         {
+            _inputReader.CloseShopEvent -= CloseShopScreen;
             _shopPanel.gameObject.SetActive(false);
-            
             _gameStateManager.ResetToPreviousGameState();
         }
-        
     }
 }

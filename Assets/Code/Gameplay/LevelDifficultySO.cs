@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Railway.Gameplay
 {
@@ -14,6 +15,10 @@ namespace Railway.Gameplay
     [CreateAssetMenu(fileName = "Level Difficulty", menuName = "Global Data/Level Difficulty")]
     public class LevelDifficultySO : ScriptableObject
     {
-        public LevelDifficulty _LevelDifficulty;
+        [SerializeField] private LevelDifficulty _levelDifficulty;
+        public LevelDifficulty LevelDifficulty
+        {
+            set => _levelDifficulty = value;
+        }
     }
 }

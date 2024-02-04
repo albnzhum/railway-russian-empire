@@ -1,26 +1,20 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Railway.Shop.Data
 {
-    [Serializable]
-    public enum ItemType
-    {
-        Workers,
-        Rails,
-        Locomotive,
-        Carriage
-    }
-    
+    /// <summary>
+    /// Object for storage shop's item data
+    /// </summary>
     public class ShopItem : ScriptableObject
     {
-        public string Name;
-        public float Price;
-        public GameObject Prefab;
-        [SerializeField] private ItemType _itemType;
+        [SerializeField] private string _name;
+        [SerializeField] private float _price;
+        [SerializeField] private GameObject _prefab;
+        [SerializeField] private ItemTypeSO _itemType;
         
-        public ItemType ItemType => _itemType;
+        public string Name => _name;
+        public float Price => _price;
+        public GameObject Prefab => _prefab;
+        public ItemTypeSO ItemType => _itemType;
     }
 }

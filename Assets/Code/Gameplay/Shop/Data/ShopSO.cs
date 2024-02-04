@@ -1,11 +1,11 @@
-using System.Collections;
 using System.Collections.Generic;
-using Railway.Gameplay.Shop;
-using Railway.Shop.Data;
 using UnityEngine;
 
 namespace Railway.Shop.Data
 {
+    /// <summary>
+    /// Contains list of items
+    /// </summary>
     [CreateAssetMenu(fileName = "New Shop", menuName = "Shop Data/Shop")]
     public class ShopSO : ScriptableObject
     {
@@ -21,13 +21,13 @@ namespace Railway.Shop.Data
                 _items = new List<ShopItemStack>();
             }
             _items.Clear();
+            
             foreach (ShopItemStack item in _defaultItems)
             {
                 _items.Add(new ShopItemStack(item));
             }
         }
         
-
         public bool Contains(ShopItem item)
         {
             for (int i = 0; i < _items.Count; i++)

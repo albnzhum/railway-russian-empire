@@ -1,8 +1,6 @@
-using System;
 using Railway.Components;
 using Railway.Events;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Railway.Gameplay
 {
@@ -38,7 +36,7 @@ namespace Railway.Gameplay
         private void Setup(MissionInitializer mission, LevelDifficulty levelDifficulty)
         {
             _mission = mission;
-            _levelDifficulty._LevelDifficulty = levelDifficulty;
+            _levelDifficulty.LevelDifficulty = levelDifficulty;
         }
     }
 

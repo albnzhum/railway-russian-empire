@@ -4,28 +4,34 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace Railway.Gameplay.Shop.UI
+namespace Railway.Shop.UI
 {
     public class UIShopItem : MonoBehaviour
     {
         [SerializeField] private Text _itemName = default;
         [SerializeField] private Text _itemPrice = default;
         [SerializeField] private Image _bgImage = default;
-        [SerializeField] private Image _bgInactiveImage = default;
         [SerializeField] private Button _itemButton = default;
-        
+
         public UnityAction<ShopItem> ItemSelected;
 
         [HideInInspector] public ShopItemStack currentItem;
 
         private bool _isSelected = false;
+        
+        private void OnEnable()
+        {
+            if (_isSelected)
+            {
+                SelectItem();
+            }
+        }
 
         public void SetItem(ShopItemStack itemStack, bool isSelected)
         {
             _isSelected = isSelected;
-            _bgImage.gameObject.SetActive(true);
-            _itemButton.gameObject.SetActive(true);
-            _bgInactiveImage.gameObject.SetActive(false);
+            
+            SetItemVisibility(true);
 
             currentItem = itemStack;
 
@@ -36,20 +42,19 @@ namespace Railway.Gameplay.Shop.UI
         public void SetInactiveItem()
         {
             currentItem = null;
-            _bgImage.gameObject.SetActive(false);
-            _itemButton.gameObject.SetActive(false);
-            _bgInactiveImage.gameObject.SetActive(true);
+
+            SetItemVisibility(false);
         }
 
-        private void OnEnable()
+        private void SetItemVisibility(bool active)
         {
-            if (_isSelected)
-            {
-                SelectItem();
-            }
+            _itemName.gameObject.SetActive(active);
+            _itemPrice.gameObject.SetActive(active);
+            _bgImage.gameObject.SetActive(active);
+            _itemButton.gameObject.SetActive(active);
         }
 
-        public void SelectItem()
+        private void SelectItem()
         {
             _isSelected = true;
 

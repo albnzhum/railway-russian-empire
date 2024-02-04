@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using Railway.Events;
+using Railway.Input;
 using Railway.Shop.Data;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Railway.Gameplay.Shop.UI
+namespace Railway.Shop.UI
 {
-    //TODO: Разобраться в причине нерабочего магазина
     public class UIShop : MonoBehaviour
     {
         public UnityAction Closed;
@@ -18,13 +18,16 @@ namespace Railway.Gameplay.Shop.UI
         [SerializeField] private List<ShopTabSO> _tabTypesList = new List<ShopTabSO>();
         [SerializeField] private List<UIShopItem> _availableItemSlots = default;
 
+        [Header("Gameplay")] 
+        [SerializeField] private InputReader _inputReader;
+
         [Header("Listening to")] 
         [SerializeField] private UIShopTabs _tabsPanel = default;
 
         [SerializeField] private VoidEventChannelSO _onInteractionEndedEvent = default;
 
-        [Header("Broadcasting on")] [SerializeField]
-        private ItemEventChannel _useItemEvent = default;
+        [Header("Broadcasting on")] 
+        [SerializeField] private ItemEventChannel _useItemEvent = default;
 
         private ShopTabSO _selectedTab = default;
         private int selectedItemId = -1;
@@ -37,6 +40,8 @@ namespace Railway.Gameplay.Shop.UI
             {
                 _availableItemSlots[i].ItemSelected += InspectItem;
             }
+
+            _inputReader.TabSwitched += OnSwitchTab;
         }
 
         private void OnDisable()
@@ -47,6 +52,8 @@ namespace Railway.Gameplay.Shop.UI
             {
                 _availableItemSlots[i].ItemSelected -= InspectItem;
             }
+            
+            _inputReader.TabSwitched -= OnSwitchTab;
         }
 
         private void OnSwitchTab(float orientation)
@@ -75,28 +82,15 @@ namespace Railway.Gameplay.Shop.UI
 
         public void FillInventory(ItemType _selectedType = ItemType.Workers)
         {
-            if (_tabTypesList.Exists(o => o.TabType == _selectedType))
-            {
-                _selectedTab = _tabTypesList.Find(o => o.TabType == _selectedType);
-            }
-            else
-            {
-                if (_tabTypesList != null)
-                {
-                    if (_tabTypesList.Count > 0)
-                    {
-                        _selectedTab = _tabTypesList[0];
-                    }
-                }
-            }
+            _selectedTab = _tabTypesList.Find(o => o.TabType == _selectedType) ?? _tabTypesList[0];
 
             if (_selectedTab != null)
             {
                 SetTabs(_tabTypesList, _selectedTab);
                 List<ShopItemStack> listItemsToShow = new List<ShopItemStack>();
-                listItemsToShow = _shop.Items.FindAll(o => o.Item.ItemType == _selectedType);
+                listItemsToShow = _shop.Items.FindAll(o => o.Item.ItemType.TabType == _selectedTab);
 
-                FillShopItmes(listItemsToShow);
+                FillShopItems(listItemsToShow);
             }
             else
             {
@@ -109,7 +103,7 @@ namespace Railway.Gameplay.Shop.UI
             _tabsPanel.SetTabs(typesList, selectedType);
         }
 
-        private void FillShopItmes(List<ShopItemStack> listItemsToShow)
+        private void FillShopItems(List<ShopItemStack> listItemsToShow)
         {
             if (_availableItemSlots == null)
                 _availableItemSlots = new List<UIShopItem>();
@@ -121,12 +115,17 @@ namespace Railway.Gameplay.Shop.UI
                 if (i < listItemsToShow.Count)
                 {
                     bool isSelected = selectedItemId == i;
-                    _availableItemSlots[1].SetItem(listItemsToShow[i], isSelected);
+                    _availableItemSlots[i].SetItem(listItemsToShow[i], isSelected);
                 }
                 else if (i < _availableItemSlots.Count)
                 {
                     _availableItemSlots[i].SetInactiveItem();
                 }
+            }
+
+            if (selectedItemId >= 0)
+            {
+                selectedItemId = -1;
             }
         }
 
@@ -152,10 +151,8 @@ namespace Railway.Gameplay.Shop.UI
                 {
                     index = _availableItemSlots.FindIndex(o => o.currentItem == itemToUpdate);
                 }
-                //if the item needs to be created
                 else
                 {
-                    //if the new item needs to be instantiated
                     if (_shop.Items.Count > _availableItemSlots.Count)
                     {
                         UIShopItem instantiatedPrefab =
@@ -178,13 +175,9 @@ namespace Railway.Gameplay.Shop.UI
             {
                 int itemIndex = _availableItemSlots.FindIndex(o => o.currentItem.Item == itemToInspect);
 
-                //unselect selected Item
                 if (selectedItemId >= 0 && selectedItemId != itemIndex)
-
-                    //change Selected ID 
                     selectedItemId = itemIndex;
 
-                //check if interactable
                 bool isInteractable = true;
             }
         }

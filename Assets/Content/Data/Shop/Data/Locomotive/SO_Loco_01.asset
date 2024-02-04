@@ -12,13 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4657c887b1f03e34b9c47eb9d1189020, type: 3}
   m_Name: SO_Loco_01
   m_EditorClassIdentifier: 
-  Name: "\u041F\u0440\u043E\u0432\u043E\u0440\u043D\u044B\u0439"
-  Price: 10
-  Prefab: {fileID: 255034648190972483, guid: bf40779ca72098a4f945f0b96894e3d0, type: 3}
-  ItemType: 2
-  Country: 0
-  Factory: 0
-  LifeSpan: 12
-  Power: 30
-  TechnicalState: 0
-  MonthsBeforeMaintenance: 4
+  _name: "\u041B\u043E\u043A\u043E\u043C\u043E\u0442\u0438\u04321"
+  _price: 0
+  _prefab: {fileID: 0}
+  _itemType: {fileID: 11400000, guid: c046e243c6a43e74e9f8cdda0a040cab, type: 2}

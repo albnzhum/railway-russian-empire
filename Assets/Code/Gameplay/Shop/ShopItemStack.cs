@@ -2,8 +2,11 @@ using System;
 using Railway.Shop.Data;
 using UnityEngine;
 
-namespace Railway.Gameplay.Shop
+namespace Railway.Shop.Data
 {
+    /// <summary>
+    /// Represents a stack of items in the shop.
+    /// </summary>
     [Serializable]
     public class ShopItemStack
     {

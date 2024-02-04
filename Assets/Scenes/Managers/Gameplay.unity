@@ -1576,10 +1576,10 @@ MonoBehaviour:
   _itemPrefab: {fileID: 6902659186104424590, guid: 3a11ad5d7f5819941b395016e4b779c9, type: 3}
   _contentParent: {fileID: 76167559}
   _tabTypesList:
-  - {fileID: 11400000, guid: c82975ca49c59cd40948d51e7be99bfe, type: 2}
+  - {fileID: 11400000, guid: 5f9cf580159195f4bbdb8aeb758781f4, type: 2}
   - {fileID: 11400000, guid: 16b90d9e290b8454e94da60801db4dc6, type: 2}
   - {fileID: 11400000, guid: 9a449b0f5c23d0c418a357bbdccd9bc1, type: 2}
-  - {fileID: 11400000, guid: 5f9cf580159195f4bbdb8aeb758781f4, type: 2}
+  - {fileID: 11400000, guid: c82975ca49c59cd40948d51e7be99bfe, type: 2}
   _availableItemSlots:
   - {fileID: 5806632499892093400}
   - {fileID: 1907078144}
@@ -1593,6 +1593,7 @@ MonoBehaviour:
   - {fileID: 525933873}
   - {fileID: 300413481}
   - {fileID: 591637852}
+  _inputReader: {fileID: 11400000, guid: 1abb58e29fa923742afe9a18676e05d6, type: 2}
   _tabsPanel: {fileID: 316022951}
   _onInteractionEndedEvent: {fileID: 0}
   _useItemEvent: {fileID: 0}
@@ -2263,7 +2264,7 @@ MonoBehaviour:
   _settingsScreen: {fileID: 0}
   _gameStateManager: {fileID: 11400000, guid: f6ab959d7b6f6344e9a16562e598ec37, type: 2}
   _mainMenu: {fileID: 11400000, guid: ce7aec45cad65074dbe0a505041fd6af, type: 2}
-  _inputReader: {fileID: 11400000, guid: fe01a2cd65cdf3343b71c44a27f3793e, type: 2}
+  _inputReader: {fileID: 11400000, guid: 1abb58e29fa923742afe9a18676e05d6, type: 2}
   _onSceneReady: {fileID: 11400000, guid: e57acfe03ba0ac049b18c2cb922e0621, type: 2}
   _loadMenuEvent: {fileID: 11400000, guid: bdd67925e9d4f954f804df113717a83e, type: 2}
   _openShopScreen: {fileID: 11400000, guid: 20913bed4a5f9034c867528292d37e95, type: 2}
@@ -2889,7 +2890,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _levelDifficulty: {fileID: 11400000, guid: a6c85c0274d99174db3bfc6f38fffbfd, type: 2}
-  _onSceneReady: {fileID: 0}
+  _onSceneReady: {fileID: 11400000, guid: e57acfe03ba0ac049b18c2cb922e0621, type: 2}
 --- !u!1 &1953125069
 GameObject:
   m_ObjectHideFlags: 0

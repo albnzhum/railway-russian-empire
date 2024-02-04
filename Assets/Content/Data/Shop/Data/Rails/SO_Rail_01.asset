@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31fc44c98500d9744a91ff2726eb6476, type: 3}
   m_Name: SO_Rail_01
   m_EditorClassIdentifier: 
-  Name: 
-  Price: 0
-  Prefab: {fileID: 7832189561886764251, guid: 05aa9af20763c584ea005a54d9545ba5, type: 3}
-  ItemType: 1
+  _name: "\u041B\u0443\u0447\u0448\u0430\u044F \u0440\u0435\u043B\u044C\u0441\u0430"
+  _price: 0
+  _prefab: {fileID: 0}
+  _itemType: {fileID: 11400000, guid: de68871ca5698f141b91201e788bb9f7, type: 2}
