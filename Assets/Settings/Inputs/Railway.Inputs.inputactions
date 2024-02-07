@@ -7,12 +7,12 @@
             "actions": [
                 {
                     "name": "ChooseCell",
-                    "type": "PassThrough",
+                    "type": "Value",
                     "id": "5e590d35-c3e2-459f-9d70-d11fae096840",
-                    "expectedControlType": "",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "OpenShop",
@@ -42,7 +42,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "RotateCamera",
+                    "name": "ZoomCamera",
                     "type": "Value",
                     "id": "4578fa80-0e1f-4657-8cdd-4a116121d05c",
                     "expectedControlType": "Vector2",
@@ -99,11 +99,11 @@
                 {
                     "name": "",
                     "id": "d5424760-2632-4eeb-baea-7d84b84eca23",
-                    "path": "<Mouse>/position",
+                    "path": "<Mouse>/scroll",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "RotateCamera",
+                    "action": "ZoomCamera",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

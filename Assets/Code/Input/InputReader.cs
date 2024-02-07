@@ -13,9 +13,9 @@ namespace Railway.Input
         
         public event UnityAction OpenShopEvent = delegate {  };
         public event UnityAction CloseShopEvent = delegate {  };
-        public event UnityAction ChooseCellEvent = delegate {  };
+        public event UnityAction<Vector2> ChooseCellEvent = delegate {  };
         public event UnityAction<float> TabSwitched = delegate {  };
-        public event UnityAction<Vector2, bool> CameraMoveEvent = delegate { };
+        public event UnityAction<Vector2> CameraMoveEvent = delegate { };
         public event UnityAction EnableMouseControlCameraEvent = delegate { };
         public event UnityAction DisableMouseControlCameraEvent = delegate { }; 
 
@@ -36,9 +36,7 @@ namespace Railway.Input
 
         private void OnDisable()
         {
-            _railwayInputs.Gameplay.Disable();
-            _railwayInputs.Menus.Disable();
-            _railwayInputs.Tutorials.Disable();
+            DisableAllInput();
         }
 
         public void EnableGameplayInput()
@@ -62,12 +60,21 @@ namespace Railway.Input
             _railwayInputs.Tutorials.Enable();
         }
 
+        public void DisableAllInput()
+        {
+            _railwayInputs.Gameplay.Disable();
+            _railwayInputs.Menus.Disable();
+            _railwayInputs.Tutorials.Disable();
+        }
+
         #region GAMEPLAY_INPUT
 
         public void OnChooseCell(InputAction.CallbackContext context)
         {
-            
+            if (context.phase == InputActionPhase.Performed)
+                ChooseCellEvent.Invoke(Mouse.current.position.ReadValue());
         }
+        
 
         public void OnOpenShop(InputAction.CallbackContext context)
         {
@@ -82,9 +89,9 @@ namespace Railway.Input
         
         private bool IsDeviceMouse(InputAction.CallbackContext context) => context.control.device.name == "Mouse";
         
-        public void OnRotateCamera(InputAction.CallbackContext context)
+        public void OnZoomCamera(InputAction.CallbackContext context)
         {
-            CameraMoveEvent.Invoke(context.ReadValue<Vector2>(), IsDeviceMouse(context));
+            CameraMoveEvent.Invoke(context.ReadValue<Vector2>());
         }
 
         public void OnMouseControlCamera(InputAction.CallbackContext context)
@@ -102,7 +109,8 @@ namespace Railway.Input
 
         public void OnCloseShop(InputAction.CallbackContext context)
         {
-            CloseShopEvent.Invoke();
+            if (context.phase == InputActionPhase.Performed)
+                CloseShopEvent.Invoke();
         }
 
         public void OnClick(InputAction.CallbackContext context) { }

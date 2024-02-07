@@ -29,12 +29,12 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
             ""actions"": [
                 {
                     ""name"": ""ChooseCell"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Value"",
                     ""id"": ""5e590d35-c3e2-459f-9d70-d11fae096840"",
-                    ""expectedControlType"": """",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""OpenShop"",
@@ -64,7 +64,7 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""RotateCamera"",
+                    ""name"": ""ZoomCamera"",
                     ""type"": ""Value"",
                     ""id"": ""4578fa80-0e1f-4657-8cdd-4a116121d05c"",
                     ""expectedControlType"": ""Vector2"",
@@ -121,11 +121,11 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""d5424760-2632-4eeb-baea-7d84b84eca23"",
-                    ""path"": ""<Mouse>/position"",
+                    ""path"": ""<Mouse>/scroll"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""RotateCamera"",
+                    ""action"": ""ZoomCamera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -358,7 +358,7 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
         m_Gameplay_OpenShop = m_Gameplay.FindAction("OpenShop", throwIfNotFound: true);
         m_Gameplay_Pause = m_Gameplay.FindAction("Pause", throwIfNotFound: true);
         m_Gameplay_MouseControlCamera = m_Gameplay.FindAction("MouseControlCamera", throwIfNotFound: true);
-        m_Gameplay_RotateCamera = m_Gameplay.FindAction("RotateCamera", throwIfNotFound: true);
+        m_Gameplay_ZoomCamera = m_Gameplay.FindAction("ZoomCamera", throwIfNotFound: true);
         // Menus
         m_Menus = asset.FindActionMap("Menus", throwIfNotFound: true);
         m_Menus_CloseShop = m_Menus.FindAction("CloseShop", throwIfNotFound: true);
@@ -437,7 +437,7 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_OpenShop;
     private readonly InputAction m_Gameplay_Pause;
     private readonly InputAction m_Gameplay_MouseControlCamera;
-    private readonly InputAction m_Gameplay_RotateCamera;
+    private readonly InputAction m_Gameplay_ZoomCamera;
     public struct GameplayActions
     {
         private @RailwayInputs m_Wrapper;
@@ -446,7 +446,7 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
         public InputAction @OpenShop => m_Wrapper.m_Gameplay_OpenShop;
         public InputAction @Pause => m_Wrapper.m_Gameplay_Pause;
         public InputAction @MouseControlCamera => m_Wrapper.m_Gameplay_MouseControlCamera;
-        public InputAction @RotateCamera => m_Wrapper.m_Gameplay_RotateCamera;
+        public InputAction @ZoomCamera => m_Wrapper.m_Gameplay_ZoomCamera;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -468,9 +468,9 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
             @MouseControlCamera.started += instance.OnMouseControlCamera;
             @MouseControlCamera.performed += instance.OnMouseControlCamera;
             @MouseControlCamera.canceled += instance.OnMouseControlCamera;
-            @RotateCamera.started += instance.OnRotateCamera;
-            @RotateCamera.performed += instance.OnRotateCamera;
-            @RotateCamera.canceled += instance.OnRotateCamera;
+            @ZoomCamera.started += instance.OnZoomCamera;
+            @ZoomCamera.performed += instance.OnZoomCamera;
+            @ZoomCamera.canceled += instance.OnZoomCamera;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -487,9 +487,9 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
             @MouseControlCamera.started -= instance.OnMouseControlCamera;
             @MouseControlCamera.performed -= instance.OnMouseControlCamera;
             @MouseControlCamera.canceled -= instance.OnMouseControlCamera;
-            @RotateCamera.started -= instance.OnRotateCamera;
-            @RotateCamera.performed -= instance.OnRotateCamera;
-            @RotateCamera.canceled -= instance.OnRotateCamera;
+            @ZoomCamera.started -= instance.OnZoomCamera;
+            @ZoomCamera.performed -= instance.OnZoomCamera;
+            @ZoomCamera.canceled -= instance.OnZoomCamera;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -661,7 +661,7 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
         void OnOpenShop(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
         void OnMouseControlCamera(InputAction.CallbackContext context);
-        void OnRotateCamera(InputAction.CallbackContext context);
+        void OnZoomCamera(InputAction.CallbackContext context);
     }
     public interface IMenusActions
     {

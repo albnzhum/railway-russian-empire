@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3601f77094c82a40a08ed0323b0cd06, type: 3}
   m_Name: Csarskoe Selo
   m_EditorClassIdentifier: 
-  Cities:
+  _cities:
   - {fileID: 11400000, guid: a3f2460854f68094383eb4cc94c60d37, type: 2}
   - {fileID: 11400000, guid: 65ea345839197424695e1d2c68c9e5fa, type: 2}
-  resources:
-    Gold: 25
-    Workers: 12
-    Church: 545
-    SpeedBuilding: 53
+  _resources:
+    Gold: 57.5
+    Workers: 142.5
+    Church: 60
+    SpeedBuilding: 117.5
+  _isOriginalResourcesSaved: 0

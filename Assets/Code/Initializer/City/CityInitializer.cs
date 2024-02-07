@@ -7,7 +7,14 @@ namespace Railway.Components
     [CreateAssetMenu(fileName = "New City Initializer", menuName = "Initializer/City Initializer")]
     public class CityInitializer : ScriptableObject
     {
-        public string Name;
-        public int Population;
+        [SerializeField] private string _name;
+        [SerializeField] private int _population;
+        
+        public string Name => _name;
+        public int Population
+        {
+            get => _population;
+            set => _population = value;
+        }
     }
 }

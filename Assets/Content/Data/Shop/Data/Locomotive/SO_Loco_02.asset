@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: SO_Loco_02
   m_EditorClassIdentifier: 
   _name: "\u041B\u043E\u043A\u043E\u043C\u043E\u0442\u0438\u0432 2"
-  _price: 0
-  _prefab: {fileID: 0}
+  _price: 25
+  _prefab: {fileID: 7228003195795338746, guid: e00328c1c9986df42946cc3a2baf4112, type: 3}
   _itemType: {fileID: 11400000, guid: c046e243c6a43e74e9f8cdda0a040cab, type: 2}

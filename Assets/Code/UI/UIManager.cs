@@ -29,7 +29,6 @@ namespace Railway.Shop.UI
 
         private void OnEnable()
         {
-            _inputReader.EnableGameplayInput();
             _inputReader.OpenShopEvent += SetShopScreen;
             _shopPanel.Closed += CloseShopScreen;
         }
@@ -42,16 +41,18 @@ namespace Railway.Shop.UI
 
         private void SetShopScreen()
         {
-            OpenShopScreen();
             if (_gameStateManager.CurrentGameState == GameState.Gameplay)
             {
                 OpenShopScreen();
+                Debug.Log("shop opened");
             }
         }
 
         private void OpenShopScreen()
         {
             _shopPanel.FillInventory();
+            
+            _inputReader.CloseShopEvent += CloseShopScreen;
             
             _shopPanel.gameObject.SetActive(true);
             _inputReader.EnableMenuInput();
@@ -64,6 +65,9 @@ namespace Railway.Shop.UI
             _inputReader.CloseShopEvent -= CloseShopScreen;
             _shopPanel.gameObject.SetActive(false);
             _gameStateManager.ResetToPreviousGameState();
+            
+            if (_gameStateManager.CurrentGameState == GameState.Gameplay )
+                _inputReader.EnableGameplayInput();
         }
     }
 }

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0824be461e0101942a330ea5f75b265f, type: 3}
   m_Name: Saint-Petersburg
   m_EditorClassIdentifier: 
-  Name: "\u0421\u0430\u043D\u043A\u0442-\u041F\u0435\u0442\u0435\u0440\u0431\u0443\u0440\u0433"
-  Population: 1500
+  _name: "\u0421\u0430\u043D\u043A\u0442-\u041F\u0435\u0442\u0435\u0440\u0431\u0443\u0440\u0433"
+  _population: 1500

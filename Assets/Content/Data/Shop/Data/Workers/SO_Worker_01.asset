@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: "\u041A\u0440\u0435\u0441\u0442\u044C\u044F\u043D\u0435"
   _price: 0
-  _prefab: {fileID: 0}
+  _prefab: {fileID: 6259199244998343362, guid: c2be995128518984fb1c16609b23ac33, type: 3}
   _itemType: {fileID: 11400000, guid: 57815df062724cd41a5ddce822bd3360, type: 2}
-  Count: 100
-  Salary: 1
-  Provision: 123
-  Satisfication: 2
-  SpeedBuilding: 10
-  WorkerType: 0
+  _count: 0
+  _salary: 0
+  _provision: 0
+  _satisfication: 0
+  _speedBuilding: 0
+  _workerType: 0

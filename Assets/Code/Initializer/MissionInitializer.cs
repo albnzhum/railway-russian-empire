@@ -7,13 +7,22 @@ namespace Railway.Components
     [CreateAssetMenu(fileName = "New Mission Initializer", menuName = "Initializer/Mission Initializer")]
     public class MissionInitializer : ScriptableObject
     {
-        public List<CityInitializer> Cities;
-        public Resources resources;
-        public Resources originalResources;
-        public bool isOriginalResourcesSaved;
+        [SerializeField] private List<CityInitializer> _cities;
+        [SerializeField] private Resources _resources;
+        [HideInInspector] private Resources _originalResources;
+        [SerializeField] private bool _isOriginalResourcesSaved;
+        
+        public List<CityInitializer> Cities => _cities;
+        public Resources resources
+        {
+            get => _resources;
+            set => _resources = value;
+        }
+        public Resources originalResources { get; set; }
+        public bool isOriginalResourcesSaved { get; set; }
 
         [System.Serializable]
-        public struct Resources
+        public class Resources
         {
             public float Gold;
             public float Workers;

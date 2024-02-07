@@ -56,6 +56,52 @@ namespace Railway.Shop.UI
             _inputReader.TabSwitched -= OnSwitchTab;
         }
 
+        private void OnActionButtonClicked()
+        {
+            if (_availableItemSlots.Count > selectedItemId && selectedItemId > -1)
+            {
+                ShopItem itemToActOn = ScriptableObject.CreateInstance<ShopItem>();
+                itemToActOn = _availableItemSlots[selectedItemId].currentItem.Item;
+
+                switch (itemToActOn.ItemType.TabType.TabType)
+                {
+                    case ItemType.Workers:
+                        BuyWorkers(itemToActOn);
+                        break;
+                    case ItemType.Carriage:
+                        BuyCarriage(itemToActOn);
+                        break;
+                    case ItemType.Locomotive:
+                        BuyLocomotive(itemToActOn);
+                        break;
+                    case ItemType.Rails:
+                        BuyRails(itemToActOn);
+                        break;
+                        default: break;
+                }
+            }
+        }
+
+        private void BuyRails(ShopItem itemToActOn)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void BuyLocomotive(ShopItem itemToActOn)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void BuyCarriage(ShopItem itemToActOn)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void BuyWorkers(ShopItem itemToActOn)
+        {
+            throw new NotImplementedException();
+        }
+
         private void OnSwitchTab(float orientation)
         {
             if (orientation != 0)
