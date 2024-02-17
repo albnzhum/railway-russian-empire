@@ -1,4 +1,5 @@
 using System;
+using Railway.Events;
 using Railway.Input;
 using TGS;
 using UnityEngine;
@@ -6,14 +7,25 @@ using UnityEngine;
 public class TerrainTrigger : MonoBehaviour
 {
     public InputReader _inputReader;
+    public static event Action<Vector3> OnCellPositionChanged;
 
-    private TerrainGridSystem[] _tgs;
-    private RaycastHit[] hits;
+    private TerrainGridSystem _tgs;
+    public static TerrainTrigger Instance { get; private set; }
+
+    private void Awake() 
+    {
+        if (Instance != null && Instance != this) 
+        { 
+            Destroy(this); 
+        } 
+        else 
+        { 
+            Instance = this; 
+        } 
+    }
 
     private void OnEnable()
     {
-        hits = new RaycastHit[20];
-
         _inputReader.ChooseCellEvent += ChooseCell;
     }
 
@@ -29,8 +41,8 @@ public class TerrainTrigger : MonoBehaviour
             gameObject.AddComponent<TerrainCollider>();
         }
 
-        _tgs = transform.GetComponentsInChildren<TerrainGridSystem>();
-        if (_tgs == null || _tgs.Length == 0)
+        _tgs = transform.GetComponentInChildren<TerrainGridSystem>();
+        if (_tgs == null )
         {
             Debug.LogError("Missing Terrain Highlight System reference in Terrain Trigger script");
             DestroyImmediate(this);
@@ -41,20 +53,25 @@ public class TerrainTrigger : MonoBehaviour
     {
         Ray ray = Camera.main.ScreenPointToRay(mousePosition);
         
-        int hitCount = Physics.RaycastNonAlloc(Camera.main.transform.position, ray.direction, hits);
-        if (hitCount > 0) {
-            for (int k = 0; k < hitCount; k++) {
-                if (_tgs[0] == null || hits[k].collider.gameObject == this._tgs[0].Terrain.gameObject)
-                    return; 
-            }
-        }
-        
-        for (int k = 0; k < _tgs.Length; k++) {
-            if (_tgs[k] != null) {
-                _tgs[k].mouseIsOver = false;
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit))
+        {
+            Cell _cell = DetermineCell(hit.point);
+            if (_cell != null)
+            {
+                Vector3 cellPosition = _tgs.CellGetPosition(_cell);
+                Debug.Log("Cell chosen at position: " + cellPosition);
+                
+                // Вызываем статическое событие для других скриптов
+                OnCellPositionChanged?.Invoke(cellPosition);
             }
         }
         
         Debug.Log("Cell chosen");
+    }
+    
+    private Cell DetermineCell(Vector3 position)
+    {
+        return _tgs.CellGetAtPosition(position, true);
     }
 }

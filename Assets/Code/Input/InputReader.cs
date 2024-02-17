@@ -17,7 +17,15 @@ namespace Railway.Input
         public event UnityAction<float> TabSwitched = delegate {  };
         public event UnityAction<Vector2> CameraMoveEvent = delegate { };
         public event UnityAction EnableMouseControlCameraEvent = delegate { };
-        public event UnityAction DisableMouseControlCameraEvent = delegate { }; 
+        public event UnityAction DisableMouseControlCameraEvent = delegate { };
+
+        private bool isGameplayInputEnabled;
+
+        public bool IsGameplayInputEnabled
+        {
+            get;
+            private set;
+        }
 
 
         private RailwayInputs _railwayInputs;
@@ -41,6 +49,8 @@ namespace Railway.Input
 
         public void EnableGameplayInput()
         {
+            isGameplayInputEnabled = true;
+            
             _railwayInputs.Gameplay.Enable();
             _railwayInputs.Menus.Disable();
             _railwayInputs.Tutorials.Disable();
@@ -48,6 +58,8 @@ namespace Railway.Input
 
         public void EnableMenuInput()
         {
+            isGameplayInputEnabled = false;
+            
             _railwayInputs.Gameplay.Disable();
             _railwayInputs.Menus.Enable();
             _railwayInputs.Tutorials.Disable();
@@ -74,7 +86,6 @@ namespace Railway.Input
             if (context.phase == InputActionPhase.Performed)
                 ChooseCellEvent.Invoke(Mouse.current.position.ReadValue());
         }
-        
 
         public void OnOpenShop(InputAction.CallbackContext context)
         {

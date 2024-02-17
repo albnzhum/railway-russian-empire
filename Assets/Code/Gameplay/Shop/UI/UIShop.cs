@@ -5,6 +5,7 @@ using Railway.Input;
 using Railway.Shop.Data;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 namespace Railway.Shop.UI
 {
@@ -31,6 +32,8 @@ namespace Railway.Shop.UI
 
         private ShopTabSO _selectedTab = default;
         private int selectedItemId = -1;
+
+        private TerrainTrigger _terrainTrigger;
 
         private void OnEnable()
         {
@@ -60,8 +63,12 @@ namespace Railway.Shop.UI
         {
             if (_availableItemSlots.Count > selectedItemId && selectedItemId > -1)
             {
+                Debug.Log(selectedItemId);
                 ShopItem itemToActOn = ScriptableObject.CreateInstance<ShopItem>();
                 itemToActOn = _availableItemSlots[selectedItemId].currentItem.Item;
+                Debug.Log(itemToActOn.ItemType.TabType.TabType.ToString());
+
+                ObjectPlace(itemToActOn);
 
                 switch (itemToActOn.ItemType.TabType.TabType)
                 {
@@ -80,26 +87,40 @@ namespace Railway.Shop.UI
                         default: break;
                 }
             }
+            else
+            {
+                Debug.Log(_availableItemSlots.Count);
+            }
+        }
+
+        private void ObjectPlace(ShopItem _item)
+        {
+            CloseInventory();
+            
+            GameObject _itemPrefab = _item.Prefab;
+            Vector3 position = new Vector3(Mouse.current.position.x.value, 0, Mouse.current.position.y.value);
+            Instantiate(_itemPrefab, position, Quaternion.identity);
+            _itemPrefab.transform.position = position;
         }
 
         private void BuyRails(ShopItem itemToActOn)
         {
-            throw new NotImplementedException();
+            Debug.Log("Rails bought");
         }
 
         private void BuyLocomotive(ShopItem itemToActOn)
         {
-            throw new NotImplementedException();
+            Debug.Log("Locomotive bought");
         }
 
         private void BuyCarriage(ShopItem itemToActOn)
         {
-            throw new NotImplementedException();
+            Debug.Log("Carriage bought");
         }
 
         private void BuyWorkers(ShopItem itemToActOn)
         {
-            throw new NotImplementedException();
+            Debug.Log("Workers bought");
         }
 
         private void OnSwitchTab(float orientation)
@@ -161,17 +182,22 @@ namespace Railway.Shop.UI
                 if (i < listItemsToShow.Count)
                 {
                     bool isSelected = selectedItemId == i;
-                    _availableItemSlots[i].SetItem(listItemsToShow[i], isSelected);
+                    _availableItemSlots[i].SetItem(listItemsToShow[i], isSelected, OnActionButtonClicked);
                 }
                 else if (i < _availableItemSlots.Count)
                 {
-                    _availableItemSlots[i].SetInactiveItem();
+                    _availableItemSlots[i].SetInactiveItem(OnActionButtonClicked);
                 }
             }
 
             if (selectedItemId >= 0)
             {
                 selectedItemId = -1;
+            }
+            
+            if (_availableItemSlots.Count > 0)
+            {
+                _availableItemSlots[0].SelectFirstElement();
             }
         }
 
@@ -187,7 +213,7 @@ namespace Railway.Shop.UI
                 if (_availableItemSlots.Exists(o => o.currentItem == itemToUpdate))
                 {
                     int index = _availableItemSlots.FindIndex(o => o.currentItem == itemToUpdate);
-                    _availableItemSlots[index].SetInactiveItem();
+                    _availableItemSlots[index].SetInactiveItem(OnActionButtonClicked);
                 }
             }
             else
@@ -211,7 +237,7 @@ namespace Railway.Shop.UI
                 }
 
                 bool isSelected = selectedItemId == index;
-                _availableItemSlots[index].SetItem(itemToUpdate, isSelected);
+                _availableItemSlots[index].SetItem(itemToUpdate, isSelected, OnActionButtonClicked);
             }
         }
 
@@ -222,9 +248,18 @@ namespace Railway.Shop.UI
                 int itemIndex = _availableItemSlots.FindIndex(o => o.currentItem.Item == itemToInspect);
 
                 if (selectedItemId >= 0 && selectedItemId != itemIndex)
-                    selectedItemId = itemIndex;
+                    UnselectItem(selectedItemId);
+                selectedItemId = itemIndex;
 
                 bool isInteractable = true;
+            }
+        }
+
+        private void UnselectItem(int itemIndex)
+        {
+            if (_availableItemSlots.Count > itemIndex)
+            {
+                _availableItemSlots[itemIndex].UnselectItem();
             }
         }
 

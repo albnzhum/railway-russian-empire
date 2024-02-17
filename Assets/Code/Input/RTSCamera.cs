@@ -51,6 +51,7 @@ public class RTSCamera : MonoBehaviour
     private void OnEnable()
     {
         _inputReader.EnableGameplayInput();
+        
         zoomHeight = cameraTransform.localPosition.y;
         
         lastPosition = transform.position;
@@ -60,18 +61,21 @@ public class RTSCamera : MonoBehaviour
 
     private void OnDisable()
     {
-        _inputReader.DisableAllInput();
         _inputReader.CameraMoveEvent -= ZoomCamera;
+        _inputReader.DisableAllInput();
     }
 
     private void Update()
     {
-        CheckMouseAtScreenEdge();
-        DragCamera();
+        if (_inputReader.IsGameplayInputEnabled)
+        {
+            CheckMouseAtScreenEdge();
+            DragCamera();
         
-        UpdateVelocity();
-        UpdateBasePosition();
-        UpdateCameraPosition();
+            UpdateVelocity();
+            UpdateBasePosition();
+            UpdateCameraPosition();
+        }
     }
 
     private void ZoomCamera(Vector2 position)
@@ -83,7 +87,7 @@ public class RTSCamera : MonoBehaviour
             zoomHeight = cameraTransform.localPosition.y + inputValue * stepSize;
 
             if (zoomHeight < minHeight) zoomHeight = minHeight;
-            else if (zoomHeight > maxHeight) zoomDampening = maxHeight;
+            else if (zoomHeight > maxHeight) zoomHeight = maxHeight;
         }
     }
 
@@ -133,7 +137,7 @@ public class RTSCamera : MonoBehaviour
         
         cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, 
             zoomTarget, Time.deltaTime * zoomDampening);
-        cameraTransform.LookAt(transform);
+        //cameraTransform.LookAt(transform);
     }
 
     private void CheckMouseAtScreenEdge()

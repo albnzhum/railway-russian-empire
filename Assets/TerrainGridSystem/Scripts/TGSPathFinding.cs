@@ -12,11 +12,9 @@ namespace TGS
 	/* Event definitions */
 
 	public delegate int PathFindingEvent (int cellIndex);
-
-
+	
 	public partial class TerrainGridSystem : MonoBehaviour
 	{
-
 		/// <summary>
 		/// Fired when path finding algorithmn evaluates a cell. Return the increased cost for cell.
 		/// </summary>
@@ -24,14 +22,13 @@ namespace TGS
 
 	
 		[SerializeField]
-		HeuristicFormula
-			_pathFindingHeuristicFormula = HeuristicFormula.EuclideanNoSQR;
+		HeuristicFormula _pathFindingHeuristicFormula = HeuristicFormula.EuclideanNoSQR;
 
 		/// <summary>
 		/// The path finding heuristic formula to estimate distance from current position to destination
 		/// </summary>
-		public PathFinding.HeuristicFormula pathFindingHeuristicFormula {
-			get { return _pathFindingHeuristicFormula; }
+		public PathFinding.HeuristicFormula PathFindingHeuristicFormula {
+			get => _pathFindingHeuristicFormula;
 			set {
 				if (value != _pathFindingHeuristicFormula) {
 					_pathFindingHeuristicFormula = value;
@@ -41,14 +38,13 @@ namespace TGS
 		}
 
 		[SerializeField]
-		int
-			_pathFindingMaxCost = 200000;
+		int _pathFindingMaxCost = 200000;
 
 		/// <summary>
 		/// The maximum search cost of the path finding execution.
 		/// </summary>
-		public int pathFindingMaxCost {
-			get { return _pathFindingMaxCost; }
+		public int PathFindingMaxCost {
+			get => _pathFindingMaxCost;
 			set {
 				if (value != _pathFindingMaxCost) {
 					_pathFindingMaxCost = value;
@@ -57,16 +53,14 @@ namespace TGS
 			}
 		}
 
-		
 		[SerializeField]
-		int
-			_pathFindingMaxSteps = 2000;
+		int _pathFindingMaxSteps = 2000;
 
 		/// <summary>
 		/// The maximum number of steps that a path can return.
 		/// </summary>
-		public int pathFindingMaxSteps {
-			get { return _pathFindingMaxSteps; }
+		public int PathFindingMaxSteps {
+			get => _pathFindingMaxSteps;
 			set {
 				if (value != _pathFindingMaxSteps) {
 					_pathFindingMaxSteps = value;
@@ -75,17 +69,14 @@ namespace TGS
 			}
 		}
 
-		
-		
 		[SerializeField]
-		bool
-			_pathFindingUseDiagonals = true;
+		bool _pathFindingUseDiagonals = true;
 
 		/// <summary>
 		/// If path can include diagonals between cells
 		/// </summary>
-		public bool pathFindingUseDiagonals {
-			get { return _pathFindingUseDiagonals; }
+		public bool PathFindingUseDiagonals {
+			get => _pathFindingUseDiagonals;
 			set {
 				if (value != _pathFindingUseDiagonals) {
 					_pathFindingUseDiagonals = value;
@@ -95,14 +86,13 @@ namespace TGS
 		}
 
 		[SerializeField]
-		bool
-			_pathFindingHeavyDiagonals = false;
+		bool _pathFindingHeavyDiagonals = false;
 
 		/// <summary>
 		/// If diagonals have extra cost.
 		/// </summary>
-		public bool pathFindingHeavyDiagonals {
-			get { return _pathFindingHeavyDiagonals; }
+		public bool PathFindingHeavyDiagonals {
+			get => _pathFindingHeavyDiagonals;
 			set {
 				if (value != _pathFindingHeavyDiagonals) {
 					_pathFindingHeavyDiagonals = value;
@@ -178,8 +168,6 @@ namespace TGS
 
 		#endregion
 
-
-	
 	}
 }
 

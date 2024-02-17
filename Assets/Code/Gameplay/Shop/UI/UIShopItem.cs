@@ -15,6 +15,8 @@ namespace Railway.Shop.UI
 
         public UnityAction<ShopItem> ItemSelected;
 
+        public UnityAction Clicked;
+
         [HideInInspector] public ShopItemStack currentItem;
 
         private bool _isSelected = false;
@@ -27,7 +29,7 @@ namespace Railway.Shop.UI
             }
         }
 
-        public void SetItem(ShopItemStack itemStack, bool isSelected)
+        public void SetItem(ShopItemStack itemStack, bool isSelected, UnityAction clickButton)
         {
             _isSelected = isSelected;
             
@@ -37,13 +39,23 @@ namespace Railway.Shop.UI
 
             _itemName.text = itemStack.Item.Name;
             _itemPrice.text = itemStack.Item.Price.ToString();
+            Clicked += clickButton;
+        }
+        
+        public void SelectFirstElement()
+        {
+            _isSelected = true;
+            _itemButton.Select();
+            SelectItem();
         }
 
-        public void SetInactiveItem()
+        public void SetInactiveItem(UnityAction clickButton)
         {
             currentItem = null;
+            Clicked -= clickButton;
 
             SetItemVisibility(false);
+            
         }
 
         private void SetItemVisibility(bool active)
@@ -54,14 +66,20 @@ namespace Railway.Shop.UI
             _itemButton.gameObject.SetActive(active);
         }
 
-        private void SelectItem()
+        public void SelectItem()
         {
             _isSelected = true;
 
             if (ItemSelected != null && currentItem != null && currentItem.Item)
             {
                 ItemSelected.Invoke(currentItem.Item);
+                Clicked.Invoke();
             }
+        }
+        
+        public void ClickItem()
+        {
+            Clicked.Invoke();
         }
 
         public void UnselectItem()

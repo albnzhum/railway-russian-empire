@@ -442,25 +442,25 @@ namespace TGS_Editor {
 			
 			EditorGUILayout.BeginHorizontal ();
 			GUILayout.Label ("Algorithm", GUILayout.Width (120));
-			tgs.pathFindingHeuristicFormula = (TGS.PathFinding.HeuristicFormula)EditorGUILayout.EnumPopup (tgs.pathFindingHeuristicFormula);
+			tgs.PathFindingHeuristicFormula = (TGS.PathFinding.HeuristicFormula)EditorGUILayout.EnumPopup (tgs.PathFindingHeuristicFormula);
 			EditorGUILayout.EndHorizontal ();
 
 			EditorGUILayout.BeginHorizontal ();
 			GUILayout.Label ("Max Search Cost", GUILayout.Width (120));
-			tgs.pathFindingMaxCost = EditorGUILayout.IntField (tgs.pathFindingMaxCost, GUILayout.Width (100));
+			tgs.PathFindingMaxCost = EditorGUILayout.IntField (tgs.PathFindingMaxCost, GUILayout.Width (100));
 			EditorGUILayout.EndHorizontal ();
 
 			EditorGUILayout.BeginHorizontal ();
 			GUILayout.Label ("Max Steps", GUILayout.Width (120));
-			tgs.pathFindingMaxSteps = EditorGUILayout.IntField (tgs.pathFindingMaxSteps, GUILayout.Width (100));
+			tgs.PathFindingMaxSteps = EditorGUILayout.IntField (tgs.PathFindingMaxSteps, GUILayout.Width (100));
 			EditorGUILayout.EndHorizontal ();
 
 			if (tgs.GridTopology == GRID_TOPOLOGY.Box) {
 				EditorGUILayout.BeginHorizontal ();
 				GUILayout.Label ("Use Diagonals", GUILayout.Width (120));
-				tgs.pathFindingUseDiagonals = EditorGUILayout.Toggle (tgs.pathFindingUseDiagonals, GUILayout.Width (40));
+				tgs.PathFindingUseDiagonals = EditorGUILayout.Toggle (tgs.PathFindingUseDiagonals, GUILayout.Width (40));
 				GUILayout.Label ("Heavy Diagonals", GUILayout.Width (120));
-				tgs.pathFindingHeavyDiagonals = EditorGUILayout.Toggle (tgs.pathFindingHeavyDiagonals, GUILayout.Width (40));
+				tgs.PathFindingHeavyDiagonals = EditorGUILayout.Toggle (tgs.PathFindingHeavyDiagonals, GUILayout.Width (40));
 				EditorGUILayout.EndHorizontal ();
 			}
 
