@@ -2,6 +2,7 @@ using System;
 using Railway.Shop.Data;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace Railway.Shop.UI
@@ -14,9 +15,7 @@ namespace Railway.Shop.UI
         [SerializeField] private Button _itemButton = default;
 
         public UnityAction<ShopItem> ItemSelected;
-
-        public UnityAction Clicked;
-
+        
         [HideInInspector] public ShopItemStack currentItem;
 
         private bool _isSelected = false;
@@ -29,7 +28,12 @@ namespace Railway.Shop.UI
             }
         }
 
-        public void SetItem(ShopItemStack itemStack, bool isSelected, UnityAction clickButton)
+        private void OnDisable()
+        {
+            Tooltip.HideTooltip_Static();
+        }
+
+        public void SetItem(ShopItemStack itemStack, bool isSelected)
         {
             _isSelected = isSelected;
             
@@ -39,20 +43,16 @@ namespace Railway.Shop.UI
 
             _itemName.text = itemStack.Item.Name;
             _itemPrice.text = itemStack.Item.Price.ToString();
-            Clicked += clickButton;
         }
         
         public void SelectFirstElement()
         {
-            _isSelected = true;
-            _itemButton.Select();
             SelectItem();
         }
 
-        public void SetInactiveItem(UnityAction clickButton)
+        public void SetInactiveItem()
         {
             currentItem = null;
-            Clicked -= clickButton;
 
             SetItemVisibility(false);
             
@@ -73,14 +73,19 @@ namespace Railway.Shop.UI
             if (ItemSelected != null && currentItem != null && currentItem.Item)
             {
                 ItemSelected.Invoke(currentItem.Item);
-                Clicked.Invoke();
             }
         }
-        
-        public void ClickItem()
+
+        public void ShowTooltip()
         {
-            Clicked.Invoke();
+            Tooltip.ShowTooltip_Static(currentItem.Item.Name + "\n" + currentItem.Item.Price, Mouse.current.position.value );
         }
+
+        public void HideTooltip()
+        {
+            Tooltip.HideTooltip_Static();
+        }
+        
 
         public void UnselectItem()
         {

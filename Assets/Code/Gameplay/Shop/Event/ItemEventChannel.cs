@@ -4,6 +4,7 @@ using UnityEngine.Events;
 
 namespace Railway.Events
 {
+    [CreateAssetMenu(fileName = "New Item Event Channel", menuName = "Events/Item Event")]
     public class ItemEventChannel : ScriptableObject
     {
         public UnityAction<ShopItem> OnEventRaised;

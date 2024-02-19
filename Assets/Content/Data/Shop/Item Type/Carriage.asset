@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: Carriage
   m_EditorClassIdentifier: 
   _tabType: {fileID: 11400000, guid: c82975ca49c59cd40948d51e7be99bfe, type: 2}
+  _itemType: 3

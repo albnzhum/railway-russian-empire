@@ -19,22 +19,22 @@ namespace Railway.SceneManagement
 
         private void ScalingFactor(float scaleFactor)
         {
-            if (!mission.isOriginalResourcesSaved)
+            if (!mission.IsOriginalResourcesSaved)
             {
-                mission.originalResources = new MissionInitializer.Resources
+                mission.OriginalResources = new MissionInitializer.Resources
                 {
                     Gold = mission.resources.Gold,
                     Workers = mission.resources.Workers,
                     Church = mission.resources.Church,
                     SpeedBuilding = mission.resources.SpeedBuilding
                 };
-                mission.isOriginalResourcesSaved = true;
+                mission.IsOriginalResourcesSaved = true;
             }
 
-            mission.resources.Gold = mission.originalResources.Gold * scaleFactor;
-            mission.resources.Workers = mission.originalResources.Workers * scaleFactor;
-            mission.resources.Church = mission.originalResources.Church * scaleFactor;
-            mission.resources.SpeedBuilding = mission.originalResources.SpeedBuilding * scaleFactor;
+            mission.resources.Gold = mission.OriginalResources.Gold * scaleFactor;
+            mission.resources.Workers = mission.OriginalResources.Workers * scaleFactor;
+            mission.resources.Church = mission.OriginalResources.Church * scaleFactor;
+            mission.resources.SpeedBuilding = mission.OriginalResources.SpeedBuilding * scaleFactor;
         }
         
         public void NormalLevelDifficulty()

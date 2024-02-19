@@ -1,11 +1,9 @@
-using System;
 using System.Collections.Generic;
 using Railway.Events;
 using Railway.Input;
 using Railway.Shop.Data;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.InputSystem;
 
 namespace Railway.Shop.UI
 {
@@ -24,17 +22,13 @@ namespace Railway.Shop.UI
 
         [Header("Listening to")] 
         [SerializeField] private UIShopTabs _tabsPanel = default;
-
-        [SerializeField] private VoidEventChannelSO _onInteractionEndedEvent = default;
-
+        
         [Header("Broadcasting on")] 
         [SerializeField] private ItemEventChannel _useItemEvent = default;
 
         private ShopTabSO _selectedTab = default;
         private int selectedItemId = -1;
-
-        private TerrainTrigger _terrainTrigger;
-
+        
         private void OnEnable()
         {
             _tabsPanel.TabChanged += OnChangeTab;
@@ -57,70 +51,6 @@ namespace Railway.Shop.UI
             }
             
             _inputReader.TabSwitched -= OnSwitchTab;
-        }
-
-        private void OnActionButtonClicked()
-        {
-            if (_availableItemSlots.Count > selectedItemId && selectedItemId > -1)
-            {
-                Debug.Log(selectedItemId);
-                ShopItem itemToActOn = ScriptableObject.CreateInstance<ShopItem>();
-                itemToActOn = _availableItemSlots[selectedItemId].currentItem.Item;
-                Debug.Log(itemToActOn.ItemType.TabType.TabType.ToString());
-
-                ObjectPlace(itemToActOn);
-
-                switch (itemToActOn.ItemType.TabType.TabType)
-                {
-                    case ItemType.Workers:
-                        BuyWorkers(itemToActOn);
-                        break;
-                    case ItemType.Carriage:
-                        BuyCarriage(itemToActOn);
-                        break;
-                    case ItemType.Locomotive:
-                        BuyLocomotive(itemToActOn);
-                        break;
-                    case ItemType.Rails:
-                        BuyRails(itemToActOn);
-                        break;
-                        default: break;
-                }
-            }
-            else
-            {
-                Debug.Log(_availableItemSlots.Count);
-            }
-        }
-
-        private void ObjectPlace(ShopItem _item)
-        {
-            CloseInventory();
-            
-            GameObject _itemPrefab = _item.Prefab;
-            Vector3 position = new Vector3(Mouse.current.position.x.value, 0, Mouse.current.position.y.value);
-            Instantiate(_itemPrefab, position, Quaternion.identity);
-            _itemPrefab.transform.position = position;
-        }
-
-        private void BuyRails(ShopItem itemToActOn)
-        {
-            Debug.Log("Rails bought");
-        }
-
-        private void BuyLocomotive(ShopItem itemToActOn)
-        {
-            Debug.Log("Locomotive bought");
-        }
-
-        private void BuyCarriage(ShopItem itemToActOn)
-        {
-            Debug.Log("Carriage bought");
-        }
-
-        private void BuyWorkers(ShopItem itemToActOn)
-        {
-            Debug.Log("Workers bought");
         }
 
         private void OnSwitchTab(float orientation)
@@ -147,7 +77,7 @@ namespace Railway.Shop.UI
             }
         }
 
-        public void FillInventory(ItemType _selectedType = ItemType.Workers)
+        public void FillInventory(ShopTabType _selectedType = ShopTabType.Workers)
         {
             _selectedTab = _tabTypesList.Find(o => o.TabType == _selectedType) ?? _tabTypesList[0];
 
@@ -182,22 +112,17 @@ namespace Railway.Shop.UI
                 if (i < listItemsToShow.Count)
                 {
                     bool isSelected = selectedItemId == i;
-                    _availableItemSlots[i].SetItem(listItemsToShow[i], isSelected, OnActionButtonClicked);
+                    _availableItemSlots[i].SetItem(listItemsToShow[i], isSelected);
                 }
                 else if (i < _availableItemSlots.Count)
                 {
-                    _availableItemSlots[i].SetInactiveItem(OnActionButtonClicked);
+                    _availableItemSlots[i].SetInactiveItem();
                 }
             }
 
             if (selectedItemId >= 0)
             {
                 selectedItemId = -1;
-            }
-            
-            if (_availableItemSlots.Count > 0)
-            {
-                _availableItemSlots[0].SelectFirstElement();
             }
         }
 
@@ -213,7 +138,7 @@ namespace Railway.Shop.UI
                 if (_availableItemSlots.Exists(o => o.currentItem == itemToUpdate))
                 {
                     int index = _availableItemSlots.FindIndex(o => o.currentItem == itemToUpdate);
-                    _availableItemSlots[index].SetInactiveItem(OnActionButtonClicked);
+                    _availableItemSlots[index].SetInactiveItem();
                 }
             }
             else
@@ -232,12 +157,11 @@ namespace Railway.Shop.UI
                         _availableItemSlots.Add(instantiatedPrefab);
                     }
 
-                    //find the last instantiated game object not used
                     index = _shop.Items.Count;
                 }
 
                 bool isSelected = selectedItemId == index;
-                _availableItemSlots[index].SetItem(itemToUpdate, isSelected, OnActionButtonClicked);
+                _availableItemSlots[index].SetItem(itemToUpdate, isSelected);
             }
         }
 
@@ -251,7 +175,25 @@ namespace Railway.Shop.UI
                     UnselectItem(selectedItemId);
                 selectedItemId = itemIndex;
 
+                BuyItem(itemToInspect);
+                
                 bool isInteractable = true;
+                
+                Debug.Log(selectedItemId);
+            }
+        }
+
+        private void BuyItem(ShopItem itemToBuy)
+        {
+            CloseInventory();
+
+            if (itemToBuy != null)
+            {
+                _useItemEvent.RaiseEvent(itemToBuy);
+            }
+            else
+            {
+                Debug.LogError("Item to buy is null!");
             }
         }
 

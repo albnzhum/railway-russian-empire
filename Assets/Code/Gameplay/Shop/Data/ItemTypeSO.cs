@@ -16,8 +16,10 @@ namespace Railway.Shop.Data
     public class ItemTypeSO : ScriptableObject
     {
         [SerializeField] private ShopTabSO _tabType;
+        [SerializeField] private ItemType _itemType;
 
         public ShopTabSO TabType => _tabType;
+        public ItemType ItemType => _itemType;
     }
 
 }

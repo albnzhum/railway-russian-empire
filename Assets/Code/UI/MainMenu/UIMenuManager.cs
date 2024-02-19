@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using Railway.Events;
 using UnityEngine;
@@ -11,8 +10,8 @@ namespace Railway.UI
         [SerializeField] private UIPopup _popupPanel = default;
         [SerializeField] private UISettingsController _settingsPanel;
 
-        [Header("Broadcasting on")] [SerializeField]
-        private VoidEventChannelSO _startNewGameEvent;
+        [Header("Broadcasting on")] 
+        [SerializeField] private VoidEventChannelSO _startNewGameEvent;
 
         [SerializeField] private VoidEventChannelSO _continueGameEvent;
 
@@ -26,7 +25,6 @@ namespace Railway.UI
 
         private void SetMenuScreen()
         {
-            //_hasSaveData = _saveSystem.LoadSaveDataFromDisk();
             _mainMenu.SetMenuScreen(_hasSaveData);
             _mainMenu.ContinueButtonAction += _continueGameEvent.RaiseEvent;
             _mainMenu.NewGameButtonAction += ButtonStartNewGameClicked;
@@ -49,14 +47,12 @@ namespace Railway.UI
         private void ConfirmStartNewGame()
         {
             _startNewGameEvent.RaiseEvent();
-            Debug.Log("New Game Event");
         }
 
         private void ShowStartNewGameConfirmationPopup()
         {
             _popupPanel.ConfirmationResponseAction += StartNewGamePopupResponse;
             _popupPanel.ClosePopupAction += HidePopup;
-            Debug.Log("PopupShowed");
 
             _popupPanel.gameObject.SetActive(true);
             _popupPanel.SetPopup(PopupType.NewGame);

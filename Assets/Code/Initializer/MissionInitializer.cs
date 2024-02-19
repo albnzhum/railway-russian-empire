@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,8 +8,6 @@ namespace Railway.Components
     {
         [SerializeField] private List<CityInitializer> _cities;
         [SerializeField] private Resources _resources;
-        [HideInInspector] private Resources _originalResources;
-        [SerializeField] private bool _isOriginalResourcesSaved;
         
         public List<CityInitializer> Cities => _cities;
         public Resources resources
@@ -18,8 +15,8 @@ namespace Railway.Components
             get => _resources;
             set => _resources = value;
         }
-        public Resources originalResources { get; set; }
-        public bool isOriginalResourcesSaved { get; set; }
+        public Resources OriginalResources { get; set; }
+        public bool IsOriginalResourcesSaved { get; set; }
 
         [System.Serializable]
         public class Resources

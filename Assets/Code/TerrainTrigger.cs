@@ -60,14 +60,12 @@ public class TerrainTrigger : MonoBehaviour
             if (_cell != null)
             {
                 Vector3 cellPosition = _tgs.CellGetPosition(_cell);
-                Debug.Log("Cell chosen at position: " + cellPosition);
+                //Debug.Log("Cell chosen at position: " + cellPosition);
                 
                 // Вызываем статическое событие для других скриптов
                 OnCellPositionChanged?.Invoke(cellPosition);
             }
         }
-        
-        Debug.Log("Cell chosen");
     }
     
     private Cell DetermineCell(Vector3 position)

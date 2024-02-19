@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422cf83bf6a5bec4ba5f815955b03126, type: 3}
   m_Name: SO_Worker_Tab
   m_EditorClassIdentifier: 
-  _tabType: 0
+  _tabType: 2

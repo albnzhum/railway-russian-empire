@@ -11,7 +11,7 @@ namespace Railway.Gameplay
         Medium,
         Hard
     }
-    
+
     [CreateAssetMenu(fileName = "Level Difficulty", menuName = "Global Data/Level Difficulty")]
     public class LevelDifficultySO : ScriptableObject
     {

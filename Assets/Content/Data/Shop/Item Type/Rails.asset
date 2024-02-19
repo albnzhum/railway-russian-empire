@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: Rails
   m_EditorClassIdentifier: 
   _tabType: {fileID: 11400000, guid: 9a449b0f5c23d0c418a357bbdccd9bc1, type: 2}
+  _itemType: 1

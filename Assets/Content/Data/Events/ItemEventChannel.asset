@@ -9,7 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 422cf83bf6a5bec4ba5f815955b03126, type: 3}
-  m_Name: SO_Carriage_Tab
+  m_Script: {fileID: 11500000, guid: 5dce487ff6d079c458b1015272c69f64, type: 3}
+  m_Name: ItemEventChannel
   m_EditorClassIdentifier: 
-  _tabType: 3
