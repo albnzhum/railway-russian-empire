@@ -1,5 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
+using Railway.Gameplay;
 using Railway.Input;
 using TGS;
 using UnityEngine;
@@ -7,51 +7,93 @@ using UnityEngine;
 public class MouseInputSystem : MonoBehaviour
 {
     [SerializeField] private InputReader _inputReader;
+    [SerializeField] private Camera _camera;
+    
+    [Header("Listening to")]
+    [SerializeField] private CellEnterEventSO _cellEnterEvent;
+    [SerializeField] private CellExitEventSO _cellExitEvent;
+    [SerializeField] private CellClickedEventSO _cellClickedEvent;
 
     private static TerrainGridSystem _tgs;
-    public static MouseInputSystem Instance { get; set; }
+    public static MouseInputSystem Instance { get; private set; }
 
     private Cell _currentCell;
 
-    private void Awake()
+    public Cell CurrentCell
     {
-        Instance = this;
+        get => _currentCell; 
+        private set => _currentCell = value;
+    }
+
+    private int _currentCellIndex = -1;
+    public int CurrentCellIndex
+    {
+        get => _tgs.CellGetIndex(_currentCell);
+        private set => _currentCellIndex = value;
     }
 
     private void OnEnable()
     {
-        _inputReader.PlaceItemEvent += HandleCellPositionChanged;
+        Instance = this;
+        _tgs = TerrainGridSystem.Instance;
+
+        _inputReader.ChooseCellEvent += ChooseCell;
+        _inputReader.PlaceItemEvent += PlaceItem;
     }
 
     private void OnDisable()
     {
-        _inputReader.PlaceItemEvent -= HandleCellPositionChanged;
+        _inputReader.ChooseCellEvent -= ChooseCell;
+        _inputReader.PlaceItemEvent -= PlaceItem;
     }
-
-    void Start()
+    
+    private void PlaceItem(Vector2 mousePosition)
     {
-        _tgs = TerrainGridSystem.Instance;
-    }
+        Ray ray = _camera.ScreenPointToRay(mousePosition);
 
-    private void HandleCellPositionChanged(Vector2 position)
-    {
-        Ray ray = Camera.main.ScreenPointToRay(position);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
         {
             Cell _cell = DetermineCell(hit.point);
             if (_cell != null)
             {
-                _currentCell = _cell;
+                if (_cell != _currentCell)
+                {
+                    if (_currentCell != null)
+                    {
+                        _cellExitEvent.RaiseEvent();
+                    }
+
+                    _currentCell = _cell;
+                    _cellEnterEvent.RaiseEvent();
+                }
+            }
+            else
+            {
+                if (_currentCell != null)
+                {
+                    _cellExitEvent.RaiseEvent();
+                    _currentCell = null;
+                }
             }
         }
     }
-
-    public Vector3 CellGetPosition()
+    
+    private void ChooseCell(Vector2 mousePosition)
     {
-        return _tgs.CellGetPosition(_currentCell);
-    }
+        Ray ray = _camera.ScreenPointToRay(mousePosition);
 
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit))
+        {
+            Cell _cell = DetermineCell(hit.point);
+            if (_cell != null)
+            {
+                _cellClickedEvent.RaiseEvent();
+            }
+        }
+    }
+    
     private Cell DetermineCell(Vector3 position)
     {
         return _tgs.CellGetAtPosition(position, true);

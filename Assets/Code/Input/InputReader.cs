@@ -80,7 +80,7 @@ namespace Railway.Input
         public void OnChooseCell(InputAction.CallbackContext context)
         {
             if (context.phase == InputActionPhase.Performed)
-                ChooseCellEvent.Invoke(Mouse.current.position.ReadValue());
+                ChooseCellEvent.Invoke(context.ReadValue<Vector2>());
         }
 
         public void OnPlaceItem(InputAction.CallbackContext context)

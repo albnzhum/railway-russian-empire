@@ -1388,9 +1388,7 @@ namespace TGS {
 				if (renderer.enabled) {
 					renderer.enabled = false;
 				}
-				if (this.terrain.GetComponent<TerrainTrigger> () == null) {
-					this.terrain.gameObject.AddComponent<TerrainTrigger> ();
-				}
+
 				MeshCollider mc = GetComponent<MeshCollider> ();
 				if (mc != null)
 					DestroyImmediate (mc);
