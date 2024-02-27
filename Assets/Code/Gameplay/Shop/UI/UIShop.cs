@@ -22,12 +22,15 @@ namespace Railway.Shop.UI
 
         [Header("Listening to")] 
         [SerializeField] private UIShopTabs _tabsPanel = default;
-        
-        [Header("Broadcasting on")] 
-        [SerializeField] private ItemEventChannel _useItemEvent = default;
 
         private ShopTabSO _selectedTab = default;
         private int selectedItemId = -1;
+
+        private bool isItemBuying = false;
+        public bool IsItemBuying { get => isItemBuying; private set => isItemBuying = value; }
+
+        private ShopItem _currentItem = default;
+        public ShopItem CurrentItem => _currentItem;
         
         private void OnEnable()
         {
@@ -165,7 +168,7 @@ namespace Railway.Shop.UI
             }
         }
 
-        public void InspectItem(ShopItem itemToInspect)
+        private void InspectItem(ShopItem itemToInspect)
         {
             if (_availableItemSlots.Exists(o => o.currentItem.Item == itemToInspect))
             {
@@ -177,19 +180,18 @@ namespace Railway.Shop.UI
 
                 BuyItem(itemToInspect);
                 
-                bool isInteractable = true;
-                
                 Debug.Log(selectedItemId);
             }
         }
 
         private void BuyItem(ShopItem itemToBuy)
         {
-            CloseInventory();
-
             if (itemToBuy != null)
             {
-                _useItemEvent.RaiseEvent(itemToBuy);
+                isItemBuying = true;
+                _currentItem = itemToBuy;
+                
+                CloseInventory();
             }
             else
             {

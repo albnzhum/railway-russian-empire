@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using TGS;
 using UnityEngine;
 
+public enum CellType
+{
+    Default = 1,
+    SlopeAndWater = 2
+}
+
 public class CellTerrainType : MonoBehaviour
 {
-    enum CellType
-    {
-        Default = 1,
-        SlopeAndWater = 2
-    }
-
     private TerrainGridSystem _tgs;
 
     [SerializeField] private bool showHighlight;
-    
+
     private Terrain _terrain;
     private TerrainData _terrainData;
 
@@ -33,11 +33,11 @@ public class CellTerrainType : MonoBehaviour
         alphamapHeight = _terrainData.alphamapHeight;
         splatmapData = _terrainData.GetAlphamaps(0, 0, alphamapWidth, alphamapHeight);
         numTextures = splatmapData.Length / (alphamapWidth * alphamapHeight);
-        
+
         foreach (var cell in _tgs.Cells)
         {
             int cellLayerIndex = GetActiveTerrainTextureIdx(_tgs.CellGetPosition(cell));
-            
+
             if (cellLayerIndex == 1)
             {
                 _tgs.CellSetTag(cell, (int)CellType.SlopeAndWater);

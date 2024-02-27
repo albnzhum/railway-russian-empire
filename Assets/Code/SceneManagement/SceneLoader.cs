@@ -19,12 +19,15 @@ namespace Railway.SceneManagement
         [Header("Listening To")] 
         [SerializeField] private LoadEventChannelSO _loadLocation;
 
+        [SerializeField] private LoadEventChannelSO _loadScene;
+
         [SerializeField] private LoadEventChannelSO _loadMenu;
         [SerializeField] private LoadEventChannelSO _coldStartupLocation;
+        [SerializeField] private BoolEventChannelSO _onLocationLoadedEvent;
 
-        [Header("Broadcasting on")] [SerializeField]
-        private BoolEventChannelSO _toggleLoadingScreen = default;
-        
+        [Header("Broadcasting on")] 
+        [SerializeField] private BoolEventChannelSO _toggleLoadingScreen = default;
+
         [SerializeField] private FadeChannelSO _fadeRequestChannel = default;
 
         private AsyncOperationHandle<SceneInstance> _loadingOperationHandle;
@@ -41,6 +44,7 @@ namespace Railway.SceneManagement
         private void OnEnable()
         {
             _loadLocation.OnLoadingRequested += LoadLocation;
+            _loadScene.OnLoadingRequested += LoadScene;
             _loadMenu.OnLoadingRequested += LoadMenu;
 #if UNITY_EDITOR
             _coldStartupLocation.OnLoadingRequested += LocationColdStartup;
@@ -50,6 +54,7 @@ namespace Railway.SceneManagement
         private void OnDisable()
         {
             _loadLocation.OnLoadingRequested -= LoadLocation;
+            _loadScene.OnLoadingRequested -= LoadScene;
             _loadMenu.OnLoadingRequested -= LoadMenu;
 
 #if UNITY_EDITOR
@@ -105,6 +110,28 @@ namespace Railway.SceneManagement
             {
                 StartCoroutine(UnloadPreviousScene());
             }
+        }
+
+        private void IsLocationLoading()
+        {
+            if (_sceneToLoad.sceneType == GameSceneSO.GameSceneType.Location)
+            {
+                Debug.Log("Location loaded");
+
+                _onLocationLoadedEvent.RaiseEvent(true);
+            }
+        }
+
+        private void LoadScene(GameSceneSO locationToLoad, bool showLoadingScreen, bool fadeScreen)
+        {
+            if (_isLoading)
+                return;
+
+            _sceneToLoad = locationToLoad;
+            _showLoadingScreen = showLoadingScreen;
+            _isLoading = true;
+
+            StartCoroutine(UnloadPreviousScene());
         }
 
         /// <summary>
@@ -184,6 +211,8 @@ namespace Railway.SceneManagement
         private void OnNewSceneLoaded(AsyncOperationHandle<SceneInstance> obj)
         {
             _currentlyLoadedScene = _sceneToLoad;
+
+            IsLocationLoading();
 
             Scene s = obj.Result.Scene;
             SceneManager.SetActiveScene(s);

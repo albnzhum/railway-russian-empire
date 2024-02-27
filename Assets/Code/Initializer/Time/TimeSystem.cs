@@ -8,21 +8,22 @@ namespace Railway.GlobalData
     public class TimeSystem : MonoBehaviour
     {
         [SerializeField] private LevelDifficultySO _levelDifficulty;
-        [SerializeField] private VoidEventChannelSO _onSceneReady;
+        [SerializeField] private GameStateSO _gameState;
 
-        private void OnEnable()
-        {
-            _onSceneReady.OnEventRaised += SetTimeConfiguration;
-        }
+        [SerializeField] private TimeComponent _time;
 
-        private void OnDisable()
+        private void Update()
         {
-            _onSceneReady.OnEventRaised -= SetTimeConfiguration; 
-        }
-
-        private void SetTimeConfiguration()
-        {
-            
+            if (_gameState.CurrentGameState == GameState.Gameplay)
+            {
+                _time.RealTimeElapsed += Time.deltaTime;
+                if (_time.RealTimeElapsed >= _time.TimeToUpdate)
+                {
+                    _time.GameTime += 1;
+                    _time.RealTimeElapsed = 0f;
+                    Debug.Log(_time.GameTime);
+                }
+            }
         }
     }
 }

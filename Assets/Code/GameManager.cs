@@ -13,6 +13,6 @@ public class GameManager : MonoBehaviour
 
     private void OnEnable()
     {
-        _gameState.UpdateGameState(GameState.Gameplay);
+        //_gameState.UpdateGameState(GameState.Gameplay);
     }
 }

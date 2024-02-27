@@ -6,15 +6,6 @@
             "id": "3da0b2fa-acd9-402a-9925-4481a428dc74",
             "actions": [
                 {
-                    "name": "ChooseCell",
-                    "type": "Value",
-                    "id": "5e590d35-c3e2-459f-9d70-d11fae096840",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
                     "name": "OpenShop",
                     "type": "Button",
                     "id": "104224bd-ef3e-46fb-bf07-9a061a2e32bc",
@@ -22,6 +13,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "HoverCell",
+                    "type": "Value",
+                    "id": "53c3538c-2295-402c-87af-45d5ea4b18be",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Pause",
@@ -49,29 +49,9 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
-                },
-                {
-                    "name": "PlaceItem",
-                    "type": "Value",
-                    "id": "1feb4153-14b7-4c0e-a5c3-ef9bbca2c9ec",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
                 }
             ],
             "bindings": [
-                {
-                    "name": "",
-                    "id": "4893785d-4203-4a24-abdc-06982ce4aefd",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "ChooseCell",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
                 {
                     "name": "",
                     "id": "77ad3c0a-c744-4ad0-ae2f-74016a18b322",
@@ -118,12 +98,12 @@
                 },
                 {
                     "name": "",
-                    "id": "f47416d7-77b8-48a4-8187-5b328a47df9e",
+                    "id": "98328bb0-7600-4f0b-a8b5-11269a2df496",
                     "path": "<Mouse>/position",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "PlaceItem",
+                    "action": "HoverCell",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -147,15 +127,6 @@
                     "type": "Button",
                     "id": "1179632c-451c-4138-ab31-307868677891",
                     "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Point",
-                    "type": "PassThrough",
-                    "id": "e95d753f-dc51-42f1-88b6-15d689051dfb",
-                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -195,6 +166,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Point",
+                    "type": "PassThrough",
+                    "id": "57550405-fea7-419e-9bb3-a077aa2d3276",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -217,17 +197,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "Cancel",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "88f705bf-4f29-4ee6-9085-284c61e434ac",
-                    "path": "<Mouse>/position",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Point",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -296,6 +265,17 @@
                     "action": "ChangeTab",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "5971f6db-784e-45f6-8d76-5dfec64c8a2e",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Point",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -342,6 +322,74 @@
                     "processors": "",
                     "groups": "",
                     "action": "OpenShop",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Edit",
+            "id": "e18b23b3-068b-4a81-a0a4-5ec099a22f06",
+            "actions": [
+                {
+                    "name": "ChooseItemPosition",
+                    "type": "Value",
+                    "id": "663657ef-c8d1-4ba3-ada4-80e58f089564",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "CancelPlacing",
+                    "type": "Button",
+                    "id": "e6fa0b71-ecaa-47b8-9468-d162a11e5f4c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "PlaceItem",
+                    "type": "Value",
+                    "id": "874b2894-011b-4ece-91b4-33eb09090ca1",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "d6bc1053-018c-4fd5-8a6e-b00825dfde62",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ChooseItemPosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e6a62991-0886-4d43-8065-41ae1f5cfeae",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PlaceItem",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2aac160c-dd5f-4a03-837c-50c8ed489ba5",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CancelPlacing",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

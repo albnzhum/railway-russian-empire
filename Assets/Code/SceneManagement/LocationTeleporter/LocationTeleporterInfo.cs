@@ -1,5 +1,7 @@
+using R3;
 using Railway.Components;
 using Railway.Events;
+using Railway.Idents.UI;
 using Railway.Input;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,7 +12,6 @@ namespace Railway.SceneManagement
     public class LocationTeleporterInfo : MonoBehaviour
     {
         [SerializeField] private GameObject Canvas;
-        [SerializeField] private InputReader _inputReader;
 
         [Header("UI Mission")]
         [SerializeField] private Text _missionName;
@@ -26,29 +27,19 @@ namespace Railway.SceneManagement
         [HideInInspector] public MissionInitializer mission;
         private bool isActive = false;
 
-        private void Start()
+       /* private void Start()
         {
             _onChangeLevelDifficulty.OnEventRaised += RefreshResources;
-        }
-
-        private void OnEnable()
-        {
-            
         }
 
         private void OnDisable()
         {
             _onChangeLevelDifficulty.OnEventRaised -= RefreshResources;
-        }
+        }*/
 
-        private void Update()
+        /*private void Update()
         {
-            /*if (Input.GetKeyDown(KeyCode.C))
-            {
-                gameObject.SetActive(false);
-                isActive = false;
-            }*/
-
+            
             if (!isActive)
             {
                 DeleteChildren();
@@ -75,7 +66,12 @@ namespace Railway.SceneManagement
 
             DeleteChildren();
             ShowMissionInfo(mission);
-        }
+        }*/
+        
+        public void RefreshResources()
+        {
+            ShowMissionInfo(mission);
+        } 
         
         public void ShowMissionInfo(MissionInitializer mission, bool setActive = true)
         {
@@ -83,6 +79,8 @@ namespace Railway.SceneManagement
             {
                 isActive = true;
                 Canvas.SetActive(setActive);
+
+                _missionName.text = mission.Name;
             }
 
             foreach (var city in mission.Cities)
@@ -90,7 +88,7 @@ namespace Railway.SceneManagement
                 ShowCityInfo(city);
             }
             
-            ShowResourceInfo(mission.resources);
+            ShowResourceInfo(mission.CurrentResources);
         }
 
         private void ShowCityInfo(CityInitializer city)
@@ -105,11 +103,27 @@ namespace Railway.SceneManagement
             Text workers = Instantiate(_resourceInstantiate, _resourceParent);
             Text church = Instantiate(_resourceInstantiate, _resourceParent);
             Text speedBuilding = Instantiate(_resourceInstantiate, _resourceParent);
+            Text techProgress = Instantiate(_resourceInstantiate, _resourceParent);
+            Text fuel = Instantiate(_resourceInstantiate, _resourceParent);
             
-            gold.text = resources.Gold.ToString();
+            resources.Gold.Subscribe(value => gold.text = FormatText(UITextFormat.Resources.Gold, value));
+            resources.Workers.Subscribe(value => workers.text = FormatText(UITextFormat.Resources.Workers, value));
+            resources.Church.Subscribe(value => church.text = FormatText(UITextFormat.Resources.Church, value));
+            resources.SpeedBuilding.Subscribe(value => speedBuilding.text = FormatText(UITextFormat.Resources.SpeedBuilding, value));
+            resources.TechProgress.Subscribe(value => techProgress.text = FormatText(UITextFormat.Resources.TechProgress, value));
+            resources.Fuel.Subscribe(value => fuel.text = FormatText(UITextFormat.Resources.Fuel, value));
+            
+            /*gold.text = resources.Gold.ToString();
             workers.text = resources.Workers.ToString();
             church.text = resources.Church.ToString();
             speedBuilding.text = resources.SpeedBuilding.ToString();
+            techProgress.text = resources.TechProgress.ToString();
+            fuel.text = resources.Fuel.ToString();*/
+        }
+        
+        private string FormatText(string format, float value)
+        {
+            return format + " " + value;
         }
 
     }

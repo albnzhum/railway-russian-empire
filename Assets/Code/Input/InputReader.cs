@@ -7,22 +7,23 @@ using UnityEngine.InputSystem;
 namespace Railway.Input
 {
     [CreateAssetMenu(fileName = "InputReader", menuName = "Gameplay/Input Reader")]
-    public class InputReader : ScriptableObject, RailwayInputs.IGameplayActions, RailwayInputs.IMenusActions, RailwayInputs.ITutorialsActions
+    public class InputReader : ScriptableObject, RailwayInputs.IGameplayActions, RailwayInputs.IEditActions, RailwayInputs.IMenusActions, RailwayInputs.ITutorialsActions
     {
-        [SerializeField] private GameStateSO _gameStateManager;
-        
         public event UnityAction OpenShopEvent = delegate {  };
         public event UnityAction CloseShopEvent = delegate {  };
         public event UnityAction<Vector2> ChooseCellEvent = delegate {  };
-        public event UnityAction<Vector2> PlaceItemEvent = delegate {  };
+        public event UnityAction PlaceItemEvent = delegate {  };
+        public event UnityAction<Vector2> ChooseItemPositionEvent = delegate {  };
+        public event UnityAction<Vector2> HoverCellEvent = delegate {  };
         public event UnityAction<float> TabSwitched = delegate {  };
         public event UnityAction<Vector2> CameraMoveEvent = delegate { };
         public event UnityAction EnableMouseControlCameraEvent = delegate { };
         public event UnityAction DisableMouseControlCameraEvent = delegate { };
+        public event UnityAction OnCancelEvent = delegate {  };
 
         private bool isGameplayInputEnabled;
 
-        public bool IsGameplayInputEnabled => isGameplayInputEnabled;
+        public bool IsGameplayInputEnabled { get => isGameplayInputEnabled; set => isGameplayInputEnabled = value; }
 
         private RailwayInputs _railwayInputs;
 
@@ -33,6 +34,7 @@ namespace Railway.Input
                 _railwayInputs = new RailwayInputs();
                 
                 _railwayInputs.Menus.SetCallbacks(this);
+                _railwayInputs.Edit.SetCallbacks(this);
                 _railwayInputs.Gameplay.SetCallbacks(this);
                 _railwayInputs.Tutorials.SetCallbacks(this);
             }
@@ -47,7 +49,17 @@ namespace Railway.Input
         {
             isGameplayInputEnabled = true;
             
+            _railwayInputs.Edit.Disable();
             _railwayInputs.Gameplay.Enable();
+            _railwayInputs.Menus.Disable();
+            _railwayInputs.Tutorials.Disable();
+        }
+        public void EnableEditInput()
+        {
+            isGameplayInputEnabled = true;
+            
+            _railwayInputs.Edit.Enable();
+            _railwayInputs.Gameplay.Disable();
             _railwayInputs.Menus.Disable();
             _railwayInputs.Tutorials.Disable();
         }
@@ -56,6 +68,7 @@ namespace Railway.Input
         {
             isGameplayInputEnabled = false;
             
+            _railwayInputs.Edit.Disable();
             _railwayInputs.Gameplay.Disable();
             _railwayInputs.Menus.Enable();
             _railwayInputs.Tutorials.Disable();
@@ -63,6 +76,8 @@ namespace Railway.Input
 
         public void EnableTutorialInput()
         {
+            isGameplayInputEnabled = false;
+            
             _railwayInputs.Gameplay.Disable();
             _railwayInputs.Menus.Disable();
             _railwayInputs.Tutorials.Enable();
@@ -77,15 +92,26 @@ namespace Railway.Input
 
         #region GAMEPLAY_INPUT
 
+        public void OnHoverCell(InputAction.CallbackContext context)
+        {
+            HoverCellEvent.Invoke(context.ReadValue<Vector2>());
+        }
+
         public void OnChooseCell(InputAction.CallbackContext context)
         {
             if (context.phase == InputActionPhase.Performed)
-                ChooseCellEvent.Invoke(context.ReadValue<Vector2>());
+                ChooseCellEvent.Invoke(Mouse.current.position.value);
+        }
+
+        public void OnChooseItemPosition(InputAction.CallbackContext context)
+        {
+            ChooseItemPositionEvent.Invoke(context.ReadValue<Vector2>());    
         }
 
         public void OnPlaceItem(InputAction.CallbackContext context)
         {
-            PlaceItemEvent.Invoke(context.ReadValue<Vector2>());
+            if (context.phase == InputActionPhase.Performed)
+                PlaceItemEvent.Invoke();
         }
 
         public void OnOpenShop(InputAction.CallbackContext context)
@@ -136,13 +162,22 @@ namespace Railway.Input
             
         }
 
+        public void OnCancelPlacing(InputAction.CallbackContext context)
+        {
+            if (context.phase == InputActionPhase.Performed)
+                OnCancelEvent.Invoke();
+        }
+
         public void OnChangeTab(InputAction.CallbackContext context)
         {
             if (context.phase == InputActionPhase.Performed)
                 TabSwitched.Invoke(context.ReadValue<float>());
         }
 
-        public void OnPoint(InputAction.CallbackContext context) { }
+        public void OnPoint(InputAction.CallbackContext context)
+        {
+            
+        }
 
         #endregion
     }

@@ -1,3 +1,4 @@
+using R3;
 using Railway.Components;
 using Railway.Events;
 using Railway.Gameplay;
@@ -8,7 +9,6 @@ namespace Railway.SceneManagement
     public class LevelDifficultyInitializer : MonoBehaviour
     {
         [SerializeField] private VoidEventChannelSO _onChangeLevelDifficulty;
-        [SerializeField] private GameSetupEventSO _onGameSetup;
         
         [SerializeField] public MissionInitializer mission;
         [SerializeField] public LocationSO location;
@@ -19,22 +19,10 @@ namespace Railway.SceneManagement
 
         private void ScalingFactor(float scaleFactor)
         {
-            if (!mission.IsOriginalResourcesSaved)
-            {
-                mission.OriginalResources = new MissionInitializer.Resources
-                {
-                    Gold = mission.resources.Gold,
-                    Workers = mission.resources.Workers,
-                    Church = mission.resources.Church,
-                    SpeedBuilding = mission.resources.SpeedBuilding
-                };
-                mission.IsOriginalResourcesSaved = true;
-            }
-
-            mission.resources.Gold = mission.OriginalResources.Gold * scaleFactor;
-            mission.resources.Workers = mission.OriginalResources.Workers * scaleFactor;
-            mission.resources.Church = mission.OriginalResources.Church * scaleFactor;
-            mission.resources.SpeedBuilding = mission.OriginalResources.SpeedBuilding * scaleFactor;
+            mission.CurrentResources.Gold.Value = mission.OriginalResources.Gold.Value * scaleFactor;
+            mission.CurrentResources.Workers.Value = mission.OriginalResources.Workers.Value * scaleFactor;
+            mission.CurrentResources.Church.Value = mission.OriginalResources.Church.Value * scaleFactor;
+            mission.CurrentResources.SpeedBuilding.Value = mission.OriginalResources.SpeedBuilding.Value * scaleFactor;
         }
         
         public void NormalLevelDifficulty()
@@ -60,8 +48,6 @@ namespace Railway.SceneManagement
 
         public void LoadLocation()
         {
-            _onGameSetup.RaiseEvent(mission, _levelDifficulty);
-
             if (Teleporter!= null) 
             {
                 Teleporter.Teleport(location);

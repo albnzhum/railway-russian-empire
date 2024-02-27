@@ -12,6 +12,7 @@ namespace Railway.Gameplay
         Gameplay,
         Pause,
         Edit,
+        Tutorial,
         Shop,
         LocationTransition
     }

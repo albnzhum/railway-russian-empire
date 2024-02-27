@@ -14,7 +14,8 @@ namespace Railway.SceneManagement
         [Header("Broadcasting on")] 
         [SerializeField] private LoadEventChannelSO _loadScene = default;
 
-        [Header("Listening to")] [SerializeField]
+        [Header("Listening to")] 
+        [SerializeField]
         private VoidEventChannelSO _onNewGameButton = default;
 
         [SerializeField] private VoidEventChannelSO _onContinueButton = default;

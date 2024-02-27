@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.4044648, g: 0.4388422, b: 0.4795087, a: 1}
+  m_IndirectSpecularColor: {r: 0.13390163, g: 0.15891127, b: 0.19244069, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -721,6 +721,7 @@ GameObject:
   m_Component:
   - component: {fileID: 705507995}
   - component: {fileID: 705507994}
+  - component: {fileID: 705507996}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -805,6 +806,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &705507996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 705507993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_RenderingLayers: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_ShadowRenderingLayers: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
 --- !u!1 &735975448 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4636931619929117551, guid: 6e227c4b35e3b184f987e734b05aee21, type: 3}
@@ -1785,7 +1809,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _sceneToLoad: {fileID: 11400000, guid: 7b7750374b61b1f49b651f3549f0e077, type: 2}
   _showLoadScreen: 0
-  _loadScene: {fileID: 11400000, guid: dd80533d2f533314592ef71cee9851e8, type: 2}
+  _loadScene: {fileID: 11400000, guid: f8bc037dcad7a25488ca9216dea48061, type: 2}
   _onNewGameButton: {fileID: 11400000, guid: 73c91861859dad148be97796ebcb8927, type: 2}
   _onContinueButton: {fileID: 11400000, guid: 0d66e7167a716654aa33507720e39251, type: 2}
 --- !u!4 &1479214337

@@ -3,13 +3,14 @@ using Railway.Gameplay;
 using Railway.Input;
 using TGS;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class MouseInputSystem : MonoBehaviour
 {
     [SerializeField] private InputReader _inputReader;
     [SerializeField] private Camera _camera;
-    
-    [Header("Listening to")]
+
+    [Header("Listening to")] 
     [SerializeField] private CellEnterEventSO _cellEnterEvent;
     [SerializeField] private CellExitEventSO _cellExitEvent;
     [SerializeField] private CellClickedEventSO _cellClickedEvent;
@@ -21,9 +22,11 @@ public class MouseInputSystem : MonoBehaviour
 
     public Cell CurrentCell
     {
-        get => _currentCell; 
+        get => _currentCell;
         private set => _currentCell = value;
     }
+
+    public Vector3 CurrentCellPosition => _tgs.CellGetPosition(_currentCell);
 
     private int _currentCellIndex = -1;
     public int CurrentCellIndex
@@ -37,17 +40,15 @@ public class MouseInputSystem : MonoBehaviour
         Instance = this;
         _tgs = TerrainGridSystem.Instance;
 
-        _inputReader.ChooseCellEvent += ChooseCell;
-        _inputReader.PlaceItemEvent += PlaceItem;
+        _inputReader.HoverCellEvent += HoverCell;
     }
 
     private void OnDisable()
     {
-        _inputReader.ChooseCellEvent -= ChooseCell;
-        _inputReader.PlaceItemEvent -= PlaceItem;
+        _inputReader.HoverCellEvent -= HoverCell;
     }
-    
-    private void PlaceItem(Vector2 mousePosition)
+
+    private void HoverCell(Vector2 mousePosition)
     {
         Ray ray = _camera.ScreenPointToRay(mousePosition);
 
@@ -57,28 +58,12 @@ public class MouseInputSystem : MonoBehaviour
             Cell _cell = DetermineCell(hit.point);
             if (_cell != null)
             {
-                if (_cell != _currentCell)
-                {
-                    if (_currentCell != null)
-                    {
-                        _cellExitEvent.RaiseEvent();
-                    }
-
-                    _currentCell = _cell;
-                    _cellEnterEvent.RaiseEvent();
-                }
-            }
-            else
-            {
-                if (_currentCell != null)
-                {
-                    _cellExitEvent.RaiseEvent();
-                    _currentCell = null;
-                }
+                _currentCell = _cell;
+                _cellEnterEvent.RaiseEvent(_tgs.CellGetIndex(_currentCell));
             }
         }
     }
-    
+
     private void ChooseCell(Vector2 mousePosition)
     {
         Ray ray = _camera.ScreenPointToRay(mousePosition);
@@ -89,12 +74,16 @@ public class MouseInputSystem : MonoBehaviour
             Cell _cell = DetermineCell(hit.point);
             if (_cell != null)
             {
-                _cellClickedEvent.RaiseEvent();
+                if (_cell.tag != (int)CellBuildingType.NonInteractable)
+                {
+                    _currentCell = _cell;
+                    Debug.Log(_tgs.CellGetPosition(_cell));
+                }
             }
         }
     }
-    
-    private Cell DetermineCell(Vector3 position)
+
+    private static Cell DetermineCell(Vector3 position)
     {
         return _tgs.CellGetAtPosition(position, true);
     }

@@ -4,6 +4,14 @@ using System.Linq;
 using TGS;
 using UnityEngine;
 
+public enum CellBuildingType
+{
+    NonInteractable = 1,
+    Rails = 2,
+    Workers = 3,
+    Locomotive = 4
+}
+
 public class ObjectPlacement : MonoBehaviour
 {
     private List<PlacingObject> _objectsToPlace;
@@ -14,7 +22,7 @@ public class ObjectPlacement : MonoBehaviour
     private void OnEnable()
     {
         _tgs = TerrainGridSystem.Instance;
-        
+
         _objectsToPlace = GetComponentsInChildren<PlacingObject>().ToList();
     }
 
@@ -28,6 +36,7 @@ public class ObjectPlacement : MonoBehaviour
             {
                 obj.Object.transform.position = _tgs.CellGetPosition(cell);
                 obj.CellIndex = _tgs.CellGetIndex(cell);
+                _tgs.CellSetTag(cell, (int)CellBuildingType.NonInteractable);
                 _tgs.CellSetCanCross(obj.CellIndex, false);
             }
             else
@@ -35,7 +44,7 @@ public class ObjectPlacement : MonoBehaviour
                 Debug.LogWarning("Object is not over a valid TGS cell");
             }
         }
-        
+
         _tgs.CellSetCanCross(_objectsToPlace[0].CellIndex, true);
         _tgs.CellSetCanCross(_objectsToPlace[^1].CellIndex, true);
 

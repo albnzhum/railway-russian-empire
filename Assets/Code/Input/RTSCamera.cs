@@ -50,7 +50,7 @@ public class RTSCamera : MonoBehaviour
 
     private void OnEnable()
     {
-        _inputReader.EnableGameplayInput();
+        //_inputReader.EnableGameplayInput();
         
         zoomHeight = cameraTransform.localPosition.y;
         
@@ -162,7 +162,7 @@ public class RTSCamera : MonoBehaviour
             moveDirection += GetCameraForward();
         }
 
-        targetPosition += moveDirection;
+        //targetPosition += moveDirection;
     }
 
     private void DragCamera()

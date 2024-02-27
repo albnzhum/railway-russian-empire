@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93b8b6d9a476fb54f925abe09436aa58, type: 3}
   m_Name: Time Component
   m_EditorClassIdentifier: 
-  GameTime: 1835
+  GameTime: 1836
   RealTimeElapsed: 0
-  TimeToUpdate: 0
+  TimeToUpdate: 120

@@ -28,15 +28,6 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
             ""id"": ""3da0b2fa-acd9-402a-9925-4481a428dc74"",
             ""actions"": [
                 {
-                    ""name"": ""ChooseCell"",
-                    ""type"": ""Value"",
-                    ""id"": ""5e590d35-c3e2-459f-9d70-d11fae096840"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
                     ""name"": ""OpenShop"",
                     ""type"": ""Button"",
                     ""id"": ""104224bd-ef3e-46fb-bf07-9a061a2e32bc"",
@@ -44,6 +35,15 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""HoverCell"",
+                    ""type"": ""Value"",
+                    ""id"": ""53c3538c-2295-402c-87af-45d5ea4b18be"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""Pause"",
@@ -71,29 +71,9 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""PlaceItem"",
-                    ""type"": ""Value"",
-                    ""id"": ""1feb4153-14b7-4c0e-a5c3-ef9bbca2c9ec"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""4893785d-4203-4a24-abdc-06982ce4aefd"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""ChooseCell"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
                 {
                     ""name"": """",
                     ""id"": ""77ad3c0a-c744-4ad0-ae2f-74016a18b322"",
@@ -140,12 +120,12 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""f47416d7-77b8-48a4-8187-5b328a47df9e"",
+                    ""id"": ""98328bb0-7600-4f0b-a8b5-11269a2df496"",
                     ""path"": ""<Mouse>/position"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""PlaceItem"",
+                    ""action"": ""HoverCell"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -169,15 +149,6 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
                     ""type"": ""Button"",
                     ""id"": ""1179632c-451c-4138-ab31-307868677891"",
                     ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Point"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""e95d753f-dc51-42f1-88b6-15d689051dfb"",
-                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -217,6 +188,15 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Point"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""57550405-fea7-419e-9bb3-a077aa2d3276"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -239,17 +219,6 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Cancel"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""88f705bf-4f29-4ee6-9085-284c61e434ac"",
-                    ""path"": ""<Mouse>/position"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Point"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -318,6 +287,17 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
                     ""action"": ""ChangeTab"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5971f6db-784e-45f6-8d76-5dfec64c8a2e"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Point"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -368,31 +348,103 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Edit"",
+            ""id"": ""e18b23b3-068b-4a81-a0a4-5ec099a22f06"",
+            ""actions"": [
+                {
+                    ""name"": ""ChooseItemPosition"",
+                    ""type"": ""Value"",
+                    ""id"": ""663657ef-c8d1-4ba3-ada4-80e58f089564"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""CancelPlacing"",
+                    ""type"": ""Button"",
+                    ""id"": ""e6fa0b71-ecaa-47b8-9468-d162a11e5f4c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PlaceItem"",
+                    ""type"": ""Value"",
+                    ""id"": ""874b2894-011b-4ece-91b4-33eb09090ca1"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""d6bc1053-018c-4fd5-8a6e-b00825dfde62"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChooseItemPosition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e6a62991-0886-4d43-8065-41ae1f5cfeae"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlaceItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2aac160c-dd5f-4a03-837c-50c8ed489ba5"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CancelPlacing"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
 }");
         // Gameplay
         m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
-        m_Gameplay_ChooseCell = m_Gameplay.FindAction("ChooseCell", throwIfNotFound: true);
         m_Gameplay_OpenShop = m_Gameplay.FindAction("OpenShop", throwIfNotFound: true);
+        m_Gameplay_HoverCell = m_Gameplay.FindAction("HoverCell", throwIfNotFound: true);
         m_Gameplay_Pause = m_Gameplay.FindAction("Pause", throwIfNotFound: true);
         m_Gameplay_MouseControlCamera = m_Gameplay.FindAction("MouseControlCamera", throwIfNotFound: true);
         m_Gameplay_ZoomCamera = m_Gameplay.FindAction("ZoomCamera", throwIfNotFound: true);
-        m_Gameplay_PlaceItem = m_Gameplay.FindAction("PlaceItem", throwIfNotFound: true);
         // Menus
         m_Menus = asset.FindActionMap("Menus", throwIfNotFound: true);
         m_Menus_CloseShop = m_Menus.FindAction("CloseShop", throwIfNotFound: true);
         m_Menus_Cancel = m_Menus.FindAction("Cancel", throwIfNotFound: true);
-        m_Menus_Point = m_Menus.FindAction("Point", throwIfNotFound: true);
         m_Menus_RightClick = m_Menus.FindAction("RightClick", throwIfNotFound: true);
         m_Menus_Click = m_Menus.FindAction("Click", throwIfNotFound: true);
         m_Menus_Submit = m_Menus.FindAction("Submit", throwIfNotFound: true);
         m_Menus_ChangeTab = m_Menus.FindAction("ChangeTab", throwIfNotFound: true);
+        m_Menus_Point = m_Menus.FindAction("Point", throwIfNotFound: true);
         // Tutorials
         m_Tutorials = asset.FindActionMap("Tutorials", throwIfNotFound: true);
         m_Tutorials_ChooseCell = m_Tutorials.FindAction("ChooseCell", throwIfNotFound: true);
         m_Tutorials_OpenShop = m_Tutorials.FindAction("OpenShop", throwIfNotFound: true);
+        // Edit
+        m_Edit = asset.FindActionMap("Edit", throwIfNotFound: true);
+        m_Edit_ChooseItemPosition = m_Edit.FindAction("ChooseItemPosition", throwIfNotFound: true);
+        m_Edit_CancelPlacing = m_Edit.FindAction("CancelPlacing", throwIfNotFound: true);
+        m_Edit_PlaceItem = m_Edit.FindAction("PlaceItem", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -454,22 +506,20 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
     // Gameplay
     private readonly InputActionMap m_Gameplay;
     private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
-    private readonly InputAction m_Gameplay_ChooseCell;
     private readonly InputAction m_Gameplay_OpenShop;
+    private readonly InputAction m_Gameplay_HoverCell;
     private readonly InputAction m_Gameplay_Pause;
     private readonly InputAction m_Gameplay_MouseControlCamera;
     private readonly InputAction m_Gameplay_ZoomCamera;
-    private readonly InputAction m_Gameplay_PlaceItem;
     public struct GameplayActions
     {
         private @RailwayInputs m_Wrapper;
         public GameplayActions(@RailwayInputs wrapper) { m_Wrapper = wrapper; }
-        public InputAction @ChooseCell => m_Wrapper.m_Gameplay_ChooseCell;
         public InputAction @OpenShop => m_Wrapper.m_Gameplay_OpenShop;
+        public InputAction @HoverCell => m_Wrapper.m_Gameplay_HoverCell;
         public InputAction @Pause => m_Wrapper.m_Gameplay_Pause;
         public InputAction @MouseControlCamera => m_Wrapper.m_Gameplay_MouseControlCamera;
         public InputAction @ZoomCamera => m_Wrapper.m_Gameplay_ZoomCamera;
-        public InputAction @PlaceItem => m_Wrapper.m_Gameplay_PlaceItem;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -479,12 +529,12 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_GameplayActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_GameplayActionsCallbackInterfaces.Add(instance);
-            @ChooseCell.started += instance.OnChooseCell;
-            @ChooseCell.performed += instance.OnChooseCell;
-            @ChooseCell.canceled += instance.OnChooseCell;
             @OpenShop.started += instance.OnOpenShop;
             @OpenShop.performed += instance.OnOpenShop;
             @OpenShop.canceled += instance.OnOpenShop;
+            @HoverCell.started += instance.OnHoverCell;
+            @HoverCell.performed += instance.OnHoverCell;
+            @HoverCell.canceled += instance.OnHoverCell;
             @Pause.started += instance.OnPause;
             @Pause.performed += instance.OnPause;
             @Pause.canceled += instance.OnPause;
@@ -494,19 +544,16 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
             @ZoomCamera.started += instance.OnZoomCamera;
             @ZoomCamera.performed += instance.OnZoomCamera;
             @ZoomCamera.canceled += instance.OnZoomCamera;
-            @PlaceItem.started += instance.OnPlaceItem;
-            @PlaceItem.performed += instance.OnPlaceItem;
-            @PlaceItem.canceled += instance.OnPlaceItem;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
         {
-            @ChooseCell.started -= instance.OnChooseCell;
-            @ChooseCell.performed -= instance.OnChooseCell;
-            @ChooseCell.canceled -= instance.OnChooseCell;
             @OpenShop.started -= instance.OnOpenShop;
             @OpenShop.performed -= instance.OnOpenShop;
             @OpenShop.canceled -= instance.OnOpenShop;
+            @HoverCell.started -= instance.OnHoverCell;
+            @HoverCell.performed -= instance.OnHoverCell;
+            @HoverCell.canceled -= instance.OnHoverCell;
             @Pause.started -= instance.OnPause;
             @Pause.performed -= instance.OnPause;
             @Pause.canceled -= instance.OnPause;
@@ -516,9 +563,6 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
             @ZoomCamera.started -= instance.OnZoomCamera;
             @ZoomCamera.performed -= instance.OnZoomCamera;
             @ZoomCamera.canceled -= instance.OnZoomCamera;
-            @PlaceItem.started -= instance.OnPlaceItem;
-            @PlaceItem.performed -= instance.OnPlaceItem;
-            @PlaceItem.canceled -= instance.OnPlaceItem;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -542,22 +586,22 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
     private List<IMenusActions> m_MenusActionsCallbackInterfaces = new List<IMenusActions>();
     private readonly InputAction m_Menus_CloseShop;
     private readonly InputAction m_Menus_Cancel;
-    private readonly InputAction m_Menus_Point;
     private readonly InputAction m_Menus_RightClick;
     private readonly InputAction m_Menus_Click;
     private readonly InputAction m_Menus_Submit;
     private readonly InputAction m_Menus_ChangeTab;
+    private readonly InputAction m_Menus_Point;
     public struct MenusActions
     {
         private @RailwayInputs m_Wrapper;
         public MenusActions(@RailwayInputs wrapper) { m_Wrapper = wrapper; }
         public InputAction @CloseShop => m_Wrapper.m_Menus_CloseShop;
         public InputAction @Cancel => m_Wrapper.m_Menus_Cancel;
-        public InputAction @Point => m_Wrapper.m_Menus_Point;
         public InputAction @RightClick => m_Wrapper.m_Menus_RightClick;
         public InputAction @Click => m_Wrapper.m_Menus_Click;
         public InputAction @Submit => m_Wrapper.m_Menus_Submit;
         public InputAction @ChangeTab => m_Wrapper.m_Menus_ChangeTab;
+        public InputAction @Point => m_Wrapper.m_Menus_Point;
         public InputActionMap Get() { return m_Wrapper.m_Menus; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -573,9 +617,6 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
             @Cancel.started += instance.OnCancel;
             @Cancel.performed += instance.OnCancel;
             @Cancel.canceled += instance.OnCancel;
-            @Point.started += instance.OnPoint;
-            @Point.performed += instance.OnPoint;
-            @Point.canceled += instance.OnPoint;
             @RightClick.started += instance.OnRightClick;
             @RightClick.performed += instance.OnRightClick;
             @RightClick.canceled += instance.OnRightClick;
@@ -588,6 +629,9 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
             @ChangeTab.started += instance.OnChangeTab;
             @ChangeTab.performed += instance.OnChangeTab;
             @ChangeTab.canceled += instance.OnChangeTab;
+            @Point.started += instance.OnPoint;
+            @Point.performed += instance.OnPoint;
+            @Point.canceled += instance.OnPoint;
         }
 
         private void UnregisterCallbacks(IMenusActions instance)
@@ -598,9 +642,6 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
             @Cancel.started -= instance.OnCancel;
             @Cancel.performed -= instance.OnCancel;
             @Cancel.canceled -= instance.OnCancel;
-            @Point.started -= instance.OnPoint;
-            @Point.performed -= instance.OnPoint;
-            @Point.canceled -= instance.OnPoint;
             @RightClick.started -= instance.OnRightClick;
             @RightClick.performed -= instance.OnRightClick;
             @RightClick.canceled -= instance.OnRightClick;
@@ -613,6 +654,9 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
             @ChangeTab.started -= instance.OnChangeTab;
             @ChangeTab.performed -= instance.OnChangeTab;
             @ChangeTab.canceled -= instance.OnChangeTab;
+            @Point.started -= instance.OnPoint;
+            @Point.performed -= instance.OnPoint;
+            @Point.canceled -= instance.OnPoint;
         }
 
         public void RemoveCallbacks(IMenusActions instance)
@@ -684,28 +728,95 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
         }
     }
     public TutorialsActions @Tutorials => new TutorialsActions(this);
+
+    // Edit
+    private readonly InputActionMap m_Edit;
+    private List<IEditActions> m_EditActionsCallbackInterfaces = new List<IEditActions>();
+    private readonly InputAction m_Edit_ChooseItemPosition;
+    private readonly InputAction m_Edit_CancelPlacing;
+    private readonly InputAction m_Edit_PlaceItem;
+    public struct EditActions
+    {
+        private @RailwayInputs m_Wrapper;
+        public EditActions(@RailwayInputs wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ChooseItemPosition => m_Wrapper.m_Edit_ChooseItemPosition;
+        public InputAction @CancelPlacing => m_Wrapper.m_Edit_CancelPlacing;
+        public InputAction @PlaceItem => m_Wrapper.m_Edit_PlaceItem;
+        public InputActionMap Get() { return m_Wrapper.m_Edit; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(EditActions set) { return set.Get(); }
+        public void AddCallbacks(IEditActions instance)
+        {
+            if (instance == null || m_Wrapper.m_EditActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_EditActionsCallbackInterfaces.Add(instance);
+            @ChooseItemPosition.started += instance.OnChooseItemPosition;
+            @ChooseItemPosition.performed += instance.OnChooseItemPosition;
+            @ChooseItemPosition.canceled += instance.OnChooseItemPosition;
+            @CancelPlacing.started += instance.OnCancelPlacing;
+            @CancelPlacing.performed += instance.OnCancelPlacing;
+            @CancelPlacing.canceled += instance.OnCancelPlacing;
+            @PlaceItem.started += instance.OnPlaceItem;
+            @PlaceItem.performed += instance.OnPlaceItem;
+            @PlaceItem.canceled += instance.OnPlaceItem;
+        }
+
+        private void UnregisterCallbacks(IEditActions instance)
+        {
+            @ChooseItemPosition.started -= instance.OnChooseItemPosition;
+            @ChooseItemPosition.performed -= instance.OnChooseItemPosition;
+            @ChooseItemPosition.canceled -= instance.OnChooseItemPosition;
+            @CancelPlacing.started -= instance.OnCancelPlacing;
+            @CancelPlacing.performed -= instance.OnCancelPlacing;
+            @CancelPlacing.canceled -= instance.OnCancelPlacing;
+            @PlaceItem.started -= instance.OnPlaceItem;
+            @PlaceItem.performed -= instance.OnPlaceItem;
+            @PlaceItem.canceled -= instance.OnPlaceItem;
+        }
+
+        public void RemoveCallbacks(IEditActions instance)
+        {
+            if (m_Wrapper.m_EditActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IEditActions instance)
+        {
+            foreach (var item in m_Wrapper.m_EditActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_EditActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public EditActions @Edit => new EditActions(this);
     public interface IGameplayActions
     {
-        void OnChooseCell(InputAction.CallbackContext context);
         void OnOpenShop(InputAction.CallbackContext context);
+        void OnHoverCell(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
         void OnMouseControlCamera(InputAction.CallbackContext context);
         void OnZoomCamera(InputAction.CallbackContext context);
-        void OnPlaceItem(InputAction.CallbackContext context);
     }
     public interface IMenusActions
     {
         void OnCloseShop(InputAction.CallbackContext context);
         void OnCancel(InputAction.CallbackContext context);
-        void OnPoint(InputAction.CallbackContext context);
         void OnRightClick(InputAction.CallbackContext context);
         void OnClick(InputAction.CallbackContext context);
         void OnSubmit(InputAction.CallbackContext context);
         void OnChangeTab(InputAction.CallbackContext context);
+        void OnPoint(InputAction.CallbackContext context);
     }
     public interface ITutorialsActions
     {
         void OnChooseCell(InputAction.CallbackContext context);
         void OnOpenShop(InputAction.CallbackContext context);
+    }
+    public interface IEditActions
+    {
+        void OnChooseItemPosition(InputAction.CallbackContext context);
+        void OnCancelPlacing(InputAction.CallbackContext context);
+        void OnPlaceItem(InputAction.CallbackContext context);
     }
 }

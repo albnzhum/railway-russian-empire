@@ -7,11 +7,11 @@ namespace Railway.Gameplay
     {
         public event CellEvent OnCellEnter;
 
-        public void RaiseEvent()
+        public void RaiseEvent(int index)
         {
             if (OnCellEnter != null)
             {
-                OnCellEnter?.Invoke();
+                OnCellEnter?.Invoke(index);
             }
         }
     }

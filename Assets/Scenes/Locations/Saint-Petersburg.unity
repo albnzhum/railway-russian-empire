@@ -5194,7 +5194,7 @@ Transform:
   m_LocalScale: {x: 1024, y: 2500, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1441895735}
+  - {fileID: 568712682}
   m_Father: {fileID: 1501818662}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &294677201
@@ -5614,6 +5614,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 436799795}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &568712681
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 568712682}
+  m_Layer: 5
+  m_Name: Surfaces
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &568712682
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 568712681}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 294677200}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &579425437
 GameObject:
   m_ObjectHideFlags: 0
@@ -6270,6 +6301,7 @@ GameObject:
   m_Component:
   - component: {fileID: 963277176}
   - component: {fileID: 963277177}
+  - component: {fileID: 963277178}
   m_Layer: 0
   m_Name: Pathfinder Manager
   m_TagString: Untagged
@@ -6309,6 +6341,23 @@ MonoBehaviour:
   _cellEnterEvent: {fileID: 11400000, guid: 3e9a3b9ff8c52574fa85852a14b33423, type: 2}
   _cellExitEvent: {fileID: 11400000, guid: fc0e97833aa76b74cae309886ad110dd, type: 2}
   _cellClickedEvent: {fileID: 11400000, guid: 9d299c363d5168f47aa0d21ff9bc2a20, type: 2}
+--- !u!114 &963277178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963277174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5115761c97f2d3a4ab12f50fa21aedb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inputReader: {fileID: 11400000, guid: 1abb58e29fa923742afe9a18676e05d6, type: 2}
+  _gameState: {fileID: 11400000, guid: f6ab959d7b6f6344e9a16562e598ec37, type: 2}
+  _useItemEvent: {fileID: 11400000, guid: bad1551ac2831174ba470ec6f93c076f, type: 2}
+  _cellEnter: {fileID: 11400000, guid: 3e9a3b9ff8c52574fa85852a14b33423, type: 2}
+  _camera: {fileID: 1254645694}
 --- !u!1 &1001769475
 GameObject:
   m_ObjectHideFlags: 0
@@ -6495,7 +6544,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 250
-  far clip plane: 1000
+  far clip plane: 1100
   field of view: 42
   orthographic: 0
   orthographic size: 5
@@ -6889,37 +6938,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1441895734
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1441895735}
-  m_Layer: 5
-  m_Name: Surfaces
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1441895735
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1441895734}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 294677200}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1501814009
 GameObject:

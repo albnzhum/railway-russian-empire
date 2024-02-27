@@ -13,7 +13,12 @@ namespace Railway.Events
         {
             if (OnEventRaised != null)
             {
+                Debug.Log("Item raised");
                 OnEventRaised.Invoke(item);
+            }
+            else
+            {
+                Debug.Log("Nobody picked it up");
             }
         }
     }
