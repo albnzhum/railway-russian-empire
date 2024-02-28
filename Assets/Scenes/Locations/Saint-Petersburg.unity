@@ -6300,10 +6300,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 963277176}
-  - component: {fileID: 963277177}
   - component: {fileID: 963277178}
+  - component: {fileID: 963277179}
   m_Layer: 0
-  m_Name: Pathfinder Manager
+  m_Name: Inputs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6324,23 +6324,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &963277177
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 963277174}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e11bc54129331554cae3fca26b101590, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _inputReader: {fileID: 11400000, guid: 1abb58e29fa923742afe9a18676e05d6, type: 2}
-  _camera: {fileID: 1254645694}
-  _cellEnterEvent: {fileID: 11400000, guid: 3e9a3b9ff8c52574fa85852a14b33423, type: 2}
-  _cellExitEvent: {fileID: 11400000, guid: fc0e97833aa76b74cae309886ad110dd, type: 2}
-  _cellClickedEvent: {fileID: 11400000, guid: 9d299c363d5168f47aa0d21ff9bc2a20, type: 2}
 --- !u!114 &963277178
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6358,6 +6341,18 @@ MonoBehaviour:
   _useItemEvent: {fileID: 11400000, guid: bad1551ac2831174ba470ec6f93c076f, type: 2}
   _cellEnter: {fileID: 11400000, guid: 3e9a3b9ff8c52574fa85852a14b33423, type: 2}
   _camera: {fileID: 1254645694}
+--- !u!114 &963277179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963277174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f15cc4a82a4a4c81946c94cc2cd42c90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1001769475
 GameObject:
   m_ObjectHideFlags: 0

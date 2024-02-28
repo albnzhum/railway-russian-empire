@@ -1,37 +1,43 @@
 using System;
 using Railway.Components;
-using Railway.Events;
 using Railway.Idents.UI;
 using UnityEngine;
 using UnityEngine.UI;
 using R3;
-using UnityEngine.Serialization;
 
 namespace Railway.Gameplay.UI
 {
+    public enum ResourceType { Gold, Workers, Church, SpeedBuilding, Fuel, TechProgress }
+    
     public class UIResources : MonoBehaviour
     {
-        [Header("UI Canvas")] 
-        [SerializeField] private GameObject Resources;
-        
-        [Header("UI Text")] 
-        [SerializeField] private Text _goldText;
-        [SerializeField] private Text _workersText;
-        [SerializeField] private Text _churchText;
-        [SerializeField] private Text _speedBuildingText;
-        [SerializeField] private Text _fuelText;
-        [SerializeField] private Text _techprogressText;
+        [Header("UI Text")]
+        [SerializeField] private Text[] _resourceTexts = new Text[Enum.GetValues(typeof(ResourceType)).Length];
 
         [SerializeField] private MissionInitializer mission;
+
+        private CompositeDisposable _disposable = new CompositeDisposable();
         
         private void OnEnable()
         {
-            mission.CurrentResources.Gold.Subscribe(value => _goldText.text = FormatText(UITextFormat.Resources.Gold, value));
-            mission.CurrentResources.Workers.Subscribe(value => _workersText.text = FormatText(UITextFormat.Resources.Workers, value));
-            mission.CurrentResources.Church.Subscribe(value => _churchText.text = FormatText(UITextFormat.Resources.Church, value));
-            mission.CurrentResources.SpeedBuilding.Subscribe(value => _speedBuildingText.text = FormatText(UITextFormat.Resources.SpeedBuilding, value));
-            mission.CurrentResources.Fuel.Subscribe(value => _fuelText.text = FormatText(UITextFormat.Resources.Fuel, value));
-            mission.CurrentResources.TechProgress.Subscribe(value => _techprogressText.text = FormatText(UITextFormat.Resources.TechProgress, value));
+            BindTextToResource(ResourceType.Gold, UITextFormat.Resources.Gold);
+            BindTextToResource(ResourceType.Workers, UITextFormat.Resources.Workers);
+            BindTextToResource(ResourceType.Church, UITextFormat.Resources.Church);
+            BindTextToResource(ResourceType.SpeedBuilding, UITextFormat.Resources.SpeedBuilding);
+            BindTextToResource(ResourceType.Fuel, UITextFormat.Resources.Fuel);
+            BindTextToResource(ResourceType.TechProgress, UITextFormat.Resources.TechProgress);
+        }
+
+        private void OnDisable()
+        {
+            _disposable.Dispose();
+        }
+
+        private void BindTextToResource(ResourceType resourceType, string format)
+        {
+            mission.GetReactiveProperty(resourceType)
+                .Subscribe(value => _resourceTexts[(int)resourceType].text = FormatText(format, value))
+                .AddTo(_disposable);
         }
 
         private string FormatText(string format, float value)

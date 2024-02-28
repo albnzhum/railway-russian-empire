@@ -604,9 +604,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3103532658415711700}
-  - component: {fileID: 4833730801428268544}
+  - component: {fileID: 3103532658415711701}
   m_Layer: 0
-  m_Name: Initializer
+  m_Name: ResourceManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -627,7 +627,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4833730801428268544
+--- !u!114 &3103532658415711701
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -636,12 +636,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1398352388112431471}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08e847c9fd14cac4593337fc3a3bd7bf, type: 3}
+  m_Script: {fileID: 11500000, guid: ec4ff8a769a875a438d39bc64c3cf0ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mission: {fileID: 0}
-  _levelDifficulty: {fileID: 11400000, guid: a6c85c0274d99174db3bfc6f38fffbfd, type: 2}
-  _gameSetupEvent: {fileID: 11400000, guid: d8c0ecb9074a06640b4b8bd4b70bdc75, type: 2}
+  _mission: {fileID: 11400000, guid: 7c27ca4899fd8de409528978a46ea512, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -24,7 +24,7 @@ namespace Railway.SceneManagement
             mission.CurrentResources.Church.Value = mission.OriginalResources.Church.Value * scaleFactor;
             mission.CurrentResources.SpeedBuilding.Value = mission.OriginalResources.SpeedBuilding.Value * scaleFactor;
         }
-        
+
         public void NormalLevelDifficulty()
         {
             ScalingFactor(1f);

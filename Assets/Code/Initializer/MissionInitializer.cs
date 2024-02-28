@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using R3;
+using Railway.Gameplay.UI;
 
 namespace Railway.Components
 {
@@ -22,6 +24,28 @@ namespace Railway.Components
             set => _currentResources = value;
         }
         
+        public SerializableReactiveProperty<float> GetReactiveProperty(ResourceType resourceType)
+        {
+            switch (resourceType)
+            {
+                case ResourceType.Gold:
+                    return CurrentResources.Gold;
+                case ResourceType.Workers:
+                    return CurrentResources.Workers;
+                case ResourceType.Church:
+                    return CurrentResources.Church;
+                case ResourceType.Fuel:
+                    return CurrentResources.Fuel;
+                case ResourceType.TechProgress:
+                    return CurrentResources.TechProgress;
+                case ResourceType.SpeedBuilding:
+                    return CurrentResources.SpeedBuilding;
+                
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(resourceType), resourceType, null);
+            }
+        }
+        
         [System.Serializable]
         public class Resources
         {
@@ -40,7 +64,6 @@ namespace Railway.Components
                 SpeedBuilding = new SerializableReactiveProperty<float>(original.SpeedBuilding.Value);
                 Fuel = new SerializableReactiveProperty<float>(original.Fuel.Value);
                 TechProgress = new SerializableReactiveProperty<float>(original.TechProgress.Value);
-                
             }
         }
     }

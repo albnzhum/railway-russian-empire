@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SO_Worker_01
   m_EditorClassIdentifier: 
   _name: "\u041A\u0440\u0435\u0441\u0442\u044C\u044F\u043D\u0435"
-  _price: 0
+  _price: 135
   _prefab: {fileID: 6259199244998343362, guid: c2be995128518984fb1c16609b23ac33, type: 3}
   _itemType: {fileID: 11400000, guid: 57815df062724cd41a5ddce822bd3360, type: 2}
   _count: 0

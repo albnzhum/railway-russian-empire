@@ -12,14 +12,17 @@ namespace Railway.Input
         public event UnityAction OpenShopEvent = delegate {  };
         public event UnityAction CloseShopEvent = delegate {  };
         public event UnityAction<Vector2> ChooseCellEvent = delegate {  };
-        public event UnityAction PlaceItemEvent = delegate {  };
-        public event UnityAction<Vector2> ChooseItemPositionEvent = delegate {  };
+        public event Action PlaceItemEvent = delegate {  };
+        public event Action<Vector2> ChooseItemPositionEvent = delegate {  };
         public event UnityAction<Vector2> HoverCellEvent = delegate {  };
         public event UnityAction<float> TabSwitched = delegate {  };
         public event UnityAction<Vector2> CameraMoveEvent = delegate { };
         public event UnityAction EnableMouseControlCameraEvent = delegate { };
         public event UnityAction DisableMouseControlCameraEvent = delegate { };
         public event UnityAction OnCancelEvent = delegate {  };
+        public event UnityAction MenuCloseEvent = delegate {  };
+        public event UnityAction MenuPauseEvent = delegate { };
+        public event UnityAction MenuUnpauseEvent = delegate { };
 
         private bool isGameplayInputEnabled;
 
@@ -122,7 +125,8 @@ namespace Railway.Input
         
         public void OnPause(InputAction.CallbackContext context)
         {
-            throw new NotImplementedException();
+            if (context.phase == InputActionPhase.Performed)
+                MenuPauseEvent.Invoke();
         }
         
         private bool IsDeviceMouse(InputAction.CallbackContext context) => context.control.device.name == "Mouse";
@@ -151,6 +155,12 @@ namespace Railway.Input
                 CloseShopEvent.Invoke();
         }
 
+        public void OnUnpause(InputAction.CallbackContext context)
+        {
+            if (context.phase == InputActionPhase.Performed)
+                MenuUnpauseEvent.Invoke();
+        }
+
         public void OnClick(InputAction.CallbackContext context) { }
 
         public void OnRightClick(InputAction.CallbackContext context) { }
@@ -159,7 +169,8 @@ namespace Railway.Input
 
         public void OnCancel(InputAction.CallbackContext context)
         {
-            
+            if (context.phase == InputActionPhase.Performed)
+                MenuCloseEvent.Invoke();
         }
 
         public void OnCancelPlacing(InputAction.CallbackContext context)

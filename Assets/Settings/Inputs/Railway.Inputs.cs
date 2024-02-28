@@ -197,6 +197,15 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Unpause"",
+                    ""type"": ""Button"",
+                    ""id"": ""d4df3114-cb05-4a53-9f89-567337af5605"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -296,6 +305,17 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Point"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""884e3423-ed5c-44d7-adc3-fe80b701a2cf"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Unpause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -436,6 +456,7 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
         m_Menus_Submit = m_Menus.FindAction("Submit", throwIfNotFound: true);
         m_Menus_ChangeTab = m_Menus.FindAction("ChangeTab", throwIfNotFound: true);
         m_Menus_Point = m_Menus.FindAction("Point", throwIfNotFound: true);
+        m_Menus_Unpause = m_Menus.FindAction("Unpause", throwIfNotFound: true);
         // Tutorials
         m_Tutorials = asset.FindActionMap("Tutorials", throwIfNotFound: true);
         m_Tutorials_ChooseCell = m_Tutorials.FindAction("ChooseCell", throwIfNotFound: true);
@@ -591,6 +612,7 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Menus_Submit;
     private readonly InputAction m_Menus_ChangeTab;
     private readonly InputAction m_Menus_Point;
+    private readonly InputAction m_Menus_Unpause;
     public struct MenusActions
     {
         private @RailwayInputs m_Wrapper;
@@ -602,6 +624,7 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
         public InputAction @Submit => m_Wrapper.m_Menus_Submit;
         public InputAction @ChangeTab => m_Wrapper.m_Menus_ChangeTab;
         public InputAction @Point => m_Wrapper.m_Menus_Point;
+        public InputAction @Unpause => m_Wrapper.m_Menus_Unpause;
         public InputActionMap Get() { return m_Wrapper.m_Menus; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -632,6 +655,9 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
             @Point.started += instance.OnPoint;
             @Point.performed += instance.OnPoint;
             @Point.canceled += instance.OnPoint;
+            @Unpause.started += instance.OnUnpause;
+            @Unpause.performed += instance.OnUnpause;
+            @Unpause.canceled += instance.OnUnpause;
         }
 
         private void UnregisterCallbacks(IMenusActions instance)
@@ -657,6 +683,9 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
             @Point.started -= instance.OnPoint;
             @Point.performed -= instance.OnPoint;
             @Point.canceled -= instance.OnPoint;
+            @Unpause.started -= instance.OnUnpause;
+            @Unpause.performed -= instance.OnUnpause;
+            @Unpause.canceled -= instance.OnUnpause;
         }
 
         public void RemoveCallbacks(IMenusActions instance)
@@ -807,6 +836,7 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
         void OnSubmit(InputAction.CallbackContext context);
         void OnChangeTab(InputAction.CallbackContext context);
         void OnPoint(InputAction.CallbackContext context);
+        void OnUnpause(InputAction.CallbackContext context);
     }
     public interface ITutorialsActions
     {

@@ -19,8 +19,6 @@ namespace Railway.SceneManagement
         public void ShowMissionInfo()
         {
             _teleporter.locationTeleporterInfo.ShowMissionInfo(_MissionInitializer);
-            _teleporter.locationTeleporterInfo.mission = _MissionInitializer;
-            _teleporter.levelDifficulty.mission = _MissionInitializer;
 
             _teleporter.levelDifficulty.Teleporter = _teleporter;
             _teleporter.levelDifficulty.location = _location;

@@ -1,5 +1,10 @@
+using System;
 using System.Collections;
+using Code.Gameplay;
+using R3;
 using Railway.Events;
+using Railway.Gameplay.Resources;
+using Railway.Gameplay.UI;
 using Railway.Input;
 using Railway.Shop.Data;
 using TGS;
@@ -26,14 +31,33 @@ namespace Railway.Gameplay
         private GameObject _currentItemGO;
         
         private bool isPlacing = false;
+
+        private CompositeDisposable _disposable = new CompositeDisposable();
         
         private void OnEnable()
         {
             _tgs = TerrainGridSystem.Instance;
+            
             _useItemEvent.OnEventRaised += SetCurrentItem;
 
             _inputReader.OnCancelEvent += CancelPlaceItem;
-            _inputReader.ChooseItemPositionEvent += OnChooseItemPosition;
+
+            var chooseItemPositionHandler = Observable.FromEvent<Vector2>
+            (handler => _inputReader.ChooseItemPositionEvent += handler,
+                handler => _inputReader.ChooseItemPositionEvent -= handler);
+
+            var placeItemHandler = Observable.FromEvent(
+                handler => _inputReader.PlaceItemEvent += handler,
+                handler => _inputReader.PlaceItemEvent -= handler);
+
+            chooseItemPositionHandler
+                 .Subscribe(OnChooseItemPosition)
+                 .AddTo(_disposable);
+            
+            placeItemHandler
+                 .ThrottleLast(TimeSpan.FromSeconds(2))
+                 .Subscribe(PlaceItem)
+                 .AddTo(_disposable);
         }
 
         private void OnDisable()
@@ -41,10 +65,10 @@ namespace Railway.Gameplay
             _useItemEvent.OnEventRaised -= SetCurrentItem;
 
             _inputReader.OnCancelEvent -= CancelPlaceItem;
-            _inputReader.ChooseItemPositionEvent -= OnChooseItemPosition;
-            _inputReader.PlaceItemEvent -= PlaceItem;
+            _disposable.Dispose();
         }
 
+        //TODO: позиция объекта управляется с помощью мыши - при нажатии всплывает окно подтвердить/нет
         /// <summary>
         /// Управляет позицией предмета
         /// </summary>
@@ -70,8 +94,6 @@ namespace Railway.Gameplay
                         }
                     }
                 }
-
-                StartCoroutine(EnablePlaceItem());
             }
         }
 
@@ -94,16 +116,10 @@ namespace Railway.Gameplay
             }
         }
 
-        IEnumerator EnablePlaceItem()
-        {
-            yield return new WaitForSeconds(2f);
-            _inputReader.PlaceItemEvent += PlaceItem;
-        }
-        
         /// <summary>
         /// Размещает объект на клетке и в зависимости от типа итема присваивает тег клетке
         /// </summary>
-        private void PlaceItem()
+        private void PlaceItem(Unit _unit)
         {
             if (isPlacing)
             {
@@ -118,6 +134,8 @@ namespace Railway.Gameplay
                         _tgs.CellSetTag(_currentCell, (int)CellBuildingType.Workers);
                         break;
                 }
+                
+                ResourcesManager.Instance.Spend(ResourceType.Gold, _currentItem.Price);
 
                 _tgs.CellSetCanCross(_tgs.CellGetIndex(_currentCell), false);
 
@@ -127,8 +145,6 @@ namespace Railway.Gameplay
 
                 _gameState.UpdateGameState(GameState.Gameplay);
                 _inputReader.EnableGameplayInput();
-                
-                _inputReader.PlaceItemEvent -= PlaceItem;
             }
         }
 
