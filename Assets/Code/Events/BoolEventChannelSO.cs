@@ -4,7 +4,6 @@ using UnityEngine.Events;
 namespace Railway.Events
 {
     [CreateAssetMenu(menuName = "Events/Bool Event Channel")]
-
     public class BoolEventChannelSO : ScriptableObject
     {
         public event UnityAction<bool> OnEventRaised;

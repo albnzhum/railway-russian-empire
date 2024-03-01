@@ -1,14 +1,9 @@
 using UnityEngine;
 using System;
-using System.Text;
-using System.Collections;
-using System.Collections.Generic;
-using TGS.Geom;
-using TGS.PathFinding;
-// ReSharper disable All
+using UnityEngine.Serialization;
 
 namespace TGS {
-
+	
 	public enum HIGHLIGHT_MODE {
 		None = 0,
 		Territories = 1,
@@ -36,19 +31,24 @@ namespace TGS {
 		None = 5
 	}
 
-    public partial class TerrainGridSystem : MonoBehaviour {
+	/* Event definitions */
+
+	public delegate int OnPathFindingCrossCell(int cellIndex);
 
 
-		[SerializeField] Terrain _terrain;
+	public partial class TerrainGridSystem : MonoBehaviour {
+
+		[SerializeField]
+		Terrain terrain;
 
 		/// <summary>
 		/// Terrain reference. Assign a terrain to this property to fit the grid to terrain height and dimensions
 		/// </summary>
 		public Terrain Terrain {
-			get => _terrain;
-            set {
-				if (_terrain != value) {
-					_terrain = value;
+			get => terrain;
+			set {
+				if (terrain != value) {
+					terrain = value;
 					isDirty = true;
 					Redraw();
 				}
@@ -58,36 +58,37 @@ namespace TGS {
 		/// <summary>
 		/// Returns the terrain center in world space.
 		/// </summary>
-		public Vector3 TerrainCenter => _terrain.transform.position + new Vector3(_terrainWidth * 0.5f, 0, _terrainDepth * 0.5f);
+		public Vector3 TerrainCenter => terrain.transform.position + new Vector3(terrainWidth * 0.5f, 0, terrainDepth * 0.5f);
 
-        public Texture2D canvasTexture;
+		public Texture2D canvasTexture;
 
-		[SerializeField] bool _transparentBackground;
+		[SerializeField]
+		bool transparentBackground;
 
 		/// <summary>
 		/// When enabled, make sure you have another geometry behind the cells / territories that write to zbuffer because the grid won't be visible otherwise.
 		/// </summary>
 		public bool TransparentBackground {
-			get => _transparentBackground;
-            set {
-				if (_transparentBackground != value) {
-					_transparentBackground = value;
+			get => transparentBackground;
+			set {
+				if (transparentBackground != value) {
+					transparentBackground = value;
 					isDirty = true;
 					Redraw(true);
 				}
 			}
 		}
 
-        [SerializeField] Texture2D _gridMask;
+		[SerializeField] Texture2D gridMask;
 
 		/// <summary>
 		/// Gets or sets the grid mask. The alpha component of this texture is used to determine cells visibility (0 = cell invisible)
 		/// </summary>
 		public Texture2D GridMask {
-			get => _gridMask;
-            set {
-				if (_gridMask != value) {
-					_gridMask = value;
+			get => gridMask;
+			set {
+				if (gridMask != value) {
+					gridMask = value;
 					isDirty = true;
 					ReloadMask();
 				}
@@ -95,33 +96,33 @@ namespace TGS {
 		}
 
 
-		[SerializeField]
-		GRID_TOPOLOGY _gridTopology = GRID_TOPOLOGY.Irregular;
+		[SerializeField] 
+		GRID_TOPOLOGY gridTopology = GRID_TOPOLOGY.Irregular;
 
 		/// <summary>
 		/// The grid type (boxed, hexagonal or irregular)
 		/// </summary>
-		public GRID_TOPOLOGY GridTopology {
-			get => _gridTopology;
-            set {
-				if (_gridTopology != value) {
-					_gridTopology = value;
+		public GRID_TOPOLOGY GridTopology { 
+			get => gridTopology;
+			set {
+				if (gridTopology != value) {
+					gridTopology = value;
 					GenerateMap();
 					isDirty = true;
 				}
 			}
 		}
 
-		[SerializeField] int _seed = 1;
+		[SerializeField] int seed = 1;
 
 		/// <summary>
 		/// Randomize seed used to generate cells. Use this to control randomization.
 		/// </summary>
-		public int Seed {
-			get => _seed;
-            set {
-				if (_seed != value) {
-					_seed = value;
+		public int Seed { 
+			get => seed;
+			set {
+				if (seed != value) {
+					seed = value;
 					isDirty = true;
 					GenerateMap();
 				}
@@ -133,39 +134,38 @@ namespace TGS {
 		/// </summary>
 		/// <value>The cell count.</value>
 		public int CellCount {
-			get
-            {
-                if (_gridTopology == GRID_TOPOLOGY.Irregular) {
+			get {
+				if (gridTopology == GRID_TOPOLOGY.Irregular) {
 					return numCells;
+				} else {
+					return cellRowCount * cellColumnCount;
 				}
-                return _cellRowCount * _cellColumnCount;
-            }
+			}
 		}
 
-		[SerializeField]
-		bool _evenLayout = false;
+		[SerializeField] bool evenLayout = false;
 
 		/// <summary>
 		/// Toggle even corner in hexagonal topology.
 		/// </summary>
-		public bool EvenLayout {
-			get => _evenLayout;
-            set {
-				if (value != _evenLayout) {
-					_evenLayout = value;
+		public bool EvenLayout { 
+			get => evenLayout;
+			set {
+				if (value != evenLayout) {
+					evenLayout = value;
 					isDirty = true;
 					GenerateMap();
 				}
 			}
 		}
 
-		[SerializeField] bool _regularHexagons;
+		[SerializeField] public bool regularHexagons;
 
 		public bool RegularHexagons {
-			get => _regularHexagons;
-            set {
-				if (value != _regularHexagons) {
-					_regularHexagons = value;
+			get => regularHexagons;
+			set {
+				if (value != regularHexagons) {
+					regularHexagons = value;
 					isDirty = true;
 					CellsUpdateBounds();
 					UpdateTerritoryBoundaries();
@@ -174,13 +174,13 @@ namespace TGS {
 			}
 		}
 
-		[SerializeField] float _hexSize = 0.01f;
-
+		[SerializeField]
+		public float hexSize = 0.01f;
 		public float HexSize {
-			get => _hexSize;
-            set {
-				if (value != _hexSize) {
-					_hexSize = value;
+			get => hexSize;
+			set {
+				if (value != hexSize) {
+					hexSize = value;
 					ComputeGridScale ();
 					isDirty = true;
 					CellsUpdateBounds();
@@ -190,32 +190,17 @@ namespace TGS {
 			}
 		}
 
-        [SerializeField] int _gridRelaxation = 1;
+		[SerializeField]
+		int gridRelaxation = 1;
 
 		/// <summary>
 		/// Sets the relaxation iterations used to normalize cells sizes in irregular topology.
 		/// </summary>
-		public int GridRelaxation {
-			get => _gridRelaxation;
-            set {
-				if (_gridRelaxation != value) {
-					_gridRelaxation = value;
-					GenerateMap();
-					isDirty = true;
-				}
-			}
-		}
-
-		[SerializeField] float _gridCurvature = 0.0f;
-
-		/// <summary>
-		/// Gets or sets the grid's curvature factor.
-		/// </summary>
-		public float GridCurvature {
-			get => _gridCurvature;
-            set {
-				if (_gridCurvature != value) {
-					_gridCurvature = value;
+		public int GridRelaxation { 
+			get => gridRelaxation;
+			set {
+				if (gridRelaxation != value) {
+					gridRelaxation = value;
 					GenerateMap();
 					isDirty = true;
 				}
@@ -223,12 +208,30 @@ namespace TGS {
 		}
 
 		[SerializeField]
-		HIGHLIGHT_MODE _highlightMode = HIGHLIGHT_MODE.Cells;
-        public HIGHLIGHT_MODE HighlightMode {
-			get => _highlightMode;
-            set {
-				if (_highlightMode != value) {
-					_highlightMode = value;
+		float gridCurvature = 0.0f;
+
+		/// <summary>
+		/// Gets or sets the grid's curvature factor.
+		/// </summary>
+		public float GridCurvature { 
+			get => gridCurvature;
+			set {
+				if (gridCurvature != value) {
+					gridCurvature = value;
+					GenerateMap();
+					isDirty = true;
+				}
+			}
+		}
+
+		[SerializeField]
+		HIGHLIGHT_MODE highlightMode = HIGHLIGHT_MODE.Cells;
+
+		public HIGHLIGHT_MODE HighlightMode {
+			get => highlightMode;
+			set {
+				if (highlightMode != value) {
+					highlightMode = value;
 					isDirty = true;
 					ClearLastOver();
 					HideCellRegionHighlight();
@@ -239,89 +242,93 @@ namespace TGS {
 			}
 		}
 
-		[SerializeField] float _highlightFadeMin = 0f;
-        public float HighlightFadeMin {
-			get => _highlightFadeMin;
-            set {
-				if (_highlightFadeMin != value) {
-					_highlightFadeMin = value;
-					isDirty = true;
-				}
-			}
-		}
-
-        [SerializeField] float _highlightFadeAmount = 0.5f;
-        public float HighlightFadeAmount {
-			get => _highlightFadeAmount;
-            set {
-				if (_highlightFadeAmount != value) {
-					_highlightFadeAmount = value;
+		[SerializeField] float highlightFadeMin = 0f;
+		public float HighlightFadeMin {
+			get => highlightFadeMin;
+			set {
+				if (highlightFadeMin != value) {
+					highlightFadeMin = value;
 					isDirty = true;
 				}
 			}
 		}
 
 
-		[SerializeField] float _highlightScaleMin = 0.75f;
-
-		public float HighlightScaleMin {
-			get => _highlightScaleMin;
-            set {
-				if (_highlightScaleMin != value) {
-					_highlightScaleMin = value;
-					isDirty = true;
-				}
-			}
-		}
-
-		[SerializeField] float _highlightScaleMax = 1.1f;
-
-		public float HighlightScaleMax {
-			get => _highlightScaleMax;
-            set {
-				if (_highlightScaleMax != value) {
-					_highlightScaleMax = value;
-					isDirty = true;
-				}
-			}
-		}
-
-
-		[SerializeField] float _highlightFadeSpeed = 1f;
-
-		public float HighlightFadeSpeed {
-			get => _highlightFadeSpeed;
-            set {
-				if (_highlightFadeSpeed != value) {
-					_highlightFadeSpeed = value;
-					isDirty = true;
-				}
-			}
-		}
-
-
-		[SerializeField] float _highlightMinimumTerrainDistance = 35f;
-
-		/// <summary>
-		/// Minimum distance from camera for cells to be highlighted on terrain
-		/// </summary>
-		public float HighlightMinimumTerrainDistance {
-			get => _highlightMinimumTerrainDistance;
-            set {
-				if (_highlightMinimumTerrainDistance != value) {
-					_highlightMinimumTerrainDistance = value;
+		[SerializeField]
+		float highlightFadeAmount = 0.5f;
+		public float HighlightFadeAmount {
+			get => highlightFadeAmount;
+			set {
+				if (highlightFadeAmount != value) {
+					highlightFadeAmount = value;
 					isDirty = true;
 				}
 			}
 		}
 
 		[SerializeField]
-		HIGHLIGHT_EFFECT _highlightEffect = HIGHLIGHT_EFFECT.Default;
-        public HIGHLIGHT_EFFECT HighlightEffect {
-			get => _highlightEffect;
-            set {
-				if (_highlightEffect != value) {
-					_highlightEffect = value;
+		float highlightScaleMin = 0.75f;
+
+		public float HighlightScaleMin {
+			get => highlightScaleMin;
+			set {
+				if (highlightScaleMin != value) {
+					highlightScaleMin = value;
+					isDirty = true;
+				}
+			}
+		}
+
+		[SerializeField]
+		float highlightScaleMax = 1.1f;
+
+		public float HighlightScaleMax {
+			get => highlightScaleMax;
+			set {
+				if (highlightScaleMax != value) {
+					highlightScaleMax = value;
+					isDirty = true;
+				}
+			}
+		}
+
+		[SerializeField]
+		float highlightFadeSpeed = 1f;
+
+		public float HighlightFadeSpeed {
+			get => highlightFadeSpeed;
+			set {
+				if (highlightFadeSpeed != value) {
+					highlightFadeSpeed = value;
+					isDirty = true;
+				}
+			}
+		}
+
+		[SerializeField]
+		float highlightMinimumTerrainDistance = 35f;
+
+		/// <summary>
+		/// Minimum distance from camera for cells to be highlighted on terrain
+		/// </summary>
+		public float HighlightMinimumTerrainDistance {
+			get => highlightMinimumTerrainDistance;
+			set {
+				if (highlightMinimumTerrainDistance != value) {
+					highlightMinimumTerrainDistance = value;
+					isDirty = true;
+				}
+			}
+		}
+
+		[SerializeField]
+		HIGHLIGHT_EFFECT highlightEffect = HIGHLIGHT_EFFECT.Default;
+
+		public HIGHLIGHT_EFFECT HighlightEffect {
+			get => highlightEffect;
+			set {
+				if (highlightEffect != value) {
+					highlightEffect = value;
 					isDirty = true;
 					UpdateHighlightEffect();
 				}
@@ -329,28 +336,29 @@ namespace TGS {
 		}
 
 		[SerializeField]
-		OVERLAY_MODE _overlayMode = OVERLAY_MODE.Overlay;
+		OVERLAY_MODE overlayMode = OVERLAY_MODE.Overlay;
 
 		public OVERLAY_MODE OverlayMode {
-			get => _overlayMode;
-            set {
-				if (_overlayMode != value) {
-					_overlayMode = value;
+			get => overlayMode;
+			set {
+				if (overlayMode != value) {
+					overlayMode = value;
 					isDirty = true;
 				}
 			}
 		}
 
-		[SerializeField] Vector2 _gridCenter;
+		[SerializeField]
+		Vector2 gridCenter;
 
 		/// <summary>
 		/// Center of the grid relative to the Terrain (by default, 0,0, which means center of terrain)
 		/// </summary>
-		public Vector2 GridCenter {
-			get => _gridCenter;
-            set {
-				if (_gridCenter != value) {
-					_gridCenter = value;
+		public Vector2 GridCenter { 
+			get => gridCenter;
+			set {
+				if (gridCenter != value) {
+					gridCenter = value;
 					isDirty = true;
 					CellsUpdateBounds();
 					UpdateTerritoryBoundaries();
@@ -359,27 +367,29 @@ namespace TGS {
 			}
 		}
 
-		[SerializeField] Vector3 _gridCenterWorldPosition;
+		[SerializeField]
+		Vector3 gridCenterWorldPosition;
 
 		/// <summary>
 		/// Center of the grid in world space coordinates. You can also use this property to reposition the grid on a given world position coordinate.
 		/// </summary>
-		public Vector3 GridCenterWorldPosition {
-			get => GetWorldSpacePosition(_gridCenter);
-            set { SetGridCenterWorldPosition(value, false); }
+		public Vector3 GridCenterWorldPosition { 
+			get => GetWorldSpacePosition(gridCenter);
+			set => SetGridCenterWorldPosition(value, false);
 		}
 
 
-		[SerializeField] Vector2 _gridScale = new Vector2(1, 1);
+		[SerializeField]
+		Vector2 gridScale = new Vector2(1, 1);
 
 		/// <summary>
 		/// Scale of the grid on the Terrain (by default, 1,1, which means occupy entire terrain)
 		/// </summary>
-		public Vector2 GridScale {
-			get => _gridScale;
-            set {
-				if (_gridScale != value) {
-					_gridScale = value;
+		public Vector2 GridScale { 
+			get => gridScale;
+			set {
+				if (gridScale != value) {
+					gridScale = value;
 					ComputeGridScale ();
 					isDirty = true;
 					CellsUpdateBounds();
@@ -388,15 +398,14 @@ namespace TGS {
 				}
 			}
 		}
-
-
-		[SerializeField] float _gridElevation = 0;
-
-		public float GridElevation {
-			get => _gridElevation;
-            set {
-				if (_gridElevation != value) {
-					_gridElevation = value;
+		
+		[SerializeField]
+		float gridElevation = 0;
+		public float GridElevation { 
+			get => gridElevation;
+			set {
+				if (gridElevation != value) {
+					gridElevation = value;
 					isDirty = true;
 					FitToTerrain();
 				}
@@ -404,97 +413,107 @@ namespace TGS {
 		}
 
 		[SerializeField]
-		float _gridElevationBase = 0;
+		float gridElevationBase = 0;
 
-		public float GridElevationBase {
-			get => _gridElevationBase;
-            set {
-				if (_gridElevationBase != value) {
-					_gridElevationBase = value;
+		public float GridElevationBase { 
+			get => gridElevationBase;
+			set {
+				if (gridElevationBase != value) {
+					gridElevationBase = value;
 					isDirty = true;
 					FitToTerrain();
 				}
 			}
 		}
 
-		public float gridElevationCurrent { get => _gridElevation + _gridElevationBase; }
+		public float GridElevationCurrent => gridElevation + gridElevationBase;
 
-		[SerializeField] float _gridCameraOffset = 0;
-        public float GridCameraOffset {
-			get => _gridCameraOffset;
-            set {
-				if (_gridCameraOffset != value) {
-					_gridCameraOffset = value;
+		[SerializeField]
+		float gridCameraOffset = 0;
+
+		public float GridCameraOffset { 
+			get => gridCameraOffset;
+			set {
+				if (gridCameraOffset != value) {
+					gridCameraOffset = value;
 					isDirty = true;
 					FitToTerrain();
 				}
 			}
 		}
 
+		[SerializeField]
+		float gridNormalOffset = 0;
 
-		[SerializeField] float _gridNormalOffset = 0;
-        public float GridNormalOffset
-        {
-            get => _gridNormalOffset;
-            set
-            {
-                if (_gridNormalOffset != value)
-                {
-                    _gridNormalOffset = value;
-                    isDirty = true;
-                    Redraw();
-                }
-            }
-        }
-
-        [SerializeField] int _gridMeshDepthOffset = -1;
-        public int GridMeshDepthOffset {
-			get => _gridMeshDepthOffset;
-            set {
-				if (_gridMeshDepthOffset != value) {
-					_gridMeshDepthOffset = value;
-					UpdateMaterialDepthOffset();
-					isDirty = true;
-				}
-			}
-		}
-
-
-		[SerializeField] int _gridSurfaceDepthOffset = -1;
-        public int GridSurfaceDepthOffset {
-			get => _gridSurfaceDepthOffset;
-            set {
-				if (_gridSurfaceDepthOffset != value) {
-					_gridSurfaceDepthOffset = value;
-					UpdateMaterialDepthOffset();
-					isDirty = true;
-				}
-			}
-		}
-
-
-		[SerializeField] float _gridRoughness = 0.01f;
-        public float GridRoughness {
-			get => _gridRoughness;
-            set {
-				if (_gridRoughness != value) {
-					_gridRoughness = value;
+		public float GridNormalOffset { 
+			get => gridNormalOffset;
+			set {
+				if (gridNormalOffset != value) {
+					gridNormalOffset = value;
 					isDirty = true;
 					Redraw();
 				}
 			}
 		}
 
-		[SerializeField] int _cellRowCount = 8;
+		[Obsolete("Use gridMeshDepthOffset or gridSurfaceDepthOffset.")]
+		public int GridDepthOffset { 
+			get => gridMeshDepthOffset;
+			set => GridMeshDepthOffset = value;
+		}
+
+		[SerializeField] int gridMeshDepthOffset = -1;
+
+		public int GridMeshDepthOffset { 
+			get => gridMeshDepthOffset;
+			set {
+				if (gridMeshDepthOffset != value) {
+					gridMeshDepthOffset = value;
+					UpdateMaterialDepthOffset();
+					isDirty = true;
+				}
+			}
+		}
+
+		
+		[SerializeField] int gridSurfaceDepthOffset = -1;
+
+		public int GridSurfaceDepthOffset { 
+			get => gridSurfaceDepthOffset;
+			set {
+				if (gridSurfaceDepthOffset != value) {
+					gridSurfaceDepthOffset = value;
+					UpdateMaterialDepthOffset();
+					isDirty = true;
+				}
+			}
+		}
+
+
+		[SerializeField]
+		float gridRoughness = 0.01f;
+		public float GridRoughness { 
+			get => gridRoughness;
+			set {
+				if (gridRoughness != value) {
+					gridRoughness = value;
+					isDirty = true;
+					Redraw();
+				}
+			}
+		}
+
+		[SerializeField]
+		int cellRowCount = 8;
 
 		/// <summary>
 		/// Returns the number of rows for box and hexagonal grid topologies
 		/// </summary>
-		public int RowCount {
-			get => _cellRowCount;
-            set {
-				if (value != _cellRowCount) {
-					_cellRowCount = Mathf.Clamp(value, 2, 300);
+		public int RowCount { 
+			get => cellRowCount;
+			set {
+				if (value != cellRowCount) {
+					cellRowCount = Mathf.Clamp(value, 2, 300);
 					isDirty = true;
 					GenerateMap();
 				}
@@ -502,97 +521,123 @@ namespace TGS {
 
 		}
 
-        [SerializeField] int _cellColumnCount = 8;
+		/// <summary>
+		/// Returns the number of rows for box and hexagonal grid topologies
+		/// </summary>
+		[Obsolete("Use rowCount instead.")]
+		public int CellRowCount { 
+			get => RowCount;
+			set => RowCount = value;
+		}
+
+					
+		[SerializeField]
+		int cellColumnCount = 8;
 
 		/// <summary>
 		/// Returns the number of columns for box and hexagonal grid topologies
 		/// </summary>
-		public int ColumnCount {
-			get => _cellColumnCount;
-            set {
-				if (value != _cellColumnCount) {
-					_cellColumnCount = Mathf.Clamp(value, 2, 300);
+		public int ColumnCount { 
+			get => cellColumnCount;
+			set {
+				if (value != cellColumnCount) {
+					cellColumnCount = Mathf.Clamp(value, 2, 300);
 					isDirty = true;
 					GenerateMap();
 				}
 			}
 		}
 
-        public Texture2D[] textures;
+		/// <summary>
+		/// Returns the number of columns for box and hexagonal grid topologies
+		/// </summary>
+		[Obsolete("Use columnCount instead.")]
+		public int CellColumnCount { 
+			get => ColumnCount;
+			set => ColumnCount = value;
+		}
 
-        [SerializeField] bool _respectOtherUI = true;
+		public Texture2D[] textures;
+
+		
+		[SerializeField]
+		bool respectOtherUI = true;
 
 		/// <summary>
 		/// When enabled, will prevent interaction if pointer is over an UI element
 		/// </summary>
 		public bool	RespectOtherUI {
-			get => _respectOtherUI;
-            set {
-				if (value != _respectOtherUI) {
-					_respectOtherUI = value;
+			get => respectOtherUI;
+			set {
+				if (value != respectOtherUI) {
+					respectOtherUI = value;
 					isDirty = true;
 				}
 			}
 		}
 
-		[SerializeField] bool _nearClipFadeEnabled = true;
+		[SerializeField]
+		bool nearClipFadeEnabled = true;
 
 		/// <summary>
 		/// When enabled, lines near the camera will fade out gracefully
 		/// </summary>
 		public bool	NearClipFadeEnabled {
-			get => _nearClipFadeEnabled;
-            set {
-				if (value != _nearClipFadeEnabled) {
-					_nearClipFadeEnabled = value;
+			get => nearClipFadeEnabled;
+			set {
+				if (value != nearClipFadeEnabled) {
+					nearClipFadeEnabled = value;
 					isDirty = true;
 					UpdateMaterialNearClipFade();
 				}
 			}
 		}
 
-		[SerializeField] float _nearClipFade = 25f;
+		[SerializeField]
+		float nearClipFade = 25f;
 
-		public float NearClipFade {
-			get => _nearClipFade;
-            set {
-				if (_nearClipFade != value) {
-					_nearClipFade = value;
+		public float NearClipFade { 
+			get => nearClipFade;
+			set {
+				if (nearClipFade != value) {
+					nearClipFade = value;
 					isDirty = true;
 					UpdateMaterialNearClipFade();
 				}
 			}
 		}
 
-		[SerializeField] float _nearClipFadeFallOff = 50f;
-        public float NearClipFadeFallOff {
-			get => _nearClipFadeFallOff;
-            set {
-				if (_nearClipFadeFallOff != value) {
-					_nearClipFadeFallOff = Mathf.Max(value, 0.001f);
+		[SerializeField]
+		float nearClipFadeFallOff = 50f;
+
+		public float NearClipFadeFallOff { 
+			get => nearClipFadeFallOff;
+			set {
+				if (nearClipFadeFallOff != value) {
+					nearClipFadeFallOff = Mathf.Max(value, 0.001f);
 					isDirty = true;
 					UpdateMaterialNearClipFade();
 				}
 			}
 		}
 
-
-		[SerializeField] bool _enableGridEditor = true;
+		[SerializeField]
+		bool enableGridEditor = true;
 
 		/// <summary>
 		/// Enabled grid editing options in Scene View
 		/// </summary>
-		public bool EnableGridEditor {
-			get => _enableGridEditor;
-            set {
-				if (value != _enableGridEditor) {
-					_enableGridEditor = value;
+		public bool EnableGridEditor { 
+			get => enableGridEditor;
+			set {
+				if (value != enableGridEditor) {
+					enableGridEditor = value;
 					isDirty = true;
 				}
 			}
 		}
 
-        public static TerrainGridSystem Instance {
+		public static TerrainGridSystem Instance {
 			get {
 				if (_instance == null) {
 					_instance = FindObjectOfType<TerrainGridSystem>();
@@ -607,16 +652,16 @@ namespace TGS {
 		/// <summary>
 		/// Returns a reference of the currently highlighted gameobject (cell or territory)
 		/// </summary>
-		public GameObject HighlightedObj { get; private set; }
+		public GameObject HighlightedObj => _highlightedObj;
 
 
-        #region Public General Functions
+		#region Public General Functions
 
 		/// <summary>
 		/// Used to cancel highlighting on a given gameobject. This call is ignored if go is not currently highlighted.
 		/// </summary>
 		public void HideHighlightedObject(GameObject go) {
-			if (go != HighlightedObj)
+			if (go != _highlightedObj)
 				return;
 			_cellHighlightedIndex = -1;
 			_cellHighlighted = null;
@@ -624,25 +669,25 @@ namespace TGS {
 			_territoryHighlighted = null;
 			_territoryLastOver = null;
 			_territoryLastOverIndex = -1;
-			HighlightedObj = null;
+			_highlightedObj = null;
 			ClearLastOver();
 		}
 
-        public void SetGridCenterWorldPosition(Vector3 position, bool snapToGrid) {
+		public void SetGridCenterWorldPosition(Vector3 position, bool snapToGrid) {
 			if (snapToGrid) {
 				position = SnapToCell(position, true, false);
 			}
 			if (Terrain != null) {
 				position -= TerrainCenter;
-				position.x /= _terrainWidth;
-				position.z /= _terrainDepth;
+				position.x /= terrainWidth;
+				position.z /= terrainDepth;
 				GridCenter = new Vector2(position.x, position.z);
 			} else {
 				transform.position = position;
 			}
 		}
 
-        /// <summary>
+		/// <summary>
 		/// Snaps a position to the grid
 		/// </summary>
 		public Vector3 SnapToCell(Vector3 position, bool worldSpace = true, bool snapToCenter = true) {
@@ -650,44 +695,44 @@ namespace TGS {
 			if (worldSpace) position = transform.InverseTransformPoint(position);
 			position.x = (float)Math.Round(position.x, 6);
 			position.y = (float)Math.Round(position.y, 6);
-			if (_gridTopology == GRID_TOPOLOGY.Box) {
-				float stepX = _gridScale.x / _cellColumnCount;
-				position.x -= _gridCenter.x;
-				if (snapToCenter && _cellColumnCount % 2 == 0) {
+			if (gridTopology == GRID_TOPOLOGY.Box) {
+				float stepX = gridScale.x / cellColumnCount;
+				position.x -= gridCenter.x;
+				if (snapToCenter && cellColumnCount % 2 == 0) {
 					position.x = (Mathf.FloorToInt(position.x / stepX) + 0.5f) * stepX;
 				} else {
 					position.x = (Mathf.FloorToInt(position.x / stepX + 0.5f)) * stepX;
 				}
-				position.x += _gridCenter.x;
-				float stepY = _gridScale.y / _cellRowCount;
-				position.y -= _gridCenter.y;
-				if (snapToCenter && _cellRowCount % 2 == 0) {
+				position.x += gridCenter.x;
+				float stepY = gridScale.y / cellRowCount;
+				position.y -= gridCenter.y;
+				if (snapToCenter && cellRowCount % 2 == 0) {
 					position.y = (Mathf.FloorToInt(position.y / stepY) + 0.5f) * stepY;
 				} else {
 					position.y = (Mathf.FloorToInt(position.y / stepY + 0.5f)) * stepY;
 				}
-				position.y += _gridCenter.y;
-			} else if (_gridTopology == GRID_TOPOLOGY.Hexagonal) {
+				position.y += gridCenter.y;
+			} else if (gridTopology == GRID_TOPOLOGY.Hexagonal) {
 
 				if (snapToCenter) {
 					Cell cell = CellGetAtPosition(position);
 					if (cell != null) {
-						position = cell.ScaledCenter;
+						position = cell.scaledCenter;
 					}
 				} else {
-					float qx = 1f + (_cellColumnCount - 1f) * 3f / 4f;
-					float qy = _cellRowCount + 0.5f;
+					float qx = 1f + (cellColumnCount - 1f) * 3f / 4f;
+					float qy = cellRowCount + 0.5f;
 
-					float stepX = _gridScale.x / qx;
-					float stepY = _gridScale.y / qy;
+					float stepX = gridScale.x / qx;
+					float stepY = gridScale.y / qy;
 
 					float halfStepX = stepX * 0.5f;
 					float halfStepY = stepY * 0.5f;
 
-					int evenLayout = _evenLayout ? 1 : 0;
+					int evenLayout = this.evenLayout ? 1 : 0;
 
-					float k = Mathf.FloorToInt(position.x * _cellColumnCount / _gridScale.x);
-					float j = Mathf.FloorToInt(position.y * _cellRowCount / _gridScale.y);
+					float k = Mathf.FloorToInt(position.x * cellColumnCount / gridScale.x);
+					float j = Mathf.FloorToInt(position.y * cellRowCount / gridScale.y);
 					position.x = k * stepX; // + halfStepX;
 					position.y = j * stepY;
 					position.x -= k * halfStepX / 2;
@@ -699,7 +744,7 @@ namespace TGS {
 				// try to get cell under position and returns its center
 				Cell c = CellGetAtPosition(position);
 				if (c != null) {
-					position = c.Center;
+					position = c.center;
 				}
 			}
 			if (worldSpace) position = transform.TransformPoint(position);
@@ -722,8 +767,7 @@ namespace TGS {
 			rect.max = max;
 			return rect;
 		}
-
-
+		
 		/// <summary>
 		/// Hides current highlighting effect
 		/// </summary>
@@ -733,7 +777,6 @@ namespace TGS {
 		}
 
 		#endregion
-
-    }
+	}
 }
 

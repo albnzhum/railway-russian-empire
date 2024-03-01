@@ -12,13 +12,9 @@ namespace TGS.PathFinding {
 			this._y = y;
 		}
 
-		public int X { get => this._x;
-			set => this._x = value;
-		}
+		public int X { get { return this._x; } set { this._x = value; } }
 
-		public int Y { get => this._y;
-			set => this._y = value;
-		}
+		public int Y { get { return this._y; } set { this._y = value; } }
 
 		// For debugging
 		public override string ToString () {

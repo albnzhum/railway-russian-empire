@@ -24,7 +24,7 @@ namespace TGS
 			// prepare matrix
 			if (routeMatrix == null) {
 				needRefreshRouteMatrix = true;
-				routeMatrix = new int[_cellColumnCount * _cellRowCount];
+				routeMatrix = new int[cellColumnCount * cellRowCount];
 			}
 
 			if (!needRefreshRouteMatrix)
@@ -33,12 +33,12 @@ namespace TGS
 			needRefreshRouteMatrix = false;
 
 			// Compute route
-			for (int j = 0; j < _cellRowCount; j++) {
-				int jj = j * _cellColumnCount;
-				for (int k = 0; k < _cellColumnCount; k++) {
+			for (int j = 0; j < cellRowCount; j++) {
+				int jj = j * cellColumnCount;
+				for (int k = 0; k < cellColumnCount; k++) {
 					int cellIndex = jj + k;
-					if (Cells [cellIndex].CanCross && Cells [cellIndex].Visible) {	// set navigation bit
-						routeMatrix [cellIndex] = Cells [cellIndex].Group;
+					if (Cells [cellIndex].canCross && Cells [cellIndex].visible) {	// set navigation bit
+						routeMatrix [cellIndex] = Cells [cellIndex].group;
 					} else {		// clear navigation bit
 						routeMatrix [cellIndex] = 0;
 					}
@@ -46,10 +46,10 @@ namespace TGS
 			}
 
 			if (finder == null) {
-				if ((_cellColumnCount & (_cellColumnCount - 1)) == 0) {	// is power of two?
-					finder = new PathFinderFast (routeMatrix, _cellColumnCount, _cellRowCount);
+				if ((cellColumnCount & (cellColumnCount - 1)) == 0) {	// is power of two?
+					finder = new PathFinderFast (routeMatrix, cellColumnCount, cellRowCount);
 				} else {
-					finder = new PathFinderFastNonSQR (routeMatrix, _cellColumnCount, _cellRowCount);
+					finder = new PathFinderFastNonSQR (routeMatrix, cellColumnCount, cellRowCount);
 				}
 			} else {
 				finder.SetCalcMatrix (routeMatrix);

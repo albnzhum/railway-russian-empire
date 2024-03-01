@@ -27,7 +27,7 @@ namespace TGS_Editor {
 
 		void OnEnable () {
 
-			_headerTexture = UnityEngine.Resources.Load<Texture2D> ("EditorHeader");
+			_headerTexture = Resources.Load<Texture2D> ("EditorHeader");
 
 			selectionModeOptions = new string[] {
 				"None",
@@ -57,9 +57,9 @@ namespace TGS_Editor {
 
 		public override void OnInspectorGUI () {
 			EditorGUILayout.Separator ();
-			GUI.skin.label.alignment = TextAnchor.MiddleCenter;
+			GUI.skin.label.alignment = TextAnchor.MiddleCenter;  
 			GUILayout.Label (_headerTexture, GUILayout.ExpandWidth (true));
-			GUI.skin.label.alignment = TextAnchor.MiddleLeft;
+			GUI.skin.label.alignment = TextAnchor.MiddleLeft;  
 
 
 			EditorGUILayout.BeginVertical ();
@@ -79,7 +79,7 @@ namespace TGS_Editor {
 
 			EditorGUILayout.BeginHorizontal ();
 			GUILayout.Label ("Territories", GUILayout.Width (120));
-			tgs.numTerritories = EditorGUILayout.IntSlider (tgs.numTerritories, 1, Mathf.Min (tgs.NumCells, TerrainGridSystem.MaxTerritories));
+			tgs.numTerritories = EditorGUILayout.IntSlider (tgs.numTerritories, 1, Mathf.Min (tgs.NumCells, TerrainGridSystem.MAX_TERRITORIES));
 			EditorGUILayout.EndHorizontal ();
 
 			if (tgs.GridTopology == GRID_TOPOLOGY.Irregular) {
@@ -124,8 +124,8 @@ namespace TGS_Editor {
 
 			EditorGUILayout.BeginHorizontal ();
 			GUILayout.Label ("Curvature", GUILayout.Width (120));
-			if (tgs.NumCells > TerrainGridSystem.MaxCellsForCurvature) {
-				DrawInfoLabel ("not available with >" + TerrainGridSystem.MaxCellsForCurvature + " cells");
+			if (tgs.NumCells > TerrainGridSystem.MAX_CELLS_FOR_CURVATURE) {
+				DrawInfoLabel ("not available with >" + TerrainGridSystem.MAX_CELLS_FOR_CURVATURE + " cells");
 			} else {
 				tgs.GridCurvature = EditorGUILayout.Slider (tgs.GridCurvature, 0, 0.1f);
 			}
@@ -135,8 +135,8 @@ namespace TGS_Editor {
 			GUILayout.Label ("Relaxation", GUILayout.Width (120));
 			if (tgs.GridTopology != GRID_TOPOLOGY.Irregular) {
 				DrawInfoLabel ("only available with irregular topology");
-			} else if (tgs.NumCells > TerrainGridSystem.MaxCellsForRelaxation) {
-				DrawInfoLabel ("not available with >" + TerrainGridSystem.MaxCellsForRelaxation + " cells");
+			} else if (tgs.NumCells > TerrainGridSystem.MAX_CELLS_FOR_RELAXATION) {
+				DrawInfoLabel ("not available with >" + TerrainGridSystem.MAX_CELLS_FOR_RELAXATION + " cells");
 			} else {
 				tgs.GridRelaxation = EditorGUILayout.IntSlider (tgs.GridRelaxation, 1, 32);
 			}
@@ -162,7 +162,7 @@ namespace TGS_Editor {
 				GUILayout.Label ("Max Slope", GUILayout.Width (120));
 				tgs.CellsMaxSlope = EditorGUILayout.Slider (tgs.CellsMaxSlope, 0, 1f);
 				EditorGUILayout.EndHorizontal ();
-
+			
 				EditorGUILayout.BeginHorizontal ();
 				GUILayout.Label ("Minimum Altitude", GUILayout.Width (120));
 				tgs.CellsMinimumAltitude = EditorGUILayout.FloatField (tgs.CellsMinimumAltitude, GUILayout.Width (120));
@@ -200,7 +200,7 @@ namespace TGS_Editor {
 
 			EditorGUILayout.BeginHorizontal ();
 			GUILayout.FlexibleSpace ();
-			DrawInfoLabel ("Cells Created: " + cellsCreated + " / Territories Created: " + territoriesCreated + " / Vertex Count: " + tgs.LastVertexCount);
+			DrawInfoLabel ("Cells Created: " + cellsCreated + " / Territories Created: " + territoriesCreated + " / Vertex Count: " + tgs.lastVertexCount);
 			GUILayout.FlexibleSpace ();
 			EditorGUILayout.EndHorizontal ();
 
@@ -245,7 +245,7 @@ namespace TGS_Editor {
 			GUILayout.Label ("Mesh Depth Offset", GUILayout.Width (120));
 			tgs.GridMeshDepthOffset = EditorGUILayout.IntSlider (tgs.GridMeshDepthOffset, -100, 0);
 			EditorGUILayout.EndHorizontal ();
-
+			
 			EditorGUILayout.BeginHorizontal ();
 			GUILayout.Label ("Colored Depth Offset", GUILayout.Width (120));
 			tgs.GridSurfaceDepthOffset = EditorGUILayout.IntSlider (tgs.GridSurfaceDepthOffset, -100, 0);
@@ -399,7 +399,7 @@ namespace TGS_Editor {
 			EditorGUILayout.EndVertical ();
 			EditorGUILayout.Separator ();
 			EditorGUILayout.BeginVertical ();
-
+				
 			DrawTitleLabel ("Grid Behaviour");
 
 			EditorGUILayout.BeginHorizontal ();
@@ -428,7 +428,7 @@ namespace TGS_Editor {
 			GUILayout.Label ("Overlay Mode", GUILayout.Width (120));
 			tgs.OverlayMode = (OVERLAY_MODE)EditorGUILayout.Popup ((int)tgs.OverlayMode, overlayModeOptions);
 			EditorGUILayout.EndHorizontal ();
-
+			
 			EditorGUILayout.BeginHorizontal ();
 			GUILayout.Label ("Respect Other UI", GUILayout.Width (120));
 			tgs.RespectOtherUI = EditorGUILayout.Toggle (tgs.RespectOtherUI);
@@ -437,30 +437,30 @@ namespace TGS_Editor {
 			EditorGUILayout.EndVertical ();
 			EditorGUILayout.Separator ();
 			EditorGUILayout.BeginVertical ();
-
+			
 			DrawTitleLabel ("Path Finding");
-
+			
 			EditorGUILayout.BeginHorizontal ();
 			GUILayout.Label ("Algorithm", GUILayout.Width (120));
-			tgs.pathFindingHeuristicFormula = (TGS.PathFinding.HeuristicFormula)EditorGUILayout.EnumPopup (tgs.pathFindingHeuristicFormula);
+			tgs.PathFindingHeuristicFormula = (TGS.PathFinding.HeuristicFormula)EditorGUILayout.EnumPopup (tgs.PathFindingHeuristicFormula);
 			EditorGUILayout.EndHorizontal ();
 
 			EditorGUILayout.BeginHorizontal ();
 			GUILayout.Label ("Max Search Cost", GUILayout.Width (120));
-			tgs.pathFindingMaxCost = EditorGUILayout.IntField (tgs.pathFindingMaxCost, GUILayout.Width (100));
+			tgs.PathFindingMaxCost = EditorGUILayout.IntField (tgs.PathFindingMaxCost, GUILayout.Width (100));
 			EditorGUILayout.EndHorizontal ();
 
 			EditorGUILayout.BeginHorizontal ();
 			GUILayout.Label ("Max Steps", GUILayout.Width (120));
-			tgs.pathFindingMaxSteps = EditorGUILayout.IntField (tgs.pathFindingMaxSteps, GUILayout.Width (100));
+			tgs.PathFindingMaxSteps = EditorGUILayout.IntField (tgs.PathFindingMaxSteps, GUILayout.Width (100));
 			EditorGUILayout.EndHorizontal ();
 
 			if (tgs.GridTopology == GRID_TOPOLOGY.Box) {
 				EditorGUILayout.BeginHorizontal ();
 				GUILayout.Label ("Use Diagonals", GUILayout.Width (120));
-				tgs.pathFindingUseDiagonals = EditorGUILayout.Toggle (tgs.pathFindingUseDiagonals, GUILayout.Width (40));
+				tgs.PathFindingUseDiagonals = EditorGUILayout.Toggle (tgs.PathFindingUseDiagonals, GUILayout.Width (40));
 				GUILayout.Label ("Heavy Diagonals", GUILayout.Width (120));
-				tgs.pathFindingHeavyDiagonals = EditorGUILayout.Toggle (tgs.pathFindingHeavyDiagonals, GUILayout.Width (40));
+				tgs.PathFindingHeavyDiagonals = EditorGUILayout.Toggle (tgs.PathFindingHeavyDiagonals, GUILayout.Width (40));
 				EditorGUILayout.EndHorizontal ();
 			}
 
@@ -504,7 +504,7 @@ namespace TGS_Editor {
 								return;
 							}
 						}
-
+					
 						int cellSelectedIndex = cellSelectedIndices [0];
 						EditorGUILayout.BeginHorizontal ();
 						if (selectedCount == 1) {
@@ -526,27 +526,27 @@ namespace TGS_Editor {
 							}
 						}
 						EditorGUILayout.EndHorizontal ();
-
+			
 						bool needsRedraw = false;
 
 						EditorGUILayout.BeginHorizontal ();
 						GUILayout.Label ("  Visible", GUILayout.Width (120));
 						Cell selectedCell = tgs.Cells [cellSelectedIndex];
-						bool cellVisible = selectedCell.Visible;
-						selectedCell.Visible = EditorGUILayout.Toggle (cellVisible);
-						if (selectedCell.Visible != cellVisible) {
+						bool cellVisible = selectedCell.visible;
+						selectedCell.visible = EditorGUILayout.Toggle (cellVisible);
+						if (selectedCell.visible != cellVisible) {
 							for (int k = 0; k < selectedCount; k++) {
-								tgs.Cells [cellSelectedIndices [k]].Visible = selectedCell.Visible;
+								tgs.Cells [cellSelectedIndices [k]].visible = selectedCell.visible;
 							}
 							needsRedraw = true;
 						}
 						EditorGUILayout.EndHorizontal ();
-
+			
 						if (selectedCount == 1) {
 							EditorGUILayout.BeginHorizontal ();
 							GUILayout.Label ("  Tag", GUILayout.Width (120));
 							cellTag = EditorGUILayout.IntField (cellTag, GUILayout.Width (60));
-							if (cellTag == selectedCell.Tag)
+							if (cellTag == selectedCell.tag)
 								GUI.enabled = false;
 							if (GUILayout.Button ("Set Tag", GUILayout.Width (60))) {
 								tgs.CellSetTag (cellSelectedIndex, cellTag);
@@ -557,7 +557,7 @@ namespace TGS_Editor {
 						EditorGUILayout.BeginHorizontal ();
 						GUILayout.Label ("  Territory Index", GUILayout.Width (120));
 						cellTerritoryIndex = EditorGUILayout.IntField (cellTerritoryIndex, GUILayout.Width (40));
-						if (cellTerritoryIndex == selectedCell.TerritoryIndex)
+						if (cellTerritoryIndex == selectedCell.territoryIndex)
 							GUI.enabled = false;
 						if (GUILayout.Button ("Set Territory", GUILayout.Width (100))) {
 							for (int k = 0; k < selectedCount; k++) {
@@ -726,7 +726,7 @@ namespace TGS_Editor {
 				EditorUtility.SetSelectedRenderState (rr [k], EditorSelectedRenderState.Hidden);
 				#else
 				EditorUtility.SetSelectedWireframeHidden (rr [k], true);
-				#endif
+				#endif			
 			}
 		}
 

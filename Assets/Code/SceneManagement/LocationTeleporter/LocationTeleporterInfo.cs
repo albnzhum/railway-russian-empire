@@ -1,85 +1,50 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
+using R3;
 using Railway.Components;
 using Railway.Events;
+using Railway.Idents.UI;
+using Railway.Input;
+using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Resources = Railway.Components.MissionInitializer.Resources;
 
 namespace Railway.SceneManagement
 {
+    /// <summary>
+    /// Show initial stats and updating it
+    /// </summary>
     public class LocationTeleporterInfo : MonoBehaviour
     {
         [SerializeField] private GameObject Canvas;
 
         [Header("UI Mission")]
-        [SerializeField] private Text _missionName;
-        [SerializeField] private Text _resourceInstantiate;
-        [SerializeField] private Text _cityInstantiate;
+        [SerializeField] private TMP_Text _missionName;
+        [SerializeField] private TMP_Text _resourceInstantiate;
+        [SerializeField] private TMP_Text _cityInstantiate;
 
         [Header("UI Parents")] 
         [SerializeField] private Transform _resourceParent;
         [SerializeField] private Transform _cityParent;
-
-        [SerializeField] private VoidEventChannelSO _onChangeLevelDifficulty;
-
+        
         [HideInInspector] public MissionInitializer mission;
         private bool isActive = false;
-
-        private void Start()
-        {
-            _onChangeLevelDifficulty.OnEventRaised += RefreshResources;
-        }
+        
+        CompositeDisposable disposables = new CompositeDisposable();
 
         private void OnDisable()
         {
-            _onChangeLevelDifficulty.OnEventRaised -= RefreshResources;
+            disposables.Dispose();
         }
 
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.C))
-            {
-                gameObject.SetActive(false);
-                isActive = false;
-            }
-
-            if (!isActive)
-            {
-                DeleteChildren();
-            }
-        }
-
-        private void DeleteChildren()
-        {
-            for (int i = _resourceParent.childCount - 1; i >= 0; i--)
-            {
-                Destroy(_resourceParent.GetChild(i).gameObject);
-            }
-                
-            for (int i = _cityParent.childCount - 1; i >= 0; i--)
-            {
-                Destroy(_cityParent.GetChild(i).gameObject);
-            }
-        }
-
-        public void RefreshResources()
-        {
-            if (!isActive)
-                return;
-
-            DeleteChildren();
-            ShowMissionInfo(mission);
-        }
-        
         public void ShowMissionInfo(MissionInitializer mission, bool setActive = true)
         {
             if (!isActive)
             {
                 isActive = true;
                 Canvas.SetActive(setActive);
+
+                _missionName.text = mission.Name;
             }
 
             foreach (var city in mission.Cities)
@@ -87,27 +52,47 @@ namespace Railway.SceneManagement
                 ShowCityInfo(city);
             }
             
-            ShowResourceInfo(mission.resources);
+            ShowResourceInfo(mission.CurrentResources);
         }
 
         private void ShowCityInfo(CityInitializer city)
         {
-            Text cityName = Instantiate(_cityInstantiate, _cityParent);
+            TMP_Text cityName = Instantiate(_cityInstantiate, _cityParent);
             cityName.text = city.Name;
         }
 
         private void ShowResourceInfo(Resources resources)
         {
-            Text gold = Instantiate(_resourceInstantiate, _resourceParent);
-            Text workers = Instantiate(_resourceInstantiate, _resourceParent);
-            Text church = Instantiate(_resourceInstantiate, _resourceParent);
-            Text speedBuilding = Instantiate(_resourceInstantiate, _resourceParent);
+            TMP_Text gold = Instantiate(_resourceInstantiate, _resourceParent);
+            TMP_Text workers = Instantiate(_resourceInstantiate, _resourceParent);
+            TMP_Text church = Instantiate(_resourceInstantiate, _resourceParent);
+            TMP_Text speedBuilding = Instantiate(_resourceInstantiate, _resourceParent);
+            TMP_Text techProgress = Instantiate(_resourceInstantiate, _resourceParent);
+            TMP_Text fuel = Instantiate(_resourceInstantiate, _resourceParent);
             
-            gold.text = resources.Gold.ToString();
-            workers.text = resources.Workers.ToString();
-            church.text = resources.Church.ToString();
-            speedBuilding.text = resources.SpeedBuilding.ToString();
+            resources.Gold
+                .Subscribe(value => gold.text = FormatText(UITextFormat.Resources.Gold, value))
+                .AddTo(disposables);
+            resources.Workers
+                .Subscribe(value => workers.text = FormatText(UITextFormat.Resources.Workers, value))
+                .AddTo(disposables);
+            resources.Church
+                .Subscribe(value => church.text = FormatText(UITextFormat.Resources.Church, value))
+                .AddTo(disposables);
+            resources.SpeedBuilding
+                .Subscribe(value => speedBuilding.text = FormatText(UITextFormat.Resources.SpeedBuilding, value))
+                .AddTo(disposables);
+            resources.TechProgress
+                .Subscribe(value => techProgress.text = FormatText(UITextFormat.Resources.TechProgress, value))
+                .AddTo(disposables);
+            resources.Fuel
+                .Subscribe(value => fuel.text = FormatText(UITextFormat.Resources.Fuel, value))
+                .AddTo(disposables);
         }
-
+        
+        private string FormatText(string format, float value)
+        {
+            return format + " " + value;
+        }
     }
 }

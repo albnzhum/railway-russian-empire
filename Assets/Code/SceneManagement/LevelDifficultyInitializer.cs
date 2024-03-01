@@ -1,3 +1,4 @@
+using R3;
 using Railway.Components;
 using Railway.Events;
 using Railway.Gameplay;
@@ -8,35 +9,22 @@ namespace Railway.SceneManagement
     public class LevelDifficultyInitializer : MonoBehaviour
     {
         [SerializeField] private VoidEventChannelSO _onChangeLevelDifficulty;
-        [SerializeField] private GameSetupEventSO _onGameSetup;
         
         [SerializeField] public MissionInitializer mission;
         [SerializeField] public LocationSO location;
         
-        [HideInInspector] public LocationTeleporter Teleporter;
+        public LocationTeleporter Teleporter;
         
         private LevelDifficulty _levelDifficulty;
 
         private void ScalingFactor(float scaleFactor)
         {
-            if (!mission.isOriginalResourcesSaved)
-            {
-                mission.originalResources = new MissionInitializer.Resources
-                {
-                    Gold = mission.resources.Gold,
-                    Workers = mission.resources.Workers,
-                    Church = mission.resources.Church,
-                    SpeedBuilding = mission.resources.SpeedBuilding
-                };
-                mission.isOriginalResourcesSaved = true;
-            }
-
-            mission.resources.Gold = mission.originalResources.Gold * scaleFactor;
-            mission.resources.Workers = mission.originalResources.Workers * scaleFactor;
-            mission.resources.Church = mission.originalResources.Church * scaleFactor;
-            mission.resources.SpeedBuilding = mission.originalResources.SpeedBuilding * scaleFactor;
+            mission.CurrentResources.Gold.Value = mission.OriginalResources.Gold.Value * scaleFactor;
+            mission.CurrentResources.Workers.Value = mission.OriginalResources.Workers.Value * scaleFactor;
+            mission.CurrentResources.Church.Value = mission.OriginalResources.Church.Value * scaleFactor;
+            mission.CurrentResources.SpeedBuilding.Value = mission.OriginalResources.SpeedBuilding.Value * scaleFactor;
         }
-        
+
         public void NormalLevelDifficulty()
         {
             ScalingFactor(1f);
@@ -60,13 +48,10 @@ namespace Railway.SceneManagement
 
         public void LoadLocation()
         {
-            _onGameSetup.RaiseEvent(mission, _levelDifficulty);
-
             if (Teleporter!= null) 
             {
                 Teleporter.Teleport(location);
             }
         }
-
     }
 }

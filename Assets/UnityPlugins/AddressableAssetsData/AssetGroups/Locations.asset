@@ -17,11 +17,6 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 85b8af5fb62677144a1b4a6165a4cb2f
   m_SerializeEntries:
-  - m_GUID: f91302df7ff712a4d84f7fffd065abd9
-    m_Address: Assets/Scenes/Locations/Saint-Petersburg.unity
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4734edb02f944dc4881baec90082b1eb
     m_Address: Assets/Scenes/Locations/TestLocation.unity
     m_ReadOnly: 0

@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4657c887b1f03e34b9c47eb9d1189020, type: 3}
+  m_Name: SO_Loco_01
+  m_EditorClassIdentifier: 
+  _name: "\u041B\u043E\u043A\u043E\u043C\u043E\u0442\u0438\u04321"
+  _price: 25
+  _prefab: {fileID: 431294427561887525, guid: 1878696d1de927a48a97832917e4e5dd, type: 3}
+  _itemType: {fileID: 11400000, guid: c046e243c6a43e74e9f8cdda0a040cab, type: 2}
+  _amount: 0

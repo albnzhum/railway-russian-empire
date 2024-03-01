@@ -311,7 +311,7 @@ namespace TGS.PathFinding
 																				case HeuristicFormula.Manhattan:
 																								mH = mHEstimate * (dist + Math.Abs (mNewLocationY - end.Y));
 																								break;
-																				case HeuristicFormula.MaxDxdy:
+																				case HeuristicFormula.MaxDXDY:
 																								mH = mHEstimate * (Math.Max (dist, Math.Abs (mNewLocationY - end.Y)));
 																								break;
 																				case HeuristicFormula.DiagonalShortCut:
@@ -322,7 +322,7 @@ namespace TGS.PathFinding
 																				case HeuristicFormula.Euclidean:
 																								mH = (int)(mHEstimate * Math.Sqrt (Math.Pow (dist, 2) + Math.Pow ((mNewLocationY - end.Y), 2)));
 																								break;
-																				case HeuristicFormula.EuclideanNoSqr:
+																				case HeuristicFormula.EuclideanNoSQR:
 																								mH = (int)(mHEstimate * (Math.Pow (dist, 2) + Math.Pow ((mNewLocationY - end.Y), 2)));
 																								break;
 																				case HeuristicFormula.Custom1:
@@ -353,21 +353,21 @@ namespace TGS.PathFinding
 																fNode.F = fNodeTmp.F;
 																fNode.G = fNodeTmp.G;
 																fNode.H = 0;
-																fNode.Px = fNodeTmp.PX;
-																fNode.Py = fNodeTmp.PY;
+																fNode.PX = fNodeTmp.PX;
+																fNode.PY = fNodeTmp.PY;
 																fNode.X = end.X;
 																fNode.Y = end.Y;
 
-																while (fNode.X != fNode.Px || fNode.Y != fNode.Py) {
+																while (fNode.X != fNode.PX || fNode.Y != fNode.PY) {
 																				mClose.Add (fNode);
-																				posX = fNode.Px;
-																				posY = fNode.Py;
+																				posX = fNode.PX;
+																				posY = fNode.PY;
 																				fNodeTmp = mCalcGrid [(posY * mGridX) + posX];
 																				fNode.F = fNodeTmp.F;
 																				fNode.G = fNodeTmp.G;
 																				fNode.H = 0;
-																				fNode.Px = fNodeTmp.PX;
-																				fNode.Py = fNodeTmp.PY;
+																				fNode.PX = fNodeTmp.PX;
+																				fNode.PY = fNodeTmp.PY;
 																				fNode.X = posX;
 																				fNode.Y = posY;
 																} 

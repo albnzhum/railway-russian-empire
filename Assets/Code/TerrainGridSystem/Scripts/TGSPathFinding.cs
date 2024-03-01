@@ -12,11 +12,9 @@ namespace TGS
 	/* Event definitions */
 
 	public delegate int PathFindingEvent (int cellIndex);
-
-
+	
 	public partial class TerrainGridSystem : MonoBehaviour
 	{
-
 		/// <summary>
 		/// Fired when path finding algorithmn evaluates a cell. Return the increased cost for cell.
 		/// </summary>
@@ -24,14 +22,13 @@ namespace TGS
 
 	
 		[SerializeField]
-		HeuristicFormula
-			_pathFindingHeuristicFormula = HeuristicFormula.EuclideanNoSqr;
+		HeuristicFormula _pathFindingHeuristicFormula = HeuristicFormula.EuclideanNoSQR;
 
 		/// <summary>
 		/// The path finding heuristic formula to estimate distance from current position to destination
 		/// </summary>
-		public PathFinding.HeuristicFormula pathFindingHeuristicFormula {
-			get { return _pathFindingHeuristicFormula; }
+		public PathFinding.HeuristicFormula PathFindingHeuristicFormula {
+			get => _pathFindingHeuristicFormula;
 			set {
 				if (value != _pathFindingHeuristicFormula) {
 					_pathFindingHeuristicFormula = value;
@@ -41,14 +38,13 @@ namespace TGS
 		}
 
 		[SerializeField]
-		int
-			_pathFindingMaxCost = 200000;
+		int _pathFindingMaxCost = 200000;
 
 		/// <summary>
 		/// The maximum search cost of the path finding execution.
 		/// </summary>
-		public int pathFindingMaxCost {
-			get { return _pathFindingMaxCost; }
+		public int PathFindingMaxCost {
+			get => _pathFindingMaxCost;
 			set {
 				if (value != _pathFindingMaxCost) {
 					_pathFindingMaxCost = value;
@@ -57,16 +53,14 @@ namespace TGS
 			}
 		}
 
-		
 		[SerializeField]
-		int
-			_pathFindingMaxSteps = 2000;
+		int _pathFindingMaxSteps = 2000;
 
 		/// <summary>
 		/// The maximum number of steps that a path can return.
 		/// </summary>
-		public int pathFindingMaxSteps {
-			get { return _pathFindingMaxSteps; }
+		public int PathFindingMaxSteps {
+			get => _pathFindingMaxSteps;
 			set {
 				if (value != _pathFindingMaxSteps) {
 					_pathFindingMaxSteps = value;
@@ -75,17 +69,14 @@ namespace TGS
 			}
 		}
 
-		
-		
 		[SerializeField]
-		bool
-			_pathFindingUseDiagonals = true;
+		bool _pathFindingUseDiagonals = true;
 
 		/// <summary>
 		/// If path can include diagonals between cells
 		/// </summary>
-		public bool pathFindingUseDiagonals {
-			get { return _pathFindingUseDiagonals; }
+		public bool PathFindingUseDiagonals {
+			get => _pathFindingUseDiagonals;
 			set {
 				if (value != _pathFindingUseDiagonals) {
 					_pathFindingUseDiagonals = value;
@@ -95,14 +86,13 @@ namespace TGS
 		}
 
 		[SerializeField]
-		bool
-			_pathFindingHeavyDiagonals = false;
+		bool _pathFindingHeavyDiagonals = false;
 
 		/// <summary>
 		/// If diagonals have extra cost.
 		/// </summary>
-		public bool pathFindingHeavyDiagonals {
-			get { return _pathFindingHeavyDiagonals; }
+		public bool PathFindingHeavyDiagonals {
+			get => _pathFindingHeavyDiagonals;
 			set {
 				if (value != _pathFindingHeavyDiagonals) {
 					_pathFindingHeavyDiagonals = value;
@@ -142,30 +132,30 @@ namespace TGS
 			totalCost = 0;
 			Cell startCell = Cells [cellIndexStart];
 			Cell endCell = Cells [cellIndexEnd];
-			if (!startCell.CanCross || !endCell.CanCross)
+			if (!startCell.canCross || !endCell.canCross)
 				return null;
 			List<int> routePoints = null;
 			if (cellIndexStart != cellIndexEnd) {
-				PathFindingPoint startingPoint = new PathFindingPoint (startCell.Column, startCell.Row);
-				PathFindingPoint endingPoint = new PathFindingPoint (endCell.Column, endCell.Row);
+				PathFindingPoint startingPoint = new PathFindingPoint (startCell.column, startCell.row);
+				PathFindingPoint endingPoint = new PathFindingPoint (endCell.column, endCell.row);
 				ComputeRouteMatrix ();
 				finder.Formula = _pathFindingHeuristicFormula;
 				finder.MaxSearchCost = maxSearchCost > 0 ? maxSearchCost : _pathFindingMaxCost;
 				finder.MaxSteps = maxSteps > 0 ? maxSteps : _pathFindingMaxSteps;
 				finder.Diagonals = _pathFindingUseDiagonals;
 				finder.HeavyDiagonals = _pathFindingHeavyDiagonals;
-				finder.HexagonalGrid = _gridTopology == GRID_TOPOLOGY.Hexagonal;
+				finder.HexagonalGrid = gridTopology == GRID_TOPOLOGY.Hexagonal;
 				finder.CellGroupMask = cellGroupMask;
 				if (OnPathFindingCrossCell != null) {
 					finder.OnCellCross = FindRoutePositionValidator;
 				} else {
 					finder.OnCellCross = null;
 				}
-				List<PathFinderNode> route = finder.FindPath (startingPoint, endingPoint, out totalCost, _evenLayout);
+				List<PathFinderNode> route = finder.FindPath (startingPoint, endingPoint, out totalCost, evenLayout);
 				if (route != null) {
 					routePoints = new List<int> (route.Count);
 					for (int r = route.Count - 2; r >= 0; r--) {
-						int cellIndex = route [r].Py * _cellColumnCount + route [r].Px;
+						int cellIndex = route [r].PY * cellColumnCount + route [r].PX;
 						routePoints.Add (cellIndex);
 					}
 					routePoints.Add (cellIndexEnd);
@@ -178,8 +168,6 @@ namespace TGS
 
 		#endregion
 
-
-	
 	}
 }
 

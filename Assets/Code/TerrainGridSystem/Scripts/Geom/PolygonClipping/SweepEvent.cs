@@ -45,7 +45,7 @@ namespace TGS.Geom {
 		}
 
 		double signedArea(Point p0, Point p1, Point p2) {
-			return (p0.X - p2.X) * (p1.Y - p2.Y) - (p1.X - p2.X) * (p0.Y - p2.Y);
+			return (p0.x - p2.x) * (p1.y - p2.y) - (p1.x - p2.x) * (p0.y - p2.y);
 		}
 
 

@@ -1,203 +1,177 @@
 using UnityEngine;
 using System.Collections;
 
-namespace TGS
-{
-    public enum FADER_STYLE
-    {
-        FadeOut = 0,
-        Blink = 1,
-        Flash = 2,
-        ColorTemp = 3
-    }
+namespace TGS {
 
-    public class SurfaceFader : MonoBehaviour
-    {
-        Material FadeMaterial;
-        float StartTime, Duration;
-        TerrainGridSystem Grid;
-        Color Color, InitialColor;
-        Region Region;
-        Renderer Renderer;
-        FADER_STYLE Style;
+				public enum FADER_STYLE {
+								FadeOut = 0,
+								Blink = 1,
+								Flash = 2,
+								ColorTemp = 3
+				}
 
-        public static void Animate(FADER_STYLE style, TerrainGridSystem grid, GameObject surface, Region region,
-            Material fadeMaterial, Color color, float duration)
-        {
-            SurfaceFader fader = surface.GetComponent<SurfaceFader>();
-            if (fader != null)
-            {
-                fader.Finish();
-                DestroyImmediate(fader);
-            }
+				public class SurfaceFader : MonoBehaviour {
+		
+								Material fadeMaterial;
+								float startTime, duration;
+								TerrainGridSystem grid;
+								Color color, initialColor;
+								Region region;
+								Renderer _renderer;
+								FADER_STYLE style;
 
-            fader = surface.AddComponent<SurfaceFader>();
-            fader.Grid = grid;
-            fader.StartTime = Time.time;
-            fader.Duration = duration + 0.0001f;
-            fader.Color = color;
-            fader.Region = region;
-            fader.FadeMaterial = fadeMaterial;
-            fader.Style = style;
-            fader.InitialColor = fadeMaterial.color;
-        }
+								public static void Animate (FADER_STYLE style, TerrainGridSystem grid, GameObject surface, Region region, Material fadeMaterial, Color color, float duration) {
+												SurfaceFader fader = surface.GetComponent<SurfaceFader> ();
+												if (fader != null) {
+																fader.Finish ();
+																DestroyImmediate (fader);
+												}
+												fader = surface.AddComponent<SurfaceFader> ();
+												fader.grid = grid;
+												fader.startTime = Time.time;
+												fader.duration = duration + 0.0001f;
+												fader.color = color;
+												fader.region = region;
+												fader.fadeMaterial = fadeMaterial;
+												fader.style = style;
+												fader.initialColor = fadeMaterial.color;
+								}
 
-        void Start()
-        {
-            Renderer = GetComponent<Renderer>();
-            Renderer.sharedMaterial = FadeMaterial;
-        }
+								void Start () {
+												_renderer = GetComponent<Renderer> ();
+												_renderer.sharedMaterial = fadeMaterial;
+								}
 
-        void Update()
-        {
-            float elapsed = Time.time - StartTime;
-            switch (Style)
-            {
-                case FADER_STYLE.FadeOut:
-                    UpdateFadeOut(elapsed);
-                    break;
-                case FADER_STYLE.Blink:
-                    UpdateBlink(elapsed);
-                    break;
-                case FADER_STYLE.Flash:
-                    UpdateFlash(elapsed);
-                    break;
-                case FADER_STYLE.ColorTemp:
-                    UpdateColorTemp(elapsed);
-                    break;
-            }
-        }
+								void Update () {
+												float elapsed = Time.time - startTime;
+												switch (style) {
+												case FADER_STYLE.FadeOut:
+																UpdateFadeOut (elapsed);
+																break;
+												case FADER_STYLE.Blink:
+																UpdateBlink (elapsed);
+																break;
+												case FADER_STYLE.Flash:
+																UpdateFlash (elapsed);
+																break;
+												case FADER_STYLE.ColorTemp:
+																UpdateColorTemp (elapsed);
+																break;
+												}
+								}
 
-        #region Fade Out effect
+								#region Fade Out effect
 
-        public void Finish()
-        {
-            StartTime = float.MinValue;
-            Update();
-        }
+								public void Finish () {
+												startTime = float.MinValue;
+												Update ();
+								}
 
-        void UpdateFadeOut(float elapsed)
-        {
-            float newAlpha = Mathf.Clamp01(1.0f - elapsed / Duration);
-            SetAlpha(newAlpha);
-            if (elapsed >= Duration)
-            {
-                SetAlpha(0);
-                Region.customMaterial = null;
-                DestroyImmediate(this);
-            }
-        }
+								void UpdateFadeOut (float elapsed) {
+												float newAlpha = Mathf.Clamp01 (1.0f - elapsed / duration);
+												SetAlpha (newAlpha);
+												if (elapsed >= duration) {
+																SetAlpha (0);
+																region.customMaterial = null;
+																DestroyImmediate (this);
+												}
+								}
 
-        void SetAlpha(float newAlpha)
-        {
-            if (Grid.HighlightedObj == gameObject || Renderer == null)
-                return;
-            Color newColor = new Color(Color.r, Color.g, Color.b, newAlpha);
-            FadeMaterial.color = newColor;
-            if (Renderer.sharedMaterial != FadeMaterial)
-            {
-                FadeMaterial.mainTexture = Renderer.sharedMaterial.mainTexture;
-                Renderer.sharedMaterial = FadeMaterial;
-            }
-        }
+								void SetAlpha (float newAlpha) {
+												if (grid.HighlightedObj == gameObject || _renderer == null)
+																return;
+												Color newColor = new Color (color.r, color.g, color.b, newAlpha);
+												fadeMaterial.color = newColor;
+												if (_renderer.sharedMaterial != fadeMaterial) {
+																fadeMaterial.mainTexture = _renderer.sharedMaterial.mainTexture;
+																_renderer.sharedMaterial = fadeMaterial;
+												}
+								}
 
-        #endregion
+								#endregion
 
-        #region Flash effect
+								#region Flash effect
 
-        void UpdateFlash(float elapsed)
-        {
-            SetFlashColor(elapsed / Duration);
-            if (elapsed >= Duration)
-            {
-                SetFlashColor(1f);
-                if (Region.customMaterial != null && Renderer != null)
-                    Renderer.sharedMaterial = Region.customMaterial;
-                DestroyImmediate(this);
-            }
-        }
+								void UpdateFlash (float elapsed) {
+												SetFlashColor (elapsed / duration);
+												if (elapsed >= duration) {
+																SetFlashColor (1f);
+																if (region.customMaterial != null && _renderer != null)
+																				_renderer.sharedMaterial = region.customMaterial;
+																DestroyImmediate (this);
+												}
+								}
 
+		
+								void SetFlashColor (float t) {
+												if (_renderer == null)
+																return;
+												Color newColor = Color.Lerp (color, initialColor, t);
+												fadeMaterial.color = newColor;
+												if (_renderer.sharedMaterial != fadeMaterial) {
+																fadeMaterial.mainTexture = _renderer.sharedMaterial.mainTexture;
+																_renderer.sharedMaterial = fadeMaterial;
+												}
+								}
 
-        void SetFlashColor(float t)
-        {
-            if (Renderer == null)
-                return;
-            Color newColor = Color.Lerp(Color, InitialColor, t);
-            FadeMaterial.color = newColor;
-            if (Renderer.sharedMaterial != FadeMaterial)
-            {
-                FadeMaterial.mainTexture = Renderer.sharedMaterial.mainTexture;
-                Renderer.sharedMaterial = FadeMaterial;
-            }
-        }
+								#endregion
 
-        #endregion
+								#region Blink effect
 
-        #region Blink effect
+								void UpdateBlink (float elapsed) {
+												SetBlinkColor (elapsed / duration);
+												if (elapsed >= duration) {
+																SetBlinkColor (0);
+																if (region.customMaterial != null && _renderer != null)
+																				_renderer.sharedMaterial = region.customMaterial;
+																DestroyImmediate (this);
+												}
+								}
 
-        void UpdateBlink(float elapsed)
-        {
-            SetBlinkColor(elapsed / Duration);
-            if (elapsed >= Duration)
-            {
-                SetBlinkColor(0);
-                if (Region.customMaterial != null && Renderer != null)
-                    Renderer.sharedMaterial = Region.customMaterial;
-                DestroyImmediate(this);
-            }
-        }
+								void SetBlinkColor (float t) {
+												if (_renderer == null)
+																return;
+												Color newColor;
+												if (t < 0.5f) {
+																newColor = Color.Lerp (initialColor, color, t * 2f);
+												} else {
+																newColor = Color.Lerp (color, initialColor, (t - 0.5f) * 2f);
+												}
+												fadeMaterial.color = newColor;
+												if (_renderer.sharedMaterial != fadeMaterial) {
+																fadeMaterial.mainTexture = _renderer.sharedMaterial.mainTexture;
+																_renderer.sharedMaterial = fadeMaterial;
+												}
+								}
 
-        void SetBlinkColor(float t)
-        {
-            if (Renderer == null)
-                return;
-            Color newColor;
-            if (t < 0.5f)
-            {
-                newColor = Color.Lerp(InitialColor, Color, t * 2f);
-            }
-            else
-            {
-                newColor = Color.Lerp(Color, InitialColor, (t - 0.5f) * 2f);
-            }
+								#endregion
 
-            FadeMaterial.color = newColor;
-            if (Renderer.sharedMaterial != FadeMaterial)
-            {
-                FadeMaterial.mainTexture = Renderer.sharedMaterial.mainTexture;
-                Renderer.sharedMaterial = FadeMaterial;
-            }
-        }
+								#region Color Temp effect
 
-        #endregion
-
-        #region Color Temp effect
-
-        void UpdateColorTemp(float elapsed)
-        {
-            SetColorTemp(1);
-            if (elapsed >= Duration)
-            {
-                SetColorTemp(0);
-                if (Region.customMaterial != null && Renderer != null)
-                    Renderer.sharedMaterial = Region.customMaterial;
-                DestroyImmediate(this);
-            }
-        }
+								void UpdateColorTemp (float elapsed) {
+												SetColorTemp (1);
+												if (elapsed >= duration) {
+																SetColorTemp (0);
+																if (region.customMaterial != null && _renderer != null)
+																				_renderer.sharedMaterial = region.customMaterial;
+																DestroyImmediate (this);
+												}
+								}
 
 
-        void SetColorTemp(float t)
-        {
-            if (Renderer == null)
-                return;
-            FadeMaterial.color = t == 0 ? InitialColor : Color;
-            if (Renderer.sharedMaterial != FadeMaterial)
-            {
-                FadeMaterial.mainTexture = Renderer.sharedMaterial.mainTexture;
-                Renderer.sharedMaterial = FadeMaterial;
-            }
-        }
+								void SetColorTemp (float t) {
+												if (_renderer == null)
+																return;
+												fadeMaterial.color = t == 0 ? initialColor : color;
+												if (_renderer.sharedMaterial != fadeMaterial) {
+																fadeMaterial.mainTexture = _renderer.sharedMaterial.mainTexture;
+																_renderer.sharedMaterial = fadeMaterial;
+												}
+								}
 
-        #endregion
-    }
+								#endregion
+
+		
+				}
+
 }

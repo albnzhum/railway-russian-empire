@@ -55,7 +55,7 @@ namespace TGS {
 			get { return _numTerritories; } 
 			set {
 				if (_numTerritories != value) {
-					_numTerritories = Mathf.Clamp(value, 1, MaxTerritories);
+					_numTerritories = Mathf.Clamp(value, 1, MAX_TERRITORIES);
 					GenerateMap();
 					isDirty = true;
 				}
@@ -77,8 +77,8 @@ namespace TGS {
 				if (value != _showTerritories) {
 					_showTerritories = value;
 					isDirty = true;
-					if (!_showTerritories && _territoryLayer != null) {
-						_territoryLayer.SetActive(false);
+					if (!_showTerritories && territoryLayer != null) {
+						territoryLayer.SetActive(false);
 						ClearLastOver();
 					} else {
 						Redraw();
@@ -101,7 +101,7 @@ namespace TGS {
 				if (value != _colorizeTerritories) {
 					_colorizeTerritories = value;
 					isDirty = true;
-					if (!_colorizeTerritories && SurfacesLayer != null) {
+					if (!_colorizeTerritories && surfacesLayer != null) {
 						DestroySurfaces();
 					} else {
 						Redraw();
@@ -140,11 +140,11 @@ namespace TGS {
 				if (value != _territoryHighlightColor) {
 					_territoryHighlightColor = value;
 					isDirty = true;
-					if (_hudMatTerritoryOverlay != null && _territoryHighlightColor != _hudMatTerritoryOverlay.color) {
-						_hudMatTerritoryOverlay.color = _territoryHighlightColor;
+					if (hudMatTerritoryOverlay != null && _territoryHighlightColor != hudMatTerritoryOverlay.color) {
+						hudMatTerritoryOverlay.color = _territoryHighlightColor;
 					}
-					if (_hudMatTerritoryGround != null && _territoryHighlightColor != _hudMatTerritoryGround.color) {
-						_hudMatTerritoryGround.color = _territoryHighlightColor;
+					if (hudMatTerritoryGround != null && _territoryHighlightColor != hudMatTerritoryGround.color) {
+						hudMatTerritoryGround.color = _territoryHighlightColor;
 					}
 				}
 			}
@@ -160,8 +160,8 @@ namespace TGS {
 		/// </summary>
 		public Color territoryFrontiersColor {
 			get {
-				if (_territoriesMat != null) {
-					return _territoriesMat.color;
+				if (territoriesMat != null) {
+					return territoriesMat.color;
 				} else {
 					return _territoryFrontierColor;
 				}
@@ -170,8 +170,8 @@ namespace TGS {
 				if (value != _territoryFrontierColor) {
 					_territoryFrontierColor = value;
 					isDirty = true;
-					if (_territoriesMat != null && _territoryFrontierColor != _territoriesMat.color) {
-						_territoriesMat.color = _territoryFrontierColor;
+					if (territoriesMat != null && _territoryFrontierColor != territoriesMat.color) {
+						territoriesMat.color = _territoryFrontierColor;
 					}
 				}
 			}
@@ -201,8 +201,8 @@ namespace TGS {
 		/// </summary>
 		public Color territoryDisputedFrontierColor {
 			get {
-				if (_territoriesDisputedMat != null) {
-					return _territoriesDisputedMat.color;
+				if (territoriesDisputedMat != null) {
+					return territoriesDisputedMat.color;
 				} else {
 					return _territoryDisputedFrontierColor;
 				}
@@ -211,8 +211,8 @@ namespace TGS {
 				if (value != _territoryDisputedFrontierColor) {
 					_territoryDisputedFrontierColor = value;
 					isDirty = true;
-					if (_territoriesDisputedMat != null && _territoryDisputedFrontierColor != _territoriesDisputedMat.color) {
-						_territoriesDisputedMat.color = _territoryDisputedFrontierColor;
+					if (territoriesDisputedMat != null && _territoryDisputedFrontierColor != territoriesDisputedMat.color) {
+						territoriesDisputedMat.color = _territoryDisputedFrontierColor;
 					}
 				}
 			}
@@ -292,15 +292,15 @@ namespace TGS {
 			if (_territoryHighlightedIndex != territoryIndex) {
 				int cacheIndex = GetCacheIndexForTerritoryRegion(territoryIndex);
 				GameObject surf;
-				if (_surfaces.TryGetValue(cacheIndex, out surf)) {
+				if (surfaces.TryGetValue(cacheIndex, out surf)) {
 					if (surf == null) {
-						_surfaces.Remove(cacheIndex);
+						surfaces.Remove(cacheIndex);
 					} else {
 						surf.SetActive(false);
 					}
 				}
 			}
-			territories[territoryIndex].Region.customMaterial = null;
+			territories[territoryIndex].region.customMaterial = null;
 		}
 
 		/// <summary>
@@ -310,7 +310,7 @@ namespace TGS {
 		/// <param name="visible">If the colored surface will be visible or not.</param>
 		/// <param name="color">Color.</param>
 		public GameObject TerritoryToggleRegionSurface(int territoryIndex, bool visible, Color color) {
-			return TerritoryToggleRegionSurface(territoryIndex, visible, color, null, Misc.Vector2One, Misc.Vector2Zero, 0, false);
+			return TerritoryToggleRegionSurface(territoryIndex, visible, color, null, Misc.Vector2one, Misc.Vector2zero, 0, false);
 		}
 
 		/// <summary>
@@ -321,7 +321,7 @@ namespace TGS {
 		/// <param name="color">Color.</param>
 		/// <param name="texture">Texture, which will be tinted according to the color. Use Color.white to preserve original texture colors.</param>
 		public GameObject TerritoryToggleRegionSurface(int territoryIndex, bool visible, Color color, bool refreshGeometry, Texture2D texture) {
-			return TerritoryToggleRegionSurface(territoryIndex, visible, color, texture, Misc.Vector2One, Misc.Vector2Zero, 0, false);
+			return TerritoryToggleRegionSurface(territoryIndex, visible, color, texture, Misc.Vector2one, Misc.Vector2zero, 0, false);
 		}
 
 		/// <summary>
@@ -356,13 +356,13 @@ namespace TGS {
 				return null;
 			}
 			GameObject surf = null;
-			Region region = territories[territoryIndex].Region;
+			Region region = territories[territoryIndex].region;
 			int cacheIndex = GetCacheIndexForTerritoryRegion(territoryIndex);
 			// Checks if current cached surface contains a material with a texture, if it exists but it has not texture, destroy it to recreate with uv mappings
-			_surfaces.TryGetValue(cacheIndex, out surf);
+			surfaces.TryGetValue(cacheIndex, out surf);
 
-			Material coloredMat = overlay ? _coloredMatOverlay : _coloredMatGround;
-			Material texturizedMat = overlay ? _texturizedMatOverlay : _texturizedMatGround;
+			Material coloredMat = overlay ? coloredMatOverlay : coloredMatGround;
+			Material texturizedMat = overlay ? texturizedMatOverlay : texturizedMatGround;
 
 			// Should the surface be recreated?
 			Material surfMaterial;
@@ -370,7 +370,7 @@ namespace TGS {
 				surfMaterial = surf.GetComponent<Renderer>().sharedMaterial;
 				if (texture != null && (region.customMaterial == null || textureScale != region.customTextureScale || textureOffset != region.customTextureOffset ||
 				    textureRotation != region.customTextureRotation || !region.customMaterial.name.Equals(texturizedMat.name))) {
-					_surfaces.Remove(cacheIndex);
+					surfaces.Remove(cacheIndex);
 					DestroyImmediate(surf);
 					surf = null;
 				}
@@ -401,12 +401,12 @@ namespace TGS {
 			// If it was highlighted, highlight it again
 			if (region.customMaterial != null && isHighlighted) {
 				if (region.customMaterial != null) {
-					HUDMatTerritory.mainTexture = region.customMaterial.mainTexture;
+					hudMatTerritory.mainTexture = region.customMaterial.mainTexture;
 				} else {
-					HUDMatTerritory.mainTexture = null;
+					hudMatTerritory.mainTexture = null;
 				}
-				surf.GetComponent<Renderer>().sharedMaterial = HUDMatTerritory;
-				HighlightedObj = surf;
+				surf.GetComponent<Renderer>().sharedMaterial = hudMatTerritory;
+				_highlightedObj = surf;
 			}
 			return surf;
 		}
@@ -416,7 +416,7 @@ namespace TGS {
 		/// </summary>
 		public List<Territory> TerritoryGetNeighbours(int territoryIndex) {
 			List<Territory> neighbours = new List<Territory>();
-			Region region = territories[territoryIndex].Region;
+			Region region = territories[territoryIndex].region;
 			int nCount = region.neighbours.Count;
 			for (int k = 0; k < nCount; k++) {
 				neighbours.Add((Territory)region.neighbours[k].entity);
@@ -458,7 +458,7 @@ namespace TGS {
 		public void TerritorySetVisible(int territoryIndex, bool visible) {
 			if (territoryIndex < 0 || territoryIndex >= territories.Count)
 				return;
-			territories[territoryIndex].Visible = visible;
+			territories[territoryIndex].visible = visible;
 			if (territoryIndex == _territoryLastOverIndex) {
 				ClearLastOver();
 			}
@@ -470,7 +470,7 @@ namespace TGS {
 		public bool TerritoryIsVisible(int territoryIndex) {
 			if (territoryIndex < 0 || territoryIndex >= territories.Count)
 				return false;
-			return territories[territoryIndex].Visible;
+			return territories[territoryIndex].visible;
 		}
 
 		/// <summary>
@@ -479,9 +479,9 @@ namespace TGS {
 		public void TerritorySetNeutral(int territoryIndex, bool neutral) {
 			if (territoryIndex < 0 || territoryIndex >= territories.Count)
 				return;
-			territories[territoryIndex].Neutral = neutral;
-			_needUpdateTerritories = true;
-			_shouldRedraw = true;
+			territories[territoryIndex].neutral = neutral;
+			needUpdateTerritories = true;
+			shouldRedraw = true;
 		}
 
 		/// <summary>
@@ -490,7 +490,7 @@ namespace TGS {
 		public bool TerritoryIsNeutral(int territoryIndex) {
 			if (territoryIndex < 0 || territoryIndex >= territories.Count)
 				return false;
-			return territories[territoryIndex].Neutral;
+			return territories[territoryIndex].neutral;
 		}
 
 
@@ -501,8 +501,8 @@ namespace TGS {
 			if (territoryIndex < 0 || territoryIndex >= territories.Count)
 				return;
 			Territory terr = territories[territoryIndex];
-			if (terr.FrontierColor != color) {
-				terr.FrontierColor = color;
+			if (terr.frontierColor != color) {
+				terr.frontierColor = color;
 				DrawTerritoryBorders();
 			}
 		}
@@ -528,8 +528,8 @@ namespace TGS {
 		/// </summary>
 		public Vector3 TerritoryGetPosition(int territoryIndex) {
 			if (territories == null || territoryIndex < 0 || territoryIndex >= territories.Count)
-				return Misc.Vector3Zero;
-			Vector2 territoryGridCenter = territories[territoryIndex].ScaledCenter;
+				return Misc.Vector3zero;
+			Vector2 territoryGridCenter = territories[territoryIndex].scaledCenter;
 			return GetWorldSpacePosition(territoryGridCenter);
 		}
 
@@ -538,8 +538,8 @@ namespace TGS {
 		/// Returns the rect enclosing the territory in world space
 		/// </summary>
 		public Bounds TerritoryGetRectWorldSpace(int territoryIndex) {
-			if (territories == null || territoryIndex < 0 || territoryIndex >= territories.Count) return new Bounds(Misc.Vector3Zero, Misc.Vector3Zero);
-			Rect rect = territories[territoryIndex].Region.rect2D;
+			if (territories == null || territoryIndex < 0 || territoryIndex >= territories.Count) return new Bounds(Misc.Vector3zero, Misc.Vector3zero);
+			Rect rect = territories[territoryIndex].region.rect2D;
 			Vector3 min = GetWorldSpacePosition(rect.min);
 			Vector3 max = GetWorldSpacePosition(rect.max);
 			Bounds bounds = new Bounds((min + max) * 0.5f, max - min);
@@ -552,7 +552,7 @@ namespace TGS {
 		/// </summary>
 		public int TerritoryGetVertexCount(int territoryIndex) {
 			if (territories == null || territoryIndex < 0 || territoryIndex >= territories.Count) return 0;
-			return territories[territoryIndex].Region.points.Count;
+			return territories[territoryIndex].region.points.Count;
 		}
 
 
@@ -560,8 +560,8 @@ namespace TGS {
 		/// Returns the world space position of the vertex of a territory
 		/// </summary>
 		public Vector3 TerritoryGetVertexPosition(int territoryIndex, int vertexIndex) {
-			if (territories == null || territoryIndex < 0 || territoryIndex >= territories.Count) return Misc.Vector3Zero;
-			Vector2 localPosition = territories[territoryIndex].Region.points[vertexIndex];
+			if (territories == null || territoryIndex < 0 || territoryIndex >= territories.Count) return Misc.Vector3zero;
+			Vector2 localPosition = territories[territoryIndex].region.points[vertexIndex];
 			return GetWorldSpacePosition(localPosition);
 		}
 
@@ -579,9 +579,9 @@ namespace TGS {
 			int cellCount = Cells.Count;
 			Color[] colors = texture.GetPixels();
 			for (int k = 0; k < cellCount; k++) {
-				if (!Cells[k].Visible)
+				if (!Cells[k].visible)
 					continue;
-				Vector2 uv = Cells[k].Center;
+				Vector2 uv = Cells[k].center;
 				uv.x += 0.5f;
 				uv.y += 0.5f;
 
@@ -598,7 +598,7 @@ namespace TGS {
 					territoryIndex = dsColors.Count - 1;
 				}
 				CellSetTerritory(k, territoryIndex);
-				if (territoryIndex >= MaxTerritories - 1)
+				if (territoryIndex >= MAX_TERRITORIES - 1)
 					break;
 			}
 			if (dsColors.Count > 0) {
@@ -614,10 +614,10 @@ namespace TGS {
 					Territory territory = new Territory(c.ToString());
 					Color territoryColor = dsColors[c];
 					if (territoryColor.r != neutral.r || territoryColor.g != neutral.g || territoryColor.b != neutral.b) {
-						territory.FillColor = territoryColor;
+						territory.fillColor = territoryColor;
 					} else {
-						territory.FillColor = new Color(0, 0, 0, 0);
-						territory.Visible = false;
+						territory.fillColor = new Color(0, 0, 0, 0);
+						territory.visible = false;
 					}
 					territories.Add(territory);
 				}

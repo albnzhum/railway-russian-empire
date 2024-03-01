@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace Railway.Idents.II
+namespace Railway.Idents.UI
 {
     public static class UITextFormat
     {
@@ -12,6 +8,8 @@ namespace Railway.Idents.II
             public static string Workers = "Рабочие";
             public static string Church = "Церковь";
             public static string SpeedBuilding = "Скорость строительства";
+            public static string TechProgress = "Технологический прогресс";
+            public static string Fuel = "Топливо";
         }
     }
 }
