@@ -9,7 +9,8 @@ public enum CellBuildingType
     NonInteractable = 1,
     Rails = 2,
     Workers = 3,
-    Locomotive = 4
+    Locomotive = 4,
+    Building = 5
 }
 
 public class ObjectPlacement : MonoBehaviour

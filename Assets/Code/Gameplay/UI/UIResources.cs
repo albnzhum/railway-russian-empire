@@ -1,9 +1,11 @@
 using System;
+using System.Globalization;
 using Railway.Components;
 using Railway.Idents.UI;
 using UnityEngine;
 using UnityEngine.UI;
 using R3;
+using TMPro;
 
 namespace Railway.Gameplay.UI
 {
@@ -12,7 +14,7 @@ namespace Railway.Gameplay.UI
     public class UIResources : MonoBehaviour
     {
         [Header("UI Text")]
-        [SerializeField] private Text[] _resourceTexts = new Text[Enum.GetValues(typeof(ResourceType)).Length];
+        [SerializeField] private TMP_Text[] _resourceTexts = new TMP_Text[Enum.GetValues(typeof(ResourceType)).Length];
 
         [SerializeField] private MissionInitializer mission;
 
@@ -36,7 +38,7 @@ namespace Railway.Gameplay.UI
         private void BindTextToResource(ResourceType resourceType, string format)
         {
             mission.GetReactiveProperty(resourceType)
-                .Subscribe(value => _resourceTexts[(int)resourceType].text = FormatText(format, value))
+                .Subscribe(value => _resourceTexts[(int)resourceType].text =  value.ToString())
                 .AddTo(_disposable);
         }
 

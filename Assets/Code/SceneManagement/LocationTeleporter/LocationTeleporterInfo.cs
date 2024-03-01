@@ -4,6 +4,7 @@ using Railway.Components;
 using Railway.Events;
 using Railway.Idents.UI;
 using Railway.Input;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Resources = Railway.Components.MissionInitializer.Resources;
@@ -18,9 +19,9 @@ namespace Railway.SceneManagement
         [SerializeField] private GameObject Canvas;
 
         [Header("UI Mission")]
-        [SerializeField] private Text _missionName;
-        [SerializeField] private Text _resourceInstantiate;
-        [SerializeField] private Text _cityInstantiate;
+        [SerializeField] private TMP_Text _missionName;
+        [SerializeField] private TMP_Text _resourceInstantiate;
+        [SerializeField] private TMP_Text _cityInstantiate;
 
         [Header("UI Parents")] 
         [SerializeField] private Transform _resourceParent;
@@ -56,18 +57,18 @@ namespace Railway.SceneManagement
 
         private void ShowCityInfo(CityInitializer city)
         {
-            Text cityName = Instantiate(_cityInstantiate, _cityParent);
+            TMP_Text cityName = Instantiate(_cityInstantiate, _cityParent);
             cityName.text = city.Name;
         }
 
         private void ShowResourceInfo(Resources resources)
         {
-            Text gold = Instantiate(_resourceInstantiate, _resourceParent);
-            Text workers = Instantiate(_resourceInstantiate, _resourceParent);
-            Text church = Instantiate(_resourceInstantiate, _resourceParent);
-            Text speedBuilding = Instantiate(_resourceInstantiate, _resourceParent);
-            Text techProgress = Instantiate(_resourceInstantiate, _resourceParent);
-            Text fuel = Instantiate(_resourceInstantiate, _resourceParent);
+            TMP_Text gold = Instantiate(_resourceInstantiate, _resourceParent);
+            TMP_Text workers = Instantiate(_resourceInstantiate, _resourceParent);
+            TMP_Text church = Instantiate(_resourceInstantiate, _resourceParent);
+            TMP_Text speedBuilding = Instantiate(_resourceInstantiate, _resourceParent);
+            TMP_Text techProgress = Instantiate(_resourceInstantiate, _resourceParent);
+            TMP_Text fuel = Instantiate(_resourceInstantiate, _resourceParent);
             
             resources.Gold
                 .Subscribe(value => gold.text = FormatText(UITextFormat.Resources.Gold, value))

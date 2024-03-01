@@ -9,7 +9,8 @@ namespace Railway.Shop.Data
         Workers,
         Rails,
         Locomotive,
-        Carriage
+        Carriage,
+        Building
     }
     
     [CreateAssetMenu(fileName = "ItemType", menuName = "Shop Data/Item Type")]

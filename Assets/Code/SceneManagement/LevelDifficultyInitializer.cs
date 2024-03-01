@@ -13,7 +13,7 @@ namespace Railway.SceneManagement
         [SerializeField] public MissionInitializer mission;
         [SerializeField] public LocationSO location;
         
-        [HideInInspector] public LocationTeleporter Teleporter;
+        public LocationTeleporter Teleporter;
         
         private LevelDifficulty _levelDifficulty;
 

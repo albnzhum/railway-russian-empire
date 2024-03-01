@@ -47,26 +47,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: a9d4f06af8e8bae43a21197ef6ab7ba0
-    m_Address: Assets/Content/CsarskoeSelo/Test/M_Test.mat
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 4226f7300d3eb384e9a01d595e1fe3e6
-    m_Address: Assets/Content/CsarskoeSelo/Test/M_Test 3.mat
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: ba0d3d9dd2ba6d34b9e5ca80503c92c5
-    m_Address: Assets/Content/CsarskoeSelo/Test/M_Test 1.mat
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 2f81c4f4034835a49adfcb7f57654a55
-    m_Address: Assets/Content/CsarskoeSelo/Test/M_Test 2.mat
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b20ad9a8f53f5f148bd06decdd74ead8, type: 2}
   m_SchemaSet:

@@ -12,7 +12,7 @@ namespace Railway.Input
         public event UnityAction OpenShopEvent = delegate {  };
         public event UnityAction CloseShopEvent = delegate {  };
         public event UnityAction<Vector2> ChooseCellEvent = delegate {  };
-        public event Action PlaceItemEvent = delegate {  };
+        public event Action<Vector2> PlaceItemEvent = delegate {  };
         public event Action<Vector2> ChooseItemPositionEvent = delegate {  };
         public event UnityAction<Vector2> HoverCellEvent = delegate {  };
         public event UnityAction<float> TabSwitched = delegate {  };
@@ -114,7 +114,7 @@ namespace Railway.Input
         public void OnPlaceItem(InputAction.CallbackContext context)
         {
             if (context.phase == InputActionPhase.Performed)
-                PlaceItemEvent.Invoke();
+                PlaceItemEvent.Invoke(Mouse.current.position.value);
         }
 
         public void OnOpenShop(InputAction.CallbackContext context)

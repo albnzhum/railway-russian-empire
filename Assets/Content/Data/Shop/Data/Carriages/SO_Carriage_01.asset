@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: "\u0412\u0430\u0433\u043E\u043D1"
   _price: 15
-  _prefab: {fileID: 6273994158294697651, guid: 3741b26f83b5ada458cdf487760f4da1, type: 3}
+  _prefab: {fileID: 2977750940014675767, guid: ea8effb710475f046b9fefeabb9100e4, type: 3}
   _itemType: {fileID: 11400000, guid: 5e2181829f3953241977ad0de7ee7320, type: 2}
+  _amount: 0

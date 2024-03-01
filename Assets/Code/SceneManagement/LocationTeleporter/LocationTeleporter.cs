@@ -8,7 +8,9 @@ namespace Railway.SceneManagement
         [Header("Broadcast on")] 
         [SerializeField] private LoadEventChannelSO _loadLocationRequest;
         [SerializeField] private VoidEventChannelSO _onSceneReady;
-        
+        [SerializeField] private LoadEventChannelSO _loadMenuEvent = default;
+        [SerializeField] private MenuSceneSO _mainMenu;
+
         public LocationTeleporterInfo locationTeleporterInfo;
         public LevelDifficultyInitializer levelDifficulty;
 
@@ -21,6 +23,11 @@ namespace Railway.SceneManagement
             _lastLocationTeleportedTo = where;
             _loadLocationRequest.RaiseEvent(where);
             _onSceneReady.RaiseEvent();
+        }
+
+        public void BackToMenu()
+        {
+            _loadMenuEvent.RaiseEvent(_mainMenu, false);
         }
     }
 }

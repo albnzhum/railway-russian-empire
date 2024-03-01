@@ -8,7 +8,6 @@ namespace Railway.UI
 {
     public class UIMainMenu : MonoBehaviour
     {
-        [SerializeField] private Button _continueButton;
         [SerializeField] private Button _newGameButton;
 
         public UnityAction NewGameButtonAction;
@@ -18,15 +17,9 @@ namespace Railway.UI
 
         public void SetMenuScreen(bool hasSaveData)
         {
-            _continueButton.interactable = hasSaveData;
-            if (hasSaveData)
-            {
-                _continueButton.Select();
-            }
-            else
-            {
+
                 _newGameButton.Select();
-            }
+            
         }
 
         public void NewGameButton()
