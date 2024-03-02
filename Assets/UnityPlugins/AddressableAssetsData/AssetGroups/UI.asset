@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: UI
+  m_EditorClassIdentifier: 
+  m_GroupName: UI
+  m_Data:
+    m_SerializedData: []
+  m_GUID: d9f8fe39440b82c46a5b80575a1a9903
+  m_SerializeEntries:
+  - m_GUID: f05cf7e8c2bd08248a84def4795541eb
+    m_Address: Assets/Content/Fonts/lunaparktwo SDF.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f3c3c681517fc944db0472df347a265f
+    m_Address: Assets/Content/Fonts/ViaodaLibre-Regular SDF.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5b3c0f34bcfa9034ba257ae6c7896bd7
+    m_Address: Assets/Content/Fonts/Classica Two SDF.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3ed7c589338973e4d8b65cf7a0df151f
+    m_Address: Assets/Content/Fonts/Propisi Cyr Lat_2 SDF.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a5dd0976ce058e64f94afcff8e33ace3
+    m_Address: Assets/Content/Fonts/Jura.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: b20ad9a8f53f5f148bd06decdd74ead8, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 7a5a2304d953d6449a2ceaf13fcd6d9f, type: 2}
+    - {fileID: 11400000, guid: ebe64527e73f1b445845bfa93cbb2809, type: 2}

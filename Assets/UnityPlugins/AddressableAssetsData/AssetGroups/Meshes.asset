@@ -1,0 +1,150 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Meshes
+  m_EditorClassIdentifier: 
+  m_GroupName: Meshes
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 63b964c75db85394fbee579be2b32d3e
+  m_SerializeEntries:
+  - m_GUID: 199023535e218b44e92b11c4d1424fb3
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/Church/SM_Church.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 374d69cfb3a503948966af9b12555e54
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/CsStation/SM_CsStation.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 54e4da8122324a942ac6c29a9886975e
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/House/SM_House.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 97b974ffcb311d043b9e47ae0bffcc0c
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/IsaacSobor/SM_IssacSobor.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4ee3261a50a1da24ab1fd7109a60a8e9
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/Palace/PalaceCatherines.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3ef711d7501d8ef4ca3a7cc8a43aeab7
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/VitebskStation/SM_VitebskStation.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8c892129734bb6640bd34785f635c98d
+    m_Address: Assets/Content/CsarskoeSelo/Carriages/CarriageSmall/SM_CarriageSmall.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b257e32a0c210f34b8af5751f0dfaf5e
+    m_Address: Assets/Content/CsarskoeSelo/Carriages/TwoAxesProduct/SM_TwoAxesProduct.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 99439ba2008adff479e69c2ed3c5eb98
+    m_Address: Assets/Content/CsarskoeSelo/Carriages/TwoAxesWood/SM_TwoAxesWood.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6c2391f242b3c9942bea6252fe2891e4
+    m_Address: Assets/Content/CsarskoeSelo/Nature/Pine Trees/SM_PineTress_1.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 11513268302b562498f3c140346b22c8
+    m_Address: Assets/Content/CsarskoeSelo/Nature/HandpaintedForest_Pack/Source/Forest_pack_models_set.FBX
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5457c9455a9496b4380c2b529f0973d9
+    m_Address: Assets/Content/CsarskoeSelo/People/Static Meshes/SM_Peasant_6.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a5153378d0062684088c5452940b217a
+    m_Address: Assets/Content/CsarskoeSelo/People/Static Meshes/SM_Dwellers_2.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 40e93e413e82268408471435d747e0fe
+    m_Address: Assets/Content/CsarskoeSelo/People/Static Meshes/SM_Peasant_3.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 853b4273332cec846a35b48f85efe666
+    m_Address: Assets/Content/CsarskoeSelo/People/Static Meshes/SM_RichCitizens_2.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3d3cf83d54234c74b8cebef0b5221557
+    m_Address: Assets/Content/CsarskoeSelo/People/Static Meshes/SM_Peasant_5.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7dde674cade0e2f449da848fd5e19006
+    m_Address: Assets/Content/CsarskoeSelo/People/Static Meshes/SM_RichCitizens_3.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 19cfd99c33fcd9244a84c691b2183958
+    m_Address: Assets/Content/CsarskoeSelo/People/Static Meshes/SM_Queen.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7bc573d3d7ca739459f6450b10c0ddd4
+    m_Address: Assets/Content/CsarskoeSelo/People/Static Meshes/SM_Dwellers_1.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a8b56779125936a448a11263546b8bc9
+    m_Address: Assets/Content/CsarskoeSelo/People/Static Meshes/SM_King.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6baa6f101fcc96b4bbb126dbd116abab
+    m_Address: Assets/Content/CsarskoeSelo/People/Static Meshes/SM_Peasant_2.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d5c8c864f0e2d7e46903da202b9af85b
+    m_Address: Assets/Content/CsarskoeSelo/People/Static Meshes/SM_Peasant_4.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 859449f33a8f14f4b88d07a124f5a1ed
+    m_Address: Assets/Content/CsarskoeSelo/People/Static Meshes/SM_RichCirtizens.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b784e909de30ca241a06fbefb9933b68
+    m_Address: Assets/Content/CsarskoeSelo/People/Static Meshes/SM_RichCitizens_1.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a1e10679b2ea3f74bba95d9c1bbcf36b
+    m_Address: Assets/Content/CsarskoeSelo/People/Static Meshes/SM_Peasant_1.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: b20ad9a8f53f5f148bd06decdd74ead8, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: c8aad047880186242b1e3622d8ce9eb1, type: 2}
+    - {fileID: 11400000, guid: 0c57070fc7547084bbb161c717cbeaf7, type: 2}

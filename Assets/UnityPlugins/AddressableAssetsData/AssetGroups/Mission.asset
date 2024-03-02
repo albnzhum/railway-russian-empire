@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Mission
+  m_EditorClassIdentifier: 
+  m_GroupName: Mission
+  m_Data:
+    m_SerializedData: []
+  m_GUID: de37d57daf92e9d4ca9174fe24c57573
+  m_SerializeEntries:
+  - m_GUID: 7c27ca4899fd8de409528978a46ea512
+    m_Address: Assets/Content/Data/Mission/CsarskoeSelo/Csarskoe Selo.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a3f2460854f68094383eb4cc94c60d37
+    m_Address: Assets/Content/Data/Mission/CsarskoeSelo/Saint-Petersburg.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 65ea345839197424695e1d2c68c9e5fa
+    m_Address: Assets/Content/Data/Mission/CsarskoeSelo/CsarskoeSelo.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: b20ad9a8f53f5f148bd06decdd74ead8, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: f242e08f961a150488d549c9e8d2717f, type: 2}
+    - {fileID: 11400000, guid: 6879e2d1da20a8d4ca71f5c5bb6d81fb, type: 2}

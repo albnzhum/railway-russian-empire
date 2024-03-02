@@ -37,6 +37,26 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 74ce840b40ea47f4ab2d57b01bf216b8
+    m_Address: Assets/Content/Data/SceneData/Manager/Gameplay.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1e0f20dd29f579d46a9de7408dc7747c
+    m_Address: Assets/Content/Data/SceneData/Manager/PersistentManager.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7b7750374b61b1f49b651f3549f0e077
+    m_Address: Assets/Content/Data/SceneData/Startup/GameInit.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ce7aec45cad65074dbe0a505041fd6af
+    m_Address: Assets/Content/Data/SceneData/Startup/MenuSO.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b20ad9a8f53f5f148bd06decdd74ead8, type: 2}
   m_SchemaSet:

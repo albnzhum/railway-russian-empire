@@ -22,6 +22,46 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 76570dde864db4644866ac7ae1d4ae2d
+    m_Address: Assets/Content/Data/SceneData/Events/ToggleLoadingEvent.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e57acfe03ba0ac049b18c2cb922e0621
+    m_Address: Assets/Content/Data/SceneData/Events/OnSceneReady.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dd80533d2f533314592ef71cee9851e8
+    m_Address: Assets/Content/Data/SceneData/Events/LocationEvent.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f8bc037dcad7a25488ca9216dea48061
+    m_Address: Assets/Content/Data/SceneData/Events/LoadSceneEvent.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9477835d77e25c848a01a6775155ccf3
+    m_Address: Assets/Content/Data/SceneData/Events/FadeEvent.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 340c8c16243cb5e4b8f809c62d80ab58
+    m_Address: Assets/Content/Data/SceneData/Events/ColdStartupEvent.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0d66e7167a716654aa33507720e39251
+    m_Address: Assets/Content/Data/UI/Events/ContinueGameEvent.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 73c91861859dad148be97796ebcb8927
+    m_Address: Assets/Content/Data/UI/Events/StartNewGame.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b20ad9a8f53f5f148bd06decdd74ead8, type: 2}
   m_SchemaSet:

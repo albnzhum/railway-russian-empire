@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: GlobalData
+  m_EditorClassIdentifier: 
+  m_GroupName: GlobalData
+  m_Data:
+    m_SerializedData: []
+  m_GUID: ed519de47260aa845a6bf8475b27930c
+  m_SerializeEntries:
+  - m_GUID: f6ab959d7b6f6344e9a16562e598ec37
+    m_Address: Assets/Content/Data/GameState.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ceb62f2214913ea4b96bb10f78bcfffb
+    m_Address: Assets/Content/Data/Global Data/Time Component.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: b20ad9a8f53f5f148bd06decdd74ead8, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 841723d27286cff41aef308829211981, type: 2}
+    - {fileID: 11400000, guid: 9bfdf4aa4b9d68442ac7da96aa4aef8c, type: 2}

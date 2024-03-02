@@ -1,0 +1,345 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Materials
+  m_EditorClassIdentifier: 
+  m_GroupName: Materials
+  m_Data:
+    m_SerializedData: []
+  m_GUID: f7d3c2a96cba63240b414bbc63c76389
+  m_SerializeEntries:
+  - m_GUID: f31cc507702302c4ab564e9f1bd8e139
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/Church/Materials/M_Church_Base.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ac95420953be14d40b64360f1712c30b
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/Church/Materials/M_Church_Windows.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bdf7d5fde6f0f424e95437f50eb567a0
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/Church/Materials/M_Church_Walls.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1e4b1683d5a1dcc47854e32a36df1ab9
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/Church/Materials/M_Church_Dome.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6e46f25d0eb156a4ebecef14aa9541b8
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/Church/Materials/M_Church_Glass.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 76a950fa821432648bf7476d7ae31d17
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/CsStation/Materials/M_CsarskoeSelo_Station.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 20f73e213297fd240b2d89f7b5d10fe7
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/CsStation/Materials/M_CsarskoeSelo_Window.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 40401723380d7d84a9731d96116ac443
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/House/Materials/M_House1.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1586f8c0dd3cfa64982ee39e8eff8a42
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/House/Materials/M_house7.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4710aacf4e34823428be426287a64469
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/House/Materials/M_House8.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4729907f0f7363e4497557338cd2c93a
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/House/Materials/M_House9.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cb56170c1c672a34c838a65c1c5a09d4
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/House/Materials/M_house6.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8d4da081d6cd6a44f890ca4f03fd51b9
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/House/Materials/M_House5.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6ff7417b257af6b4da0e248e4fb1b378
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/House/Materials/M_House4.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 293396c9201aa7141b43dbbbd9dc6e3b
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/IsaacSobor/Materials/M_IssacSobor_Base.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 50cf9e26c92b7414a9d9a49a7ad8d239
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/IsaacSobor/Materials/M_IssacSobor_Roof.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0c9e79cb7099abf488e58ae1251ff207
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/IsaacSobor/Materials/M_IssacSobor_Dome.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 84cc3ba696cea234fafa366f0d9b4f6c
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/IsaacSobor/Materials/M_IssacSobor_Post.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d2b3d1f9766ad1f42a3cd6f30cca0456
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/Palace/Materials/M_RoofPalaceC.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1399ecffb397a3b4b91c537a172eff3c
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/Palace/Materials/M_WindowsPalaceC3.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2450fa5e75e25e34e8e302a6259111d5
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/Palace/Materials/M_WindowsPalaceC4.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 556913618f856ef4788a252938c88e8e
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/Palace/Materials/M_ColumnsPalaceC.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 75debcfa9e0c73649a6167e6050a8752
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/Palace/Materials/M_Palace_Glass.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c530278d1f8d26b4a901e0c0118a6ea4
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/Palace/Materials/M_PipesPalaceC.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4747609fe94ec524fb157158d77ed831
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/Palace/Materials/M_DetailsPalaceC.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c710e39a790fa8a4cbe7651c606eb3ef
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/Palace/Materials/M_BasePalaceC.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: da231f8fc74055141a6c3dfffb86ccb4
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/Palace/Materials/M_WindowsPalaceC1.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9c202a4716ef5ba45b67e07b54899271
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/Palace/Materials/M_WindowsPalaceC.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1d269d235521e3d4ab96a2ba4f1370aa
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/Palace/Materials/M_WindowsPalaceC2.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dd012a034713ebb48ab040951471652d
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/Palace/Materials/M_ColumnsMini.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8e0334cf00f5e3c40a09dd68f6bdd353
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/Palace/Materials/M_DoorPalaceC.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 441d1db9352df0a44ae78090f51907c3
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/VitebskStation/Materials/M_VitebskStation_Hangar.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f572634894a7da44f91c7539001f2236
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/VitebskStation/Materials/M_VitebskStation_Lateral.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6a004dff13ebb80428ebe3ac852898d2
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/VitebskStation/Materials/M_VitebskStation_RoundedFront.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bb37c01a744ebdd4eb740da48d89442b
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/VitebskStation/Materials/M_VitebskStation_Fence.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1d8a4a8849b3c954181df0cf6ef7c58f
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/VitebskStation/Materials/M_VitebskStation_Windows.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5e6dfc97c75215a438b6f8c1537eed81
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/VitebskStation/Materials/M_VitebskStation_Front.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: aeb65acf4c006a647aa10c161c7f09f7
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/VitebskStation/Materials/M_VitebskStation_Tower.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d965a6e4586d26d42be7a381922aa968
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/VitebskStation/Materials/M_VitebskStation_Details.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3a2e462ab13037c448eb338f53710601
+    m_Address: Assets/Content/CsarskoeSelo/Carriages/CarriageSmall/Materials/M_Logs.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f356be42202e293468bf3241e3376c01
+    m_Address: Assets/Content/CsarskoeSelo/Carriages/CarriageSmall/Materials/M_StickSmall.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0aca2387d213f0f4694823c0ef2d942b
+    m_Address: Assets/Content/CsarskoeSelo/Carriages/CarriageSmall/Materials/M_CarriageSmall.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9b695c0e29a1cc34fb44e7a65e7a5b20
+    m_Address: Assets/Content/CsarskoeSelo/Carriages/CarriageSmall/Materials/M_PlatformSmall.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 25caa3db6533148448fa72155b19f1ba
+    m_Address: Assets/Content/CsarskoeSelo/Carriages/CarriageSmall/Materials/S_WheelsSmall.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 51201c02189e1a74f881ecc7fe4fcc79
+    m_Address: Assets/Content/CsarskoeSelo/Carriages/TwoAxesProduct/Materials/M_StickLong.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3aa6f6033f41b0c45b67a9e2f410c026
+    m_Address: Assets/Content/CsarskoeSelo/Carriages/TwoAxesProduct/Materials/M_Roof_CB.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5c570247fcbd19b4e86c8ca97bcf1487
+    m_Address: Assets/Content/CsarskoeSelo/Carriages/TwoAxesProduct/Materials/M_CommodityBiaxial.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 944752b523a5cfb40905152ff17b1c94
+    m_Address: Assets/Content/CsarskoeSelo/Carriages/TwoAxesProduct/Materials/M_Details_CB.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 74adaca82f198314db2ee6c0ef2c5a1c
+    m_Address: Assets/Content/CsarskoeSelo/Carriages/TwoAxesWood/Materials/M_BiaxialWooden.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a6af2f92bf5e1824ba69177ee78d1cd0
+    m_Address: Assets/Content/CsarskoeSelo/Carriages/TwoAxesWood/Materials/M_TwoAxes_PlatformLong.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 40aba0976930015409b61b5d9dd03cb2
+    m_Address: Assets/Content/CsarskoeSelo/Locomotive/Provorniy/Materials/M_Provorniy_Chimney.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7007ebc82a177c042b207639e04bee13
+    m_Address: Assets/Content/CsarskoeSelo/Locomotive/Provorniy/Materials/M_Provorniy_Sandbox.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e7190737f2369c24aa797e613539ccfe
+    m_Address: Assets/Content/CsarskoeSelo/Locomotive/Provorniy/Materials/M_Provorniy_Whistle.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f8d8f55f10c916646a1d41dd91d252a0
+    m_Address: Assets/Content/CsarskoeSelo/Locomotive/Provorniy/Materials/M_Provorniy_Wheels.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6a3bc7f8eb754fc429cd70cf2ac6c72d
+    m_Address: Assets/Content/CsarskoeSelo/Locomotive/Provorniy/Materials/M_Provorniy_Fence.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7bbac853044034446b0fc516a4a981c2
+    m_Address: Assets/Content/CsarskoeSelo/Locomotive/Provorniy/Materials/M_Provorniy_Smokebox.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: edbb9c6665186d9498345ad21d18d5c7
+    m_Address: Assets/Content/CsarskoeSelo/Locomotive/Provorniy/Materials/M_Provorniy_Base.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4f30c0c15c36a594daa5fdc11af7e7d8
+    m_Address: Assets/Content/CsarskoeSelo/Locomotive/Provorniy/Materials/M_Provorniy_Details.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b3c69278d0ec9944b8d7d9c02a6efb3d
+    m_Address: Assets/Content/CsarskoeSelo/Nature/Pine Trees/Materials/M_PineTress2_Green.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e67d1a66ceb98a747a160c8e825d98aa
+    m_Address: Assets/Content/CsarskoeSelo/Nature/Pine Trees/Materials/M_PineTree1_Bark.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5861e8974d83a934b878398ce6e3a81a
+    m_Address: Assets/Content/CsarskoeSelo/Nature/Pine Trees/Materials/M_PineTrees2_Wood.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4da642eae7ac9df489283f87fef06970
+    m_Address: Assets/Content/CsarskoeSelo/Nature/Pine Trees/Materials/M_PineTree1_Leaves.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6b418a3daa298ca43b1326ec6dc2a9db
+    m_Address: Assets/Content/CsarskoeSelo/Rails/M_Rails.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 89ff9434281ea494a998d17d6624d6cc
+    m_Address: Assets/Content/Landscape/Materials/M_Cloud.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: b20ad9a8f53f5f148bd06decdd74ead8, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 68824256cca935e42966248d7aeeba5c, type: 2}
+    - {fileID: 11400000, guid: 0b26799fe0108f244863daa044e91692, type: 2}

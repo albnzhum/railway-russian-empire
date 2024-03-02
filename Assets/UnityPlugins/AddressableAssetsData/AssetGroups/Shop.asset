@@ -17,33 +17,43 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: cb6025348235d004ba54753087fb2b1c
   m_SerializeEntries:
-  - m_GUID: 44ee55b69480e6a4fa3d09647ffd5da3
-    m_Address: Assets/Content/Data/Shop/Data/Carriages/SO_Carriage_01.asset
+  - m_GUID: d6d8311923ef35147b0fd11d26a5822a
+    m_Address: Assets/Content/Data/Shop/SO_Shop.asset
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: da8aad3488cb55048b64a4d5b0cde802
-    m_Address: Assets/Content/Data/Shop/Data/Locomotive/SO_Loco_02.asset
+  - m_GUID: 9a449b0f5c23d0c418a357bbdccd9bc1
+    m_Address: Assets/Content/Data/Shop/Tabs/SO_Construction_Tab.asset
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 9cddf579742065c44b0ad0af0331035f
-    m_Address: Assets/Content/Data/Shop/Data/Locomotive/SO_Loco_01.asset
+  - m_GUID: c82975ca49c59cd40948d51e7be99bfe
+    m_Address: Assets/Content/Data/Shop/Tabs/SO_Building_Tab.asset
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: fd8ecbb5d1fff7b49a3bea346bde71f2
-    m_Address: Assets/Content/Data/Shop/Data/Rails/SO_Rail_01.asset
+  - m_GUID: 5f9cf580159195f4bbdb8aeb758781f4
+    m_Address: Assets/Content/Data/Shop/Tabs/SO_Worker_Tab.asset
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: fa9dd812994f6ad4b9bdff95eb9a515a
-    m_Address: Assets/Content/Data/Shop/Data/Workers/SO_Worker_01.asset
+  - m_GUID: c046e243c6a43e74e9f8cdda0a040cab
+    m_Address: Assets/Content/Data/Shop/Item Type/Locomotive.asset
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: f89dd96cf1bfaf14a9f4e2d4f8b3b049
-    m_Address: Assets/Content/Data/Shop/Data/Workers/SO_Worker_02.asset
+  - m_GUID: 5e2181829f3953241977ad0de7ee7320
+    m_Address: Assets/Content/Data/Shop/Item Type/Carriage.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 57815df062724cd41a5ddce822bd3360
+    m_Address: Assets/Content/Data/Shop/Item Type/Worker.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: de68871ca5698f141b91201e788bb9f7
+    m_Address: Assets/Content/Data/Shop/Item Type/Rails.asset
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
