@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using R3;
 using Railway.Gameplay.UI;
+using UnityEngine.Serialization;
 
 namespace Railway.Components
 {
@@ -24,22 +25,44 @@ namespace Railway.Components
             set => _currentResources = value;
         }
         
-        public SerializableReactiveProperty<float> GetReactiveProperty(ResourceType resourceType)
+        public SerializableReactiveProperty<float> GetCurrentReactiveProperty(ResourceType resourceType)
         {
             switch (resourceType)
             {
                 case ResourceType.Gold:
-                    return CurrentResources.Gold;
+                    return CurrentResources.Gold.CurrentValue;
                 case ResourceType.Workers:
-                    return CurrentResources.Workers;
+                    return CurrentResources.Workers.CurrentValue;
                 case ResourceType.Church:
-                    return CurrentResources.Church;
+                    return CurrentResources.Church.CurrentValue;
                 case ResourceType.Fuel:
-                    return CurrentResources.Fuel;
+                    return CurrentResources.Fuel.CurrentValue;
                 case ResourceType.TechProgress:
-                    return CurrentResources.TechProgress;
+                    return CurrentResources.TechProgress.CurrentValue;
                 case ResourceType.SpeedBuilding:
-                    return CurrentResources.SpeedBuilding;
+                    return CurrentResources.SpeedBuilding.CurrentValue;
+                
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(resourceType), resourceType, null);
+            }
+        }
+        
+        public SerializableReactiveProperty<float> GetAddedReactiveProperty(ResourceType resourceType)
+        {
+            switch (resourceType)
+            {
+                case ResourceType.Gold:
+                    return CurrentResources.Gold.AddedValue;
+                case ResourceType.Workers:
+                    return CurrentResources.Workers.AddedValue;
+                case ResourceType.Church:
+                    return CurrentResources.Church.AddedValue;
+                case ResourceType.Fuel:
+                    return CurrentResources.Fuel.AddedValue;
+                case ResourceType.TechProgress:
+                    return CurrentResources.TechProgress.AddedValue;
+                case ResourceType.SpeedBuilding:
+                    return CurrentResources.SpeedBuilding.AddedValue;
                 
                 default:
                     throw new ArgumentOutOfRangeException(nameof(resourceType), resourceType, null);
@@ -49,21 +72,34 @@ namespace Railway.Components
         [System.Serializable]
         public class Resources
         {
-            public SerializableReactiveProperty<float> Gold;
-            public SerializableReactiveProperty<float> Workers;
-            public SerializableReactiveProperty<float> Church;
-            public SerializableReactiveProperty<float> Fuel;
-            public SerializableReactiveProperty<float> TechProgress;
-            public SerializableReactiveProperty<float> SpeedBuilding;
+            public ResourceStat Gold;
+            public ResourceStat Workers;
+            public ResourceStat Church;
+            public ResourceStat Fuel;
+            public ResourceStat TechProgress;
+            public ResourceStat SpeedBuilding;
             
             public Resources(Resources original)
             {
-                Gold = new SerializableReactiveProperty<float>(original.Gold.Value);
-                Workers = new SerializableReactiveProperty<float>(original.Workers.Value);
-                Church = new SerializableReactiveProperty<float>(original.Church.Value);
-                SpeedBuilding = new SerializableReactiveProperty<float>(original.SpeedBuilding.Value);
-                Fuel = new SerializableReactiveProperty<float>(original.Fuel.Value);
-                TechProgress = new SerializableReactiveProperty<float>(original.TechProgress.Value);
+                Gold = new ResourceStat(original.Gold.CurrentValue);
+                Workers = new ResourceStat(original.Workers.CurrentValue);
+                Church = new ResourceStat(original.Church.CurrentValue);
+                SpeedBuilding = new ResourceStat(original.SpeedBuilding.CurrentValue);
+                Fuel = new ResourceStat(original.Fuel.CurrentValue);
+                TechProgress = new ResourceStat(original.TechProgress.CurrentValue);
+            }
+        }
+        
+        [System.Serializable]
+        public class ResourceStat
+        {
+            public SerializableReactiveProperty<float> CurrentValue;
+           public SerializableReactiveProperty<float> AddedValue;
+
+            public ResourceStat(SerializableReactiveProperty<float> currentValue, SerializableReactiveProperty<float> addedValue = null)
+            {
+                this.CurrentValue = currentValue;
+                this.AddedValue = addedValue ?? new SerializableReactiveProperty<float>(0f);;
             }
         }
     }

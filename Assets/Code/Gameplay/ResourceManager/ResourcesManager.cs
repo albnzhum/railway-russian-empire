@@ -46,12 +46,12 @@ namespace Railway.Gameplay.Resources
         
         public void Add(ResourceType resourceType, float amount)
         {
-            _mission.GetReactiveProperty(resourceType).Value += amount;
+            _mission.GetCurrentReactiveProperty(resourceType).Value += amount;
         }
 
         public void Spend(ResourceType resourceType, float amount)
         {
-            var resourceProperty = _mission.GetReactiveProperty(resourceType);
+            var resourceProperty = _mission.GetCurrentReactiveProperty(resourceType);
             resourceProperty.Value = Mathf.Max(resourceProperty.Value - amount, 0f);
         }
     }

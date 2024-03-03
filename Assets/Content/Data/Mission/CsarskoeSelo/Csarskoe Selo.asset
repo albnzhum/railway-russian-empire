@@ -19,14 +19,32 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 65ea345839197424695e1d2c68c9e5fa, type: 2}
   _originalResources:
     Gold:
-      value: 252
+      CurrentValue:
+        value: 5000
+      AddedValue:
+        value: 0
     Workers:
-      value: 1213
+      CurrentValue:
+        value: 250
+      AddedValue:
+        value: 0
     Church:
-      value: 45
+      CurrentValue:
+        value: 15
+      AddedValue:
+        value: 0
     Fuel:
-      value: 77
+      CurrentValue:
+        value: 60
+      AddedValue:
+        value: 0
     TechProgress:
-      value: 45
+      CurrentValue:
+        value: 10
+      AddedValue:
+        value: 0
     SpeedBuilding:
-      value: 865
+      CurrentValue:
+        value: 2
+      AddedValue:
+        value: 0

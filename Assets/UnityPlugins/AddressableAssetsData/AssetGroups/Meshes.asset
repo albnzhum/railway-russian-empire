@@ -142,6 +142,16 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4b310de77f43d3741b63ef4ccb5f49dc
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/Castle/SM_Castle.FBX
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3d7fea031977fb347a1304f76b67a24a
+    m_Address: Assets/Content/CsarskoeSelo/Buildings/Bolshoi/SM_Bolshoi.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b20ad9a8f53f5f148bd06decdd74ead8, type: 2}
   m_SchemaSet:

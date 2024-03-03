@@ -2,6 +2,7 @@ using System;
 using R3;
 using Railway.Components;
 using Railway.Events;
+using Railway.Gameplay.UI;
 using Railway.Idents.UI;
 using Railway.Input;
 using TMPro;
@@ -63,17 +64,33 @@ namespace Railway.SceneManagement
 
         private void ShowResourceInfo(Resources resources)
         {
-            TMP_Text gold = Instantiate(_resourceInstantiate, _resourceParent);
+            TMP_Text[] _resourceTexts = new TMP_Text[Enum.GetValues(typeof(ResourceType)).Length];
+
+            for (int i = 0; i < _resourceTexts.Length; i++)
+            {
+                ResourceType currentResourceType = (ResourceType)i;
+                _resourceTexts[i] = Instantiate(_resourceInstantiate, _resourceParent);
+
+                SerializableReactiveProperty<float> currentReactiveProperty = mission.GetCurrentReactiveProperty(currentResourceType);
+
+                currentReactiveProperty
+                    .Subscribe(value => _resourceTexts[i].text = value.ToString())
+                    .AddTo(disposables);
+            }
+            
+            /*TMP_Text gold = Instantiate(_resourceInstantiate, _resourceParent);
             TMP_Text workers = Instantiate(_resourceInstantiate, _resourceParent);
             TMP_Text church = Instantiate(_resourceInstantiate, _resourceParent);
             TMP_Text speedBuilding = Instantiate(_resourceInstantiate, _resourceParent);
             TMP_Text techProgress = Instantiate(_resourceInstantiate, _resourceParent);
-            TMP_Text fuel = Instantiate(_resourceInstantiate, _resourceParent);
+            TMP_Text fuel = Instantiate(_resourceInstantiate, _resourceParent);*/
             
-            resources.Gold
+            
+            
+            /*resources.Gold.CurrentValue
                 .Subscribe(value => gold.text = FormatText(UITextFormat.Resources.Gold, value))
                 .AddTo(disposables);
-            resources.Workers
+            resources.Workers.CurrentValue
                 .Subscribe(value => workers.text = FormatText(UITextFormat.Resources.Workers, value))
                 .AddTo(disposables);
             resources.Church
@@ -87,8 +104,9 @@ namespace Railway.SceneManagement
                 .AddTo(disposables);
             resources.Fuel
                 .Subscribe(value => fuel.text = FormatText(UITextFormat.Resources.Fuel, value))
-                .AddTo(disposables);
+                .AddTo(disposables);*/
         }
+        
         
         private string FormatText(string format, float value)
         {

@@ -24,8 +24,6 @@ namespace Railway.UI
     
     public class UIPopup : MonoBehaviour
     {
-        [SerializeField] private Text _titleText = default;
-        [SerializeField] private Text _descriptionText = default;
         [SerializeField] private Button _buttonClose = default;
         [SerializeField] private Button _popupButton1 = default;
         [SerializeField] private Button _popupButton2 = default;

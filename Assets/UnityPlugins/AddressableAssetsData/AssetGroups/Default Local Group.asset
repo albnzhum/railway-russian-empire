@@ -16,7 +16,32 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: 08cb86d5de5af6141b41c0a0734eb223
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: f829b17bb231545409d9bce161da521f
+    m_Address: Assets/Content/TerrainData/CsarskoeSelo/Up.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 87889b7d4324314409ce8b033ef700f5
+    m_Address: Assets/Content/TerrainData/CsarskoeSelo/CsarskoeSelo.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6283346ca6be4f04d9cdc7d677404cb4
+    m_Address: Assets/Content/TerrainData/CsarskoeSelo/Right.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d3d382b0d61d26644a6b5bea317d0a64
+    m_Address: Assets/Content/TerrainData/CsarskoeSelo/Left.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1abb58e29fa923742afe9a18676e05d6
+    m_Address: Assets/Settings/Inputs/InputReader.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b20ad9a8f53f5f148bd06decdd74ead8, type: 2}
   m_SchemaSet:

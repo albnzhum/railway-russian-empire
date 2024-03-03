@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using R3;
 using TMPro;
+using UnityEngine.Serialization;
 
 namespace Railway.Gameplay.UI
 {
@@ -14,7 +15,8 @@ namespace Railway.Gameplay.UI
     public class UIResources : MonoBehaviour
     {
         [Header("UI Text")]
-        [SerializeField] private TMP_Text[] _resourceTexts = new TMP_Text[Enum.GetValues(typeof(ResourceType)).Length];
+        [SerializeField] private TMP_Text[] _currentResourceTexts = new TMP_Text[Enum.GetValues(typeof(ResourceType)).Length];
+        [SerializeField] private TMP_Text[] _addedResourceTexts = new TMP_Text[Enum.GetValues(typeof(ResourceType)).Length];
 
         [SerializeField] private MissionInitializer mission;
 
@@ -22,12 +24,27 @@ namespace Railway.Gameplay.UI
         
         private void OnEnable()
         {
-            BindTextToResource(ResourceType.Gold, UITextFormat.Resources.Gold);
-            BindTextToResource(ResourceType.Workers, UITextFormat.Resources.Workers);
-            BindTextToResource(ResourceType.Church, UITextFormat.Resources.Church);
-            BindTextToResource(ResourceType.SpeedBuilding, UITextFormat.Resources.SpeedBuilding);
-            BindTextToResource(ResourceType.Fuel, UITextFormat.Resources.Fuel);
-            BindTextToResource(ResourceType.TechProgress, UITextFormat.Resources.TechProgress);
+            for (int i = 0; i < _currentResourceTexts.Length; i++)
+            {
+                ResourceType currentResourceType = (ResourceType)i;
+
+                SerializableReactiveProperty<float> currentReactiveProperty = mission.GetCurrentReactiveProperty(currentResourceType);
+
+                currentReactiveProperty
+                    .Subscribe(value => _currentResourceTexts[i].text = value.ToString())
+                    .AddTo(_disposable);
+            }
+            
+            for (int i = 0; i < _addedResourceTexts.Length; i++)
+            {
+                ResourceType currentResourceType = (ResourceType)i;
+
+                SerializableReactiveProperty<float> addedReactiveProperty = mission.GetAddedReactiveProperty(currentResourceType);
+
+                addedReactiveProperty
+                    .Subscribe(value => _addedResourceTexts[i].text = value.ToString())
+                    .AddTo(_disposable);
+            }
         }
 
         private void OnDisable()
@@ -37,8 +54,8 @@ namespace Railway.Gameplay.UI
 
         private void BindTextToResource(ResourceType resourceType, string format)
         {
-            mission.GetReactiveProperty(resourceType)
-                .Subscribe(value => _resourceTexts[(int)resourceType].text =  value.ToString())
+            mission.GetCurrentReactiveProperty(resourceType)
+                .Subscribe(value => _currentResourceTexts[(int)resourceType].text =  value.ToString())
                 .AddTo(_disposable);
         }
 
