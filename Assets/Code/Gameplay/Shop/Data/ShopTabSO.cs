@@ -7,7 +7,7 @@ namespace Railway.Shop.Data
     public enum ShopTabType
     {
         Construction,
-        Building,
+        Railway,
         Workers
     }
     

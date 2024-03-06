@@ -24,27 +24,12 @@ namespace Railway.Gameplay.UI
         
         private void OnEnable()
         {
-            for (int i = 0; i < _currentResourceTexts.Length; i++)
-            {
-                ResourceType currentResourceType = (ResourceType)i;
-
-                SerializableReactiveProperty<float> currentReactiveProperty = mission.GetCurrentReactiveProperty(currentResourceType);
-
-                currentReactiveProperty
-                    .Subscribe(value => _currentResourceTexts[i].text = value.ToString())
-                    .AddTo(_disposable);
-            }
-            
-            for (int i = 0; i < _addedResourceTexts.Length; i++)
-            {
-                ResourceType currentResourceType = (ResourceType)i;
-
-                SerializableReactiveProperty<float> addedReactiveProperty = mission.GetAddedReactiveProperty(currentResourceType);
-
-                addedReactiveProperty
-                    .Subscribe(value => _addedResourceTexts[i].text = value.ToString())
-                    .AddTo(_disposable);
-            }
+            BindTextToCurrentResource(ResourceType.Gold, UITextFormat.Resources.Gold);
+            BindTextToCurrentResource(ResourceType.Workers, UITextFormat.Resources.Workers);
+            BindTextToCurrentResource(ResourceType.Church, UITextFormat.Resources.Church);
+            BindTextToCurrentResource(ResourceType.SpeedBuilding, UITextFormat.Resources.SpeedBuilding);
+            BindTextToCurrentResource(ResourceType.Fuel, UITextFormat.Resources.Fuel);
+            BindTextToCurrentResource(ResourceType.TechProgress, UITextFormat.Resources.TechProgress);
         }
 
         private void OnDisable()
@@ -52,13 +37,17 @@ namespace Railway.Gameplay.UI
             _disposable.Dispose();
         }
 
-        private void BindTextToResource(ResourceType resourceType, string format)
+        private void BindTextToCurrentResource(ResourceType resourceType, string format)
         {
             mission.GetCurrentReactiveProperty(resourceType)
                 .Subscribe(value => _currentResourceTexts[(int)resourceType].text =  value.ToString())
                 .AddTo(_disposable);
+            
+            mission.GetAddedReactiveProperty(resourceType)
+                .Subscribe(value => _addedResourceTexts[(int)resourceType].text =  value.ToString())
+                .AddTo(_disposable);
         }
-
+        
         private string FormatText(string format, float value)
         {
             return format + " " + value;

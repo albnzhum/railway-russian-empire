@@ -20,17 +20,6 @@ namespace Railway.Gameplay
         private void OnEnable()
         {
             Instance = this;
-            
-            /*spline = gameObject.AddComponent<SplineComputer>();
-            _spline.type = Spline.Type.Bezier;
-            
-            splineRenderer = gameObject.AddComponent<SplineRenderer>();
-            splineRenderer.spline = _spline;
-
-            MeshRenderer meshRenderer = gameObject.GetComponent<MeshRenderer>();
-            meshRenderer.material = mat;
-
-            _spline.editorAlwaysDraw = false;*/
         }
         
         public void Build(Vector3 pointPosition)

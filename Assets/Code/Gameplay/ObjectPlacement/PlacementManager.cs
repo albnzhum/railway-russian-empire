@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Dreamteck.Splines;
 using R3;
 using Railway.Events;
 using Railway.Gameplay.Resources;
@@ -36,6 +37,9 @@ namespace Railway.Gameplay
 
         private List<Cell> _availableCell = new List<Cell>();
         Dictionary<ItemType, List<Cell>> _occupiedCells = new Dictionary<ItemType, List<Cell>>();
+
+        private bool isFirstRail = false;
+
         private void OnEnable()
         {
             _tgs = TerrainGridSystem.Instance;
@@ -45,6 +49,8 @@ namespace Railway.Gameplay
             var chooseItemPositionStream = Observable.FromEvent<Vector2>(
                 handler => _inputReader.PlaceItemEvent += handler,
                 handler => _inputReader.PlaceItemEvent -= handler);
+
+            _inputReader.OnCancelEvent += StopPlacing;
 
             var placeItemStream = Observable.FromEvent<Vector2>(
                     handler => _inputReader.PlaceItemEvent += handler,
@@ -95,8 +101,6 @@ namespace Railway.Gameplay
 
         private void PlaceRails()
         {
-            if (_currentCell == null) return;
-
             _tgs.CellSetTag(_currentCell, (int)CellBuildingType.Rails);
 
             ResourcesManager.Instance.Spend(ResourceType.Gold, _currentItem.Price);
@@ -104,7 +108,14 @@ namespace Railway.Gameplay
             _tgs.CellSetCanCross(_tgs.CellGetIndex(_currentCell), false);
 
             var cellPosition = _tgs.CellGetPosition(_currentCell);
-            
+
+            if (!isFirstRail)
+            {
+                RailBuilder.Instance.Build(_startGO.transform.position);
+
+                isFirstRail = true;
+            }
+
             RailBuilder.Instance.Build(cellPosition);
 
             _occupiedCells[_currentItem.ItemType.ItemType].Add(_currentCell);
@@ -114,8 +125,6 @@ namespace Railway.Gameplay
 
         private void PlaceBuilding()
         {
-            if (_currentCell == null) return;
-
             _tgs.CellSetTag(_currentCell, (int)CellBuildingType.Building);
 
             ResourcesManager.Instance.Spend(ResourceType.Gold, _currentItem.Price);
@@ -130,11 +139,50 @@ namespace Railway.Gameplay
             StopPlacing();
         }
 
+        private void PlaceCarriage()
+        {
+            if (_currentCell.tag == (int)CellBuildingType.Rails)
+            {
+                ResourcesManager.Instance.Spend(ResourceType.Gold, _currentItem.Price);
+
+                var cellPosition = _tgs.CellGetPosition(_currentCell);
+                Instantiate(_currentItem.Prefab, cellPosition, Quaternion.identity);
+
+                _occupiedCells[_currentItem.ItemType.ItemType].Add(_currentCell);
+            }
+            else
+            {
+                Debug.LogError("Carriage can't be placing!");
+            }
+
+            StopPlacing();
+        }
+
+        private void PlaceLocomotive()
+        {
+            if (_currentCell.tag == (int)CellBuildingType.Rails)
+            {
+                ResourcesManager.Instance.Spend(ResourceType.Gold, _currentItem.Price);
+                
+                var cellPosition = _tgs.CellGetPosition(_currentCell);
+                GameObject locomotive = Instantiate(_currentItem.Prefab, cellPosition, Quaternion.identity);
+                locomotive.GetComponentInChildren<SplineFollower>().spline = RailBuilder.Instance._spline;
+
+                _occupiedCells[_currentItem.ItemType.ItemType].Add(_currentCell);
+            }
+            else
+            {
+                Debug.LogError("Locomotive can't be placing!");
+            }
+
+            StopPlacing();
+        }
+
         private void PlaceItem(Vector2 mousePosition)
         {
             if (_currentCell == null) return;
 
-            if (_currentCell.tag == 0)
+            if (_currentCell.tag != 1)
             {
                 if (_availableCell.Contains(_currentCell))
                 {
@@ -148,6 +196,12 @@ namespace Railway.Gameplay
                             break;
                         case ItemType.Building:
                             PlaceBuilding();
+                            break;
+                        case ItemType.Carriage:
+                            PlaceCarriage();
+                            break;
+                        case ItemType.Locomotive:
+                            PlaceLocomotive();
                             break;
                     }
                 }
@@ -180,6 +234,8 @@ namespace Railway.Gameplay
             if (isPlacing)
             {
                 isPlacing = false;
+                
+                Debug.Log("Stop placing");
 
                 foreach (var cell in _availableCell)
                 {
@@ -204,8 +260,18 @@ namespace Railway.Gameplay
                 _occupiedCells[_currentItem.ItemType.ItemType] = new List<Cell>();
                 cells = _occupiedCells[_currentItem.ItemType.ItemType];
             }
-
-            _availableCell = cells.Any() ? _tgs.CellGetNeighbours(cells.Last()) : _tgs.CellGetNeighbours(_startGO.CellIndex);
+            
+            if (_currentItem.ItemType.ItemType == ItemType.Locomotive)
+            {
+                _availableCell = _tgs.Cells
+                    .Where(x => _tgs.CellGetTag(_tgs.CellGetIndex(x)) == (int)CellBuildingType.Rails).ToList();
+            }
+            else
+            {
+                _availableCell = cells.Any()
+                    ? _tgs.CellGetNeighbours(cells.Last())
+                    : _tgs.CellGetNeighbours(_startGO.CellIndex);
+            }
 
             foreach (var cell in _availableCell)
             {
@@ -213,7 +279,6 @@ namespace Railway.Gameplay
                 _tgs.CellToggleRegionSurface(index, true, Color.green);
             }
         }
-
 
         /// <summary>
         /// Устанавливает текущий предмет

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a889ba8e230836848acb1cc171d8bd95, type: 3}
   m_Name: Locomotive
   m_EditorClassIdentifier: 
-  _tabType: {fileID: 11400000, guid: 9a449b0f5c23d0c418a357bbdccd9bc1, type: 2}
-  _itemType: 4
+  _tabType: {fileID: 11400000, guid: c82975ca49c59cd40948d51e7be99bfe, type: 2}
+  _itemType: 2

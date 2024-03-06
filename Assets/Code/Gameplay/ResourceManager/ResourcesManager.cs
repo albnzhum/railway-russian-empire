@@ -46,7 +46,7 @@ namespace Railway.Gameplay.Resources
         
         public void Add(ResourceType resourceType, float amount)
         {
-            _mission.GetCurrentReactiveProperty(resourceType).Value += amount;
+            _mission.GetAddedReactiveProperty(resourceType).Value += amount;
         }
 
         public void Spend(ResourceType resourceType, float amount)

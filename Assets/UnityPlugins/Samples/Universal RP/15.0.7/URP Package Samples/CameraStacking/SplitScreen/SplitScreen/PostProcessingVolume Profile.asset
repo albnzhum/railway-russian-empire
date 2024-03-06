@@ -21,7 +21,7 @@ MonoBehaviour:
     m_Value: {x: 0.5, y: 0.5}
   intensity:
     m_OverrideState: 1
-    m_Value: 0.443
+    m_Value: 0.343
   smoothness:
     m_OverrideState: 1
     m_Value: 0.2
@@ -74,93 +74,6 @@ MonoBehaviour:
   bladeRotation:
     m_OverrideState: 1
     m_Value: 0
---- !u!114 &-4707979863718659512
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b2db86121404754db890f4c8dfe81b2, type: 3}
-  m_Name: Bloom
-  m_EditorClassIdentifier: 
-  active: 1
-  skipIterations:
-    m_OverrideState: 0
-    m_Value: 1
-  threshold:
-    m_OverrideState: 1
-    m_Value: 0.82
-  intensity:
-    m_OverrideState: 1
-    m_Value: 2.09
-  scatter:
-    m_OverrideState: 0
-    m_Value: 0.7
-  clamp:
-    m_OverrideState: 0
-    m_Value: 65472
-  tint:
-    m_OverrideState: 1
-    m_Value: {r: 1, g: 1, b: 1, a: 1}
-  highQualityFiltering:
-    m_OverrideState: 0
-    m_Value: 0
-  downscale:
-    m_OverrideState: 0
-    m_Value: 0
-  maxIterations:
-    m_OverrideState: 0
-    m_Value: 6
-  dirtTexture:
-    m_OverrideState: 0
-    m_Value: {fileID: 0}
-    dimension: 1
-  dirtIntensity:
-    m_OverrideState: 0
-    m_Value: 0
---- !u!114 &-1501652841917708971
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 97c23e3b12dc18c42a140437e53d3951, type: 3}
-  m_Name: Tonemapping
-  m_EditorClassIdentifier: 
-  active: 1
-  mode:
-    m_OverrideState: 1
-    m_Value: 1
-  neutralHDRRangeReductionMode:
-    m_OverrideState: 0
-    m_Value: 2
-  acesPreset:
-    m_OverrideState: 0
-    m_Value: 3
-  hueShiftAmount:
-    m_OverrideState: 0
-    m_Value: 0
-  detectPaperWhite:
-    m_OverrideState: 0
-    m_Value: 0
-  paperWhite:
-    m_OverrideState: 0
-    m_Value: 300
-  detectBrightnessLimits:
-    m_OverrideState: 0
-    m_Value: 1
-  minNits:
-    m_OverrideState: 0
-    m_Value: 0.005
-  maxNits:
-    m_OverrideState: 0
-    m_Value: 1000
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -174,9 +87,7 @@ MonoBehaviour:
   m_Name: PostProcessingVolume Profile
   m_EditorClassIdentifier: 
   components:
-  - {fileID: -4707979863718659512}
   - {fileID: -8946198377596043772}
-  - {fileID: -1501652841917708971}
   - {fileID: 5182753418167822985}
   - {fileID: 5940278601286492135}
   - {fileID: -7536501985685142498}
@@ -196,13 +107,13 @@ MonoBehaviour:
   active: 1
   lift:
     m_OverrideState: 0
-    m_Value: {x: 1, y: 1, z: 1, w: 0.009930414}
+    m_Value: {x: 1, y: 1, z: 1, w: -0.0950571}
   gamma:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: 0.01986097}
+    m_Value: {x: 1, y: 1, z: 1, w: -0.07604562}
   gain:
-    m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: -0.029791454}
+    m_OverrideState: 0
+    m_Value: {x: 1, y: 1, z: 1, w: 0.64638776}
 --- !u!114 &5182753418167822985
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -218,19 +129,19 @@ MonoBehaviour:
   active: 1
   postExposure:
     m_OverrideState: 1
-    m_Value: 0.3
+    m_Value: 0.74
   contrast:
     m_OverrideState: 1
-    m_Value: 13
+    m_Value: 5
   colorFilter:
     m_OverrideState: 1
-    m_Value: {r: 1, g: 0.97251385, b: 0.8915094, a: 1}
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
   hueShift:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 0
   saturation:
     m_OverrideState: 1
-    m_Value: 5
+    m_Value: 12
 --- !u!114 &5940278601286492135
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -246,22 +157,22 @@ MonoBehaviour:
   active: 1
   shadows:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 0.9897488, z: 0.9734637, w: -0.20854028}
+    m_Value: {x: 1, y: 0.9897488, z: 0.9734637, w: -0.09505711}
   midtones:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: 0.029791452}
+    m_Value: {x: 1, y: 1, z: 1, w: 0.019011404}
   highlights:
     m_OverrideState: 0
-    m_Value: {x: 1, y: 1, z: 1, w: 0.069513395}
+    m_Value: {x: 1, y: 1, z: 1, w: -0.4752851}
   shadowsStart:
     m_OverrideState: 1
     m_Value: 0
   shadowsEnd:
-    m_OverrideState: 0
-    m_Value: 0.11
+    m_OverrideState: 1
+    m_Value: 0.36
   highlightsStart:
     m_OverrideState: 1
-    m_Value: 0.55
+    m_Value: 0.56
   highlightsEnd:
     m_OverrideState: 1
     m_Value: 1

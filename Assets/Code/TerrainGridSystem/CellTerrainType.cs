@@ -5,8 +5,8 @@ using UnityEngine;
 
 public enum CellType
 {
-    Default = 1,
-    SlopeAndWater = 2
+    Default = 6,
+    SlopeAndWater = 1
 }
 
 public class CellTerrainType : MonoBehaviour

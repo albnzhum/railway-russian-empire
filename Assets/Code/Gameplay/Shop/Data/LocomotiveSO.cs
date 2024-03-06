@@ -6,14 +6,14 @@ namespace Railway.Shop.Data
     public class LocomotiveSO : ShopItem
     {
         [Header("Metrics")]
-        private Country _country;
-        private Factory _factory;
-        private int _lifeSpan;
-        private int _power;
-        private TechnicalState _technicalState;
+        [SerializeField] private Country _country;
+        [SerializeField] private Factory _factory;
+        [SerializeField] private int _lifeSpan;
+        [SerializeField] private int _power;
+        [SerializeField] private TechnicalState _technicalState;
 
         [Header("General")] 
-        private int _monthsBeforeMaintenance;
+        [SerializeField] private int _monthsBeforeMaintenance;
         
         public Country Country => _country;
         public Factory _Factory => _factory;

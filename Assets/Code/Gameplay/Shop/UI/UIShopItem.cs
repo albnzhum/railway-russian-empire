@@ -1,5 +1,6 @@
 using System;
 using Railway.Shop.Data;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -9,8 +10,8 @@ namespace Railway.Shop.UI
 {
     public class UIShopItem : MonoBehaviour
     {
-        [SerializeField] private Text _itemName = default;
-        [SerializeField] private Text _itemPrice = default;
+        [SerializeField] private TMP_Text _itemName = default;
+        [SerializeField] private TMP_Text _itemPrice = default;
         [SerializeField] private Image _bgImage = default;
         [SerializeField] private Button _itemButton = default;
 
@@ -43,6 +44,7 @@ namespace Railway.Shop.UI
 
             _itemName.text = itemStack.Item.Name;
             _itemPrice.text = itemStack.Item.Price.ToString();
+            _bgImage.sprite = itemStack.Item.Sprite;
         }
         
         public void SelectFirstElement()

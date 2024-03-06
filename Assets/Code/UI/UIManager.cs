@@ -41,6 +41,7 @@ namespace Railway.UI
             _onLocationLoadedEvent.OnEventRaised += ShowUI;
 
             _hud.OpenShopEvent += SetShopScreen;
+            _hud.OpenSettingsEvent += OpenUIPause;
         }
 
         private void OnDisable()
@@ -56,7 +57,6 @@ namespace Railway.UI
         private void ShowUI(bool isLoading)
         {
             _uiResources.gameObject.SetActive(isLoading);
-            _hud.gameObject.SetActive(isLoading);
         }
 
         private void OpenUIPause()

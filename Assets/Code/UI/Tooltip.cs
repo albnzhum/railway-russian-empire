@@ -1,12 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Tooltip : MonoBehaviour
 {
-    [SerializeField] private Text _tooltipText;
+    [SerializeField] private TMP_Text _tooltipText;
     [SerializeField] private RectTransform backgroundRectTransform;
 
     private static Tooltip Instance;
