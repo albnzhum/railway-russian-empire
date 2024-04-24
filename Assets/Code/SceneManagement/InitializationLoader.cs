@@ -21,7 +21,6 @@ namespace Railway.SceneManagement
 
         private void Start()
         {
-            //Load the persistent managers scene
             _managersScene.sceneReference.LoadSceneAsync(LoadSceneMode.Additive, true).Completed += LoadEventChannel;
         }
 
@@ -34,7 +33,7 @@ namespace Railway.SceneManagement
         {
             obj.Result.RaiseEvent(_menuToLoad, true);
 
-            SceneManager.UnloadSceneAsync(0); //Initialization is the only scene in BuildSettings, thus it has index 0
+            SceneManager.UnloadSceneAsync(0);
         }
     }
 }

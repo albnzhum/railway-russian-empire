@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using R3;
 using Railway.Gameplay.UI;
-using UnityEngine.Serialization;
 
 namespace Railway.Components
 {
@@ -21,7 +20,7 @@ namespace Railway.Components
         private Resources _currentResources = null;
         public Resources CurrentResources
         {
-            get => _currentResources ?? (_currentResources = new Resources(OriginalResources));
+            get => _currentResources ??= new Resources(OriginalResources);
             set => _currentResources = value;
         }
         

@@ -7,7 +7,6 @@ namespace Railway.GlobalData
 {
     public class TimeSystem : MonoBehaviour
     {
-        [SerializeField] private LevelDifficultySO _levelDifficulty;
         [SerializeField] private GameStateSO _gameState;
 
         [SerializeField] private TimeComponent _time;

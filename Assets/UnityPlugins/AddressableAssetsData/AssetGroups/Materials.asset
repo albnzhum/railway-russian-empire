@@ -52,41 +52,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 40401723380d7d84a9731d96116ac443
-    m_Address: Assets/Content/CsarskoeSelo/Buildings/House/Materials/M_House1.mat
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 1586f8c0dd3cfa64982ee39e8eff8a42
-    m_Address: Assets/Content/CsarskoeSelo/Buildings/House/Materials/M_house7.mat
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 4710aacf4e34823428be426287a64469
-    m_Address: Assets/Content/CsarskoeSelo/Buildings/House/Materials/M_House8.mat
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 4729907f0f7363e4497557338cd2c93a
-    m_Address: Assets/Content/CsarskoeSelo/Buildings/House/Materials/M_House9.mat
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: cb56170c1c672a34c838a65c1c5a09d4
-    m_Address: Assets/Content/CsarskoeSelo/Buildings/House/Materials/M_house6.mat
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 8d4da081d6cd6a44f890ca4f03fd51b9
-    m_Address: Assets/Content/CsarskoeSelo/Buildings/House/Materials/M_House5.mat
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 6ff7417b257af6b4da0e248e4fb1b378
-    m_Address: Assets/Content/CsarskoeSelo/Buildings/House/Materials/M_House4.mat
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 293396c9201aa7141b43dbbbd9dc6e3b
     m_Address: Assets/Content/CsarskoeSelo/Buildings/IsaacSobor/Materials/M_IssacSobor_Base.mat
     m_ReadOnly: 0

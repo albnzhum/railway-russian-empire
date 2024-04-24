@@ -17,9 +17,7 @@ public class ObjectPlacement : MonoBehaviour
 {
     private List<PlacingObject> _objectsToPlace;
     private TerrainGridSystem _tgs;
-
-    public PathfinderManager _Pathfinder;
-
+    
     private void OnEnable()
     {
         _tgs = TerrainGridSystem.Instance;
@@ -48,7 +46,5 @@ public class ObjectPlacement : MonoBehaviour
 
         _tgs.CellSetCanCross(_objectsToPlace[0].CellIndex, true);
         _tgs.CellSetCanCross(_objectsToPlace[^1].CellIndex, true);
-
-        //_Pathfinder.BuildPath();
     }
 }

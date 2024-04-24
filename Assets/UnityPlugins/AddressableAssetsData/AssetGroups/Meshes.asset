@@ -27,11 +27,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 54e4da8122324a942ac6c29a9886975e
-    m_Address: Assets/Content/CsarskoeSelo/Buildings/House/SM_House.fbx
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 97b974ffcb311d043b9e47ae0bffcc0c
     m_Address: Assets/Content/CsarskoeSelo/Buildings/IsaacSobor/SM_IssacSobor.fbx
     m_ReadOnly: 0
@@ -139,16 +134,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a1e10679b2ea3f74bba95d9c1bbcf36b
     m_Address: Assets/Content/CsarskoeSelo/People/Static Meshes/SM_Peasant_1.fbx
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 4b310de77f43d3741b63ef4ccb5f49dc
-    m_Address: Assets/Content/CsarskoeSelo/Buildings/Castle/SM_Castle.FBX
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 3d7fea031977fb347a1304f76b67a24a
-    m_Address: Assets/Content/CsarskoeSelo/Buildings/Bolshoi/SM_Bolshoi.fbx
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

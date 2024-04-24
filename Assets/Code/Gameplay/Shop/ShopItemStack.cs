@@ -28,6 +28,5 @@ namespace Railway.Shop.Data
         {
             _item = item;
         }
-
     }
 }

@@ -21,9 +21,9 @@ namespace Railway.Gameplay
         [SerializeField] private GameStateSO _gameState;
         [SerializeField] private ItemEventChannel _useItemEvent;
 
-        [SerializeField] private CellEnterEventSO _cellEnter;
         [SerializeField] private Camera _camera;
         [SerializeField] private PlacingObject _startGO;
+        [SerializeField] private GameObject _particleSystem;
 
         private TerrainGridSystem _tgs;
 
@@ -89,6 +89,9 @@ namespace Railway.Gameplay
                 var cellPosition = _tgs.CellGetPosition(_currentCell);
                 Instantiate(_currentItem.Prefab, cellPosition, Quaternion.identity);
 
+                GameObject ps = Instantiate(_particleSystem, cellPosition, Quaternion.identity);
+                ps.transform.position = cellPosition;
+
                 _occupiedCells[_currentItem.ItemType.ItemType].Add(_currentCell);
             }
             else
@@ -134,6 +137,9 @@ namespace Railway.Gameplay
             var cellPosition = _tgs.CellGetPosition(_currentCell);
             Instantiate(_currentItem.Prefab, cellPosition, Quaternion.identity);
 
+            GameObject ps = Instantiate(_particleSystem, cellPosition, Quaternion.identity);
+            ps.transform.position = cellPosition;
+
             _occupiedCells[_currentItem.ItemType.ItemType].Add(_currentCell);
 
             StopPlacing();
@@ -147,6 +153,9 @@ namespace Railway.Gameplay
 
                 var cellPosition = _tgs.CellGetPosition(_currentCell);
                 Instantiate(_currentItem.Prefab, cellPosition, Quaternion.identity);
+
+                GameObject ps = Instantiate(_particleSystem, cellPosition, Quaternion.identity);
+                ps.transform.position = cellPosition;
 
                 _occupiedCells[_currentItem.ItemType.ItemType].Add(_currentCell);
             }
@@ -163,10 +172,13 @@ namespace Railway.Gameplay
             if (_currentCell.tag == (int)CellBuildingType.Rails)
             {
                 ResourcesManager.Instance.Spend(ResourceType.Gold, _currentItem.Price);
-                
+
                 var cellPosition = _tgs.CellGetPosition(_currentCell);
                 GameObject locomotive = Instantiate(_currentItem.Prefab, cellPosition, Quaternion.identity);
                 locomotive.GetComponentInChildren<SplineFollower>().spline = RailBuilder.Instance._spline;
+
+                GameObject ps = Instantiate(_particleSystem, cellPosition, Quaternion.identity);
+                ps.transform.position = cellPosition;
 
                 _occupiedCells[_currentItem.ItemType.ItemType].Add(_currentCell);
             }
@@ -235,8 +247,6 @@ namespace Railway.Gameplay
             {
                 isPlacing = false;
                 
-                Debug.Log("Stop placing");
-
                 foreach (var cell in _availableCell)
                 {
                     int index = _tgs.CellGetIndex(cell);
@@ -260,7 +270,7 @@ namespace Railway.Gameplay
                 _occupiedCells[_currentItem.ItemType.ItemType] = new List<Cell>();
                 cells = _occupiedCells[_currentItem.ItemType.ItemType];
             }
-            
+
             if (_currentItem.ItemType.ItemType == ItemType.Locomotive)
             {
                 _availableCell = _tgs.Cells

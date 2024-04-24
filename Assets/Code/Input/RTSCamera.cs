@@ -1,4 +1,5 @@
 using System;
+using Cinemachine;
 using Railway.Input;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -45,7 +46,7 @@ public class RTSCamera : MonoBehaviour
 
     private void Awake()
     {
-        cameraTransform = GetComponentInChildren<Camera>().transform;
+        cameraTransform = GetComponentInChildren<CinemachineVirtualCamera>().transform;
     }
 
     private void OnEnable()
