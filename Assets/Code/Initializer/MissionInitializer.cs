@@ -12,18 +12,19 @@ namespace Railway.Components
         [SerializeField] private string _name;
         [SerializeField] private List<CityInitializer> _cities;
         [SerializeField] private Resources _originalResources;
+
         public string Name => _name;
         public List<CityInitializer> Cities => _cities;
-
         public Resources OriginalResources => _originalResources;
-        
+
         private Resources _currentResources = null;
+
         public Resources CurrentResources
         {
             get => _currentResources ??= new Resources(OriginalResources);
             set => _currentResources = value;
         }
-        
+
         public SerializableReactiveProperty<float> GetCurrentReactiveProperty(ResourceType resourceType)
         {
             switch (resourceType)
@@ -40,12 +41,12 @@ namespace Railway.Components
                     return CurrentResources.TechProgress.CurrentValue;
                 case ResourceType.SpeedBuilding:
                     return CurrentResources.SpeedBuilding.CurrentValue;
-                
+
                 default:
                     throw new ArgumentOutOfRangeException(nameof(resourceType), resourceType, null);
             }
         }
-        
+
         public SerializableReactiveProperty<float> GetAddedReactiveProperty(ResourceType resourceType)
         {
             switch (resourceType)
@@ -62,12 +63,12 @@ namespace Railway.Components
                     return CurrentResources.TechProgress.AddedValue;
                 case ResourceType.SpeedBuilding:
                     return CurrentResources.SpeedBuilding.AddedValue;
-                
+
                 default:
                     throw new ArgumentOutOfRangeException(nameof(resourceType), resourceType, null);
             }
         }
-        
+
         [System.Serializable]
         public class Resources
         {
@@ -77,7 +78,7 @@ namespace Railway.Components
             public ResourceStat Fuel;
             public ResourceStat TechProgress;
             public ResourceStat SpeedBuilding;
-            
+
             public Resources(Resources original)
             {
                 Gold = new ResourceStat(original.Gold.CurrentValue);
@@ -88,17 +89,19 @@ namespace Railway.Components
                 TechProgress = new ResourceStat(original.TechProgress.CurrentValue);
             }
         }
-        
+
         [System.Serializable]
         public class ResourceStat
         {
             public SerializableReactiveProperty<float> CurrentValue;
-           public SerializableReactiveProperty<float> AddedValue;
+            public SerializableReactiveProperty<float> AddedValue;
 
-            public ResourceStat(SerializableReactiveProperty<float> currentValue, SerializableReactiveProperty<float> addedValue = null)
+            public ResourceStat(SerializableReactiveProperty<float> currentValue,
+                SerializableReactiveProperty<float> addedValue = null)
             {
                 this.CurrentValue = currentValue;
-                this.AddedValue = addedValue ?? new SerializableReactiveProperty<float>(0f);;
+                this.AddedValue = addedValue ?? new SerializableReactiveProperty<float>(0f);
+                ;
             }
         }
     }

@@ -46,7 +46,7 @@ public class RTSCamera : MonoBehaviour
 
     private void Awake()
     {
-        cameraTransform = GetComponentInChildren<CinemachineVirtualCamera>().transform;
+        cameraTransform = GetComponentInChildren<Camera>().transform;
     }
 
     private void OnEnable()

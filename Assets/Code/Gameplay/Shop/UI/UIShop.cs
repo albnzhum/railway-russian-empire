@@ -88,7 +88,7 @@ namespace Railway.Shop.UI
             {
                 SetTabs(_tabTypesList, _selectedTab);
                 List<ShopItemStack> listItemsToShow = new List<ShopItemStack>();
-                listItemsToShow = _shop.Items.FindAll(o => o.Item.ItemType.TabType == _selectedTab);
+                listItemsToShow = _shop.Items.FindAll(o => o.Item.TabType.TabType == _selectedTab);
 
                 FillShopItems(listItemsToShow);
             }

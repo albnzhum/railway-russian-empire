@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Railway.Shop.Data
 {
@@ -10,14 +11,14 @@ namespace Railway.Shop.Data
         [SerializeField] private string _name;
         [SerializeField] private float _price;
         [SerializeField] private GameObject _prefab;
-        [SerializeField] private ItemTypeSO _itemType;
+        [FormerlySerializedAs("_itemType")] [SerializeField] private ItemTypeSO tabType;
         [SerializeField] private int _amount;
         [SerializeField] private Sprite _sprite;
         
         public string Name => _name;
         public float Price => _price;
         public GameObject Prefab => _prefab;
-        public ItemTypeSO ItemType => _itemType;
+        public ItemTypeSO TabType => tabType;
         public int Amount => _amount;
         public Sprite Sprite => _sprite;
 
