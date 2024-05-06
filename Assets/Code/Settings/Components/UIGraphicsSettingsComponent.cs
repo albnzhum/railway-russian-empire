@@ -35,5 +35,7 @@ namespace Settings
         public event UnityAction<int, int, float, bool> Save = delegate(int arg0, int i, float f, bool arg3) {  };
 
         private Resolution _currentResolution;
+        
+        
     }
 }

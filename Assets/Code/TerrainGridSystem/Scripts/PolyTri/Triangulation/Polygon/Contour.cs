@@ -45,55 +45,55 @@ namespace TGS.Poly2Tri {
 		private string mName = "";
 
 		public new TriangulationPoint this [int index] {
-			get { return mPoints [index] as TriangulationPoint; }
-			set { mPoints [index] = value; }
+			get => mPoints [index] as TriangulationPoint;
+			set => mPoints [index] = value;
 		}
 
-		public string Name { get { return mName; } set { mName = value; } }
+		public string Name { get => mName;
+			set => mName = value;
+		}
 
 		public IList<DelaunayTriangle> Triangles {
-			get {
-				throw new NotImplementedException ("PolyHole.Triangles should never get called");
-			}
+			get => throw new NotImplementedException ("PolyHole.Triangles should never get called");
 			private set { }
 		}
 
-		public TriangulationMode TriangulationMode { get { return mParent.TriangulationMode; } }
+		public TriangulationMode TriangulationMode => mParent.TriangulationMode;
 
 		public string FileName {
-			get { return mParent.FileName; }
+			get => mParent.FileName;
 			set { }
 		}
 
 		public bool DisplayFlipX {
-			get { return mParent.DisplayFlipX; }
+			get => mParent.DisplayFlipX;
 			set { }
 		}
 
 		public bool DisplayFlipY {
-			get { return mParent.DisplayFlipY; }
+			get => mParent.DisplayFlipY;
 			set { }
 		}
 
 		public float DisplayRotate {
-			get { return mParent.DisplayRotate; }
+			get => mParent.DisplayRotate;
 			set { }
 		}
 
 		public double Precision {
-			get { return mParent.Precision; }
+			get => mParent.Precision;
 			set { }
 		}
 
-		public double MinX { get { return mBoundingBox.MinX; } }
+		public double MinX => mBoundingBox.MinX;
 
-		public double MaxX { get { return mBoundingBox.MaxX; } }
+		public double MaxX => mBoundingBox.MaxX;
 
-		public double MinY { get { return mBoundingBox.MinY; } }
+		public double MinY => mBoundingBox.MinY;
 
-		public double MaxY { get { return mBoundingBox.MaxY; } }
+		public double MaxY => mBoundingBox.MaxY;
 
-		public Rect2D Bounds { get { return mBoundingBox; } }
+		public Rect2D Bounds => mBoundingBox;
 
 		public Contour (ITriangulatable parent) {
 			mParent = parent;

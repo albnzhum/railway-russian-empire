@@ -4,6 +4,7 @@ using Railway.Input;
 using Railway.Shop.Data;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace Railway.Shop.UI
 {
@@ -12,10 +13,8 @@ namespace Railway.Shop.UI
         public UnityAction Closed;
 
         [SerializeField] private ShopSO _shop;
-        [SerializeField] private UIShopItem _itemPrefab;
-        [SerializeField] private GameObject _contentParent;
-        [SerializeField] private List<ShopTabSO> _tabTypesList = new List<ShopTabSO>();
-        [SerializeField] private List<UIShopItem> _availableItemSlots = default;
+        [SerializeField] private List<ShopTabSO> tabTypesList = new List<ShopTabSO>();
+        [SerializeField] private List<UIShopItem> availableItemSlots = default;
 
         [Header("Gameplay")] 
         [SerializeField] private InputReader _inputReader;
@@ -36,9 +35,9 @@ namespace Railway.Shop.UI
         {
             _tabsPanel.TabChanged += OnChangeTab;
 
-            for (int i = 0; i < _availableItemSlots.Count; i++)
+            for (int i = 0; i < availableItemSlots.Count; i++)
             {
-                _availableItemSlots[i].ItemSelected += InspectItem;
+                availableItemSlots[i].ItemSelected += InspectItem;
             }
 
             _inputReader.TabSwitched += OnSwitchTab;
@@ -48,9 +47,9 @@ namespace Railway.Shop.UI
         {
             _tabsPanel.TabChanged -= OnChangeTab;
 
-            for (int i = 0; i < _availableItemSlots.Count; i++)
+            for (int i = 0; i < availableItemSlots.Count; i++)
             {
-                _availableItemSlots[i].ItemSelected -= InspectItem;
+                availableItemSlots[i].ItemSelected -= InspectItem;
             }
             
             _inputReader.TabSwitched -= OnSwitchTab;
@@ -61,7 +60,7 @@ namespace Railway.Shop.UI
             if (orientation != 0)
             {
                 bool isLeft = orientation < 0;
-                int initialIndex = _tabTypesList.FindIndex(o => o == _selectedTab);
+                int initialIndex = tabTypesList.FindIndex(o => o == _selectedTab);
                 if (initialIndex != -1)
                 {
                     if (isLeft)
@@ -73,20 +72,20 @@ namespace Railway.Shop.UI
                         initialIndex++;
                     }
 
-                    initialIndex = Mathf.Clamp(initialIndex, 0, _tabTypesList.Count - 1);
+                    initialIndex = Mathf.Clamp(initialIndex, 0, tabTypesList.Count - 1);
                 }
 
-                OnChangeTab(_tabTypesList[initialIndex]);
+                OnChangeTab(tabTypesList[initialIndex]);
             }
         }
 
         public void FillInventory(ShopTabType _selectedType = ShopTabType.Workers)
         {
-            _selectedTab = _tabTypesList.Find(o => o.TabType == _selectedType) ?? _tabTypesList[0];
+            _selectedTab = tabTypesList.Find(o => o.TabType == _selectedType) ?? tabTypesList[0];
 
             if (_selectedTab != null)
             {
-                SetTabs(_tabTypesList, _selectedTab);
+                SetTabs(tabTypesList, _selectedTab);
                 List<ShopItemStack> listItemsToShow = new List<ShopItemStack>();
                 listItemsToShow = _shop.Items.FindAll(o => o.Item.TabType.TabType == _selectedTab);
 
@@ -105,21 +104,21 @@ namespace Railway.Shop.UI
 
         private void FillShopItems(List<ShopItemStack> listItemsToShow)
         {
-            if (_availableItemSlots == null)
-                _availableItemSlots = new List<UIShopItem>();
+            if (availableItemSlots == null)
+                availableItemSlots = new List<UIShopItem>();
 
-            int maxCount = Mathf.Max(listItemsToShow.Count, _availableItemSlots.Count);
+            int maxCount = Mathf.Max(listItemsToShow.Count, availableItemSlots.Count);
 
             for (int i = 0; i < maxCount; i++)
             {
                 if (i < listItemsToShow.Count)
                 {
                     bool isSelected = selectedItemId == i;
-                    _availableItemSlots[i].SetItem(listItemsToShow[i], isSelected);
+                    availableItemSlots[i].SetItem(listItemsToShow[i], isSelected);
                 }
-                else if (i < _availableItemSlots.Count)
+                else if (i < availableItemSlots.Count)
                 {
-                    _availableItemSlots[i].SetInactiveItem();
+                    availableItemSlots[i].SetInactiveItem();
                 }
             }
 
@@ -128,59 +127,18 @@ namespace Railway.Shop.UI
                 selectedItemId = -1;
             }
         }
-
-        private void UpdateItemInInventory(ShopItemStack itemToUpdate, bool removeItem)
-        {
-            if (_availableItemSlots == null)
-            {
-                _availableItemSlots = new List<UIShopItem>();
-            }
-
-            if (removeItem)
-            {
-                if (_availableItemSlots.Exists(o => o.currentItem == itemToUpdate))
-                {
-                    int index = _availableItemSlots.FindIndex(o => o.currentItem == itemToUpdate);
-                    _availableItemSlots[index].SetInactiveItem();
-                }
-            }
-            else
-            {
-                int index = 0;
-                if (_availableItemSlots.Exists(o => o.currentItem == itemToUpdate))
-                {
-                    index = _availableItemSlots.FindIndex(o => o.currentItem == itemToUpdate);
-                }
-                else
-                {
-                    if (_shop.Items.Count > _availableItemSlots.Count)
-                    {
-                        UIShopItem instantiatedPrefab =
-                            Instantiate(_itemPrefab, _contentParent.transform) as UIShopItem;
-                        _availableItemSlots.Add(instantiatedPrefab);
-                    }
-
-                    index = _shop.Items.Count;
-                }
-
-                bool isSelected = selectedItemId == index;
-                _availableItemSlots[index].SetItem(itemToUpdate, isSelected);
-            }
-        }
-
+        
         private void InspectItem(ShopItem itemToInspect)
         {
-            if (_availableItemSlots.Exists(o => o.currentItem.Item == itemToInspect))
+            if (availableItemSlots.Exists(o => o.currentItem.Item == itemToInspect))
             {
-                int itemIndex = _availableItemSlots.FindIndex(o => o.currentItem.Item == itemToInspect);
+                int itemIndex = availableItemSlots.FindIndex(o => o.currentItem.Item == itemToInspect);
 
                 if (selectedItemId >= 0 && selectedItemId != itemIndex)
                     UnselectItem(selectedItemId);
                 selectedItemId = itemIndex;
 
                 BuyItem(itemToInspect);
-                
-                Debug.Log(selectedItemId);
             }
         }
 
@@ -201,15 +159,10 @@ namespace Railway.Shop.UI
 
         private void UnselectItem(int itemIndex)
         {
-            if (_availableItemSlots.Count > itemIndex)
+            if (availableItemSlots.Count > itemIndex)
             {
-                _availableItemSlots[itemIndex].UnselectItem();
+                availableItemSlots[itemIndex].UnselectItem();
             }
-        }
-
-        void UpdateInventory()
-        {
-            FillInventory(_selectedTab.TabType);
         }
 
         void OnChangeTab(ShopTabSO tabType)
@@ -220,6 +173,9 @@ namespace Railway.Shop.UI
         public void CloseInventory()
         {
             Closed.Invoke();
+
+            _currentItem = null;
+            isItemBuying = false;
         }
     }
 }

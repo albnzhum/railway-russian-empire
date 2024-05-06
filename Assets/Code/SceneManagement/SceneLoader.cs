@@ -116,8 +116,6 @@ namespace Railway.SceneManagement
         {
             if (_sceneToLoad.sceneType == GameSceneSO.GameSceneType.Location)
             {
-                Debug.Log("Location loaded");
-
                 _onLocationLoadedEvent.RaiseEvent(true);
             }
         }
@@ -157,8 +155,6 @@ namespace Railway.SceneManagement
                     _gamePlayScene.sceneReference.LoadSceneAsync(LoadSceneMode.Additive, true);
                 _gameplayManagerLoadingOperationHandle.WaitForCompletion();
                 _gameplayManagerSceneInstance = _gameplayManagerLoadingOperationHandle.Result;
-
-                //StartGameplay();
             }
         }
 #endif

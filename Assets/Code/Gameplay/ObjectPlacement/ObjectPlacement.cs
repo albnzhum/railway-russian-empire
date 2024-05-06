@@ -6,11 +6,11 @@ using UnityEngine;
 
 public enum CellBuildingType
 {
-    NonInteractable = 1,
-    Rails = 2,
-    Workers = 3,
-    Locomotive = 4,
-    Building = 5
+    NON_INTERACTABLE = 1,
+    RAILS = 2,
+    WORKERS = 3,
+    ENGINE = 4,
+    BUILD = 5
 }
 
 public class ObjectPlacement : MonoBehaviour
@@ -35,7 +35,7 @@ public class ObjectPlacement : MonoBehaviour
             {
                 obj.Object.transform.position = _tgs.CellGetPosition(cell);
                 obj.CellIndex = _tgs.CellGetIndex(cell);
-                _tgs.CellSetTag(cell, (int)CellBuildingType.NonInteractable);
+                _tgs.CellSetTag(cell, (int)CellBuildingType.NON_INTERACTABLE);
                 _tgs.CellSetCanCross(obj.CellIndex, false);
             }
             else

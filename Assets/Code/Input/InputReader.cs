@@ -20,6 +20,8 @@ namespace Railway.Input
         public event UnityAction EnableMouseControlCameraEvent = delegate { };
         public event UnityAction DisableMouseControlCameraEvent = delegate { };
         public event UnityAction OnCancelEvent = delegate {  };
+        public event UnityAction MoveSelectionEvent = delegate { };
+        public event UnityAction MenuMouseMoveEvent = delegate { };
         public event UnityAction MenuCloseEvent = delegate {  };
         public event UnityAction MenuPauseEvent = delegate { };
         public event UnityAction MenuUnpauseEvent = delegate { };
@@ -57,6 +59,9 @@ namespace Railway.Input
             _railwayInputs.Menus.Disable();
             _railwayInputs.Tutorials.Disable();
         }
+        
+        public bool LeftMouseDown() => Mouse.current.leftButton.isPressed;
+        
         public void EnableEditInput()
         {
             isGameplayInputEnabled = true;
@@ -148,6 +153,18 @@ namespace Railway.Input
         #endregion
 
         #region MENUS_INPUT
+
+        public void OnMoveSelection(InputAction.CallbackContext context)
+        {
+            if (context.phase == InputActionPhase.Performed)
+                MoveSelectionEvent.Invoke();
+        }
+
+        public void OnMouseMove(InputAction.CallbackContext context)
+        {
+            if (context.phase == InputActionPhase.Performed)
+                MenuMouseMoveEvent.Invoke();
+        }
 
         public void OnCloseShop(InputAction.CallbackContext context)
         {

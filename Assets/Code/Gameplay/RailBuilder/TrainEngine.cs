@@ -23,7 +23,6 @@ namespace Railway.Gameplay
             if (_tracer is SplineFollower)
             {
                 SplineFollower follower = (SplineFollower)_tracer;
-                Debug.Log("Subscribed to followers");
                 follower.onBeginningReached += FollowerOnBeginningReached;
                 follower.onEndReached += FollowerOnEndReached;
             }

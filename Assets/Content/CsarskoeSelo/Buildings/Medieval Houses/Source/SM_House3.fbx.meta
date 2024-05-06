@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 988c86ecf5e7e3c468267393bf5ffb1e
+guid: cfd8ead9afbdbd54bbdbd2c2db0417e8
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,8 +7,18 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: House__02
-    second: {fileID: 2100000, guid: e2aa83a9383d42d4997f5bfe00c26f26, type: 2}
+      name: House_03
+    second: {fileID: 2100000, guid: ebfc2f24356413940933154166c9bde4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: pipe_03
+    second: {fileID: 2100000, guid: f601673857699034da56be99298dfa68, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: roof_03
+    second: {fileID: 2100000, guid: 393c3b48468363a49834a9110a7e574c, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -40,8 +50,8 @@ ModelImporter:
     isReadable: 0
   meshes:
     lODScreenPercentages: []
-    globalScale: 250
-    meshCompression: 3
+    globalScale: 1
+    meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1
@@ -95,7 +105,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 250
+    globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0

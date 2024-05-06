@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1834203249176340707}
   - component: {fileID: 1541810657775159310}
   - component: {fileID: 4434727452884109016}
+  - component: {fileID: 2874303079930566990}
   m_Layer: 0
   m_Name: Provorniy
   m_TagString: Untagged
@@ -176,10 +177,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58cb83cf29da49c7a582f511ae725aa2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tracer: {fileID: 0}
   isEngine: 1
   back: {fileID: 0}
   offset: 0
   front: {fileID: 0}
+--- !u!114 &2874303079930566990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 431294427561887525}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d020eaeba8df4a1091d099cc87277f37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1642216132675128052
 GameObject:
   m_ObjectHideFlags: 0

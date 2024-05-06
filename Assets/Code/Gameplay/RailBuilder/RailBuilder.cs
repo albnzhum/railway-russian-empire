@@ -9,7 +9,7 @@ namespace Railway.Gameplay
 {
     public class RailBuilder : MonoBehaviour
     {
-        [FormerlySerializedAs("_spline")] public SplineComputer spline;
+        public SplineComputer spline;
         
         private List<SplinePoint> spritePoints = new List<SplinePoint>();
         public static RailBuilder Instance { get; private set; }

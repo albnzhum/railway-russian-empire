@@ -3511,13 +3511,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _shop: {fileID: 11400000, guid: d6d8311923ef35147b0fd11d26a5822a, type: 2}
-  _itemPrefab: {fileID: 6902659186104424590, guid: 3a11ad5d7f5819941b395016e4b779c9, type: 3}
-  _contentParent: {fileID: 76167559}
-  _tabTypesList:
+  tabTypesList:
   - {fileID: 11400000, guid: 5f9cf580159195f4bbdb8aeb758781f4, type: 2}
-  - {fileID: 11400000, guid: 9a449b0f5c23d0c418a357bbdccd9bc1, type: 2}
   - {fileID: 11400000, guid: c82975ca49c59cd40948d51e7be99bfe, type: 2}
-  _availableItemSlots:
+  - {fileID: 11400000, guid: 9a449b0f5c23d0c418a357bbdccd9bc1, type: 2}
+  availableItemSlots:
   - {fileID: 5806632499892093400}
   - {fileID: 1907078144}
   - {fileID: 46651908}
@@ -8218,7 +8216,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 147a99ce534c533459aa242f6a704b10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _levelDifficulty: {fileID: 11400000, guid: a6c85c0274d99174db3bfc6f38fffbfd, type: 2}
   _gameState: {fileID: 11400000, guid: f6ab959d7b6f6344e9a16562e598ec37, type: 2}
   _time: {fileID: 11400000, guid: ceb62f2214913ea4b96bb10f78bcfffb, type: 2}
 --- !u!1 &1953125069

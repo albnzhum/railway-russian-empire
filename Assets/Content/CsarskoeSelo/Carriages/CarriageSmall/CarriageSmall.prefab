@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8089716610069674881}
   - component: {fileID: 6569932812393282556}
   - component: {fileID: 7391880541558163497}
+  - component: {fileID: 166180382659679127}
   m_Layer: 0
   m_Name: CarriageSmall
   m_TagString: Untagged
@@ -28,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 116.4303, y: 4.6, z: 185.77756}
-  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_LocalScale: {x: 7, y: 7, z: 7}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6925938173266296701}
@@ -85,7 +86,7 @@ MonoBehaviour:
   animClipFrom: 0
   animClipTo: 1
   multithreaded: 0
-  buildOnAwake: 1
+  buildOnAwake: 0
   buildOnEnable: 0
   applyDirectionRotation: 1
   useTriggers: 0
@@ -118,7 +119,7 @@ MonoBehaviour:
     targetUser: {fileID: 0}
   targetRigidbody: {fileID: 0}
   targetRigidbody2D: {fileID: 0}
-  targetTransform: {fileID: 6925938173266296701}
+  targetTransform: {fileID: 8089716610069674881}
   _result:
     position: {x: 0, y: 0, z: 0}
     up: {x: 0, y: 0, z: 0}
@@ -152,10 +153,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58cb83cf29da49c7a582f511ae725aa2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tracer: {fileID: 0}
   isEngine: 0
   back: {fileID: 0}
-  offset: 7
+  offset: 50
   front: {fileID: 0}
+--- !u!114 &166180382659679127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2977750940014675767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 366d563a8e5d4f66ab1b742dda0ed0ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7464533243743148182
 PrefabInstance:
   m_ObjectHideFlags: 0

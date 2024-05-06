@@ -1,5 +1,7 @@
 using System;
+using R3;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Railway.Shop.Data
 {
@@ -14,18 +16,18 @@ namespace Railway.Shop.Data
     [CreateAssetMenu(fileName = "New Worker Item", menuName = "Shop Data/Worker")]
     public class WorkerSO : ShopItem
     {
-        [SerializeField] private int _count;
-        [SerializeField] private float _salary;
-        [SerializeField] private float _provision;
-        [SerializeField] private float _satisfication;
-        [SerializeField] private float _speedBuilding;
+        [SerializeField] private SerializableReactiveProperty<int> _count;
+        [SerializeField] private SerializableReactiveProperty<float> _salary;
+        [SerializeField] private SerializableReactiveProperty<float> _provision;
+        [SerializeField] private SerializableReactiveProperty<float> _satisfaction;
+        [SerializeField] private SerializableReactiveProperty<float> _speedBuilding;
         [SerializeField] private WorkerType _workerType;
 
-        public int Count => _count;
-        public float Salary => _salary;
-        public float Provision => _provision;
-        public float Satisfication => _satisfication;
-        public float SpeedBuilding => _speedBuilding;
+        public SerializableReactiveProperty<int> Count => _count;
+        public SerializableReactiveProperty<float> Salary => _salary;
+        public SerializableReactiveProperty<float> Provision => _provision;
+        public SerializableReactiveProperty<float> Satisfaction => _satisfaction;
+        public SerializableReactiveProperty<float> SpeedBuilding => _speedBuilding;
         public WorkerType WorkerType => _workerType;
     }
 }

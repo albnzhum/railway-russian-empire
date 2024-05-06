@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 37c339e087413c849b4179ca920a8d65
+guid: b9d4fd2cac542d441845e4cbdba9fbfd
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -8,7 +8,17 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: House_01
-    second: {fileID: 2100000, guid: 6a060b67400ddc54a826645e6059d868, type: 2}
+    second: {fileID: 2100000, guid: d6cd58e89bf788f4aae47695d080b8f0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: pipe_01
+    second: {fileID: 2100000, guid: 9f6d7948b381d564faeab42a1c8e674a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: roof_01
+    second: {fileID: 2100000, guid: b88361b1d785cb94c84c36f1a5c0c32c, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -41,7 +51,7 @@ ModelImporter:
   meshes:
     lODScreenPercentages: []
     globalScale: 1
-    meshCompression: 3
+    meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1

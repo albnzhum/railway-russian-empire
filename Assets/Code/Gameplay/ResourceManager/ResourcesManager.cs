@@ -3,7 +3,7 @@ using Railway.Gameplay.UI;
 using UnityEngine;
 using UnityEditor;
 
-namespace Railway.Gameplay.Resources
+namespace Railway.Gameplay
 {
     public class ResourcesManager : MonoBehaviour
     {
