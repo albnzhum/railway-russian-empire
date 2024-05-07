@@ -15,14 +15,14 @@ namespace Settings
         private float MusicVolume { get; set; }
         private float SfxVolume { get; set; }
         private float MasterVolume { get; set; }
-        
+
         private float _savedMusicVolume { get; set; }
         private float _savedSfxVolume { get; set; }
         private float _savedMasterVolume { get; set; }
 
         private int maxVolume = 10;
-        
-        public UnityAction<float, float, float> Save = delegate(float music, float sfx, float master) {  };
+
+        public UnityAction<float, float, float> Save = delegate(float music, float sfx, float master) { };
 
         private void SetMusicVolume()
         {
@@ -44,7 +44,7 @@ namespace Settings
             _savedMusicVolume = MusicVolume;
             _savedMasterVolume = MasterVolume;
             _savedSfxVolume = SfxVolume;
-            
+
             Save.Invoke(MusicVolume, SfxVolume, MasterVolume);
         }
     }

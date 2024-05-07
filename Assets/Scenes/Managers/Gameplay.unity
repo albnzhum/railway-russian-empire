@@ -820,7 +820,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1432,7 +1432,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3513,8 +3513,8 @@ MonoBehaviour:
   _shop: {fileID: 11400000, guid: d6d8311923ef35147b0fd11d26a5822a, type: 2}
   tabTypesList:
   - {fileID: 11400000, guid: 5f9cf580159195f4bbdb8aeb758781f4, type: 2}
-  - {fileID: 11400000, guid: c82975ca49c59cd40948d51e7be99bfe, type: 2}
   - {fileID: 11400000, guid: 9a449b0f5c23d0c418a357bbdccd9bc1, type: 2}
+  - {fileID: 11400000, guid: c82975ca49c59cd40948d51e7be99bfe, type: 2}
   availableItemSlots:
   - {fileID: 5806632499892093400}
   - {fileID: 1907078144}
@@ -5366,7 +5366,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

@@ -28,17 +28,21 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 using System;
 
-namespace TGS.Poly2Tri {
-	public class PointOnEdgeException : NotImplementedException {
-		public readonly TriangulationPoint A, B, C;
+namespace TGS.Poly2Tri
+{
+    public class PointOnEdgeException : NotImplementedException
+    {
+        public readonly TriangulationPoint A, B, C;
 
-		public PointOnEdgeException (string message, TriangulationPoint a, TriangulationPoint b, TriangulationPoint c)
-            : base(message) {
-			A = a;
-			B = b;
-			C = c;
-		}
-	}
+        public PointOnEdgeException(string message, TriangulationPoint a, TriangulationPoint b, TriangulationPoint c)
+            : base(message)
+        {
+            A = a;
+            B = b;
+            C = c;
+        }
+    }
 }

@@ -3,35 +3,35 @@ using System.Collections;
 using System.Collections.Generic;
 using TGS.Geom;
 
-namespace TGS {
+namespace TGS
+{
+    public partial class Territory : IAdmin
+    {
+        public string name { get; set; }
 
-	public partial class Territory: IAdmin {
+        public Region region { get; set; }
 
-		public string name { get; set; }
+        public Polygon polygon { get; set; }
 
-		public Region region { get; set; }
+        public Vector2 center;
+        public Vector2 scaledCenter;
+        public List<Cell> cells;
+        public Color fillColor = Color.gray;
+        public Color frontierColor = new Color(0, 0, 0, 0);
 
-		public Polygon polygon { get; set; }
+        public bool visible { get; set; }
 
-		public Vector2 center;
-		public Vector2 scaledCenter;
-		public List<Cell> cells;
-		public Color fillColor = Color.gray;
-		public Color frontierColor = new Color(0, 0, 0, 0);
+        public bool neutral { get; set; }
 
-		public bool visible { get; set; }
+        public Territory() : this("")
+        {
+        }
 
-		public bool neutral { get; set; }
-
-		public Territory() : this("") {
-		}
-
-		public Territory(string name) {
-			this.name = name;
-			visible = true;
-			cells = new List<Cell>();
-		}
-
-	}
-
+        public Territory(string name)
+        {
+            this.name = name;
+            visible = true;
+            cells = new List<Cell>();
+        }
+    }
 }

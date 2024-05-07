@@ -21,7 +21,7 @@ namespace Railway.UI
         NewGame,
         BackToMenu
     }
-    
+
     public class UIPopup : MonoBehaviour
     {
         [SerializeField] private Button _buttonClose = default;
@@ -44,7 +44,7 @@ namespace Railway.UI
             _actualType = popupType;
             bool isConfirmation = false;
             bool hasExitButton = false;
-            
+
             switch (_actualType)
             {
                 case PopupType.NewGame:
@@ -61,7 +61,7 @@ namespace Railway.UI
                     hasExitButton = false;
                     break;
             }
-            
+
             if (isConfirmation) // needs two button : Is a decision 
             {
                 _popupButton1.gameObject.SetActive(true);

@@ -13,7 +13,7 @@ namespace Settings
         public float Distance;
         public string TierDescription;
     }
-    
+
     public class UIGraphicsSettingsComponent : MonoBehaviour
     {
         [SerializeField] private List<ShadowDistanceTier> _shadowDistanceTiers = new List<ShadowDistanceTier>();
@@ -31,11 +31,9 @@ namespace Settings
         private List<string> _currentAntiAliasingList;
 
         private int _currentShadowDistanceTier;
-        
-        public event UnityAction<int, int, float, bool> Save = delegate(int arg0, int i, float f, bool arg3) {  };
+
+        public event UnityAction<int, int, float, bool> Save = delegate(int arg0, int i, float f, bool arg3) { };
 
         private Resolution _currentResolution;
-        
-        
     }
 }

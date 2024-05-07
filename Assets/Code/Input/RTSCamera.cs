@@ -11,8 +11,7 @@ public class RTSCamera : MonoBehaviour
 
     private Transform cameraTransform;
 
-    [Header("Horizontal Translation")] 
-    [SerializeField]
+    [Header("Horizontal Translation")] [SerializeField]
     private float maxSpeed = 5f;
 
     private float speed;
@@ -20,19 +19,17 @@ public class RTSCamera : MonoBehaviour
     [SerializeField] private float acceleration = 10f;
     [SerializeField] private float damping = 15f;
 
-    [Header("Vertical Translation")] 
-    [SerializeField] private float stepSize = 2f;
+    [Header("Vertical Translation")] [SerializeField]
+    private float stepSize = 2f;
+
     [SerializeField] private float zoomDampening = 7.5f;
     [SerializeField] private float minHeight = 5f;
     [SerializeField] private float maxHeight = 50f;
     [SerializeField] private float zoomSpeed = 2f;
 
-    [Header("Rotation")] 
-    [SerializeField] private float maxRotationSpeed = 1f;
+    [Header("Rotation")] [SerializeField] private float maxRotationSpeed = 1f;
 
-    [Header("Edge Movement")] 
-    [SerializeField] 
-    [Range(0f, 0.1f)]
+    [Header("Edge Movement")] [SerializeField] [Range(0f, 0.1f)]
     private float edgeTolerance = 0.05f;
 
     private Vector3 targetPosition;
@@ -52,11 +49,11 @@ public class RTSCamera : MonoBehaviour
     private void OnEnable()
     {
         //_inputReader.EnableGameplayInput();
-        
+
         zoomHeight = cameraTransform.localPosition.y;
-        
+
         lastPosition = transform.position;
-        
+
         _inputReader.CameraMoveEvent += ZoomCamera;
     }
 
@@ -72,7 +69,7 @@ public class RTSCamera : MonoBehaviour
         {
             CheckMouseAtScreenEdge();
             DragCamera();
-        
+
             UpdateVelocity();
             UpdateBasePosition();
             UpdateCameraPosition();
@@ -122,7 +119,7 @@ public class RTSCamera : MonoBehaviour
         }
         else
         {
-            horizontalVelocity = Vector3.Lerp(horizontalVelocity, 
+            horizontalVelocity = Vector3.Lerp(horizontalVelocity,
                 Vector3.zero, Time.deltaTime * damping);
             transform.position += horizontalVelocity * Time.deltaTime;
         }
@@ -132,11 +129,11 @@ public class RTSCamera : MonoBehaviour
 
     private void UpdateCameraPosition()
     {
-        Vector3 zoomTarget = new Vector3(cameraTransform.localPosition.x, 
+        Vector3 zoomTarget = new Vector3(cameraTransform.localPosition.x,
             zoomHeight, cameraTransform.localPosition.z);
         zoomTarget -= zoomSpeed * (zoomHeight - cameraTransform.localPosition.y) * Vector3.forward;
-        
-        cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, 
+
+        cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition,
             zoomTarget, Time.deltaTime * zoomDampening);
         //cameraTransform.LookAt(transform);
     }

@@ -9,8 +9,9 @@ namespace Railway.Components
     {
         [SerializeField] private string _name;
         [SerializeField] private int _population;
-        
+
         public string Name => _name;
+
         public int Population
         {
             get => _population;

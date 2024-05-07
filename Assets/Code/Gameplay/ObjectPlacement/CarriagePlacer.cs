@@ -2,18 +2,14 @@
 using Dreamteck.Splines;
 using TGS;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Railway.Gameplay
 {
     public class CarriagePlacer : MonoBehaviour, IPlaceable
     {
         public GameObject Prefab { get; set; }
-        private TerrainGridSystem _tgs;
-
-        private void OnEnable()
-        {
-            _tgs = TerrainGridSystem.Instance;
-        }
+        public TerrainGridSystem TGS { get; set; }
 
         public void Place(Cell cell)
         {
@@ -21,8 +17,8 @@ namespace Railway.Gameplay
             {
                 Debug.LogError("Carriage can't be placing here!");
             }
-            
-            var cellPosition = _tgs.CellGetPosition(cell);
+
+            var cellPosition = TGS.CellGetPosition(cell);
             var currentWagon = Instantiate(Prefab, cellPosition, Quaternion.identity);
             currentWagon.GetComponentInChildren<SplinePositioner>().spline = RailBuilder.Instance.spline;
         }

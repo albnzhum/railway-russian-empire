@@ -28,24 +28,42 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 using System.Collections.Generic;
 
-namespace TGS.Poly2Tri {
-	public class DTSweepPointComparator : IComparer<TriangulationPoint> {
-		public int Compare (TriangulationPoint p1, TriangulationPoint p2) {
-			if (p1.Y < p2.Y) { // - Point2D.PRECISION) { // TODO: Added by Kronnect Games
-				return -1;
-			} else if (p1.Y > p2.Y) { //  + Point2D.PRECISION) {
-				return 1;
-			} else {
-				if (p1.X < p2.X) { //  - Point2D.PRECISION) {
-					return -1;
-				} else if (p1.X > p2.X) { //  +Point2D.PRECISION) {
-					return 1;
-				} else {
-					return 0;
-				}
-			}
-		}
-	}
+namespace TGS.Poly2Tri
+{
+    public class DTSweepPointComparator : IComparer<TriangulationPoint>
+    {
+        public int Compare(TriangulationPoint p1, TriangulationPoint p2)
+        {
+            if (p1.Y < p2.Y)
+            {
+                // - Point2D.PRECISION) { // TODO: Added by Kronnect Games
+                return -1;
+            }
+            else if (p1.Y > p2.Y)
+            {
+                //  + Point2D.PRECISION) {
+                return 1;
+            }
+            else
+            {
+                if (p1.X < p2.X)
+                {
+                    //  - Point2D.PRECISION) {
+                    return -1;
+                }
+                else if (p1.X > p2.X)
+                {
+                    //  +Point2D.PRECISION) {
+                    return 1;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+        }
+    }
 }

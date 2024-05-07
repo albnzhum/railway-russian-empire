@@ -16,11 +16,11 @@ namespace Railway.Shop.UI
         [SerializeField] private Button _itemButton = default;
 
         public UnityAction<ShopItem> ItemSelected;
-        
+
         [HideInInspector] public ShopItemStack currentItem;
 
         private bool _isSelected = false;
-        
+
         private void OnEnable()
         {
             if (_isSelected)
@@ -37,7 +37,7 @@ namespace Railway.Shop.UI
         public void SetItem(ShopItemStack itemStack, bool isSelected)
         {
             _isSelected = isSelected;
-            
+
             SetItemVisibility(true);
 
             currentItem = itemStack;
@@ -46,7 +46,7 @@ namespace Railway.Shop.UI
             _itemPrice.text = itemStack.Item.Price.ToString();
             _bgImage.sprite = itemStack.Item.Sprite;
         }
-        
+
         public void SelectFirstElement()
         {
             SelectItem();
@@ -57,7 +57,6 @@ namespace Railway.Shop.UI
             currentItem = null;
 
             SetItemVisibility(false);
-            
         }
 
         private void SetItemVisibility(bool active)
@@ -80,14 +79,15 @@ namespace Railway.Shop.UI
 
         public void ShowTooltip()
         {
-            Tooltip.ShowTooltip_Static(currentItem.Item.Name + "\n" + currentItem.Item.Price, Mouse.current.position.value );
+            Tooltip.ShowTooltip_Static(currentItem.Item.Name + "\n" + currentItem.Item.Price,
+                Mouse.current.position.value);
         }
 
         public void HideTooltip()
         {
             Tooltip.HideTooltip_Static();
         }
-        
+
 
         public void UnselectItem()
         {

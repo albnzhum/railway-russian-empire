@@ -38,7 +38,7 @@ namespace Railway.Shop.UI
                     }
 
                     bool isSelected = typesList[i] == selectedType;
-                    
+
                     _instantiatedGO[i].SetTab(typesList[i], isSelected);
                     _instantiatedGO[i].gameObject.SetActive(true);
                     _instantiatedGO[i].TabClicked += ChangeTab;

@@ -16,6 +16,7 @@ namespace Railway.Gameplay
     public class LevelDifficultySO : ScriptableObject
     {
         [SerializeField] private LevelDifficulty _levelDifficulty;
+
         public LevelDifficulty LevelDifficulty
         {
             set => _levelDifficulty = value;

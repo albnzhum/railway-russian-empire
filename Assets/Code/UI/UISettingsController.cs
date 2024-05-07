@@ -28,7 +28,7 @@ namespace Railway.UI
     {
         public SettingsType settingTabType;
     }
-    
+
     [Serializable]
     public class SettingField
     {
@@ -42,7 +42,7 @@ namespace Railway.UI
         Graphics,
         Controls
     }
-    
+
     public class UISettingsController : MonoBehaviour
     {
         [SerializeField] private InputReader _inputReader;
@@ -54,7 +54,7 @@ namespace Railway.UI
         [SerializeField] private VoidEventChannelSO SaveSettings;
 
         private SettingsType _selectedTab = SettingsType.Audio;
-        
+
         public UnityAction Closed;
 
         private void OnEnable()

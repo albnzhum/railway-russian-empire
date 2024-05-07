@@ -39,7 +39,6 @@ namespace Railway.UI.Components
 
             if (_defaultSelection != null)
             {
-                
             }
         }
 

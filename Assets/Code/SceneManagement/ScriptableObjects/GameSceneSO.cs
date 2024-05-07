@@ -7,7 +7,7 @@ namespace Railway.SceneManagement
     {
         public GameSceneType sceneType;
         public AssetReference sceneReference;
-        
+
         public enum GameSceneType
         {
             //Playable scenes

@@ -10,11 +10,11 @@ namespace Railway.Gameplay
         [SerializeField] private MissionInitializer _mission;
 
         public static ResourcesManager Instance;
-        
+
         private void OnEnable()
         {
             Instance = this;
-            
+
 #if UNITY_EDITOR
             EditorApplication.quitting += OnEditorQuit;
 #endif
@@ -31,7 +31,7 @@ namespace Railway.Gameplay
         {
             ResetResources();
         }
-        
+
 #if UNITY_EDITOR
         private void OnEditorQuit()
         {
@@ -43,7 +43,7 @@ namespace Railway.Gameplay
         {
             _mission.CurrentResources = new MissionInitializer.Resources(_mission.OriginalResources);
         }
-        
+
         public void Add(ResourceType resourceType, float amount)
         {
             _mission.GetAddedReactiveProperty(resourceType).Value += amount;

@@ -4,7 +4,6 @@ using Railway.Input;
 using Railway.Shop.Data;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 
 namespace Railway.Shop.UI
 {
@@ -16,21 +15,25 @@ namespace Railway.Shop.UI
         [SerializeField] private List<ShopTabSO> tabTypesList = new List<ShopTabSO>();
         [SerializeField] private List<UIShopItem> availableItemSlots = default;
 
-        [Header("Gameplay")] 
         [SerializeField] private InputReader _inputReader;
 
-        [Header("Listening to")] 
-        [SerializeField] private UIShopTabs _tabsPanel = default;
+        [Header("Listening to")] [SerializeField]
+        private UIShopTabs _tabsPanel = default;
 
         private ShopTabSO _selectedTab = default;
         private int selectedItemId = -1;
 
         private bool isItemBuying = false;
-        public bool IsItemBuying { get => isItemBuying; private set => isItemBuying = value; }
+
+        public bool IsItemBuying
+        {
+            get => isItemBuying;
+            private set => isItemBuying = value;
+        }
 
         private ShopItem _currentItem = default;
         public ShopItem CurrentItem => _currentItem;
-        
+
         private void OnEnable()
         {
             _tabsPanel.TabChanged += OnChangeTab;
@@ -51,7 +54,7 @@ namespace Railway.Shop.UI
             {
                 availableItemSlots[i].ItemSelected -= InspectItem;
             }
-            
+
             _inputReader.TabSwitched -= OnSwitchTab;
         }
 
@@ -87,7 +90,7 @@ namespace Railway.Shop.UI
             {
                 SetTabs(tabTypesList, _selectedTab);
                 List<ShopItemStack> listItemsToShow = new List<ShopItemStack>();
-                listItemsToShow = _shop.Items.FindAll(o => o.Item.TabType.TabType == _selectedTab);
+                listItemsToShow = _shop.Items.FindAll(o => o.Item.ItemType.TabType == _selectedTab);
 
                 FillShopItems(listItemsToShow);
             }
@@ -127,7 +130,7 @@ namespace Railway.Shop.UI
                 selectedItemId = -1;
             }
         }
-        
+
         private void InspectItem(ShopItem itemToInspect)
         {
             if (availableItemSlots.Exists(o => o.currentItem.Item == itemToInspect))
@@ -148,7 +151,7 @@ namespace Railway.Shop.UI
             {
                 isItemBuying = true;
                 _currentItem = itemToBuy;
-                
+
                 CloseInventory();
             }
             else

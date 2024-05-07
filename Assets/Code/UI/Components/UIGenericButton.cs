@@ -4,6 +4,5 @@ namespace Railway.UI.Components
 {
     public class UIGenericButton : MonoBehaviour
     {
-        
     }
 }

@@ -29,10 +29,12 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace TGS.Poly2Tri {
-	public enum Orientation {
-		CW,
-		CCW,
-		Collinear
-	}
+namespace TGS.Poly2Tri
+{
+    public enum Orientation
+    {
+        CW,
+        CCW,
+        Collinear
+    }
 }

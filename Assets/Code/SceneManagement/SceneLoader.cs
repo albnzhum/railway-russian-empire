@@ -16,8 +16,8 @@ namespace Railway.SceneManagement
     {
         [SerializeField] private GameSceneSO _gamePlayScene;
 
-        [Header("Listening To")] 
-        [SerializeField] private LoadEventChannelSO _loadLocation;
+        [Header("Listening To")] [SerializeField]
+        private LoadEventChannelSO _loadLocation;
 
         [SerializeField] private LoadEventChannelSO _loadScene;
 
@@ -25,8 +25,8 @@ namespace Railway.SceneManagement
         [SerializeField] private LoadEventChannelSO _coldStartupLocation;
         [SerializeField] private BoolEventChannelSO _onLocationLoadedEvent;
 
-        [Header("Broadcasting on")] 
-        [SerializeField] private BoolEventChannelSO _toggleLoadingScreen = default;
+        [Header("Broadcasting on")] [SerializeField]
+        private BoolEventChannelSO _toggleLoadingScreen = default;
 
         [SerializeField] private FadeChannelSO _fadeRequestChannel = default;
 

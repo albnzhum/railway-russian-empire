@@ -7,28 +7,33 @@ using UnityEngine.InputSystem;
 namespace Railway.Input
 {
     [CreateAssetMenu(fileName = "InputReader", menuName = "Gameplay/Input Reader")]
-    public class InputReader : ScriptableObject, RailwayInputs.IGameplayActions, RailwayInputs.IEditActions, RailwayInputs.IMenusActions, RailwayInputs.ITutorialsActions
+    public class InputReader : ScriptableObject, RailwayInputs.IGameplayActions, RailwayInputs.IEditActions,
+        RailwayInputs.IMenusActions, RailwayInputs.ITutorialsActions
     {
-        public event UnityAction OpenShopEvent = delegate {  };
-        public event UnityAction CloseShopEvent = delegate {  };
-        public event UnityAction<Vector2> ChooseCellEvent = delegate {  };
-        public event Action<Vector2> PlaceItemEvent = delegate {  };
-        public event Action<Vector2> ChooseItemPositionEvent = delegate {  };
-        public event UnityAction<Vector2> HoverCellEvent = delegate {  };
-        public event UnityAction<float> TabSwitched = delegate {  };
+        public event UnityAction OpenShopEvent = delegate { };
+        public event UnityAction CloseShopEvent = delegate { };
+        public event UnityAction<Vector2> ChooseCellEvent = delegate { };
+        public event Action<Vector2> PlaceItemEvent = delegate { };
+        public event Action<Vector2> ChooseItemPositionEvent = delegate { };
+        public event UnityAction<Vector2> HoverCellEvent = delegate { };
+        public event UnityAction<float> TabSwitched = delegate { };
         public event UnityAction<Vector2> CameraMoveEvent = delegate { };
         public event UnityAction EnableMouseControlCameraEvent = delegate { };
         public event UnityAction DisableMouseControlCameraEvent = delegate { };
-        public event UnityAction OnCancelEvent = delegate {  };
+        public event UnityAction OnCancelEvent = delegate { };
         public event UnityAction MoveSelectionEvent = delegate { };
         public event UnityAction MenuMouseMoveEvent = delegate { };
-        public event UnityAction MenuCloseEvent = delegate {  };
+        public event UnityAction MenuCloseEvent = delegate { };
         public event UnityAction MenuPauseEvent = delegate { };
         public event UnityAction MenuUnpauseEvent = delegate { };
 
         private bool isGameplayInputEnabled;
 
-        public bool IsGameplayInputEnabled { get => isGameplayInputEnabled; set => isGameplayInputEnabled = value; }
+        public bool IsGameplayInputEnabled
+        {
+            get => isGameplayInputEnabled;
+            set => isGameplayInputEnabled = value;
+        }
 
         private RailwayInputs _railwayInputs;
 
@@ -37,7 +42,7 @@ namespace Railway.Input
             if (_railwayInputs == null)
             {
                 _railwayInputs = new RailwayInputs();
-                
+
                 _railwayInputs.Menus.SetCallbacks(this);
                 _railwayInputs.Edit.SetCallbacks(this);
                 _railwayInputs.Gameplay.SetCallbacks(this);
@@ -53,19 +58,19 @@ namespace Railway.Input
         public void EnableGameplayInput()
         {
             isGameplayInputEnabled = true;
-            
+
             _railwayInputs.Edit.Disable();
             _railwayInputs.Gameplay.Enable();
             _railwayInputs.Menus.Disable();
             _railwayInputs.Tutorials.Disable();
         }
-        
+
         public bool LeftMouseDown() => Mouse.current.leftButton.isPressed;
-        
+
         public void EnableEditInput()
         {
             isGameplayInputEnabled = true;
-            
+
             _railwayInputs.Edit.Enable();
             _railwayInputs.Gameplay.Disable();
             _railwayInputs.Menus.Disable();
@@ -75,7 +80,7 @@ namespace Railway.Input
         public void EnableMenuInput()
         {
             isGameplayInputEnabled = false;
-            
+
             _railwayInputs.Edit.Disable();
             _railwayInputs.Gameplay.Disable();
             _railwayInputs.Menus.Enable();
@@ -85,7 +90,7 @@ namespace Railway.Input
         public void EnableTutorialInput()
         {
             isGameplayInputEnabled = false;
-            
+
             _railwayInputs.Gameplay.Disable();
             _railwayInputs.Menus.Disable();
             _railwayInputs.Tutorials.Enable();
@@ -113,7 +118,7 @@ namespace Railway.Input
 
         public void OnChooseItemPosition(InputAction.CallbackContext context)
         {
-            ChooseItemPositionEvent.Invoke(context.ReadValue<Vector2>());    
+            ChooseItemPositionEvent.Invoke(context.ReadValue<Vector2>());
         }
 
         public void OnPlaceItem(InputAction.CallbackContext context)
@@ -127,15 +132,15 @@ namespace Railway.Input
             if (context.phase == InputActionPhase.Performed)
                 OpenShopEvent.Invoke();
         }
-        
+
         public void OnPause(InputAction.CallbackContext context)
         {
             if (context.phase == InputActionPhase.Performed)
                 MenuPauseEvent.Invoke();
         }
-        
+
         private bool IsDeviceMouse(InputAction.CallbackContext context) => context.control.device.name == "Mouse";
-        
+
         public void OnZoomCamera(InputAction.CallbackContext context)
         {
             CameraMoveEvent.Invoke(context.ReadValue<Vector2>());
@@ -178,11 +183,17 @@ namespace Railway.Input
                 MenuUnpauseEvent.Invoke();
         }
 
-        public void OnClick(InputAction.CallbackContext context) { }
+        public void OnClick(InputAction.CallbackContext context)
+        {
+        }
 
-        public void OnRightClick(InputAction.CallbackContext context) { }
+        public void OnRightClick(InputAction.CallbackContext context)
+        {
+        }
 
-        public void OnSubmit(InputAction.CallbackContext context) { }
+        public void OnSubmit(InputAction.CallbackContext context)
+        {
+        }
 
         public void OnCancel(InputAction.CallbackContext context)
         {
@@ -204,7 +215,6 @@ namespace Railway.Input
 
         public void OnPoint(InputAction.CallbackContext context)
         {
-            
         }
 
         #endregion

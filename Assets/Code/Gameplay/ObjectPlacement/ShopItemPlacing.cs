@@ -73,28 +73,6 @@ namespace Railway.Gameplay
             _occupiedCells.Clear();
             _disposable.Dispose();
         }
-        
-
-        //TODO: отдельный building скрипт, для управления ресурсами получаемыеми от здания
-        private void PlaceBuilding()
-        {
-            _tgs.CellSetTag(_currentCell, (int)CellBuildingType.BUILD);
-
-            ResourcesManager.Instance.Spend(ResourceType.Gold, _currentItem.Price);
-
-            _tgs.CellSetCanCross(_tgs.CellGetIndex(_currentCell), false);
-
-            var cellPosition = _tgs.CellGetPosition(_currentCell);
-            
-            Instantiate(_currentItem.Prefab, cellPosition, Quaternion.identity);
-
-            GameObject ps = Instantiate(_particleSystem, cellPosition, Quaternion.identity);
-            ps.transform.position = cellPosition;
-
-            _occupiedCells[_currentItem.TabType.ItemType].Add(_currentCell);
-
-            StopPlacing();
-        }
 
         private Wagon previousWagon;
 
@@ -103,13 +81,13 @@ namespace Railway.Gameplay
             ResourcesManager.Instance.Spend(ResourceType.Gold, _currentItem.Price);
 
             var cellPosition = _tgs.CellGetPosition(_currentCell);
-            
+
             _currentPlacer.Place(_currentCell);
 
-            switch (_currentItem.TabType.ItemType)
+            switch (_currentItem.ItemType.ItemType)
             {
                 case ItemType.Rails:
-                    
+
                     if (!_isFirstRail)
                     {
                         RailBuilder.Instance.Build(_startGO.transform.position);
@@ -119,23 +97,24 @@ namespace Railway.Gameplay
 
                     RailBuilder.Instance.Build(cellPosition);
                     break;
-                
-                case ItemType.Locomotive: case ItemType.Carriage:
-                    
+
+                case ItemType.Locomotive:
+                case ItemType.Carriage:
+
                     AddWagonToTrain(_currentPlacer.Prefab.GetComponentInChildren<Wagon>());
                     break;
             }
 
             var ps = Instantiate(_particleSystem, cellPosition, Quaternion.identity);
-                
+
             ps.transform.position = cellPosition;
 
-            _occupiedCells[_currentItem.TabType.ItemType].Add(_currentCell);
-            
+            _occupiedCells[_currentItem.ItemType.ItemType].Add(_currentCell);
+
             StopPlacing();
         }
-        
-        
+
+
         private void AddWagonToTrain(Wagon newWagon)
         {
             if (previousWagon == null)
@@ -145,7 +124,7 @@ namespace Railway.Gameplay
             else
             {
                 previousWagon.back = newWagon;
-                
+
                 if (!newWagon.isEngine)
                 {
                     newWagon.front = previousWagon;
@@ -155,7 +134,7 @@ namespace Railway.Gameplay
                 {
                     newWagon.SetupRecursively(null);
                 }
-                
+
                 previousWagon = newWagon;
             }
         }
@@ -165,13 +144,13 @@ namespace Railway.Gameplay
             if (_currentCell == null) return;
 
             if (_currentCell.tag == (int)CellBuildingType.NON_INTERACTABLE) return;
-            
+
             if (_availableCell.Contains(_currentCell))
             {
                 PlaceItem();
             }
         }
-        
+
         private void OnChooseItemPosition(Vector2 mousePosition)
         {
             if (_isPlacing)
@@ -185,13 +164,13 @@ namespace Railway.Gameplay
                 }
             }
         }
-        
+
         private void StopPlacing()
         {
             if (_isPlacing)
             {
                 _isPlacing = false;
-                
+
                 foreach (var cell in _availableCell)
                 {
                     int index = _tgs.CellGetIndex(cell);
@@ -210,13 +189,13 @@ namespace Railway.Gameplay
 
         private void GetCellNeighbours()
         {
-            if (!_occupiedCells.TryGetValue(_currentItem.TabType.ItemType, out var cells))
+            if (!_occupiedCells.TryGetValue(_currentItem.ItemType.ItemType, out var cells))
             {
-                _occupiedCells[_currentItem.TabType.ItemType] = new List<Cell>();
-                cells = _occupiedCells[_currentItem.TabType.ItemType];
+                _occupiedCells[_currentItem.ItemType.ItemType] = new List<Cell>();
+                cells = _occupiedCells[_currentItem.ItemType.ItemType];
             }
 
-            switch (_currentItem.TabType.ItemType)
+            switch (_currentItem.ItemType.ItemType)
             {
                 case ItemType.Locomotive:
                     _availableCell = _tgs.Cells
@@ -243,14 +222,15 @@ namespace Railway.Gameplay
                 _tgs.CellToggleRegionSurface(index, true, Color.green);
             }
         }
-        
-        
+
+
         private void SetCurrentItem(ShopItem _item)
         {
             if (_item != null)
             {
                 _currentItem = _item;
                 _currentPlacer = _item.Prefab.GetComponent<IPlaceable>();
+                _currentPlacer.TGS = _tgs;
                 _currentPlacer.Prefab = _currentItem.Prefab;
                 _isPlacing = true;
 

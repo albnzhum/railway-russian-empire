@@ -10,7 +10,7 @@ namespace Railway.Shop.Data
         Railway,
         Workers
     }
-    
+
     [CreateAssetMenu(fileName = "Shop Tab Type", menuName = "Shop Data/Shop Tab Type")]
     public class ShopTabSO : ScriptableObject
     {

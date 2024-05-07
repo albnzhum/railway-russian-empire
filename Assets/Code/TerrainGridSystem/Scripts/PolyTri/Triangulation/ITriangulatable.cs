@@ -28,41 +28,44 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 using System.Collections.Generic;
 
-namespace TGS.Poly2Tri {
-	public interface ITriangulatable {
-		//IList<TriangulationPoint> Points { get; } // MM: Neither of these are used via interface (yet?)
-		IList<DelaunayTriangle> Triangles { get; }
+namespace TGS.Poly2Tri
+{
+    public interface ITriangulatable
+    {
+        //IList<TriangulationPoint> Points { get; } // MM: Neither of these are used via interface (yet?)
+        IList<DelaunayTriangle> Triangles { get; }
 
-		TriangulationMode TriangulationMode { get; }
+        TriangulationMode TriangulationMode { get; }
 
-		string FileName { get; set; }
+        string FileName { get; set; }
 
-		bool DisplayFlipX { get; set; }
+        bool DisplayFlipX { get; set; }
 
-		bool DisplayFlipY { get; set; }
+        bool DisplayFlipY { get; set; }
 
-		float DisplayRotate { get; set; }
+        float DisplayRotate { get; set; }
 
-		double Precision { get; set; }
+        double Precision { get; set; }
 
-		double MinX { get; }
+        double MinX { get; }
 
-		double MaxX { get; }
+        double MaxX { get; }
 
-		double MinY { get; }
+        double MinY { get; }
 
-		double MaxY { get; }
+        double MaxY { get; }
 
-		Rect2D Bounds { get; }
+        Rect2D Bounds { get; }
 
-		void Prepare (TriangulationContext tcx);
+        void Prepare(TriangulationContext tcx);
 
-		void AddTriangle (DelaunayTriangle t);
+        void AddTriangle(DelaunayTriangle t);
 
-		void AddTriangles (IEnumerable<DelaunayTriangle> list);
+        void AddTriangles(IEnumerable<DelaunayTriangle> list);
 
-		void ClearTriangles ();
-	}
+        void ClearTriangles();
+    }
 }

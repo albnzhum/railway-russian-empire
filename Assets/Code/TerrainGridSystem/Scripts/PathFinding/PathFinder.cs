@@ -15,48 +15,48 @@
 using System;
 using System.Collections.Generic;
 
-namespace TGS.PathFinding {
-
+namespace TGS.PathFinding
+{
     public struct PathFinderNode
     {
-        public int     F;
-        public int     G;
-        public int     H;  // f = gone + heuristic
-        public int     X;
-        public int     Y;
-        public int     PX; // Parent
-        public int     PY;
+        public int F;
+        public int G;
+        public int H; // f = gone + heuristic
+        public int X;
+        public int Y;
+        public int PX; // Parent
+        public int PY;
     }
 
     public enum PathFinderNodeType
     {
-        Start   = 1,
-        End     = 2,
-        Open    = 4,
-        Close   = 8,
+        Start = 1,
+        End = 2,
+        Open = 4,
+        Close = 8,
         Current = 16,
-        Path    = 32
+        Path = 32
     }
 
     public enum HeuristicFormula
     {
-        Manhattan           = 1,
-        MaxDXDY             = 2,
-        DiagonalShortCut    = 3,
-        Euclidean           = 4,
-        EuclideanNoSQR      = 5,
-        Custom1             = 6
+        Manhattan = 1,
+        MaxDXDY = 2,
+        DiagonalShortCut = 3,
+        Euclidean = 4,
+        EuclideanNoSQR = 5,
+        Custom1 = 6
     }
 
-	internal class ComparePFNode : IComparer<PathFinderNode>
-	{
-		public int Compare(PathFinderNode x, PathFinderNode y)
-		{
-			if (x.F > y.F)
-				return 1;
-			else if (x.F < y.F)
-				return -1;
-			return 0;
-		}
-	}
+    internal class ComparePFNode : IComparer<PathFinderNode>
+    {
+        public int Compare(PathFinderNode x, PathFinderNode y)
+        {
+            if (x.F > y.F)
+                return 1;
+            else if (x.F < y.F)
+                return -1;
+            return 0;
+        }
+    }
 }

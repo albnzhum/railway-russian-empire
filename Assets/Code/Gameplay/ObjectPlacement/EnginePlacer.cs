@@ -2,18 +2,14 @@
 using Dreamteck.Splines;
 using TGS;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Railway.Gameplay
 {
     public class EnginePlacer : MonoBehaviour, IPlaceable
     {
         public GameObject Prefab { get; set; }
-        private TerrainGridSystem _tgs;
-
-        private void OnEnable()
-        {
-            _tgs = TerrainGridSystem.Instance;
-        }
+        public TerrainGridSystem TGS { get; set; }
 
         public void Place(Cell cell)
         {
@@ -22,11 +18,10 @@ namespace Railway.Gameplay
                 Debug.LogError("Engine can't be placing here!");
             }
 
-            var cellPosition = _tgs.CellGetPosition(cell);
-            
+            var cellPosition = TGS.CellGetPosition(cell);
+
             var locomotive = Instantiate(Prefab, cellPosition, Quaternion.identity);
             locomotive.GetComponentInChildren<SplineFollower>().spline = RailBuilder.Instance.spline;
-
         }
     }
 }

@@ -7,7 +7,6 @@ using UnityEngine.Events;
 namespace Railway.Events
 {
     [CreateAssetMenu(menuName = "Events/Load Event Channel")]
-
     public class LoadEventChannelSO : ScriptableObject
     {
         public UnityAction<GameSceneSO, bool, bool> OnLoadingRequested;
@@ -26,5 +25,4 @@ namespace Railway.Events
             }
         }
     }
-
 }

@@ -17,7 +17,7 @@ public class ObjectPlacement : MonoBehaviour
 {
     private List<PlacingObject> _objectsToPlace;
     private TerrainGridSystem _tgs;
-    
+
     private void OnEnable()
     {
         _tgs = TerrainGridSystem.Instance;

@@ -28,21 +28,26 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 using System;
 //using System.Collections.Generic;
 using System.Diagnostics;
+
 //using System.Linq;
 
 
-namespace TGS.Poly2Tri {
-	public class DTSweepConstraint : TriangulationConstraint {
-		/// <summary>
-		/// Give two points in any order. Will always be ordered so
-		/// that q.y > p.y and q.x > p.x if same y value 
-		/// </summary>
-		public DTSweepConstraint (TriangulationPoint p1, TriangulationPoint p2)
-            : base(p1, p2) {
-			Q.AddEdge (this);
-		}
-	}
+namespace TGS.Poly2Tri
+{
+    public class DTSweepConstraint : TriangulationConstraint
+    {
+        /// <summary>
+        /// Give two points in any order. Will always be ordered so
+        /// that q.y > p.y and q.x > p.x if same y value 
+        /// </summary>
+        public DTSweepConstraint(TriangulationPoint p1, TriangulationPoint p2)
+            : base(p1, p2)
+        {
+            Q.AddEdge(this);
+        }
+    }
 }

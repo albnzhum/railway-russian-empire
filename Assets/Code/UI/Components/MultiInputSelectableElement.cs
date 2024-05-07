@@ -16,6 +16,7 @@ namespace Railway.UI.Components
 
         public void OnPointerEnter(PointerEventData eventData)
         {
+            _menuSelectionHandler.HandleMouseEnter(gameObject);
         }
 
         public void OnPointerExit(PointerEventData eventData)

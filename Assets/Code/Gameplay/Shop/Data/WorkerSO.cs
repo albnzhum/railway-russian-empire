@@ -12,7 +12,7 @@ namespace Railway.Shop.Data
         Water,
         Complex
     }
-    
+
     [CreateAssetMenu(fileName = "New Worker Item", menuName = "Shop Data/Worker")]
     public class WorkerSO : ShopItem
     {

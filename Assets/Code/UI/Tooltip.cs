@@ -29,14 +29,13 @@ public class Tooltip : MonoBehaviour
         backgroundRectTransform.sizeDelta = backgroundSize;
 
         transform.position = mousePosition;
-
     }
 
     public static void ShowTooltip_Static(string tooltipString, Vector2 mousePosition)
     {
         Instance.ShowTooltip(tooltipString, mousePosition);
     }
-    
+
     public static void HideTooltip_Static()
     {
         Instance.HideTooltip();

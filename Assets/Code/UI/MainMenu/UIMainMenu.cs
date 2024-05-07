@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace Railway.UI
+namespace Railway.UI.Menu
 {
     public class UIMainMenu : MonoBehaviour
     {
@@ -17,9 +17,7 @@ namespace Railway.UI
 
         public void SetMenuScreen(bool hasSaveData)
         {
-
-                _newGameButton.Select();
-            
+            _newGameButton.Select();
         }
 
         public void NewGameButton()

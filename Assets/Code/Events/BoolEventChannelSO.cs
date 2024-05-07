@@ -14,5 +14,4 @@ namespace Railway.Events
                 OnEventRaised.Invoke(value);
         }
     }
-
 }

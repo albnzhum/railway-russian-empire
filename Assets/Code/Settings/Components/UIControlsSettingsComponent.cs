@@ -4,6 +4,5 @@ namespace Settings
 {
     public class UIControlsSettingsComponent : MonoBehaviour
     {
-        
     }
 }

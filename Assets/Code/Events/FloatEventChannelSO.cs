@@ -7,7 +7,7 @@ namespace Railway.Events
     public class FloatEventChannelSO : ScriptableObject
     {
         public UnityAction<float> OnEventRaised;
-	
+
         public void RaiseEvent(float value)
         {
             if (OnEventRaised != null)

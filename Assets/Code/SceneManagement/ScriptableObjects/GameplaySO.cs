@@ -7,6 +7,5 @@ namespace Railway.SceneManagement
     [CreateAssetMenu(fileName = "New Game Play", menuName = "Scene Data/Gameplay")]
     public class GameplaySO : GameSceneSO
     {
-
     }
 }

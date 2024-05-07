@@ -16,14 +16,15 @@ namespace Railway.Gameplay
         Shop,
         LocationTransition
     }
-    
+
     [CreateAssetMenu(fileName = "GameState", menuName = "Gameplay/GameState")]
     public class GameStateSO : ScriptableObject
     {
         public GameState CurrentGameState => _currentGameState;
 
-        [Header("Game states")] 
-        [SerializeField] [ReadOnly] private GameState _currentGameState;
+        [Header("Game states")] [SerializeField] [ReadOnly]
+        private GameState _currentGameState;
+
         [SerializeField] [ReadOnly] private GameState _previousGameState;
 
         public void UpdateGameState(GameState newGameState)

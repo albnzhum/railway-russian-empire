@@ -10,9 +10,6 @@ namespace Code.Gameplay.ResourceManager
 
         private void OnEnable()
         {
-            
         }
-        
-        
     }
 }

@@ -7,6 +7,5 @@ namespace Railway.SceneManagement
     [CreateAssetMenu(fileName = "New Location", menuName = "Scene Data/Location")]
     public class LocationSO : GameSceneSO
     {
-        
     }
 }

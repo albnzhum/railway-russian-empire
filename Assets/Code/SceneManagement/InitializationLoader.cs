@@ -16,8 +16,8 @@ namespace Railway.SceneManagement
         [SerializeField] private GameSceneSO _managersScene = default;
         [SerializeField] private GameSceneSO _menuToLoad = default;
 
-        [Header("Broadcasting on")]
-        [SerializeField] private AssetReference _menuLoadChannel = default;
+        [Header("Broadcasting on")] [SerializeField]
+        private AssetReference _menuLoadChannel = default;
 
         private void Start()
         {

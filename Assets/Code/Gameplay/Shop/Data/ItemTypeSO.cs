@@ -12,7 +12,7 @@ namespace Railway.Shop.Data
         Carriage,
         Building
     }
-    
+
     [CreateAssetMenu(fileName = "ItemType", menuName = "Shop Data/Item Type")]
     public class ItemTypeSO : ScriptableObject
     {
@@ -22,5 +22,4 @@ namespace Railway.Shop.Data
         public ShopTabSO TabType => _tabType;
         public ItemType ItemType => _itemType;
     }
-
 }

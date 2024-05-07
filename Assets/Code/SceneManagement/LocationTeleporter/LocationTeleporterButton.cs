@@ -23,6 +23,5 @@ namespace Railway.SceneManagement
             _teleporter.levelDifficulty.Teleporter = _teleporter;
             _teleporter.levelDifficulty.location = _location;
         }
-
     }
 }

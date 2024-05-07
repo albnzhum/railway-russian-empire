@@ -7,6 +7,5 @@ namespace Railway.SceneManagement
     [CreateAssetMenu(fileName = "New Persistent Manager", menuName = "Scene Data/Manager/PersistentManager")]
     public class PersistentManager : GameSceneSO
     {
-
     }
 }

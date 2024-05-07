@@ -9,13 +9,7 @@ namespace Railway.Gameplay
     {
         public UnityAction OnCancelEvent;
         public GameObject Prefab { get; set; }
-        private TerrainGridSystem _tgs;
-
-        private void OnEnable()
-        {
-            _tgs = TerrainGridSystem.Instance;
-        }
-
+        public TerrainGridSystem TGS { get; set; }
         public void Place(Cell cell)
         {
             if (cell.tag != (int)CellBuildingType.BUILD)
@@ -23,11 +17,11 @@ namespace Railway.Gameplay
                 Debug.LogError("Workers can't be placing here");
                 OnCancelEvent.Invoke();
             }
-            
-            _tgs.CellSetTag(cell, (int)CellBuildingType.WORKERS);
-            _tgs.CellSetCanCross(_tgs.CellGetIndex(cell), false);
-            
-            var cellPosition = _tgs.CellGetPosition(cell);
+
+            TGS.CellSetTag(cell, (int)CellBuildingType.WORKERS);
+            TGS.CellSetCanCross(TGS.CellGetIndex(cell), false);
+
+            var cellPosition = TGS.CellGetPosition(cell);
             Instantiate(Prefab, cellPosition, Quaternion.identity);
         }
     }

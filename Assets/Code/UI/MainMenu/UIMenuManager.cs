@@ -2,7 +2,7 @@ using System.Collections;
 using Railway.Events;
 using UnityEngine;
 
-namespace Railway.UI
+namespace Railway.UI.Menu
 {
     public class UIMenuManager : MonoBehaviour
     {
@@ -10,8 +10,8 @@ namespace Railway.UI
         [SerializeField] private UIPopup _popupPanel = default;
         [SerializeField] private UISettingsController _settingsPanel;
 
-        [Header("Broadcasting on")] 
-        [SerializeField] private VoidEventChannelSO _startNewGameEvent;
+        [Header("Broadcasting on")] [SerializeField]
+        private VoidEventChannelSO _startNewGameEvent;
 
         [SerializeField] private VoidEventChannelSO _continueGameEvent;
 
@@ -103,17 +103,17 @@ namespace Railway.UI
             _popupPanel.gameObject.SetActive(true);
             _popupPanel.SetPopup(PopupType.Quit);
         }
-        
+
         void HideExitConfirmationPopup(bool quitConfirmed)
         {
             _popupPanel.ConfirmationResponseAction -= HideExitConfirmationPopup;
             _popupPanel.gameObject.SetActive(false);
-            
+
             if (quitConfirmed)
             {
                 Application.Quit();
             }
-            
+
             _mainMenu.SetMenuScreen(_hasSaveData);
         }
 

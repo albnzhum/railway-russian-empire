@@ -28,36 +28,44 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 using System;
 using System.Collections.Generic;
 
-namespace TGS.Poly2Tri {
-	public class PointGenerator {
-		static readonly Random RNG = new Random ();
+namespace TGS.Poly2Tri
+{
+    public class PointGenerator
+    {
+        static readonly Random RNG = new Random();
 
-		public static List<TriangulationPoint> UniformDistribution (int n, double scale) {
-			List<TriangulationPoint> points = new List<TriangulationPoint> ();
-			for (int i = 0; i < n; i++) {
-				points.Add (new TriangulationPoint (scale * (0.5 - RNG.NextDouble ()), scale * (0.5 - RNG.NextDouble ())));
-			}
+        public static List<TriangulationPoint> UniformDistribution(int n, double scale)
+        {
+            List<TriangulationPoint> points = new List<TriangulationPoint>();
+            for (int i = 0; i < n; i++)
+            {
+                points.Add(new TriangulationPoint(scale * (0.5 - RNG.NextDouble()), scale * (0.5 - RNG.NextDouble())));
+            }
 
-			return points;
-		}
+            return points;
+        }
 
-		public static List<TriangulationPoint> UniformGrid (int n, double scale) {
-			double x = 0;
-			double size = scale / n;
-			double halfScale = 0.5 * scale;
+        public static List<TriangulationPoint> UniformGrid(int n, double scale)
+        {
+            double x = 0;
+            double size = scale / n;
+            double halfScale = 0.5 * scale;
 
-			List<TriangulationPoint> points = new List<TriangulationPoint> ();
-			for (int i = 0; i < n + 1; i++) {
-				x = halfScale - i * size;
-				for (int j = 0; j < n + 1; j++) {
-					points.Add (new TriangulationPoint (x, halfScale - j * size));
-				}
-			}
+            List<TriangulationPoint> points = new List<TriangulationPoint>();
+            for (int i = 0; i < n + 1; i++)
+            {
+                x = halfScale - i * size;
+                for (int j = 0; j < n + 1; j++)
+                {
+                    points.Add(new TriangulationPoint(x, halfScale - j * size));
+                }
+            }
 
-			return points;
-		}
-	}
+            return points;
+        }
+    }
 }

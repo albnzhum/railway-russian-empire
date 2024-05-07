@@ -15,8 +15,7 @@ namespace Railway.Tutorials
 
         [SerializeField] private GameObject _tutorial;
 
-        [Header("Gameplay")] 
-        [SerializeField] private GameStateSO _gameState;
+        [Header("Gameplay")] [SerializeField] private GameStateSO _gameState;
         [SerializeField] private BoolEventChannelSO _onLocationLoadedEvent;
 
         [SerializeField] private InputReader _inputReader;
@@ -45,7 +44,7 @@ namespace Railway.Tutorials
         private void StartTutorial(bool show)
         {
             _tutorial.SetActive(show);
-            
+
             _inputReader.EnableTutorialInput();
             _gameState.UpdateGameState(GameState.Tutorial);
             ShowCurrentStage();
@@ -54,7 +53,7 @@ namespace Railway.Tutorials
         private void EndTutorial()
         {
             _tutorial.SetActive(false);
-            
+
             _inputReader.EnableGameplayInput();
             _gameState.UpdateGameState(GameState.Gameplay);
         }

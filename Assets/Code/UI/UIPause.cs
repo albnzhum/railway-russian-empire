@@ -14,8 +14,8 @@ namespace Railway.UI
         [SerializeField] private Button settingsButton;
         [SerializeField] private Button backToMenuButton;
 
-        [Header("Listening to")] 
-        [SerializeField] private BoolEventChannelSO onPauseOpened;
+        [Header("Listening to")] [SerializeField]
+        private BoolEventChannelSO onPauseOpened;
 
         public event UnityAction Resumed;
         public event UnityAction SettingsScreenOpened;
@@ -25,16 +25,16 @@ namespace Railway.UI
         {
             onPauseOpened.RaiseEvent(true);
 
-           // inputReader.MenuCloseEvent += Resume;
-           resumeButton.onClick.AddListener(Resume);
-           settingsButton.onClick.AddListener(OpenSettingsScreen);
-           backToMenuButton.onClick.AddListener(BackToMainMenu);
+            // inputReader.MenuCloseEvent += Resume;
+            resumeButton.onClick.AddListener(Resume);
+            settingsButton.onClick.AddListener(OpenSettingsScreen);
+            backToMenuButton.onClick.AddListener(BackToMainMenu);
         }
 
         private void OnDisable()
         {
             onPauseOpened.RaiseEvent(false);
-            
+
             // inputReader.MenuCloseEvent -= Resume;
             resumeButton.onClick.RemoveListener(Resume);
             settingsButton.onClick.RemoveListener(OpenSettingsScreen);

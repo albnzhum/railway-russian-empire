@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: "\u0420\u0435\u043B\u044C\u0441\u044B \u0441\u0442\u0430\u043B\u044C\u043D\u044B\u0435"
   _price: 10
-  _prefab: {fileID: 4233733556878950158, guid: bc9d4ccaee485f04ebb89d37645b78e1, type: 3}
+  _prefab: {fileID: 5217990771440238733, guid: c7c43e44d78fdc148b95a667a0a29f35, type: 3}
   _itemType: {fileID: 11400000, guid: de68871ca5698f141b91201e788bb9f7, type: 2}
   _amount: 1
   _sprite: {fileID: 21300000, guid: 246987828de78454f936d8edd193e461, type: 3}

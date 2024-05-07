@@ -28,174 +28,223 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace TGS.Poly2Tri {
-	public class TriangulationPoint : Point2D {
-		public static readonly double kVertexCodeDefaultPrecision = 8.0f; // was 3.0
+namespace TGS.Poly2Tri
+{
+    public class TriangulationPoint : Point2D
+    {
+        public static readonly double kVertexCodeDefaultPrecision = 8.0f; // was 3.0
 
-		public override double X {
-			get { return mX; }
-			set {
-				if (value != mX) {
-					mX = value;
-					mVertexCode = TriangulationPoint.CreateVertexCode (mX, mY, kVertexCodeDefaultPrecision);
+        public override double X
+        {
+            get { return mX; }
+            set
+            {
+                if (value != mX)
+                {
+                    mX = value;
+                    mVertexCode = TriangulationPoint.CreateVertexCode(mX, mY, kVertexCodeDefaultPrecision);
 
-					// Technically, we should change the ConstraintCodes of any edges that contain this point.
-					// We don't for 2 reasons:
-					// 1) Currently the only time we care about Vertex/Constraint Codes is when entering data in the point-set.
-					//    Once the data is being used by the algorithm, the point locations are (currently) not modified.
-					// 2) Since this Point's Edge list will only contain SOME of the edges that this point is a part of, 
-					//    there currently isn't a way to (easily) get any edges that contain this point but are not in this
-					//    point's edge list.
-				}
-			}
-		}
+                    // Technically, we should change the ConstraintCodes of any edges that contain this point.
+                    // We don't for 2 reasons:
+                    // 1) Currently the only time we care about Vertex/Constraint Codes is when entering data in the point-set.
+                    //    Once the data is being used by the algorithm, the point locations are (currently) not modified.
+                    // 2) Since this Point's Edge list will only contain SOME of the edges that this point is a part of, 
+                    //    there currently isn't a way to (easily) get any edges that contain this point but are not in this
+                    //    point's edge list.
+                }
+            }
+        }
 
-		public override double Y {
-			get { return mY; }
-			set {
-				if (value != mY) {
-					mY = value;
-					mVertexCode = TriangulationPoint.CreateVertexCode (mX, mY, kVertexCodeDefaultPrecision);
+        public override double Y
+        {
+            get { return mY; }
+            set
+            {
+                if (value != mY)
+                {
+                    mY = value;
+                    mVertexCode = TriangulationPoint.CreateVertexCode(mX, mY, kVertexCodeDefaultPrecision);
 
-					// Technically, we should change the ConstraintCodes of any edges that contain this point.
-					// We don't for 2 reasons:
-					// 1) Currently the only time we care about Vertex/Constraint Codes is when entering data in the point-set.
-					//    Once the data is being used by the algorithm, the point locations are (currently) not modified.
-					// 2) Since this Point's Edge list will only contain SOME of the edges that this point is a part of, 
-					//    there currently isn't a way to (easily) get any edges that contain this point but are not in this
-					//    point's edge list.
-				}
-			}
-		}
+                    // Technically, we should change the ConstraintCodes of any edges that contain this point.
+                    // We don't for 2 reasons:
+                    // 1) Currently the only time we care about Vertex/Constraint Codes is when entering data in the point-set.
+                    //    Once the data is being used by the algorithm, the point locations are (currently) not modified.
+                    // 2) Since this Point's Edge list will only contain SOME of the edges that this point is a part of, 
+                    //    there currently isn't a way to (easily) get any edges that contain this point but are not in this
+                    //    point's edge list.
+                }
+            }
+        }
 
-		protected uint mVertexCode = 0;
+        protected uint mVertexCode = 0;
 
-		public uint VertexCode { get { return mVertexCode; } }
+        public uint VertexCode
+        {
+            get { return mVertexCode; }
+        }
 
-		// List of edges this point constitutes an upper ending point (CDT)
-		public List<DTSweepConstraint> Edges { get; private set; }
+        // List of edges this point constitutes an upper ending point (CDT)
+        public List<DTSweepConstraint> Edges { get; private set; }
 
-		public bool HasEdges { get { return Edges != null; } }
+        public bool HasEdges
+        {
+            get { return Edges != null; }
+        }
 
-		public TriangulationPoint (double x, double y)
-            : this(x, y, 0, kVertexCodeDefaultPrecision) {
-		}
+        public TriangulationPoint(double x, double y)
+            : this(x, y, 0, kVertexCodeDefaultPrecision)
+        {
+        }
 
-		public TriangulationPoint (double x, double y, float z)
-		: this(x, y, z, kVertexCodeDefaultPrecision) {
-		}
+        public TriangulationPoint(double x, double y, float z)
+            : this(x, y, z, kVertexCodeDefaultPrecision)
+        {
+        }
 
-		public TriangulationPoint (double x, double y, float z, double precision)
-            : base(x,y,z) {
-			mVertexCode = TriangulationPoint.CreateVertexCode (x, y, precision);
-		}
+        public TriangulationPoint(double x, double y, float z, double precision)
+            : base(x, y, z)
+        {
+            mVertexCode = TriangulationPoint.CreateVertexCode(x, y, precision);
+        }
 
-		public override string ToString () {
-			return base.ToString () + ":{" + mVertexCode.ToString () + "}";
-		}
+        public override string ToString()
+        {
+            return base.ToString() + ":{" + mVertexCode.ToString() + "}";
+        }
 
-		public override int GetHashCode () {
-			return (int)mVertexCode;
-		}
+        public override int GetHashCode()
+        {
+            return (int)mVertexCode;
+        }
 
-		public override bool Equals (object obj) {
-			TriangulationPoint p2 = obj as TriangulationPoint;
-			if (p2 != null) {
-				return mVertexCode == p2.VertexCode;
-			} else {
-				return base.Equals (obj);
-			}
-		}
+        public override bool Equals(object obj)
+        {
+            TriangulationPoint p2 = obj as TriangulationPoint;
+            if (p2 != null)
+            {
+                return mVertexCode == p2.VertexCode;
+            }
+            else
+            {
+                return base.Equals(obj);
+            }
+        }
 
-		public override void Set (double x, double y) {
-			if (x != mX || y != mY) {
-				mX = x;
-				mY = y;
-				mVertexCode = TriangulationPoint.CreateVertexCode (mX, mY, kVertexCodeDefaultPrecision);
-			}
-		}
-        
-		public static uint CreateVertexCode (double x, double y, double precision) {
-			float fx = (float)MathUtil.RoundWithPrecision (x, precision);
-			float fy = (float)MathUtil.RoundWithPrecision (y, precision);
-			uint vc = MathUtil.Jenkins32Hash (BitConverter.GetBytes (fx), 0);
-			vc = MathUtil.Jenkins32Hash (BitConverter.GetBytes (fy), vc);
+        public override void Set(double x, double y)
+        {
+            if (x != mX || y != mY)
+            {
+                mX = x;
+                mY = y;
+                mVertexCode = TriangulationPoint.CreateVertexCode(mX, mY, kVertexCodeDefaultPrecision);
+            }
+        }
 
-			return vc;
-		}
+        public static uint CreateVertexCode(double x, double y, double precision)
+        {
+            float fx = (float)MathUtil.RoundWithPrecision(x, precision);
+            float fy = (float)MathUtil.RoundWithPrecision(y, precision);
+            uint vc = MathUtil.Jenkins32Hash(BitConverter.GetBytes(fx), 0);
+            vc = MathUtil.Jenkins32Hash(BitConverter.GetBytes(fy), vc);
 
-		public void AddEdge (DTSweepConstraint e) {
-			if (Edges == null) {
-				Edges = new List<DTSweepConstraint> ();
-			}
-			Edges.Add (e);
-		}
-        
-		public bool HasEdge (TriangulationPoint p) {
-			DTSweepConstraint tmp = null;
-			return GetEdge (p, out tmp);
-		}
+            return vc;
+        }
 
-		public bool GetEdge (TriangulationPoint p, out DTSweepConstraint edge) {
-			edge = null;
-			if (Edges == null || Edges.Count < 1 || p == null || p.Equals (this)) {
-				return false;
-			}
+        public void AddEdge(DTSweepConstraint e)
+        {
+            if (Edges == null)
+            {
+                Edges = new List<DTSweepConstraint>();
+            }
 
-			foreach (DTSweepConstraint sc in Edges) {
-				if ((sc.P.Equals (this) && sc.Q.Equals (p)) || (sc.P.Equals (p) && sc.Q.Equals (this))) {
-					edge = sc;
-					return true;
-				}
-			}
+            Edges.Add(e);
+        }
 
-			return false;
-		}
+        public bool HasEdge(TriangulationPoint p)
+        {
+            DTSweepConstraint tmp = null;
+            return GetEdge(p, out tmp);
+        }
 
-		public static Point2D ToPoint2D (TriangulationPoint p) {
-			return p as Point2D;
-		}
-	}
+        public bool GetEdge(TriangulationPoint p, out DTSweepConstraint edge)
+        {
+            edge = null;
+            if (Edges == null || Edges.Count < 1 || p == null || p.Equals(this))
+            {
+                return false;
+            }
 
-	public class TriangulationPointEnumerator : IEnumerator<TriangulationPoint> {
-		protected IList<Point2D> mPoints;
-		protected int position = -1;  // Enumerators are positioned before the first element until the first MoveNext() call.
+            foreach (DTSweepConstraint sc in Edges)
+            {
+                if ((sc.P.Equals(this) && sc.Q.Equals(p)) || (sc.P.Equals(p) && sc.Q.Equals(this)))
+                {
+                    edge = sc;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public static Point2D ToPoint2D(TriangulationPoint p)
+        {
+            return p as Point2D;
+        }
+    }
+
+    public class TriangulationPointEnumerator : IEnumerator<TriangulationPoint>
+    {
+        protected IList<Point2D> mPoints;
+
+        protected int
+            position = -1; // Enumerators are positioned before the first element until the first MoveNext() call.
 
 
-		public TriangulationPointEnumerator (IList<Point2D> points) {
-			mPoints = points;
-		}
+        public TriangulationPointEnumerator(IList<Point2D> points)
+        {
+            mPoints = points;
+        }
 
-		public bool MoveNext () {
-			position++;
-			return (position < mPoints.Count);
-		}
+        public bool MoveNext()
+        {
+            position++;
+            return (position < mPoints.Count);
+        }
 
-		public void Reset () {
-			position = -1;
-		}
+        public void Reset()
+        {
+            position = -1;
+        }
 
-		void IDisposable.Dispose () {
-		}
+        void IDisposable.Dispose()
+        {
+        }
 
-		Object IEnumerator.Current { get { return Current; } }
+        Object IEnumerator.Current
+        {
+            get { return Current; }
+        }
 
-		public TriangulationPoint Current {
-			get {
-				if (position < 0 || position >= mPoints.Count) {
-					return null;
-				}
-				return mPoints [position] as TriangulationPoint;
-			}
-		}
-	}
+        public TriangulationPoint Current
+        {
+            get
+            {
+                if (position < 0 || position >= mPoints.Count)
+                {
+                    return null;
+                }
 
-	public class TriangulationPointList : Point2DList {
+                return mPoints[position] as TriangulationPoint;
+            }
+        }
+    }
 
-	}
-
+    public class TriangulationPointList : Point2DList
+    {
+    }
 }

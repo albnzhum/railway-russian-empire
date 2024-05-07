@@ -34,27 +34,32 @@
 /// Future possibilities
 ///   Documentation!
 
-namespace TGS.Poly2Tri {
-	public class PolygonPoint : TriangulationPoint {
-		public static PolygonPoint zero = new PolygonPoint (0, 0);
+namespace TGS.Poly2Tri
+{
+    public class PolygonPoint : TriangulationPoint
+    {
+        public static PolygonPoint zero = new PolygonPoint(0, 0);
 
-		public PolygonPoint (double x, double y) : base(x, y) {
-		}
+        public PolygonPoint(double x, double y) : base(x, y)
+        {
+        }
 
-		public PolygonPoint (double x, double y, float z) : base(x, y, z) {
-		}
+        public PolygonPoint(double x, double y, float z) : base(x, y, z)
+        {
+        }
 
-		public PolygonPoint Next { get; set; }
+        public PolygonPoint Next { get; set; }
 
-		public PolygonPoint Previous { get; set; }
+        public PolygonPoint Previous { get; set; }
 
-		public static Point2D ToBasePoint (PolygonPoint p) {
-			return (Point2D)p;
-		}
+        public static Point2D ToBasePoint(PolygonPoint p)
+        {
+            return (Point2D)p;
+        }
 
-		public static TriangulationPoint ToTriangulationPoint (PolygonPoint p) {
-			return (TriangulationPoint)p;
-		}
-	}
+        public static TriangulationPoint ToTriangulationPoint(PolygonPoint p)
+        {
+            return (TriangulationPoint)p;
+        }
+    }
 }
-

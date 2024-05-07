@@ -18,7 +18,7 @@ namespace Railway.Gameplay
                 start = entryPoint;
                 this.direction = direction;
             }
-            
+
             public double Travel(double percent, float distance, Spline.Direction direction, out float moved, bool loop)
             {
                 double max = direction == Spline.Direction.Forward ? 1.0 : 0.0;
@@ -38,23 +38,28 @@ namespace Railway.Gameplay
                 if (start >= 0) max = spline.GetPointPercent(start);
                 return TravelClamped(startPercent, distance, direction, max, out moved, loop);
             }
-            
-            double TravelClamped(double percent, float distance, Spline.Direction direction, double max, out float moved, bool loop)
+
+            double TravelClamped(double percent, float distance, Spline.Direction direction, double max,
+                out float moved, bool loop)
             {
                 moved = 0f;
                 float traveled = 0f;
                 double result = spline.Travel(percent, distance, out traveled, direction);
                 moved += traveled;
-                if (loop && moved < distance) {
+                if (loop && moved < distance)
+                {
                     if (direction == Spline.Direction.Forward && Mathf.Approximately((float)result, 1f))
                     {
                         result = spline.Travel(0.0, distance - moved, out traveled, direction);
-                    } else if (direction == Spline.Direction.Backward && Mathf.Approximately((float)result, 0f))
+                    }
+                    else if (direction == Spline.Direction.Backward && Mathf.Approximately((float)result, 0f))
                     {
                         result = spline.Travel(1.0, distance - moved, out traveled, direction);
                     }
+
                     moved += traveled;
                 }
+
                 if (direction == Spline.Direction.Forward && percent <= max)
                 {
                     if (result > max)
@@ -71,6 +76,7 @@ namespace Railway.Gameplay
                         result = max;
                     }
                 }
+
                 return result;
             }
         }
@@ -86,7 +92,7 @@ namespace Railway.Gameplay
         {
             tracer = GetComponentInChildren<SplineTracer>();
             tracer.spline = RailBuilder.Instance.spline;
-            
+
             if (isEngine)
             {
                 SetupRecursively(null, new SplineSegment(tracer.spline, -1, tracer.direction));
@@ -119,7 +125,7 @@ namespace Railway.Gameplay
                 ResetSegments();
                 return;
             }
-            
+
             float totalMoved = 0f, moved = 0f;
             double start = front.tracer.UnclipPercent(front.tracer.result.percent);
 
@@ -169,15 +175,16 @@ namespace Railway.Gameplay
             bool same = true;
             while (current != null)
             {
-                if(current.segment != segment)
+                if (current.segment != segment)
                 {
                     same = false;
                     break;
                 }
+
                 current = current.back;
             }
 
-            if(same) segment.start = -1; 
+            if (same) segment.start = -1;
         }
 
         void ApplyTracer(SplineComputer spline, double percent, Spline.Direction direction)

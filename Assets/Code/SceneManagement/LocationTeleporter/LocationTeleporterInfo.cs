@@ -19,18 +19,20 @@ namespace Railway.SceneManagement
     {
         [SerializeField] private GameObject Canvas;
 
-        [Header("UI Mission")]
-        [SerializeField] private TMP_Text _missionName;
+        [Header("UI Mission")] [SerializeField]
+        private TMP_Text _missionName;
+
         [SerializeField] private TMP_Text _resourceInstantiate;
         [SerializeField] private TMP_Text _cityInstantiate;
 
-        [Header("UI Parents")] 
-        [SerializeField] private Transform _resourceParent;
+        [Header("UI Parents")] [SerializeField]
+        private Transform _resourceParent;
+
         [SerializeField] private Transform _cityParent;
-        
+
         [HideInInspector] public MissionInitializer mission;
         private bool isActive = false;
-        
+
         CompositeDisposable disposables = new CompositeDisposable();
 
         private void OnDisable()
@@ -52,7 +54,7 @@ namespace Railway.SceneManagement
             {
                 ShowCityInfo(city);
             }
-            
+
             ShowResourceInfo(mission.CurrentResources);
         }
 
@@ -71,22 +73,22 @@ namespace Railway.SceneManagement
                 ResourceType currentResourceType = (ResourceType)i;
                 _resourceTexts[i] = Instantiate(_resourceInstantiate, _resourceParent);
 
-                SerializableReactiveProperty<float> currentReactiveProperty = mission.GetCurrentReactiveProperty(currentResourceType);
+                SerializableReactiveProperty<float> currentReactiveProperty =
+                    mission.GetCurrentReactiveProperty(currentResourceType);
 
                 currentReactiveProperty
                     .Subscribe(value => _resourceTexts[i].text = value.ToString())
                     .AddTo(disposables);
             }
-            
+
             /*TMP_Text gold = Instantiate(_resourceInstantiate, _resourceParent);
             TMP_Text workers = Instantiate(_resourceInstantiate, _resourceParent);
             TMP_Text church = Instantiate(_resourceInstantiate, _resourceParent);
             TMP_Text speedBuilding = Instantiate(_resourceInstantiate, _resourceParent);
             TMP_Text techProgress = Instantiate(_resourceInstantiate, _resourceParent);
             TMP_Text fuel = Instantiate(_resourceInstantiate, _resourceParent);*/
-            
-            
-            
+
+
             /*resources.Gold.CurrentValue
                 .Subscribe(value => gold.text = FormatText(UITextFormat.Resources.Gold, value))
                 .AddTo(disposables);
@@ -106,8 +108,8 @@ namespace Railway.SceneManagement
                 .Subscribe(value => fuel.text = FormatText(UITextFormat.Resources.Fuel, value))
                 .AddTo(disposables);*/
         }
-        
-        
+
+
         private string FormatText(string format, float value)
         {
             return format + " " + value;
