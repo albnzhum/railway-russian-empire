@@ -7,11 +7,4 @@ ScriptedImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-  script: {fileID: 11500000, guid: 625f186215c104763be7675aa2d941aa, type: 3}
-AssetOrigin:
-  serializedVersion: 1
-  productId: 191449
-  packageName: Simple Water Shader URP
-  packageVersion: 1.0.0
-  assetPath: Assets/IgniteCoders/Simple Water Shader/Resources/WaterShader.shadergraph
-  uploadId: 422776
+  script: {instanceID: 0}
