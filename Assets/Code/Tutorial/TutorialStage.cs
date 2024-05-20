@@ -6,8 +6,8 @@ namespace Railway.Tutorials
 {
     public class TutorialStage : MonoBehaviour
     {
-        [Header("UI elements")] [SerializeField]
-        private GameObject _tutorialWindow;
+        [Header("UI elements")] 
+        [SerializeField] private GameObject _tutorialWindow;
 
         [SerializeField] private Button _closeButton;
 
