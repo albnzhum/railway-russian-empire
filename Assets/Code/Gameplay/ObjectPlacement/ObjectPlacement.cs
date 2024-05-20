@@ -15,14 +15,14 @@ public enum CellBuildingType
 
 public class ObjectPlacement : MonoBehaviour
 {
-    private List<PlacingObject> _objectsToPlace;
+    private List<NonInteractableObject> _objectsToPlace;
     private TerrainGridSystem _tgs;
 
     private void OnEnable()
     {
         _tgs = TerrainGridSystem.Instance;
 
-        _objectsToPlace = GetComponentsInChildren<PlacingObject>().ToList();
+        _objectsToPlace = GetComponentsInChildren<NonInteractableObject>().ToList();
     }
 
     private void Start()

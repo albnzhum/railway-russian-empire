@@ -1,8 +1,6 @@
-﻿using System;
-using Dreamteck.Splines;
+﻿using Dreamteck.Splines;
 using TGS;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Railway.Gameplay
 {

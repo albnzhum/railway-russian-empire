@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlacingObject : MonoBehaviour
+public class NonInteractableObject : MonoBehaviour
 {
     [SerializeField] private GameObject _object;
     [SerializeField] private int _cellIndex;

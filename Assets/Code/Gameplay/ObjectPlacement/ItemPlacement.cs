@@ -16,14 +16,14 @@ namespace Railway.Gameplay
     /// <summary>
     /// Отвечает за размещение купленного предмета
     /// </summary>
-    public class ShopItemPlacing : MonoBehaviour
+    public class ItemPlacement : MonoBehaviour
     {
         [ReadOnly] [SerializeField] private InputReader _inputReader;
         [SerializeField] private GameStateSO gameState;
         [SerializeField] private ItemEventChannel useItemEvent;
 
         [SerializeField] private Camera _camera;
-        [ReadOnly] [SerializeField] private PlacingObject _startGO;
+        [ReadOnly] [SerializeField] private NonInteractableObject _startGO;
         [SerializeField] private GameObject _particleSystem;
 
         private TerrainGridSystem _tgs;
