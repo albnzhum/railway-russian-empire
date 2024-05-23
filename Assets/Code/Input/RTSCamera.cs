@@ -11,26 +11,27 @@ public class RTSCamera : MonoBehaviour
 
     private Transform cameraTransform;
 
-    [Header("Horizontal Translation")] [SerializeField]
-    private float maxSpeed = 5f;
+    [Header("Horizontal Translation")] 
+    [SerializeField] private float maxSpeed = 5f;
 
     private float speed;
 
     [SerializeField] private float acceleration = 10f;
     [SerializeField] private float damping = 15f;
 
-    [Header("Vertical Translation")] [SerializeField]
-    private float stepSize = 2f;
+    [Header("Vertical Translation")] 
+    [SerializeField] private float stepSize = 2f;
 
     [SerializeField] private float zoomDampening = 7.5f;
     [SerializeField] private float minHeight = 5f;
     [SerializeField] private float maxHeight = 50f;
     [SerializeField] private float zoomSpeed = 2f;
 
-    [Header("Rotation")] [SerializeField] private float maxRotationSpeed = 1f;
+    [Header("Rotation")] 
+    [SerializeField] private float maxRotationSpeed = 1f;
 
-    [Header("Edge Movement")] [SerializeField] [Range(0f, 0.1f)]
-    private float edgeTolerance = 0.05f;
+    [Header("Edge Movement")] 
+    [SerializeField] [Range(0f, 0.1f)] private float edgeTolerance = 0.05f;
 
     private Vector3 targetPosition;
 
@@ -48,18 +49,16 @@ public class RTSCamera : MonoBehaviour
 
     private void OnEnable()
     {
-        //_inputReader.EnableGameplayInput();
-
         zoomHeight = cameraTransform.localPosition.y;
 
         lastPosition = transform.position;
 
-        _inputReader.CameraMoveEvent += ZoomCamera;
+        _inputReader.CameraZoomEvent += ZoomCamera;
     }
 
     private void OnDisable()
     {
-        _inputReader.CameraMoveEvent -= ZoomCamera;
+        _inputReader.CameraZoomEvent -= ZoomCamera;
         _inputReader.DisableAllInput();
     }
 
@@ -135,7 +134,6 @@ public class RTSCamera : MonoBehaviour
 
         cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition,
             zoomTarget, Time.deltaTime * zoomDampening);
-        //cameraTransform.LookAt(transform);
     }
 
     private void CheckMouseAtScreenEdge()
@@ -159,8 +157,6 @@ public class RTSCamera : MonoBehaviour
         {
             moveDirection += GetCameraForward();
         }
-
-        //targetPosition += moveDirection;
     }
 
     private void DragCamera()

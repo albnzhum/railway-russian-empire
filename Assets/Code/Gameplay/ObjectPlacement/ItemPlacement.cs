@@ -18,10 +18,12 @@ namespace Railway.Gameplay
     /// </summary>
     public class ItemPlacement : MonoBehaviour
     {
+        [Header("Gameplay")]
         [ReadOnly] [SerializeField] private InputReader _inputReader;
         [SerializeField] private GameStateSO gameState;
         [SerializeField] private ItemEventChannel useItemEvent;
 
+        [Header("Scene Object")]
         [SerializeField] private Camera _camera;
         [ReadOnly] [SerializeField] private NonInteractableObject _startGO;
         [SerializeField] private GameObject _particleSystem;

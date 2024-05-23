@@ -8,7 +8,7 @@ namespace Railway.Input
 {
     [CreateAssetMenu(fileName = "InputReader", menuName = "Gameplay/Input Reader")]
     public class InputReader : ScriptableObject, RailwayInputs.IGameplayActions, RailwayInputs.IEditActions,
-        RailwayInputs.IMenusActions, RailwayInputs.ITutorialsActions
+        RailwayInputs.IMenusActions, RailwayInputs.ITutorialsActions, RailwayInputs.IThirdPersonViewActions
     {
         public event UnityAction OpenShopEvent = delegate { };
         public event UnityAction CloseShopEvent = delegate { };
@@ -17,7 +17,9 @@ namespace Railway.Input
         public event Action<Vector2> ChooseItemPositionEvent = delegate { };
         public event UnityAction<Vector2> HoverCellEvent = delegate { };
         public event UnityAction<float> TabSwitched = delegate { };
-        public event UnityAction<Vector2> CameraMoveEvent = delegate { };
+        public event UnityAction<Vector2> CameraZoomEvent = delegate { };
+        public event UnityAction<Vector2> CameraMoveEvent = delegate {  };
+        public event UnityAction ChangeCameraEvent = delegate { };
         public event UnityAction EnableMouseControlCameraEvent = delegate { };
         public event UnityAction DisableMouseControlCameraEvent = delegate { };
         public event UnityAction OnCancelEvent = delegate { };
@@ -47,6 +49,7 @@ namespace Railway.Input
                 _railwayInputs.Edit.SetCallbacks(this);
                 _railwayInputs.Gameplay.SetCallbacks(this);
                 _railwayInputs.Tutorials.SetCallbacks(this);
+                _railwayInputs.ThirdPersonView.SetCallbacks(this);
             }
         }
 
@@ -63,6 +66,18 @@ namespace Railway.Input
             _railwayInputs.Gameplay.Enable();
             _railwayInputs.Menus.Disable();
             _railwayInputs.Tutorials.Disable();
+            _railwayInputs.ThirdPersonView.Disable();
+        }
+
+        public void EnableThirdPersonInput()
+        {
+            isGameplayInputEnabled = false;
+            
+            _railwayInputs.Edit.Disable();
+            _railwayInputs.Gameplay.Disable();
+            _railwayInputs.Menus.Disable();
+            _railwayInputs.Tutorials.Disable();
+            _railwayInputs.ThirdPersonView.Enable();
         }
 
         public bool LeftMouseDown() => Mouse.current.leftButton.isPressed;
@@ -75,6 +90,7 @@ namespace Railway.Input
             _railwayInputs.Gameplay.Disable();
             _railwayInputs.Menus.Disable();
             _railwayInputs.Tutorials.Disable();
+            _railwayInputs.ThirdPersonView.Disable();
         }
 
         public void EnableMenuInput()
@@ -85,22 +101,27 @@ namespace Railway.Input
             _railwayInputs.Gameplay.Disable();
             _railwayInputs.Menus.Enable();
             _railwayInputs.Tutorials.Disable();
+            _railwayInputs.ThirdPersonView.Disable();
         }
 
         public void EnableTutorialInput()
         {
             isGameplayInputEnabled = false;
 
+            _railwayInputs.Edit.Disable();
             _railwayInputs.Gameplay.Disable();
             _railwayInputs.Menus.Disable();
             _railwayInputs.Tutorials.Enable();
+            _railwayInputs.ThirdPersonView.Disable();
         }
 
         public void DisableAllInput()
         {
+            _railwayInputs.Edit.Disable();
             _railwayInputs.Gameplay.Disable();
             _railwayInputs.Menus.Disable();
             _railwayInputs.Tutorials.Disable();
+            _railwayInputs.ThirdPersonView.Disable();
         }
 
         #region GAMEPLAY_INPUT
@@ -143,7 +164,7 @@ namespace Railway.Input
 
         public void OnZoomCamera(InputAction.CallbackContext context)
         {
-            CameraMoveEvent.Invoke(context.ReadValue<Vector2>());
+            CameraZoomEvent.Invoke(context.ReadValue<Vector2>());
         }
 
         public void OnMouseControlCamera(InputAction.CallbackContext context)
@@ -153,6 +174,17 @@ namespace Railway.Input
 
             if (context.phase == InputActionPhase.Canceled)
                 DisableMouseControlCameraEvent.Invoke();
+        }
+
+        public void OnChangeCamera(InputAction.CallbackContext context)
+        {
+            if (context.phase == InputActionPhase.Performed) 
+                ChangeCameraEvent.Invoke();
+        }
+
+        public void OnMoveCamera(InputAction.CallbackContext context)
+        {
+            CameraMoveEvent.Invoke(context.ReadValue<Vector2>());
         }
 
         #endregion

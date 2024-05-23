@@ -71,6 +71,15 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""ChangeCamera"",
+                    ""type"": ""Button"",
+                    ""id"": ""491a9dd6-f40f-48a3-ba62-2099fd1db62d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -126,6 +135,17 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""HoverCell"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1adeef7a-cb1b-4afb-b09a-44e48da2b919"",
+                    ""path"": ""<Keyboard>/f5"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeCamera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -630,6 +650,173 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""ThirdPersonView"",
+            ""id"": ""7c8af6b6-3b97-453f-b1c7-28de940e7619"",
+            ""actions"": [
+                {
+                    ""name"": ""ChangeCamera"",
+                    ""type"": ""Button"",
+                    ""id"": ""c2f6879b-bd77-40d3-894e-7fea9f4453dc"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""4ef04b5b-16f5-4966-9c65-6ccefcd0d719"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MoveCamera"",
+                    ""type"": ""Value"",
+                    ""id"": ""82ad1359-765d-49ae-8a24-63cf7b4305a1"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""3f6e7d57-784d-4324-a3ba-658e9bfa0507"",
+                    ""path"": ""<Keyboard>/f5"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeCamera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f279e04e-f6f6-4c9b-b0e5-dda0f236bec7"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""973d055d-2541-4d55-a080-ae6033395fe0"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveCamera"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""535b8a8a-d4fe-4180-80a1-280ba6e49507"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveCamera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""72cd85df-326c-48c2-b724-1621ff6df8ac"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveCamera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""64cd82d6-aa40-40cc-8407-ac15ed1abacf"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveCamera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""b384d9ec-33f2-4a1e-899d-90f3cf106ef8"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveCamera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Arrows"",
+                    ""id"": ""53bc7e4e-21b4-49df-8904-71b827c25bd8"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveCamera"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""e858c100-4389-41e9-9ed6-b08552f81fd5"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveCamera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""17b3154c-5f8e-4c97-8e1a-d32257f2f72b"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveCamera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""8d699749-8327-4c57-8740-14a3a2bcac76"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveCamera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""7686e723-a774-4537-9ed1-e6c83ac6e02f"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveCamera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -641,6 +828,7 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
         m_Gameplay_Pause = m_Gameplay.FindAction("Pause", throwIfNotFound: true);
         m_Gameplay_MouseControlCamera = m_Gameplay.FindAction("MouseControlCamera", throwIfNotFound: true);
         m_Gameplay_ZoomCamera = m_Gameplay.FindAction("ZoomCamera", throwIfNotFound: true);
+        m_Gameplay_ChangeCamera = m_Gameplay.FindAction("ChangeCamera", throwIfNotFound: true);
         // Menus
         m_Menus = asset.FindActionMap("Menus", throwIfNotFound: true);
         m_Menus_CloseShop = m_Menus.FindAction("CloseShop", throwIfNotFound: true);
@@ -662,6 +850,11 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
         m_Edit_ChooseItemPosition = m_Edit.FindAction("ChooseItemPosition", throwIfNotFound: true);
         m_Edit_CancelPlacing = m_Edit.FindAction("CancelPlacing", throwIfNotFound: true);
         m_Edit_PlaceItem = m_Edit.FindAction("PlaceItem", throwIfNotFound: true);
+        // ThirdPersonView
+        m_ThirdPersonView = asset.FindActionMap("ThirdPersonView", throwIfNotFound: true);
+        m_ThirdPersonView_ChangeCamera = m_ThirdPersonView.FindAction("ChangeCamera", throwIfNotFound: true);
+        m_ThirdPersonView_Pause = m_ThirdPersonView.FindAction("Pause", throwIfNotFound: true);
+        m_ThirdPersonView_MoveCamera = m_ThirdPersonView.FindAction("MoveCamera", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -728,6 +921,7 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_Pause;
     private readonly InputAction m_Gameplay_MouseControlCamera;
     private readonly InputAction m_Gameplay_ZoomCamera;
+    private readonly InputAction m_Gameplay_ChangeCamera;
     public struct GameplayActions
     {
         private @RailwayInputs m_Wrapper;
@@ -737,6 +931,7 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
         public InputAction @Pause => m_Wrapper.m_Gameplay_Pause;
         public InputAction @MouseControlCamera => m_Wrapper.m_Gameplay_MouseControlCamera;
         public InputAction @ZoomCamera => m_Wrapper.m_Gameplay_ZoomCamera;
+        public InputAction @ChangeCamera => m_Wrapper.m_Gameplay_ChangeCamera;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -761,6 +956,9 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
             @ZoomCamera.started += instance.OnZoomCamera;
             @ZoomCamera.performed += instance.OnZoomCamera;
             @ZoomCamera.canceled += instance.OnZoomCamera;
+            @ChangeCamera.started += instance.OnChangeCamera;
+            @ChangeCamera.performed += instance.OnChangeCamera;
+            @ChangeCamera.canceled += instance.OnChangeCamera;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -780,6 +978,9 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
             @ZoomCamera.started -= instance.OnZoomCamera;
             @ZoomCamera.performed -= instance.OnZoomCamera;
             @ZoomCamera.canceled -= instance.OnZoomCamera;
+            @ChangeCamera.started -= instance.OnChangeCamera;
+            @ChangeCamera.performed -= instance.OnChangeCamera;
+            @ChangeCamera.canceled -= instance.OnChangeCamera;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -1031,6 +1232,68 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
         }
     }
     public EditActions @Edit => new EditActions(this);
+
+    // ThirdPersonView
+    private readonly InputActionMap m_ThirdPersonView;
+    private List<IThirdPersonViewActions> m_ThirdPersonViewActionsCallbackInterfaces = new List<IThirdPersonViewActions>();
+    private readonly InputAction m_ThirdPersonView_ChangeCamera;
+    private readonly InputAction m_ThirdPersonView_Pause;
+    private readonly InputAction m_ThirdPersonView_MoveCamera;
+    public struct ThirdPersonViewActions
+    {
+        private @RailwayInputs m_Wrapper;
+        public ThirdPersonViewActions(@RailwayInputs wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ChangeCamera => m_Wrapper.m_ThirdPersonView_ChangeCamera;
+        public InputAction @Pause => m_Wrapper.m_ThirdPersonView_Pause;
+        public InputAction @MoveCamera => m_Wrapper.m_ThirdPersonView_MoveCamera;
+        public InputActionMap Get() { return m_Wrapper.m_ThirdPersonView; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(ThirdPersonViewActions set) { return set.Get(); }
+        public void AddCallbacks(IThirdPersonViewActions instance)
+        {
+            if (instance == null || m_Wrapper.m_ThirdPersonViewActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_ThirdPersonViewActionsCallbackInterfaces.Add(instance);
+            @ChangeCamera.started += instance.OnChangeCamera;
+            @ChangeCamera.performed += instance.OnChangeCamera;
+            @ChangeCamera.canceled += instance.OnChangeCamera;
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
+            @MoveCamera.started += instance.OnMoveCamera;
+            @MoveCamera.performed += instance.OnMoveCamera;
+            @MoveCamera.canceled += instance.OnMoveCamera;
+        }
+
+        private void UnregisterCallbacks(IThirdPersonViewActions instance)
+        {
+            @ChangeCamera.started -= instance.OnChangeCamera;
+            @ChangeCamera.performed -= instance.OnChangeCamera;
+            @ChangeCamera.canceled -= instance.OnChangeCamera;
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
+            @MoveCamera.started -= instance.OnMoveCamera;
+            @MoveCamera.performed -= instance.OnMoveCamera;
+            @MoveCamera.canceled -= instance.OnMoveCamera;
+        }
+
+        public void RemoveCallbacks(IThirdPersonViewActions instance)
+        {
+            if (m_Wrapper.m_ThirdPersonViewActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IThirdPersonViewActions instance)
+        {
+            foreach (var item in m_Wrapper.m_ThirdPersonViewActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_ThirdPersonViewActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public ThirdPersonViewActions @ThirdPersonView => new ThirdPersonViewActions(this);
     public interface IGameplayActions
     {
         void OnOpenShop(InputAction.CallbackContext context);
@@ -1038,6 +1301,7 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
         void OnPause(InputAction.CallbackContext context);
         void OnMouseControlCamera(InputAction.CallbackContext context);
         void OnZoomCamera(InputAction.CallbackContext context);
+        void OnChangeCamera(InputAction.CallbackContext context);
     }
     public interface IMenusActions
     {
@@ -1062,5 +1326,11 @@ public partial class @RailwayInputs: IInputActionCollection2, IDisposable
         void OnChooseItemPosition(InputAction.CallbackContext context);
         void OnCancelPlacing(InputAction.CallbackContext context);
         void OnPlaceItem(InputAction.CallbackContext context);
+    }
+    public interface IThirdPersonViewActions
+    {
+        void OnChangeCamera(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
+        void OnMoveCamera(InputAction.CallbackContext context);
     }
 }
