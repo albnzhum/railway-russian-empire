@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6567812603861964203}
+  - component: {fileID: 609160104991113744}
   m_Layer: 0
   m_Name: Rich Citizens_1
   m_TagString: Untagged
@@ -32,6 +33,18 @@ Transform:
   - {fileID: 4973228943067966182}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &609160104991113744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6014285875511637857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b8da6446ccc4f51b8ad15ab13c2605e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4795995102365125901
 PrefabInstance:
   m_ObjectHideFlags: 0

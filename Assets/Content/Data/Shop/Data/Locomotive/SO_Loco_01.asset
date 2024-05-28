@@ -20,7 +20,7 @@ MonoBehaviour:
   _sprite: {fileID: 21300000, guid: 26734d6357578bb49b4dea077506260f, type: 3}
   _country: 0
   _factory: 0
-  _lifeSpan: 0
-  _power: 0
+  _lifeSpan: 12
+  _power: 520
   _technicalState: 0
   _monthsBeforeMaintenance: 12

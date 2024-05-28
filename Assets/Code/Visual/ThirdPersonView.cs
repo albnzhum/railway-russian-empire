@@ -31,31 +31,28 @@ namespace Railway.Visual
         private void OnEnable()
         {
             cam = GetComponent<Camera>();
-
-            _inputReader.CameraMoveEvent += UpdateInput;
         }
 
         private void OnDisable()
         {
             Focused = false;
-
-            _inputReader.CameraMoveEvent -= UpdateInput;
         }
 
         private void Update()
         {
             if (cam.enabled)
             {
+                UpdateInput();
                 velocity = Vector3.Lerp(velocity, Vector3.zero, dampingCoefficient * Time.deltaTime);
                 transform.position += velocity * Time.deltaTime;
             }
         }
 
-        private void UpdateInput(Vector2 moveInput)
+        private void UpdateInput()
         {
             velocity += GetAccelerationVector() * Time.deltaTime;
-
-            Vector2 mouseDelta = lookSensitivity * moveInput;
+            
+            Vector2 mouseDelta = lookSensitivity * new Vector2( UnityEngine.Input.GetAxis( "Mouse X" ),-UnityEngine.Input.GetAxis( "Mouse Y" ) );
 
             Quaternion rotation = transform.rotation;
             Quaternion horizontalRotation = Quaternion.AngleAxis(mouseDelta.x, Vector3.up);

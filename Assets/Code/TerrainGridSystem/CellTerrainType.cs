@@ -12,9 +12,6 @@ public enum CellType
 public class CellTerrainType : MonoBehaviour
 {
     private TerrainGridSystem _tgs;
-
-    [SerializeField] private bool showHighlight;
-
     private Terrain _terrain;
     private TerrainData _terrainData;
 

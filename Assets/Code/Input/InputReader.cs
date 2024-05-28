@@ -18,7 +18,7 @@ namespace Railway.Input
         public event UnityAction<Vector2> HoverCellEvent = delegate { };
         public event UnityAction<float> TabSwitched = delegate { };
         public event UnityAction<Vector2> CameraZoomEvent = delegate { };
-        public event UnityAction<Vector2> CameraMoveEvent = delegate {  };
+        public event UnityAction<Vector2> CameraMoveEvent = delegate { };
         public event UnityAction ChangeCameraEvent = delegate { };
         public event UnityAction EnableMouseControlCameraEvent = delegate { };
         public event UnityAction DisableMouseControlCameraEvent = delegate { };
@@ -72,7 +72,7 @@ namespace Railway.Input
         public void EnableThirdPersonInput()
         {
             isGameplayInputEnabled = false;
-            
+
             _railwayInputs.Edit.Disable();
             _railwayInputs.Gameplay.Disable();
             _railwayInputs.Menus.Disable();
@@ -178,7 +178,7 @@ namespace Railway.Input
 
         public void OnChangeCamera(InputAction.CallbackContext context)
         {
-            if (context.phase == InputActionPhase.Performed) 
+            if (context.phase == InputActionPhase.Performed)
                 ChangeCameraEvent.Invoke();
         }
 
