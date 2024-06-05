@@ -6,6 +6,7 @@ using Railway.Gameplay;
 using Railway.Input;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 namespace Railway.Tutorials
 {
@@ -16,10 +17,10 @@ namespace Railway.Tutorials
         [SerializeField] private GameObject _tutorial;
 
         [Header("Gameplay")] 
-        [SerializeField] private GameStateSO _gameState;
+        [Inject] private GameStateSO _gameState;
         [SerializeField] private BoolEventChannelSO _onLocationLoadedEvent;
 
-        [SerializeField] private InputReader _inputReader;
+        [Inject] private InputReader _inputReader;
 
         private int currentStageIndex = 0;
         private bool isCompleted;

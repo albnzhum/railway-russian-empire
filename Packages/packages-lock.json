@@ -32,6 +32,13 @@
       "dependencies": {},
       "hash": "2eb519ce4a4c3d0cc3096e92d0db1166aa69d88a"
     },
+    "com.scellecs.morpeh.globals": {
+      "version": "https://github.com/scellecs/morpeh.globals.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "1454b56c2892d0cb2e93064bf50de0d89d8e37b3"
+    },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
       "depth": 0,

@@ -1,31 +1,19 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
-using ModestTree;
 using Railway.Shop.Data;
 using TGS;
 using UnityEngine;
+using Zenject;
 
 namespace Railway.Gameplay
 {
-    public class NeighborFinder
+    public class NeighborFinder : MonoInstaller<NeighborFinder>
     {
-        private TerrainGridSystem _tgs;
+        [Inject] private TerrainGridSystem _tgs;
 
-        private static NeighborFinder _instance;
-
-        private NeighborFinder(TerrainGridSystem tgs)
+        public override void InstallBindings()
         {
-            _tgs = tgs;
-        }
-
-        public static NeighborFinder Instance(TerrainGridSystem tgs)
-        {
-            if (_instance == null)
-            {
-                _instance = new NeighborFinder(tgs);
-            }
-
-            return _instance;
+            Container.Bind<NeighborFinder>().FromInstance(this).AsCached().IfNotBound();
         }
 
         public Cell[] GetAvailableCell(ShopItem currentItem, Cell startCell,
@@ -61,7 +49,7 @@ namespace Railway.Gameplay
             }
 
             HighlightAvailableCells(availableCells);
-            
+
             return availableCells;
         }
 

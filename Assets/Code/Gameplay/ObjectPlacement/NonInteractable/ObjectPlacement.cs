@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TGS;
 using UnityEngine;
+using Zenject;
 
 public enum CellBuildingType
 {
@@ -16,12 +17,10 @@ public enum CellBuildingType
 public class ObjectPlacement : MonoBehaviour
 {
     private List<NonInteractableObject> _objectsToPlace;
-    private TerrainGridSystem _tgs;
+    [Inject] private TerrainGridSystem _tgs;
 
     private void OnEnable()
     {
-        _tgs = TerrainGridSystem.Instance;
-
         _objectsToPlace = GetComponentsInChildren<NonInteractableObject>().ToList();
     }
 

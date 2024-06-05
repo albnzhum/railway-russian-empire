@@ -1,9 +1,5 @@
 using UnityEngine;
-using System;
-using System.Text;
-using System.Collections;
 using System.Collections.Generic;
-using TGS.Geom;
 using TGS.PathFinding;
 
 namespace TGS
@@ -12,7 +8,7 @@ namespace TGS
 
     public delegate int PathFindingEvent(int cellIndex);
 
-    public partial class TerrainGridSystem : MonoBehaviour
+    public partial class TerrainGridSystem
     {
         /// <summary>
         /// Fired when path finding algorithmn evaluates a cell. Return the increased cost for cell.
@@ -20,91 +16,91 @@ namespace TGS
         public event PathFindingEvent OnPathFindingCrossCell;
 
 
-        [SerializeField] HeuristicFormula _pathFindingHeuristicFormula = HeuristicFormula.EuclideanNoSQR;
+        [SerializeField] HeuristicFormula pathFindingHeuristicFormula = HeuristicFormula.EuclideanNoSQR;
 
         /// <summary>
         /// The path finding heuristic formula to estimate distance from current position to destination
         /// </summary>
-        public PathFinding.HeuristicFormula PathFindingHeuristicFormula
+        public HeuristicFormula PathFindingHeuristicFormula
         {
-            get => _pathFindingHeuristicFormula;
+            get => pathFindingHeuristicFormula;
             set
             {
-                if (value != _pathFindingHeuristicFormula)
+                if (value != pathFindingHeuristicFormula)
                 {
-                    _pathFindingHeuristicFormula = value;
+                    pathFindingHeuristicFormula = value;
                     isDirty = true;
                 }
             }
         }
 
-        [SerializeField] int _pathFindingMaxCost = 200000;
+        [SerializeField] int pathFindingMaxCost = 200000;
 
         /// <summary>
         /// The maximum search cost of the path finding execution.
         /// </summary>
         public int PathFindingMaxCost
         {
-            get => _pathFindingMaxCost;
+            get => pathFindingMaxCost;
             set
             {
-                if (value != _pathFindingMaxCost)
+                if (value != pathFindingMaxCost)
                 {
-                    _pathFindingMaxCost = value;
+                    pathFindingMaxCost = value;
                     isDirty = true;
                 }
             }
         }
 
-        [SerializeField] int _pathFindingMaxSteps = 2000;
+        [SerializeField] int pathFindingMaxSteps = 2000;
 
         /// <summary>
         /// The maximum number of steps that a path can return.
         /// </summary>
         public int PathFindingMaxSteps
         {
-            get => _pathFindingMaxSteps;
+            get => pathFindingMaxSteps;
             set
             {
-                if (value != _pathFindingMaxSteps)
+                if (value != pathFindingMaxSteps)
                 {
-                    _pathFindingMaxSteps = value;
+                    pathFindingMaxSteps = value;
                     isDirty = true;
                 }
             }
         }
 
-        [SerializeField] bool _pathFindingUseDiagonals = true;
+        [SerializeField] bool pathFindingUseDiagonals = true;
 
         /// <summary>
         /// If path can include diagonals between cells
         /// </summary>
         public bool PathFindingUseDiagonals
         {
-            get => _pathFindingUseDiagonals;
+            get => pathFindingUseDiagonals;
             set
             {
-                if (value != _pathFindingUseDiagonals)
+                if (value != pathFindingUseDiagonals)
                 {
-                    _pathFindingUseDiagonals = value;
+                    pathFindingUseDiagonals = value;
                     isDirty = true;
                 }
             }
         }
 
-        [SerializeField] bool _pathFindingHeavyDiagonals = false;
+        [SerializeField] bool pathFindingHeavyDiagonals;
 
         /// <summary>
         /// If diagonals have extra cost.
         /// </summary>
         public bool PathFindingHeavyDiagonals
         {
-            get => _pathFindingHeavyDiagonals;
+            get => pathFindingHeavyDiagonals;
             set
             {
-                if (value != _pathFindingHeavyDiagonals)
+                if (value != pathFindingHeavyDiagonals)
                 {
-                    _pathFindingHeavyDiagonals = value;
+                    pathFindingHeavyDiagonals = value;
                     isDirty = true;
                 }
             }
@@ -117,26 +113,27 @@ namespace TGS
         /// Returns an optimal path from startPosition to endPosition with options.
         /// </summary>
         /// <returns>The route consisting of a list of cell indexes.</returns>
-        /// <param name="startPosition">Start position in map coordinates (-0.5...0.5)</param>
-        /// <param name="endPosition">End position in map coordinates (-0.5...0.5)</param>
+        /// <param name="cellIndexEnd"></param>
         /// <param name="maxSearchCost">Maximum search cost for the path finding algorithm. A value of 0 will use the global default defined by pathFindingMaxCost</param>
         /// <param name="maxSteps">Maximum steps for the path. A value of 0 will use the global default defined by pathFindingMaxSteps</param>
+        /// <param name="cellIndexStart"></param>
+        /// <param name="cellGroupMask"></param>
         public List<int> FindPath(int cellIndexStart, int cellIndexEnd, int maxSearchCost = 0, int maxSteps = 0,
             int cellGroupMask = -1)
         {
-            int dummy;
-            return FindPath(cellIndexStart, cellIndexEnd, out dummy, maxSearchCost, maxSteps, cellGroupMask);
+            return FindPath(cellIndexStart, cellIndexEnd, out _, maxSearchCost, maxSteps, cellGroupMask);
         }
 
         /// <summary>
         /// Returns an optimal path from startPosition to endPosition with options.
         /// </summary>
         /// <returns>The route consisting of a list of cell indexes.</returns>
-        /// <param name="startPosition">Start position in map coordinates (-0.5...0.5)</param>
-        /// <param name="endPosition">End position in map coordinates (-0.5...0.5)</param>
+        /// <param name="cellIndexStart"></param>
+        /// <param name="cellIndexEnd"></param>
         /// <param name="totalCost">The total accumulated cost for the path</param>
         /// <param name="maxSearchCost">Maximum search cost for the path finding algorithm. A value of 0 will use the global default defined by pathFindingMaxCost</param>
         /// <param name="maxSteps">Maximum steps for the path. A value of 0 will use the global default defined by pathFindingMaxSteps</param>
+        /// <param name="cellGroupMask"></param>
         public List<int> FindPath(int cellIndexStart, int cellIndexEnd, out int totalCost, int maxSearchCost = 0,
             int maxSteps = 0, int cellGroupMask = -1)
         {
@@ -148,26 +145,26 @@ namespace TGS
             List<int> routePoints = null;
             if (cellIndexStart != cellIndexEnd)
             {
-                PathFindingPoint startingPoint = new PathFindingPoint(startCell.column, startCell.row);
-                PathFindingPoint endingPoint = new PathFindingPoint(endCell.column, endCell.row);
+                PathFindingPoint startingPoint = new(startCell.column, startCell.row);
+                PathFindingPoint endingPoint = new(endCell.column, endCell.row);
                 ComputeRouteMatrix();
-                finder.Formula = _pathFindingHeuristicFormula;
-                finder.MaxSearchCost = maxSearchCost > 0 ? maxSearchCost : _pathFindingMaxCost;
-                finder.MaxSteps = maxSteps > 0 ? maxSteps : _pathFindingMaxSteps;
-                finder.Diagonals = _pathFindingUseDiagonals;
-                finder.HeavyDiagonals = _pathFindingHeavyDiagonals;
-                finder.HexagonalGrid = gridTopology == GRID_TOPOLOGY.Hexagonal;
-                finder.CellGroupMask = cellGroupMask;
+                _finder.Formula = pathFindingHeuristicFormula;
+                _finder.MaxSearchCost = maxSearchCost > 0 ? maxSearchCost : pathFindingMaxCost;
+                _finder.MaxSteps = maxSteps > 0 ? maxSteps : pathFindingMaxSteps;
+                _finder.Diagonals = pathFindingUseDiagonals;
+                _finder.HeavyDiagonals = pathFindingHeavyDiagonals;
+                _finder.HexagonalGrid = gridTopology == GRID_TOPOLOGY.Hexagonal;
+                _finder.CellGroupMask = cellGroupMask;
                 if (OnPathFindingCrossCell != null)
                 {
-                    finder.OnCellCross = FindRoutePositionValidator;
+                    _finder.OnCellCross = FindRoutePositionValidator;
                 }
                 else
                 {
-                    finder.OnCellCross = null;
+                    _finder.OnCellCross = null;
                 }
 
-                List<PathFinderNode> route = finder.FindPath(startingPoint, endingPoint, out totalCost, evenLayout);
+                List<PathFinderNode> route = _finder.FindPath(startingPoint, endingPoint, out totalCost, evenLayout);
                 if (route != null)
                 {
                     routePoints = new List<int>(route.Count);

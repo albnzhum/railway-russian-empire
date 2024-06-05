@@ -6,24 +6,25 @@ using System.Collections;
 using System.Collections.Generic;
 using TGS.Geom;
 using TGS.Poly2Tri;
+using Zenject;
 
 namespace TGS
 {
     [ExecuteInEditMode]
     [Serializable]
-    public partial class TerrainGridSystem : MonoBehaviour
+    public partial class TerrainGridSystem 
     {
         // internal fields
-        const double MIN_VERTEX_DISTANCE = 0.002;
-        const double SQR_MIN_VERTEX_DIST = MIN_VERTEX_DISTANCE * MIN_VERTEX_DISTANCE;
-        const double SQR_MAX_VERTEX_DIST = 10 * SQR_MIN_VERTEX_DIST;
-        const string SKW_NEAR_CLIP_FADE = "NEAR_CLIP_FADE";
-        const string SKW_TEX_HIGHLIGHT_ADDITIVE = "TGS_TEX_HIGHLIGHT_ADDITIVE";
-        const string SKW_TEX_HIGHLIGHT_MULTIPLY = "TGS_TEX_HIGHLIGHT_MULTIPLY";
-        const string SKW_TEX_HIGHLIGHT_COLOR = "TGS_TEX_HIGHLIGHT_COLOR";
-        const string SKW_TEX_HIGHLIGHT_SCALE = "TGS_TEX_HIGHLIGHT_SCALE";
+        private const double MIN_VERTEX_DISTANCE = 0.002;
+        private const double SQR_MIN_VERTEX_DIST = MIN_VERTEX_DISTANCE * MIN_VERTEX_DISTANCE;
+        private const double SQR_MAX_VERTEX_DIST = 10 * SQR_MIN_VERTEX_DIST;
+        private const string SKW_NEAR_CLIP_FADE = "NEAR_CLIP_FADE";
+        private const string SKW_TEX_HIGHLIGHT_ADDITIVE = "TGS_TEX_HIGHLIGHT_ADDITIVE";
+        private const string SKW_TEX_HIGHLIGHT_MULTIPLY = "TGS_TEX_HIGHLIGHT_MULTIPLY";
+        private const string SKW_TEX_HIGHLIGHT_COLOR = "TGS_TEX_HIGHLIGHT_COLOR";
+        private const string SKW_TEX_HIGHLIGHT_SCALE = "TGS_TEX_HIGHLIGHT_SCALE";
 
-        Rect canvasRect = new Rect(-0.5f, -0.5f, 1, 1);
+        private Rect _canvasRect = new Rect(-0.5f, -0.5f, 1, 1);
 
         // Custom inspector stuff
         public const int MAX_TERRITORIES = 512;
@@ -33,61 +34,61 @@ namespace TGS
         public const int MAX_CELLS_FOR_RELAXATION = 1000;
 
         // Materials and resources
-        Material territoriesMat,
-            cellsThinMat,
-            cellsGeoMat,
-            hudMatTerritoryOverlay,
-            hudMatTerritoryGround,
-            hudMatCellOverlay,
-            hudMatCellGround;
+        private Material _territoriesMat,
+            _cellsThinMat,
+            _cellsGeoMat,
+            _hudMatTerritoryOverlay,
+            _hudMatTerritoryGround,
+            _hudMatCellOverlay,
+            _hudMatCellGround;
 
-        Material territoriesDisputedMat;
-        Material coloredMatGround, coloredMatOverlay;
-        Material texturizedMatGround, texturizedMatOverlay;
+        private Material _territoriesDisputedMat;
+        private Material _coloredMatGround, _coloredMatOverlay;
+        private Material _texturizedMatGround, _texturizedMatOverlay;
 
         // Cell mesh data
-        const string CELLS_LAYER_NAME = "Cells";
-        Vector3[][] cellMeshBorders;
-        int[][] cellMeshIndices;
-        Dictionary<Segment, Region> cellNeighbourHit;
-        float meshStep;
-        bool recreateCells, recreateTerritories;
-        Dictionary<int, Cell> cellTagged;
-        bool needUpdateTerritories;
+        private const string CELLS_LAYER_NAME = "Cells";
+        private Vector3[][] _cellMeshBorders;
+        private int[][] _cellMeshIndices;
+        private Dictionary<Segment, Region> _cellNeighbourHit;
+        private float _meshStep;
+        private bool _recreateCells, _recreateTerritories;
+        private Dictionary<int, Cell> _cellTagged;
+        private bool _needUpdateTerritories;
 
         // Territory mesh data
-        const string TERRITORIES_LAYER_NAME = "Territories";
-        Dictionary<Segment, Region> territoryNeighbourHit;
-        List<Segment> territoryFrontiers;
-        List<Territory> _sortedTerritories;
-        List<TerritoryMesh> territoryMeshes;
+        private const string TERRITORIES_LAYER_NAME = "Territories";
+        private Dictionary<Segment, Region> _territoryNeighbourHit;
+        private List<Segment> _territoryFrontiers;
+        private List<Territory> _sortedTerritories;
+        private List<TerritoryMesh> _territoryMeshes;
 
         // Common territory & cell structures
-        List<Vector3> frontiersPoints;
-        Dictionary<Segment, bool> segmentHit;
-        List<TriangulationPoint> steinerPoints;
-        Dictionary<TriangulationPoint, int> surfaceMeshHit;
-        List<Vector3> meshPoints;
-        int[] triNew;
-        int triNewIndex;
-        int newPointsCount;
+        private List<Vector3> _frontiersPoints;
+        private Dictionary<Segment, bool> _segmentHit;
+        private List<TriangulationPoint> _steinerPoints;
+        private Dictionary<TriangulationPoint, int> _surfaceMeshHit;
+        private List<Vector3> _meshPoints;
+        int[] _triNew;
+        int _triNewIndex;
+        int _newPointsCount;
 
         // Terrain data
-        float[,] terrainHeights;
-        float[] terrainRoughnessMap;
-        float[] tempTerrainRoughnessMap;
-        int terrainRoughnessMapWidth, terrainRoughnessMapHeight;
-        int heightMapWidth, heightMapHeight;
-        const int TERRAIN_CHUNK_SIZE = 8;
+        private float[,] _terrainHeights;
+        private float[] _terrainRoughnessMap;
+        private float[] _tempTerrainRoughnessMap;
+        private int _terrainRoughnessMapWidth, _terrainRoughnessMapHeight;
+        private int _heightMapWidth, _heightMapHeight;
+        private const int TERRAIN_CHUNK_SIZE = 8;
 
-        float effectiveRoughness;
+        float _effectiveRoughness;
         // = _gridRoughness * terrainHeight
 
         // Placeholders and layers
-        GameObject territoryLayer;
-        GameObject _surfacesLayer;
+        private GameObject _territoryLayer;
+        private GameObject _surfacesLayer;
 
-        GameObject surfacesLayer
+        private GameObject SurfacesLayer
         {
             get
             {
@@ -97,64 +98,61 @@ namespace TGS
             }
         }
 
-        GameObject _highlightedObj;
-        GameObject cellLayer;
+        private GameObject _highlightedObj;
+        private GameObject _cellLayer;
 
         // Caches
-        Dictionary<int, GameObject> surfaces;
-        Dictionary<Cell, int> _cellLookup;
-        int lastCellLookupCount = -1;
-        Dictionary<Territory, int> _territoryLookup;
-        int lastTerritoryLookupCount = -1;
-        Dictionary<Color, Material> coloredMatCacheGround;
-        Dictionary<Color, Material> coloredMatCacheOverlay;
-        Dictionary<Color, Material> frontierColorCache;
-        Color[] factoryColors;
-        bool refreshCellMesh, refreshTerritoriesMesh;
-        List<Cell> sortedCells;
-        bool needResortCells;
-        bool shouldRedraw;
-        DisposalManager disposalManager;
+        private Dictionary<int, GameObject> _surfaces;
+        private Dictionary<Cell, int> _cellLookup;
+        private int _lastCellLookupCount = -1;
+        private Dictionary<Territory, int> _territoryLookup;
+        private int _lastTerritoryLookupCount = -1;
+        private Dictionary<Color, Material> _coloredMatCacheGround;
+        private Dictionary<Color, Material> _coloredMatCacheOverlay;
+        private Dictionary<Color, Material> _frontierColorCache;
+        private Color[] _factoryColors;
+        private bool _refreshCellMesh, _refreshTerritoriesMesh;
+        private List<Cell> _sortedCells;
+        private bool _needResortCells;
+        private bool _shouldRedraw;
+        private DisposalManager _disposalManager;
 
         // Z-Figther & LOD
-        Vector3 lastLocalPosition, lastCamPos, lastPos;
-        float lastGridElevation, lastGridCameraOffset;
-        float terrainWidth;
-        float terrainHeight;
-        float terrainDepth;
+        private Vector3 _lastLocalPosition, _lastCamPos, _lastPos;
+        private float _lastGridElevation, _lastGridCameraOffset;
+        private float _terrainWidth;
+        private float _terrainHeight;
+        private float _terrainDepth;
 
         // Interaction
-        static TerrainGridSystem _instance;
+        private static TerrainGridSystem _instance;
         public bool mouseIsOver;
-        Territory _territoryHighlighted;
-        int _territoryHighlightedIndex = -1;
-        Cell _cellHighlighted;
-        int _cellHighlightedIndex = -1;
-        float highlightFadeStart;
-        int _territoryLastClickedIndex = -1, _cellLastClickedIndex = -1;
-        int _territoryLastOverIndex = -1, _cellLastOverIndex = -1;
-        Territory _territoryLastOver;
-        Cell _cellLastOver;
-        bool canInteract;
-        List<string> highlightKeywords;
-        RaycastHit[] hits;
+        private Territory _territoryHighlighted;
+        private int _territoryHighlightedIndex = -1;
+        private Cell _cellHighlighted;
+        private int _cellHighlightedIndex = -1;
+        private float _highlightFadeStart;
+        private int _territoryLastClickedIndex = -1, _cellLastClickedIndex = -1;
+        private int _territoryLastOverIndex = -1, _cellLastOverIndex = -1;
+        private Territory _territoryLastOver;
+        private Cell _cellLastOver;
+        private bool _canInteract;
+        private List<string> _highlightKeywords;
+        private RaycastHit[] _hits;
 
         // Misc
-        int _lastVertexCount = 0;
-        Color[] mask;
-        bool useEditorRay;
-        Ray editorRay;
+        private int _lastVertexCount = 0;
+        private Color[] _mask;
+        private bool _useEditorRay;
+        private Ray _editorRay;
 
-        public int lastVertexCount
-        {
-            get { return _lastVertexCount; }
-        }
+        public int LastVertexCount => _lastVertexCount;
 
-        Dictionary<Cell, int> cellLookup
+        private Dictionary<Cell, int> CellLookup
         {
             get
             {
-                if (_cellLookup != null && Cells.Count == lastCellLookupCount)
+                if (_cellLookup != null && Cells.Count == _lastCellLookupCount)
                     return _cellLookup;
                 if (_cellLookup == null)
                 {
@@ -165,8 +163,8 @@ namespace TGS
                     _cellLookup.Clear();
                 }
 
-                lastCellLookupCount = Cells.Count;
-                for (int k = 0; k < lastCellLookupCount; k++)
+                _lastCellLookupCount = Cells.Count;
+                for (int k = 0; k < _lastCellLookupCount; k++)
                 {
                     _cellLookup.Add(Cells[k], k);
                 }
@@ -176,18 +174,15 @@ namespace TGS
         }
 
 
-        bool territoriesAreUsed
-        {
-            get { return (_showTerritories || _colorizeTerritories || highlightMode == HIGHLIGHT_MODE.Territories); }
-        }
+        private bool TerritoriesAreUsed => (showTerritories || colorizeTerritories || highlightMode == HIGHLIGHT_MODE.Territories);
 
-        List<Territory> sortedTerritories
+        private List<Territory> SortedTerritories
         {
             get
             {
-                if (_sortedTerritories.Count != territories.Count)
+                if (_sortedTerritories.Count != Territories.Count)
                 {
-                    _sortedTerritories.AddRange(territories);
+                    _sortedTerritories.AddRange(Territories);
                     _sortedTerritories.Sort(delegate(Territory x, Territory y)
                     {
                         return x.region.rect2DArea.CompareTo(y.region.rect2DArea);
@@ -196,14 +191,14 @@ namespace TGS
 
                 return _sortedTerritories;
             }
-            set { _sortedTerritories = value; }
+            set => _sortedTerritories = value;
         }
 
-        Dictionary<Territory, int> territoryLookup
+        private Dictionary<Territory, int> TerritoryLookup
         {
             get
             {
-                if (_territoryLookup != null && territories.Count == lastTerritoryLookupCount)
+                if (_territoryLookup != null && Territories.Count == _lastTerritoryLookupCount)
                     return _territoryLookup;
                 if (_territoryLookup == null)
                 {
@@ -214,78 +209,78 @@ namespace TGS
                     _territoryLookup.Clear();
                 }
 
-                int terrCount = territories.Count;
+                int terrCount = Territories.Count;
                 for (int k = 0; k < terrCount; k++)
                 {
-                    _territoryLookup.Add(territories[k], k);
+                    _territoryLookup.Add(Territories[k], k);
                 }
 
-                lastTerritoryLookupCount = territories.Count;
+                _lastTerritoryLookupCount = Territories.Count;
                 return _territoryLookup;
             }
         }
 
-        Material cellsMat
+        private Material CellsMat
         {
             get
             {
                 if (cellBorderThickness > 1)
-                    return cellsGeoMat;
+                    return _cellsGeoMat;
                 else
-                    return cellsThinMat;
+                    return _cellsThinMat;
             }
         }
 
 
         #region Gameloop events
 
-        void OnEnable()
+        private void OnEnable()
         {
             if (Cells == null)
             {
                 Init();
             }
 
-            if (hudMatTerritoryOverlay != null && hudMatTerritoryOverlay.color != _territoryHighlightColor)
+            if (_hudMatTerritoryOverlay != null && _hudMatTerritoryOverlay.color != territoryHighlightColor)
             {
-                hudMatTerritoryOverlay.color = _territoryHighlightColor;
+                _hudMatTerritoryOverlay.color = territoryHighlightColor;
             }
 
-            if (hudMatTerritoryGround != null && hudMatTerritoryGround.color != _territoryHighlightColor)
+            if (_hudMatTerritoryGround != null && _hudMatTerritoryGround.color != territoryHighlightColor)
             {
-                hudMatTerritoryGround.color = _territoryHighlightColor;
+                _hudMatTerritoryGround.color = territoryHighlightColor;
             }
 
-            if (hudMatCellOverlay != null && hudMatCellOverlay.color != cellHighlightColor)
+            if (_hudMatCellOverlay != null && _hudMatCellOverlay.color != cellHighlightColor)
             {
-                hudMatCellOverlay.color = cellHighlightColor;
+                _hudMatCellOverlay.color = cellHighlightColor;
             }
 
-            if (hudMatCellGround != null && hudMatCellGround.color != cellHighlightColor)
+            if (_hudMatCellGround != null && _hudMatCellGround.color != cellHighlightColor)
             {
-                hudMatCellGround.color = cellHighlightColor;
+                _hudMatCellGround.color = cellHighlightColor;
             }
 
-            if (territoriesMat != null && territoriesMat.color != _territoryFrontierColor)
+            if (_territoriesMat != null && _territoriesMat.color != territoryFrontierColor)
             {
-                territoriesMat.color = _territoryFrontierColor;
+                _territoriesMat.color = territoryFrontierColor;
             }
 
-            if (_territoryDisputedFrontierColor == new Color(0, 0, 0, 0))
-                _territoryDisputedFrontierColor = _territoryFrontierColor;
-            if (territoriesDisputedMat != null && territoriesDisputedMat.color != _territoryDisputedFrontierColor)
+            if (territoryDisputedFrontierColor == new Color(0, 0, 0, 0))
+                territoryDisputedFrontierColor = territoryFrontierColor;
+            if (_territoriesDisputedMat != null && _territoriesDisputedMat.color != territoryDisputedFrontierColor)
             {
-                territoriesDisputedMat.color = _territoryDisputedFrontierColor;
+                _territoriesDisputedMat.color = territoryDisputedFrontierColor;
             }
 
-            if (cellsThinMat != null && cellsThinMat.color != cellBorderColor)
+            if (_cellsThinMat != null && _cellsThinMat.color != cellBorderColor)
             {
-                cellsThinMat.color = cellBorderColor;
+                _cellsThinMat.color = cellBorderColor;
             }
 
-            if (cellsGeoMat != null && cellsGeoMat.color != cellBorderColor)
+            if (_cellsGeoMat != null && _cellsGeoMat.color != cellBorderColor)
             {
-                cellsGeoMat.color = cellBorderColor;
+                _cellsGeoMat.color = cellBorderColor;
             }
 
             if (Camera.main != null)
@@ -298,24 +293,24 @@ namespace TGS
             }
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
-            if (disposalManager != null)
+            if (_disposalManager != null)
             {
-                disposalManager.DisposeAll();
+                _disposalManager.DisposeAll();
             }
         }
 
-        void LateUpdate()
+        private void LateUpdate()
         {
-            if (needResortCells)
+            if (_needResortCells)
             {
                 ResortCells();
             }
 
             FitToTerrain(); // Verify if there're changes in container and adjust the grid mesh accordingly
 
-            if (shouldRedraw)
+            if (_shouldRedraw)
             {
                 Redraw();
             }
@@ -331,23 +326,23 @@ namespace TGS
             // Check whether the points is on an UI element, then avoid user interaction
             if (RespectOtherUI)
             {
-                if (!canInteract && Application.isMobilePlatform && !startPressing)
+                if (!_canInteract && Application.isMobilePlatform && !startPressing)
                     return;
 
-                canInteract = true;
+                _canInteract = true;
                 if (UnityEngine.EventSystems.EventSystem.current != null)
                 {
                     if (Application.isMobilePlatform && Input.touchCount > 0 &&
                         UnityEngine.EventSystems.EventSystem.current
                             .IsPointerOverGameObject(Input.GetTouch(0).fingerId))
                     {
-                        canInteract = false;
+                        _canInteract = false;
                     }
                     else if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(-1))
-                        canInteract = false;
+                        _canInteract = false;
                 }
 
-                if (!canInteract)
+                if (!_canInteract)
                 {
                     HideTerritoryRegionHighlight();
                     HideCellRegionHighlight();
@@ -373,95 +368,95 @@ namespace TGS
 
         public void Init()
         {
-            disposalManager = new DisposalManager();
-            if (territoriesMat == null)
+            _disposalManager = new DisposalManager();
+            if (_territoriesMat == null)
             {
-                territoriesMat = Instantiate(Resources.Load<Material>("Materials/Territory")) as Material;
-                disposalManager.MarkForDisposal(territoriesMat);
+                _territoriesMat = Instantiate(Resources.Load<Material>("Materials/Territory")) as Material;
+                _disposalManager.MarkForDisposal(_territoriesMat);
             }
 
-            if (territoriesDisputedMat == null)
+            if (_territoriesDisputedMat == null)
             {
-                territoriesDisputedMat = Instantiate(territoriesMat) as Material;
-                disposalManager.MarkForDisposal(territoriesDisputedMat);
-                territoriesDisputedMat.color = _territoryDisputedFrontierColor;
+                _territoriesDisputedMat = Instantiate(_territoriesMat) as Material;
+                _disposalManager.MarkForDisposal(_territoriesDisputedMat);
+                _territoriesDisputedMat.color = territoryDisputedFrontierColor;
             }
 
-            if (cellsThinMat == null)
+            if (_cellsThinMat == null)
             {
-                cellsThinMat = Instantiate(Resources.Load<Material>("Materials/Cell"));
-                disposalManager.MarkForDisposal(cellsThinMat);
+                _cellsThinMat = Instantiate(Resources.Load<Material>("Materials/Cell"));
+                _disposalManager.MarkForDisposal(_cellsThinMat);
             }
 
-            if (cellsGeoMat == null)
+            if (_cellsGeoMat == null)
             {
-                cellsGeoMat = Instantiate(Resources.Load<Material>("Materials/CellGeo"));
-                disposalManager.MarkForDisposal(cellsGeoMat);
+                _cellsGeoMat = Instantiate(Resources.Load<Material>("Materials/CellGeo"));
+                _disposalManager.MarkForDisposal(_cellsGeoMat);
             }
 
-            if (hudMatTerritoryOverlay == null)
+            if (_hudMatTerritoryOverlay == null)
             {
-                hudMatTerritoryOverlay =
+                _hudMatTerritoryOverlay =
                     Instantiate(Resources.Load<Material>("Materials/HudTerritoryOverlay")) as Material;
-                disposalManager.MarkForDisposal(hudMatTerritoryOverlay);
+                _disposalManager.MarkForDisposal(_hudMatTerritoryOverlay);
             }
 
-            if (hudMatTerritoryGround == null)
+            if (_hudMatTerritoryGround == null)
             {
-                hudMatTerritoryGround =
+                _hudMatTerritoryGround =
                     Instantiate(Resources.Load<Material>("Materials/HudTerritoryGround")) as Material;
-                disposalManager.MarkForDisposal(hudMatTerritoryGround);
+                _disposalManager.MarkForDisposal(_hudMatTerritoryGround);
             }
 
-            if (hudMatCellOverlay == null)
+            if (_hudMatCellOverlay == null)
             {
-                hudMatCellOverlay = Instantiate(Resources.Load<Material>("Materials/HudCellOverlay")) as Material;
-                disposalManager.MarkForDisposal(hudMatCellOverlay);
+                _hudMatCellOverlay = Instantiate(Resources.Load<Material>("Materials/HudCellOverlay")) as Material;
+                _disposalManager.MarkForDisposal(_hudMatCellOverlay);
             }
 
-            if (hudMatCellGround == null)
+            if (_hudMatCellGround == null)
             {
-                hudMatCellGround = Instantiate(Resources.Load<Material>("Materials/HudCellGround")) as Material;
-                disposalManager.MarkForDisposal(hudMatCellGround);
+                _hudMatCellGround = Instantiate(Resources.Load<Material>("Materials/HudCellGround")) as Material;
+                _disposalManager.MarkForDisposal(_hudMatCellGround);
             }
 
-            if (coloredMatGround == null)
+            if (_coloredMatGround == null)
             {
-                coloredMatGround = Instantiate(Resources.Load<Material>("Materials/ColorizedRegionGround")) as Material;
-                disposalManager.MarkForDisposal(coloredMatGround);
+                _coloredMatGround = Instantiate(Resources.Load<Material>("Materials/ColorizedRegionGround")) as Material;
+                _disposalManager.MarkForDisposal(_coloredMatGround);
             }
 
-            if (coloredMatOverlay == null)
+            if (_coloredMatOverlay == null)
             {
-                coloredMatOverlay =
+                _coloredMatOverlay =
                     Instantiate(Resources.Load<Material>("Materials/ColorizedRegionOverlay")) as Material;
-                disposalManager.MarkForDisposal(coloredMatOverlay);
+                _disposalManager.MarkForDisposal(_coloredMatOverlay);
             }
 
-            if (texturizedMatGround == null)
+            if (_texturizedMatGround == null)
             {
-                texturizedMatGround = Instantiate(Resources.Load<Material>("Materials/TexturizedRegionGround"));
-                disposalManager.MarkForDisposal(texturizedMatGround);
+                _texturizedMatGround = Instantiate(Resources.Load<Material>("Materials/TexturizedRegionGround"));
+                _disposalManager.MarkForDisposal(_texturizedMatGround);
             }
 
-            if (texturizedMatOverlay == null)
+            if (_texturizedMatOverlay == null)
             {
-                texturizedMatOverlay = Instantiate(Resources.Load<Material>("Materials/TexturizedRegionOverlay"));
-                disposalManager.MarkForDisposal(texturizedMatOverlay);
+                _texturizedMatOverlay = Instantiate(Resources.Load<Material>("Materials/TexturizedRegionOverlay"));
+                _disposalManager.MarkForDisposal(_texturizedMatOverlay);
             }
 
-            coloredMatCacheGround = new Dictionary<Color, Material>();
-            coloredMatCacheOverlay = new Dictionary<Color, Material>();
-            frontierColorCache = new Dictionary<Color, Material>();
-            if (hits == null || hits.Length == 0)
-                hits = new RaycastHit[100];
+            _coloredMatCacheGround = new Dictionary<Color, Material>();
+            _coloredMatCacheOverlay = new Dictionary<Color, Material>();
+            _frontierColorCache = new Dictionary<Color, Material>();
+            if (_hits == null || _hits.Length == 0)
+                _hits = new RaycastHit[100];
             UnityEngine.Random.InitState(Seed);
 
-            if (factoryColors == null || factoryColors.Length < MAX_TERRITORIES)
+            if (_factoryColors == null || _factoryColors.Length < MAX_TERRITORIES)
             {
-                factoryColors = new Color[MAX_TERRITORIES];
-                for (int k = 0; k < factoryColors.Length; k++)
-                    factoryColors[k] = new Color(UnityEngine.Random.Range(0.0f, 0.5f),
+                _factoryColors = new Color[MAX_TERRITORIES];
+                for (int k = 0; k < _factoryColors.Length; k++)
+                    _factoryColors[k] = new Color(UnityEngine.Random.Range(0.0f, 0.5f),
                         UnityEngine.Random.Range(0.0f, 0.5f), UnityEngine.Random.Range(0.0f, 0.5f));
             }
 
@@ -480,7 +475,7 @@ namespace TGS
             }
         }
 
-        void CreateSurfacesLayer()
+        private void CreateSurfacesLayer()
         {
             Transform t = transform.Find("Surfaces");
             if (t != null)
@@ -494,23 +489,23 @@ namespace TGS
             _surfacesLayer.layer = gameObject.layer;
         }
 
-        void DestroySurfaces()
+        private void DestroySurfaces()
         {
             HideTerritoryRegionHighlight();
             HideCellRegionHighlight();
-            if (segmentHit != null)
-                segmentHit.Clear();
-            if (surfaces != null)
-                surfaces.Clear();
+            if (_segmentHit != null)
+                _segmentHit.Clear();
+            if (_surfaces != null)
+                _surfaces.Clear();
             if (_surfacesLayer != null)
                 DestroyImmediate(_surfacesLayer);
         }
 
-        void ReadMaskContents()
+        private void ReadMaskContents()
         {
             if (gridMask == null)
                 return;
-            mask = gridMask.GetPixels();
+            _mask = gridMask.GetPixels();
         }
 
         #endregion
@@ -518,15 +513,15 @@ namespace TGS
 
         #region Map generation
 
-        void SetupIrregularGrid()
+        private void SetupIrregularGrid()
         {
-            int userVoronoiSitesCount = _voronoiSites != null ? _voronoiSites.Count : 0;
+            int userVoronoiSitesCount = _voronoiSites?.Count ?? 0;
             Point[] centers = new Point[numCells];
             for (int k = 0; k < centers.Length; k++)
             {
                 if (k < userVoronoiSitesCount)
                 {
-                    centers[k] = new Point(_voronoiSites[k].x, _voronoiSites[k].y);
+                    if (_voronoiSites != null) centers[k] = new Point(_voronoiSites[k].x, _voronoiSites[k].y);
                 }
                 else
                 {
@@ -536,11 +531,11 @@ namespace TGS
             }
 
             VoronoiFortune voronoi = new VoronoiFortune();
-            for (int k = 0; k < goodGridRelaxation; k++)
+            for (int k = 0; k < GoodGridRelaxation; k++)
             {
                 voronoi.AssignData(centers);
                 voronoi.DoVoronoi();
-                if (k < goodGridRelaxation - 1)
+                if (k < GoodGridRelaxation - 1)
                 {
                     for (int j = 0; j < numCells; j++)
                     {
@@ -551,7 +546,7 @@ namespace TGS
             }
 
             // Make cell regions: we assume cells have only 1 region but that can change in the future
-            float curvature = goodGridCurvature;
+            float curvature = GoodGridCurvature;
             for (int k = 0; k < voronoi.cells.Length; k++)
             {
                 VoronoiCell voronoiCell = voronoi.cells[k];
@@ -593,7 +588,7 @@ namespace TGS
             }
         }
 
-        void SetupBoxGrid(bool strictQuads)
+        private void SetupBoxGrid(bool strictQuads)
         {
             int qx = cellColumnCount;
             int qy = cellRowCount;
@@ -605,7 +600,7 @@ namespace TGS
             double halfStepY = stepY * 0.5;
 
             Segment[,,] sides = new Segment[qx, qy, 4]; // 0 = left, 1 = top, 2 = right, 3 = bottom
-            int subdivisions = goodGridCurvature > 0 ? 3 : 1;
+            int subdivisions = GoodGridCurvature > 0 ? 3 : 1;
             for (int j = 0; j < qy; j++)
             {
                 for (int k = 0; k < qx; k++)
@@ -663,7 +658,7 @@ namespace TGS
             }
         }
 
-        void SetupHexagonalGrid()
+        private void SetupHexagonalGrid()
         {
             double qx = 1.0 + (cellColumnCount - 1.0) * 3.0 / 4.0;
             double qy = cellRowCount + 0.5;
@@ -680,16 +675,18 @@ namespace TGS
             Segment[,,]
                 sides = new Segment[qx2, qy2,
                     6]; // 0 = left-up, 1 = top, 2 = right-up, 3 = right-down, 4 = down, 5 = left-down
-            int subdivisions = goodGridCurvature > 0 ? 3 : 1;
+            int subdivisions = GoodGridCurvature > 0 ? 3 : 1;
             for (int j = 0; j < qy2; j++)
             {
                 for (int k = 0; k < qx2; k++)
                 {
-                    Point center = new Point((double)k / qx - 0.5 + halfStepX, (double)j / qy - 0.5 + stepY);
+                    Point center = new(k / qx - 0.5 + halfStepX, j / qy - 0.5 + stepY);
                     center.x -= k * halfStepX / 2;
-                    Cell cell = new Cell(new Vector2((float)center.x, (float)center.y));
-                    cell.row = j;
-                    cell.column = k;
+                    Cell cell = new(new Vector2((float)center.x, (float)center.y))
+                    {
+                        row = j,
+                        column = k
+                    };
 
                     double offsetY = (k % 2 == evenLayout) ? 0 : -halfStepY;
 
@@ -740,7 +737,7 @@ namespace TGS
 
                     cell.center.y += (float)offsetY;
 
-                    Region cr = new Region(cell);
+                    Region cr = new(cell);
                     if (subdivisions > 1)
                     {
                         if (!top.deleted)
@@ -784,11 +781,11 @@ namespace TGS
             }
         }
 
-        void CreateCells()
+        private void CreateCells()
         {
             UnityEngine.Random.InitState(Seed);
 
-            numCells = Mathf.Max(_numTerritories, 2, CellCount);
+            numCells = Mathf.Max(numTerritories, 2, CellCount);
             if (Cells == null)
             {
                 Cells = new List<Cell>(numCells);
@@ -798,11 +795,11 @@ namespace TGS
                 Cells.Clear();
             }
 
-            if (cellTagged == null)
-                cellTagged = new Dictionary<int, Cell>();
+            if (_cellTagged == null)
+                _cellTagged = new Dictionary<int, Cell>();
             else
-                cellTagged.Clear();
-            lastCellLookupCount = -1;
+                _cellTagged.Clear();
+            _lastCellLookupCount = -1;
 
             switch (gridTopology)
             {
@@ -821,27 +818,27 @@ namespace TGS
             CellsUpdateBounds();
 
             // Update sorted cell list
-            sortedCells = new List<Cell>(Cells);
+            _sortedCells = new List<Cell>(Cells);
             ResortCells();
 
             ClearLastOver();
 
-            recreateCells = false;
+            _recreateCells = false;
         }
 
-        void ResortCells()
+        private void ResortCells()
         {
-            needResortCells = false;
-            sortedCells.Sort((cell1, cell2) => { return cell1.region.rect2DArea.CompareTo(cell2.region.rect2DArea); });
+            _needResortCells = false;
+            _sortedCells.Sort((cell1, cell2) => cell1.region.rect2DArea.CompareTo(cell2.region.rect2DArea));
         }
 
         /// <summary>
         /// Takes the center of each cell and checks the alpha component of the mask to confirm visibility
         /// </summary>
-        void CellsApplyVisibilityFilters()
+        private void CellsApplyVisibilityFilters()
         {
             int cellsCount = Cells.Count;
-            if (GridMask != null && mask != null)
+            if (GridMask != null && _mask != null)
             {
                 int tw = GridMask.width;
                 int th = GridMask.height;
@@ -857,7 +854,7 @@ namespace TGS
                         float x = p.x + 0.5f;
                         int ty = (int)(y * th);
                         int tx = (int)(x * tw);
-                        if (ty >= 0 && ty < th && tx >= 0 && tx < tw && mask[ty * tw + tx].a > 0)
+                        if (ty >= 0 && ty < th && tx >= 0 && tx < tw && _mask[ty * tw + tx].a > 0)
                         {
                             visible = true;
                             break;
@@ -901,10 +898,10 @@ namespace TGS
             }
 
             ClearLastOver();
-            needRefreshRouteMatrix = true;
+            _needRefreshRouteMatrix = true;
         }
 
-        void CellsUpdateBounds()
+        private void CellsUpdateBounds()
         {
             // Update cells polygon
             int count = Cells.Count;
@@ -914,7 +911,7 @@ namespace TGS
             }
         }
 
-        void CellUpdateBounds(Cell cell)
+        private void CellUpdateBounds(Cell cell)
         {
             cell.polygon = cell.region.polygon;
             if (cell.polygon.contours.Count == 0)
@@ -951,14 +948,14 @@ namespace TGS
         /// <summary>
         /// Must be called after changing one cell geometry.
         /// </summary>
-        void UpdateCellGeometry(Cell cell, TGS.Geom.Polygon poly)
+        private void UpdateCellGeometry(Cell cell, TGS.Geom.Polygon poly)
         {
             // Copy new polygon definition
             cell.region.polygon = poly;
             cell.polygon = cell.region.polygon.Clone();
             // Update segments list
             cell.region.segments.Clear();
-            List<Segment> segmentCache = new List<Segment>(cellNeighbourHit.Keys);
+            List<Segment> segmentCache = new List<Segment>(_cellNeighbourHit.Keys);
             int segmentsCacheCount = segmentCache.Count;
             int pointsCount = poly.contours[0].points.Count;
             for (int k = 0; k < pointsCount; k++)
@@ -988,10 +985,10 @@ namespace TGS
             // Refresh rect2D
             CellUpdateBounds(cell);
 
-            needResortCells = true;
+            _needResortCells = true;
 
             // Refresh territories
-            if (territoriesAreUsed)
+            if (TerritoriesAreUsed)
             {
                 FindTerritoryFrontiers();
                 UpdateTerritoryBoundaries();
@@ -1003,7 +1000,7 @@ namespace TGS
             }
         }
 
-        void CellsUpdateNeighbours()
+        private void CellsUpdateNeighbours()
         {
             int cellCount = Cells.Count;
             for (int k = 0; k < cellCount; k++)
@@ -1014,15 +1011,15 @@ namespace TGS
             CellsFindNeighbours();
         }
 
-        void CellsFindNeighbours()
+        private void CellsFindNeighbours()
         {
-            if (cellNeighbourHit == null)
+            if (_cellNeighbourHit == null)
             {
-                cellNeighbourHit = new Dictionary<Segment, Region>(50000);
+                _cellNeighbourHit = new Dictionary<Segment, Region>(50000);
             }
             else
             {
-                cellNeighbourHit.Clear();
+                _cellNeighbourHit.Clear();
             }
 
             int cellCount = Cells.Count;
@@ -1035,7 +1032,7 @@ namespace TGS
                 {
                     Segment seg = region.segments[i];
                     Region neighbour;
-                    if (cellNeighbourHit.TryGetValue(seg, out neighbour))
+                    if (_cellNeighbourHit.TryGetValue(seg, out neighbour))
                     {
                         if (neighbour != region)
                         {
@@ -1048,48 +1045,48 @@ namespace TGS
                     }
                     else
                     {
-                        cellNeighbourHit.Add(seg, region);
+                        _cellNeighbourHit.Add(seg, region);
                     }
                 }
             }
         }
 
-        void FindTerritoryFrontiers()
+        private void FindTerritoryFrontiers()
         {
-            if (territories == null || territories.Count == 0)
+            if (Territories == null || Territories.Count == 0)
                 return;
 
-            if (territoryFrontiers == null)
+            if (_territoryFrontiers == null)
             {
-                territoryFrontiers = new List<Segment>(cellNeighbourHit.Count);
+                _territoryFrontiers = new List<Segment>(_cellNeighbourHit.Count);
             }
             else
             {
-                territoryFrontiers.Clear();
+                _territoryFrontiers.Clear();
             }
 
-            if (territoryNeighbourHit == null)
+            if (_territoryNeighbourHit == null)
             {
-                territoryNeighbourHit = new Dictionary<Segment, Region>(50000);
+                _territoryNeighbourHit = new Dictionary<Segment, Region>(50000);
             }
             else
             {
-                territoryNeighbourHit.Clear();
+                _territoryNeighbourHit.Clear();
             }
 
-            int terrCount = territories.Count;
+            int terrCount = Territories.Count;
             Connector[] connectors = new Connector[terrCount];
             for (int k = 0; k < terrCount; k++)
             {
                 connectors[k] = new Connector();
-                Territory territory = territories[k];
+                Territory territory = Territories[k];
                 territory.cells.Clear();
                 if (territory.region == null)
                 {
                     territory.region = new Region(territory);
                 }
 
-                territories[k].region.neighbours.Clear();
+                Territories[k].region.neighbours.Clear();
             }
 
             int cellCount = Cells.Count;
@@ -1100,7 +1097,7 @@ namespace TGS
                     continue;
                 bool validCell = cell.visible && cell.territoryIndex >= 0;
                 if (validCell)
-                    territories[cell.territoryIndex].cells.Add(cell);
+                    Territories[cell.territoryIndex].cells.Add(cell);
                 Region region = cell.region;
                 int numSegments = region.segments.Count;
                 for (int i = 0; i < numSegments; i++)
@@ -1110,7 +1107,7 @@ namespace TGS
                     {
                         if (validCell)
                         {
-                            territoryFrontiers.Add(seg);
+                            _territoryFrontiers.Add(seg);
                             int territory1 = cell.territoryIndex;
                             connectors[territory1].Add(seg);
                             seg.territoryIndex = territory1;
@@ -1120,22 +1117,22 @@ namespace TGS
                     }
 
                     Region neighbour;
-                    if (territoryNeighbourHit.TryGetValue(seg, out neighbour))
+                    if (_territoryNeighbourHit.TryGetValue(seg, out neighbour))
                     {
                         Cell neighbourCell = (Cell)neighbour.entity;
                         int territory1 = cell.territoryIndex;
                         int territory2 = neighbourCell.territoryIndex;
                         if (territory2 != territory1)
                         {
-                            territoryFrontiers.Add(seg);
+                            _territoryFrontiers.Add(seg);
                             if (validCell)
                             {
                                 connectors[territory1].Add(seg);
-                                bool territory1IsNeutral = territories[territory1].neutral;
+                                bool territory1IsNeutral = Territories[territory1].neutral;
                                 // check segment ownership
                                 if (territory2 >= 0)
                                 {
-                                    bool territory2IsNeutral = territories[territory2].neutral;
+                                    bool territory2IsNeutral = Territories[territory2].neutral;
                                     if (territory1IsNeutral && territory2IsNeutral)
                                     {
                                         seg.territoryIndex = territory1;
@@ -1162,8 +1159,8 @@ namespace TGS
                                 if (seg.territoryIndex < 0)
                                 {
                                     // add territory neigbhours
-                                    Region territory1Region = territories[territory1].region;
-                                    Region territory2Region = territories[territory2].region;
+                                    Region territory1Region = Territories[territory1].region;
+                                    Region territory2Region = Territories[territory2].region;
                                     if (!territory1Region.neighbours.Contains(territory2Region))
                                     {
                                         territory1Region.neighbours.Add(territory2Region);
@@ -1184,7 +1181,7 @@ namespace TGS
                     }
                     else
                     {
-                        territoryNeighbourHit[seg] = region;
+                        _territoryNeighbourHit[seg] = region;
                         seg.territoryIndex = cell.territoryIndex;
                     }
                 }
@@ -1192,19 +1189,19 @@ namespace TGS
 
             for (int k = 0; k < terrCount; k++)
             {
-                if (territories[k].cells.Count > 0)
+                if (Territories[k].cells.Count > 0)
                 {
-                    territories[k].polygon = connectors[k].ToPolygonFromLargestLineStrip();
+                    Territories[k].polygon = connectors[k].ToPolygonFromLargestLineStrip();
                 }
                 else
                 {
-                    territories[k].region.Clear();
-                    territories[k].polygon = null;
+                    Territories[k].region.Clear();
+                    Territories[k].polygon = null;
                 }
             }
         }
 
-        void AddSegmentToMesh(Vector3 p0, Vector3 p1)
+        private void AddSegmentToMesh(Vector3 p0, Vector3 p1)
         {
             float h0 = terrain.SampleHeight(transform.TransformPoint(p0));
             float h1 = terrain.SampleHeight(transform.TransformPoint(p1));
@@ -1221,21 +1218,21 @@ namespace TGS
 
             p0.z -= h0;
             p1.z -= h1;
-            frontiersPoints.Add(p0);
-            frontiersPoints.Add(p1);
+            _frontiersPoints.Add(p0);
+            _frontiersPoints.Add(p1);
         }
 
         /// <summary>
         /// Subdivides the segment in smaller segments
         /// </summary>
         /// <returns><c>true</c>, if segment was drawn, <c>false</c> otherwise.</returns>
-        void SurfaceSegmentForMesh(Vector3 p0, Vector3 p1)
+        private void SurfaceSegmentForMesh(Vector3 p0, Vector3 p1)
         {
             // trace the line until roughness is exceeded
             float dist = (float)Math.Sqrt((p1.x - p0.x) * (p1.x - p0.x) + (p1.y - p0.y) * (p1.y - p0.y));
             Vector3 direction = p1 - p0;
 
-            int numSteps = Mathf.FloorToInt(meshStep * dist);
+            int numSteps = Mathf.FloorToInt(_meshStep * dist);
             Vector3 t0 = p0;
             float h0 = terrain.SampleHeight(transform.TransformPoint(t0));
             if (gridNormalOffset > 0)
@@ -1253,9 +1250,9 @@ namespace TGS
             {
                 Vector3 t1 = p0 + direction * i / numSteps;
                 h1 = terrain.SampleHeight(transform.TransformPoint(t1));
-                if (h0 < h1 || h0 - h1 > effectiveRoughness)
+                if (h0 < h1 || h0 - h1 > _effectiveRoughness)
                 {
-                    frontiersPoints.Add(t0);
+                    _frontiersPoints.Add(t0);
                     if (t0 != ta)
                     {
                         if (gridNormalOffset > 0)
@@ -1267,8 +1264,8 @@ namespace TGS
                         }
 
                         ta.z -= ha;
-                        frontiersPoints.Add(ta);
-                        frontiersPoints.Add(ta);
+                        _frontiersPoints.Add(ta);
+                        _frontiersPoints.Add(ta);
                     }
 
                     if (gridNormalOffset > 0)
@@ -1280,7 +1277,7 @@ namespace TGS
                     }
 
                     t1.z -= h1;
-                    frontiersPoints.Add(t1);
+                    _frontiersPoints.Add(t1);
                     t0 = t1;
                     h0 = h1;
                 }
@@ -1300,28 +1297,28 @@ namespace TGS
             }
 
             p1.z -= h1;
-            frontiersPoints.Add(t0);
-            frontiersPoints.Add(p1);
+            _frontiersPoints.Add(t0);
+            _frontiersPoints.Add(p1);
         }
 
-        void GenerateCellsMesh()
+        private void GenerateCellsMesh()
         {
-            if (segmentHit == null)
+            if (_segmentHit == null)
             {
-                segmentHit = new Dictionary<Segment, bool>(50000);
+                _segmentHit = new Dictionary<Segment, bool>(50000);
             }
             else
             {
-                segmentHit.Clear();
+                _segmentHit.Clear();
             }
 
-            if (frontiersPoints == null)
+            if (_frontiersPoints == null)
             {
-                frontiersPoints = new List<Vector3>(100000);
+                _frontiersPoints = new List<Vector3>(100000);
             }
             else
             {
-                frontiersPoints.Clear();
+                _frontiersPoints.Clear();
             }
 
             int cellCount = Cells.Count;
@@ -1337,11 +1334,11 @@ namespace TGS
                         for (int i = 0; i < numSegments; i++)
                         {
                             Segment s = region.segments[i];
-                            if (!segmentHit.ContainsKey(s))
+                            if (!_segmentHit.ContainsKey(s))
                             {
-                                segmentHit.Add(s, true);
-                                frontiersPoints.Add(GetScaledVector(s.startToVector3));
-                                frontiersPoints.Add(GetScaledVector(s.endToVector3));
+                                _segmentHit.Add(s, true);
+                                _frontiersPoints.Add(GetScaledVector(s.startToVector3));
+                                _frontiersPoints.Add(GetScaledVector(s.endToVector3));
                             }
                         }
                     }
@@ -1349,7 +1346,7 @@ namespace TGS
             }
             else
             {
-                meshStep = (2.0f - gridRoughness) / (float)MIN_VERTEX_DISTANCE;
+                _meshStep = (2.0f - gridRoughness) / (float)MIN_VERTEX_DISTANCE;
                 for (int k = 0; k < cellCount; k++)
                 {
                     Cell cell = Cells[k];
@@ -1360,9 +1357,9 @@ namespace TGS
                         for (int i = 0; i < numSegments; i++)
                         {
                             Segment s = region.segments[i];
-                            if (!segmentHit.ContainsKey(s))
+                            if (!_segmentHit.ContainsKey(s))
                             {
-                                segmentHit.Add(s, true);
+                                _segmentHit.Add(s, true);
                                 SurfaceSegmentForMesh(GetScaledVector(s.start.vector3),
                                     GetScaledVector(s.end.vector3));
                             }
@@ -1371,61 +1368,61 @@ namespace TGS
                 }
             }
 
-            int meshGroups = (frontiersPoints.Count / 65000) + 1;
+            int meshGroups = (_frontiersPoints.Count / 65000) + 1;
             int meshIndex = -1;
-            if (cellMeshIndices == null || cellMeshIndices.GetUpperBound(0) != meshGroups - 1)
+            if (_cellMeshIndices == null || _cellMeshIndices.GetUpperBound(0) != meshGroups - 1)
             {
-                cellMeshIndices = new int[meshGroups][];
-                cellMeshBorders = new Vector3[meshGroups][];
+                _cellMeshIndices = new int[meshGroups][];
+                _cellMeshBorders = new Vector3[meshGroups][];
             }
 
-            if (frontiersPoints.Count == 0)
+            if (_frontiersPoints.Count == 0)
             {
-                cellMeshBorders[0] = new Vector3[0];
-                cellMeshIndices[0] = new int[0];
+                _cellMeshBorders[0] = new Vector3[0];
+                _cellMeshIndices[0] = new int[0];
             }
             else
             {
-                int frontiersPointsCount = frontiersPoints.Count;
+                int frontiersPointsCount = _frontiersPoints.Count;
                 for (int k = 0; k < frontiersPointsCount; k += 65000)
                 {
                     int max = Mathf.Min(frontiersPointsCount - k, 65000);
                     ++meshIndex;
-                    if (cellMeshBorders[meshIndex] == null || cellMeshBorders[0].GetUpperBound(0) != max - 1)
+                    if (_cellMeshBorders[meshIndex] == null || _cellMeshBorders[0].GetUpperBound(0) != max - 1)
                     {
-                        cellMeshBorders[meshIndex] = new Vector3[max];
-                        cellMeshIndices[meshIndex] = new int[max];
+                        _cellMeshBorders[meshIndex] = new Vector3[max];
+                        _cellMeshIndices[meshIndex] = new int[max];
                     }
 
                     for (int j = 0; j < max; j++)
                     {
-                        cellMeshBorders[meshIndex][j] = frontiersPoints[j + k];
-                        cellMeshIndices[meshIndex][j] = j;
+                        _cellMeshBorders[meshIndex][j] = _frontiersPoints[j + k];
+                        _cellMeshIndices[meshIndex][j] = j;
                     }
                 }
             }
         }
 
-        void CreateTerritories()
+        private void CreateTerritories()
         {
-            _numTerritories = Mathf.Clamp(_numTerritories, 1, CellCount);
+            numTerritories = Mathf.Clamp(numTerritories, 1, CellCount);
 
-            if (!_colorizeTerritories && !_showTerritories && highlightMode != HIGHLIGHT_MODE.Territories)
+            if (!colorizeTerritories && !showTerritories && highlightMode != HIGHLIGHT_MODE.Territories)
             {
-                if (territories != null)
-                    territories.Clear();
-                if (territoryLayer != null)
-                    DestroyImmediate(territoryLayer);
+                if (Territories != null)
+                    Territories.Clear();
+                if (_territoryLayer != null)
+                    DestroyImmediate(_territoryLayer);
                 return;
             }
 
-            if (territories == null)
+            if (Territories == null)
             {
-                territories = new List<Territory>(_numTerritories);
+                Territories = new List<Territory>(numTerritories);
             }
             else
             {
-                territories.Clear();
+                Territories.Clear();
             }
 
             CheckCells();
@@ -1438,11 +1435,13 @@ namespace TGS
 
             UnityEngine.Random.InitState(Seed);
 
-            for (int c = 0; c < _numTerritories; c++)
+            for (int c = 0; c < numTerritories; c++)
             {
-                Territory territory = new Territory(c.ToString());
-                territory.fillColor = factoryColors[c];
-                int territoryIndex = territories.Count;
+                Territory territory = new(c.ToString())
+                {
+                    fillColor = _factoryColors[c]
+                };
+                int territoryIndex = Territories.Count;
                 int p = UnityEngine.Random.Range(0, cellsCount);
                 int z = 0;
                 while ((Cells[p].territoryIndex != -1 || !Cells[p].visible) && z++ <= cellsCount)
@@ -1458,21 +1457,21 @@ namespace TGS
                 cell.territoryIndex = territoryIndex;
                 territory.center = cell.center;
                 territory.cells.Add(cell);
-                territories.Add(territory);
+                Territories.Add(territory);
             }
 
             // Continue conquering cells
-            int[] territoryCellIndex = new int[territories.Count];
+            int[] territoryCellIndex = new int[Territories.Count];
 
             // Iterate one cell per country (this is not efficient but ensures balanced distribution)
             bool remainingCells = true;
             while (remainingCells)
             {
                 remainingCells = false;
-                int terrCount = territories.Count;
+                int terrCount = Territories.Count;
                 for (int k = 0; k < terrCount; k++)
                 {
-                    Territory territory = territories[k];
+                    Territory territory = Territories[k];
                     int territoryCellsCount = territory.cells.Count;
                     for (int p = territoryCellIndex[k]; p < territoryCellsCount; p++)
                     {
@@ -1505,19 +1504,19 @@ namespace TGS
             FindTerritoryFrontiers();
             UpdateTerritoryBoundaries();
 
-            recreateTerritories = false;
+            _recreateTerritories = false;
         }
 
-        void UpdateTerritoryBoundaries()
+        private void UpdateTerritoryBoundaries()
         {
-            if (territories == null)
+            if (Territories == null)
                 return;
 
             // Update territory region
-            int terrCount = territories.Count;
+            int terrCount = Territories.Count;
             for (int k = 0; k < terrCount; k++)
             {
-                Territory territory = territories[k];
+                Territory territory = Territories[k];
                 if (territory.polygon == null)
                 {
                     continue;
@@ -1573,25 +1572,25 @@ namespace TGS
             _sortedTerritories.Clear();
         }
 
-        void GenerateTerritoriesMesh()
+        private void GenerateTerritoriesMesh()
         {
-            if (territories == null)
+            if (Territories == null)
                 return;
 
-            if (frontiersPoints == null)
-                frontiersPoints = new List<Vector3>(10000);
+            if (_frontiersPoints == null)
+                _frontiersPoints = new List<Vector3>(10000);
 
-            int terrCount = territories.Count;
-            if (territoryMeshes == null)
+            int terrCount = Territories.Count;
+            if (_territoryMeshes == null)
             {
-                territoryMeshes = new List<TerritoryMesh>(terrCount + 1);
+                _territoryMeshes = new List<TerritoryMesh>(terrCount + 1);
             }
             else
             {
-                territoryMeshes.Clear();
+                _territoryMeshes.Clear();
             }
 
-            if (territoryFrontiers == null)
+            if (_territoryFrontiers == null)
                 return;
 
             TerritoryMesh tm;
@@ -1601,7 +1600,7 @@ namespace TGS
                 tm.territoryIndex = k;
                 if (GenerateTerritoryMesh(tm))
                 {
-                    territoryMeshes.Add(tm);
+                    _territoryMeshes.Add(tm);
                 }
             }
 
@@ -1610,7 +1609,7 @@ namespace TGS
             tm.territoryIndex = -1;
             if (GenerateTerritoryMesh(tm))
             {
-                territoryMeshes.Add(tm);
+                _territoryMeshes.Add(tm);
             }
         }
 
@@ -1618,41 +1617,41 @@ namespace TGS
         /// Generates the territory mesh.
         /// </summary>
         /// <returns>True if something was produced.
-        bool GenerateTerritoryMesh(TerritoryMesh tm)
+        private bool GenerateTerritoryMesh(TerritoryMesh tm)
         {
-            frontiersPoints.Clear();
+            _frontiersPoints.Clear();
 
-            int territoryFrontiersCount = territoryFrontiers.Count;
+            int territoryFrontiersCount = _territoryFrontiers.Count;
             if (terrain == null)
             {
                 for (int k = 0; k < territoryFrontiersCount; k++)
                 {
-                    Segment s = territoryFrontiers[k];
+                    Segment s = _territoryFrontiers[k];
                     if (s.territoryIndex != tm.territoryIndex)
                         continue;
-                    if (!s.border || _showTerritoriesOuterBorder)
+                    if (!s.border || showTerritoriesOuterBorder)
                     {
-                        frontiersPoints.Add(GetScaledVector(s.startToVector3));
-                        frontiersPoints.Add(GetScaledVector(s.endToVector3));
+                        _frontiersPoints.Add(GetScaledVector(s.startToVector3));
+                        _frontiersPoints.Add(GetScaledVector(s.endToVector3));
                     }
                 }
             }
             else
             {
-                meshStep = (2.0f - gridRoughness) / (float)MIN_VERTEX_DISTANCE;
+                _meshStep = (2.0f - gridRoughness) / (float)MIN_VERTEX_DISTANCE;
                 for (int k = 0; k < territoryFrontiersCount; k++)
                 {
-                    Segment s = territoryFrontiers[k];
+                    Segment s = _territoryFrontiers[k];
                     if (s.territoryIndex != tm.territoryIndex)
                         continue;
-                    if (!s.border || _showTerritoriesOuterBorder)
+                    if (!s.border || showTerritoriesOuterBorder)
                     {
                         SurfaceSegmentForMesh(GetScaledVector(s.start.vector3), GetScaledVector(s.end.vector3));
                     }
                 }
             }
 
-            int meshGroups = (frontiersPoints.Count / 65000) + 1;
+            int meshGroups = (_frontiersPoints.Count / 65000) + 1;
             int meshIndex = -1;
             if (tm.territoryMeshIndices == null || tm.territoryMeshIndices.GetUpperBound(0) != meshGroups - 1)
             {
@@ -1660,7 +1659,7 @@ namespace TGS
                 tm.territoryMeshBorders = new Vector3[meshGroups][];
             }
 
-            int frontiersPointsCount = frontiersPoints.Count;
+            int frontiersPointsCount = _frontiersPoints.Count;
             for (int k = 0; k < frontiersPointsCount; k += 65000)
             {
                 int max = Mathf.Min(frontiersPointsCount - k, 65000);
@@ -1674,50 +1673,48 @@ namespace TGS
 
                 for (int j = 0; j < max; j++)
                 {
-                    tm.territoryMeshBorders[meshIndex][j] = frontiersPoints[j + k];
+                    tm.territoryMeshBorders[meshIndex][j] = _frontiersPoints[j + k];
                     tm.territoryMeshIndices[meshIndex][j] = j;
                 }
             }
 
-            return frontiersPoints.Count > 0;
+            return _frontiersPoints.Count > 0;
         }
 
-        void FitToTerrain()
+        private void FitToTerrain()
         {
             if (terrain == null || Camera.main == null)
                 return;
 
             // Fit to terrain
             Vector3 terrainSize = terrain.terrainData.size;
-            terrainWidth = terrainSize.x;
-            terrainHeight = terrainSize.y;
-            terrainDepth = terrainSize.z;
+            _terrainWidth = terrainSize.x;
+            _terrainHeight = terrainSize.y;
+            _terrainDepth = terrainSize.z;
             transform.localRotation = Quaternion.Euler(90, 0, 0);
-            transform.localScale = new Vector3(terrainWidth, terrainDepth, 1);
-            effectiveRoughness = gridRoughness * terrainHeight;
+            transform.localScale = new Vector3(_terrainWidth, _terrainDepth, 1);
+            _effectiveRoughness = gridRoughness * _terrainHeight;
 
             Vector3 camPos = Camera.main.transform.position;
-            bool refresh = camPos != lastCamPos || transform.position != lastPos ||
-                           GridElevationCurrent != lastGridElevation || gridCameraOffset != lastGridCameraOffset;
+            bool refresh = camPos != _lastCamPos || transform.position != _lastPos ||
+                           GridElevationCurrent != _lastGridElevation || gridCameraOffset != _lastGridCameraOffset;
             if (refresh)
             {
-                Vector3 localPosition =
-                    new Vector3(terrainWidth * 0.5f, 0.01f + GridElevationCurrent, terrainDepth * 0.5f);
+                Vector3 localPosition = new(_terrainWidth * 0.5f, 0.01f + GridElevationCurrent, _terrainDepth * 0.5f);
                 if (gridCameraOffset > 0)
                 {
-                    localPosition += (camPos - transform.position).normalized *
-                                     (camPos - transform.position).sqrMagnitude * gridCameraOffset * 0.001f;
+                    localPosition += (camPos - transform.position).normalized * ((camPos - transform.position).sqrMagnitude * gridCameraOffset * 0.001f);
                 }
 
                 transform.localPosition = localPosition;
-                lastPos = transform.position;
-                lastCamPos = camPos;
-                lastGridElevation = GridElevationCurrent;
-                lastGridCameraOffset = gridCameraOffset;
+                _lastPos = transform.position;
+                _lastCamPos = camPos;
+                _lastGridElevation = GridElevationCurrent;
+                _lastGridCameraOffset = gridCameraOffset;
             }
         }
 
-        bool UpdateTerrainReference(Terrain terrain, bool reuseTerrainData)
+        private bool UpdateTerrainReference(Terrain terrain, bool reuseTerrainData)
         {
             this.terrain = terrain;
             MeshRenderer renderer = GetComponent<MeshRenderer>();
@@ -1773,23 +1770,23 @@ namespace TGS
                 MeshCollider mc = GetComponent<MeshCollider>();
                 if (mc != null)
                     DestroyImmediate(mc);
-                lastCamPos = Camera.main.transform.position - Vector3.up; // just to force update on first frame
+                _lastCamPos = Camera.main.transform.position - Vector3.up; // just to force update on first frame
                 FitToTerrain();
-                lastCamPos =
+                _lastCamPos =
                     Camera.main.transform.position - Vector3.up; // just to force update on first update as well
                 if (CalculateTerrainRoughness(reuseTerrainData))
                 {
-                    refreshCellMesh = true;
-                    refreshTerritoriesMesh = true;
+                    _refreshCellMesh = true;
+                    _refreshTerritoriesMesh = true;
                     // Clear geometry
-                    if (cellLayer != null)
+                    if (_cellLayer != null)
                     {
-                        DestroyImmediate(cellLayer);
+                        DestroyImmediate(_cellLayer);
                     }
 
-                    if (territoryLayer != null)
+                    if (_territoryLayer != null)
                     {
-                        DestroyImmediate(territoryLayer);
+                        DestroyImmediate(_territoryLayer);
                     }
                 }
             }
@@ -1801,31 +1798,31 @@ namespace TGS
         /// Calculates the terrain roughness.
         /// </summary>
         /// <returns><c>true</c>, if terrain roughness has changed, <c>false</c> otherwise.</returns>
-        bool CalculateTerrainRoughness(bool reuseTerrainData)
+        private bool CalculateTerrainRoughness(bool reuseTerrainData)
         {
-            if (reuseTerrainData && terrain.terrainData.heightmapResolution == heightMapWidth &&
-                terrain.terrainData.heightmapResolution == heightMapHeight && terrainHeights != null &&
-                terrainRoughnessMap != null)
+            if (reuseTerrainData && terrain.terrainData.heightmapResolution == _heightMapWidth &&
+                terrain.terrainData.heightmapResolution == _heightMapHeight && _terrainHeights != null &&
+                _terrainRoughnessMap != null)
             {
                 return false;
             }
 
-            heightMapWidth = terrain.terrainData.heightmapResolution;
-            heightMapHeight = terrain.terrainData.heightmapResolution;
-            terrainHeights = terrain.terrainData.GetHeights(0, 0, heightMapWidth, heightMapHeight);
-            terrainRoughnessMapWidth = heightMapWidth / TERRAIN_CHUNK_SIZE;
-            terrainRoughnessMapHeight = heightMapHeight / TERRAIN_CHUNK_SIZE;
-            if (terrainRoughnessMap == null)
+            _heightMapWidth = terrain.terrainData.heightmapResolution;
+            _heightMapHeight = terrain.terrainData.heightmapResolution;
+            _terrainHeights = terrain.terrainData.GetHeights(0, 0, _heightMapWidth, _heightMapHeight);
+            _terrainRoughnessMapWidth = _heightMapWidth / TERRAIN_CHUNK_SIZE;
+            _terrainRoughnessMapHeight = _heightMapHeight / TERRAIN_CHUNK_SIZE;
+            if (_terrainRoughnessMap == null)
             {
-                terrainRoughnessMap = new float[terrainRoughnessMapHeight * terrainRoughnessMapWidth];
-                tempTerrainRoughnessMap = new float[terrainRoughnessMapHeight * terrainRoughnessMapWidth];
+                _terrainRoughnessMap = new float[_terrainRoughnessMapHeight * _terrainRoughnessMapWidth];
+                _tempTerrainRoughnessMap = new float[_terrainRoughnessMapHeight * _terrainRoughnessMapWidth];
             }
             else
             {
-                for (int k = 0; k < terrainRoughnessMap.Length; k++)
+                for (int k = 0; k < _terrainRoughnessMap.Length; k++)
                 {
-                    terrainRoughnessMap[k] = 0;
-                    tempTerrainRoughnessMap[k] = 0;
+                    _terrainRoughnessMap[k] = 0;
+                    _tempTerrainRoughnessMap[k] = 0;
                 }
             }
 
@@ -1836,12 +1833,12 @@ namespace TGS
 			parentDot.transform.position = Misc.Vector3zero;
 #endif
 
-            float maxStep = (float)TERRAIN_CHUNK_SIZE / heightMapWidth;
-            float minStep = 1.0f / heightMapWidth;
-            for (int y = 0, l = 0; l < terrainRoughnessMapHeight; y += TERRAIN_CHUNK_SIZE, l++)
+            float maxStep = (float)TERRAIN_CHUNK_SIZE / _heightMapWidth;
+            float minStep = 1.0f / _heightMapWidth;
+            for (int y = 0, l = 0; l < _terrainRoughnessMapHeight; y += TERRAIN_CHUNK_SIZE, l++)
             {
-                int linePos = l * terrainRoughnessMapWidth;
-                for (int x = 0, c = 0; c < terrainRoughnessMapWidth; x += TERRAIN_CHUNK_SIZE, c++)
+                int linePos = l * _terrainRoughnessMapWidth;
+                for (int x = 0, c = 0; c < _terrainRoughnessMapWidth; x += TERRAIN_CHUNK_SIZE, c++)
                 {
                     int j0 = y == 0 ? 1 : y;
                     int j1 = y + TERRAIN_CHUNK_SIZE;
@@ -1852,28 +1849,28 @@ namespace TGS
                     {
                         for (int k = k0; k < k1; k++)
                         {
-                            float diff = terrainHeights[j, k] - terrainHeights[j, k - 1];
+                            float diff = _terrainHeights[j, k] - _terrainHeights[j, k - 1];
                             if (diff > maxDiff || -diff > maxDiff)
                                 maxDiff = Mathf.Abs(diff);
-                            diff = terrainHeights[j, k] - terrainHeights[j + 1, k - 1];
+                            diff = _terrainHeights[j, k] - _terrainHeights[j + 1, k - 1];
                             if (diff > maxDiff || -diff > maxDiff)
                                 maxDiff = Mathf.Abs(diff);
-                            diff = terrainHeights[j, k] - terrainHeights[j + 1, k];
+                            diff = _terrainHeights[j, k] - _terrainHeights[j + 1, k];
                             if (diff > maxDiff || -diff > maxDiff)
                                 maxDiff = Mathf.Abs(diff);
-                            diff = terrainHeights[j, k] - terrainHeights[j + 1, k + 1];
+                            diff = _terrainHeights[j, k] - _terrainHeights[j + 1, k + 1];
                             if (diff > maxDiff || -diff > maxDiff)
                                 maxDiff = Mathf.Abs(diff);
-                            diff = terrainHeights[j, k] - terrainHeights[j, k + 1];
+                            diff = _terrainHeights[j, k] - _terrainHeights[j, k + 1];
                             if (diff > maxDiff || -diff > maxDiff)
                                 maxDiff = Mathf.Abs(diff);
-                            diff = terrainHeights[j, k] - terrainHeights[j - 1, k + 1];
+                            diff = _terrainHeights[j, k] - _terrainHeights[j - 1, k + 1];
                             if (diff > maxDiff || -diff > maxDiff)
                                 maxDiff = Mathf.Abs(diff);
-                            diff = terrainHeights[j, k] - terrainHeights[j - 1, k];
+                            diff = _terrainHeights[j, k] - _terrainHeights[j - 1, k];
                             if (diff > maxDiff || -diff > maxDiff)
                                 maxDiff = Mathf.Abs(diff);
-                            diff = terrainHeights[j, k] - terrainHeights[j - 1, k - 1];
+                            diff = _terrainHeights[j, k] - _terrainHeights[j - 1, k - 1];
                             if (diff > maxDiff || -diff > maxDiff)
                                 maxDiff = Mathf.Abs(diff);
                         }
@@ -1881,66 +1878,66 @@ namespace TGS
 
                     maxDiff /= (gridRoughness * 5.0f);
                     maxDiff = Mathf.Lerp(minStep, maxStep, (1.0f - maxDiff) / (1.0f + maxDiff));
-                    tempTerrainRoughnessMap[linePos + c] = maxDiff;
+                    _tempTerrainRoughnessMap[linePos + c] = maxDiff;
                 }
             }
 
             // collapse chunks with low gradient
             float flatThreshold = maxStep * (1.0f - gridRoughness * 0.1f);
-            for (int j = 0; j < terrainRoughnessMapHeight; j++)
+            for (int j = 0; j < _terrainRoughnessMapHeight; j++)
             {
-                int jPos = j * terrainRoughnessMapWidth;
-                for (int k = 0; k < terrainRoughnessMapWidth - 1; k++)
+                int jPos = j * _terrainRoughnessMapWidth;
+                for (int k = 0; k < _terrainRoughnessMapWidth - 1; k++)
                 {
-                    if (tempTerrainRoughnessMap[jPos + k] >= flatThreshold)
+                    if (_tempTerrainRoughnessMap[jPos + k] >= flatThreshold)
                     {
                         int i = k + 1;
-                        while (i < terrainRoughnessMapWidth && tempTerrainRoughnessMap[jPos + i] >= flatThreshold)
+                        while (i < _terrainRoughnessMapWidth && _tempTerrainRoughnessMap[jPos + i] >= flatThreshold)
                             i++;
-                        while (k < i && k < terrainRoughnessMapWidth)
-                            tempTerrainRoughnessMap[jPos + k] = maxStep * (i - k++);
+                        while (k < i && k < _terrainRoughnessMapWidth)
+                            _tempTerrainRoughnessMap[jPos + k] = maxStep * (i - k++);
                     }
                 }
             }
 
             // spread min step
-            for (int l = 0; l < terrainRoughnessMapHeight; l++)
+            for (int l = 0; l < _terrainRoughnessMapHeight; l++)
             {
-                int linePos = l * terrainRoughnessMapWidth;
-                int prevLinePos = linePos - terrainRoughnessMapWidth;
-                int postLinePos = linePos + terrainRoughnessMapWidth;
-                for (int c = 0; c < terrainRoughnessMapWidth; c++)
+                int linePos = l * _terrainRoughnessMapWidth;
+                int prevLinePos = linePos - _terrainRoughnessMapWidth;
+                int postLinePos = linePos + _terrainRoughnessMapWidth;
+                for (int c = 0; c < _terrainRoughnessMapWidth; c++)
                 {
-                    minStep = tempTerrainRoughnessMap[linePos + c];
+                    minStep = _tempTerrainRoughnessMap[linePos + c];
                     if (l > 0)
                     {
-                        if (tempTerrainRoughnessMap[prevLinePos + c] < minStep)
-                            minStep = tempTerrainRoughnessMap[prevLinePos + c];
+                        if (_tempTerrainRoughnessMap[prevLinePos + c] < minStep)
+                            minStep = _tempTerrainRoughnessMap[prevLinePos + c];
                         if (c > 0)
-                            if (tempTerrainRoughnessMap[prevLinePos + c - 1] < minStep)
-                                minStep = tempTerrainRoughnessMap[prevLinePos + c - 1];
-                        if (c < terrainRoughnessMapWidth - 1)
-                            if (tempTerrainRoughnessMap[prevLinePos + c + 1] < minStep)
-                                minStep = tempTerrainRoughnessMap[prevLinePos + c + 1];
+                            if (_tempTerrainRoughnessMap[prevLinePos + c - 1] < minStep)
+                                minStep = _tempTerrainRoughnessMap[prevLinePos + c - 1];
+                        if (c < _terrainRoughnessMapWidth - 1)
+                            if (_tempTerrainRoughnessMap[prevLinePos + c + 1] < minStep)
+                                minStep = _tempTerrainRoughnessMap[prevLinePos + c + 1];
                     }
 
-                    if (c > 0 && tempTerrainRoughnessMap[linePos + c - 1] < minStep)
-                        minStep = tempTerrainRoughnessMap[linePos + c - 1];
-                    if (c < terrainRoughnessMapWidth - 1 && tempTerrainRoughnessMap[linePos + c + 1] < minStep)
-                        minStep = tempTerrainRoughnessMap[linePos + c + 1];
-                    if (l < terrainRoughnessMapHeight - 1)
+                    if (c > 0 && _tempTerrainRoughnessMap[linePos + c - 1] < minStep)
+                        minStep = _tempTerrainRoughnessMap[linePos + c - 1];
+                    if (c < _terrainRoughnessMapWidth - 1 && _tempTerrainRoughnessMap[linePos + c + 1] < minStep)
+                        minStep = _tempTerrainRoughnessMap[linePos + c + 1];
+                    if (l < _terrainRoughnessMapHeight - 1)
                     {
-                        if (tempTerrainRoughnessMap[postLinePos + c] < minStep)
-                            minStep = tempTerrainRoughnessMap[postLinePos + c];
+                        if (_tempTerrainRoughnessMap[postLinePos + c] < minStep)
+                            minStep = _tempTerrainRoughnessMap[postLinePos + c];
                         if (c > 0)
-                            if (tempTerrainRoughnessMap[postLinePos + c - 1] < minStep)
-                                minStep = tempTerrainRoughnessMap[postLinePos + c - 1];
-                        if (c < terrainRoughnessMapWidth - 1)
-                            if (tempTerrainRoughnessMap[postLinePos + c + 1] < minStep)
-                                minStep = tempTerrainRoughnessMap[postLinePos + c + 1];
+                            if (_tempTerrainRoughnessMap[postLinePos + c - 1] < minStep)
+                                minStep = _tempTerrainRoughnessMap[postLinePos + c - 1];
+                        if (c < _terrainRoughnessMapWidth - 1)
+                            if (_tempTerrainRoughnessMap[postLinePos + c + 1] < minStep)
+                                minStep = _tempTerrainRoughnessMap[postLinePos + c + 1];
                     }
 
-                    terrainRoughnessMap[linePos + c] = minStep;
+                    _terrainRoughnessMap[linePos + c] = minStep;
                 }
             }
 
@@ -1963,16 +1960,16 @@ namespace TGS
             return true;
         }
 
-        void UpdateMaterialDepthOffset()
+        private void UpdateMaterialDepthOffset()
         {
-            if (territories != null)
+            if (Territories != null)
             {
-                int territoriesCount = territories.Count;
+                int territoriesCount = Territories.Count;
                 for (int c = 0; c < territoriesCount; c++)
                 {
                     int cacheIndex = GetCacheIndexForTerritoryRegion(c);
                     GameObject surf;
-                    if (surfaces.TryGetValue(cacheIndex, out surf))
+                    if (_surfaces.TryGetValue(cacheIndex, out surf))
                     {
                         if (surf != null)
                         {
@@ -1989,7 +1986,7 @@ namespace TGS
                 {
                     int cacheIndex = GetCacheIndexForCellRegion(c);
                     GameObject surf;
-                    if (surfaces.TryGetValue(cacheIndex, out surf))
+                    if (_surfaces.TryGetValue(cacheIndex, out surf))
                     {
                         if (surf != null)
                         {
@@ -2000,22 +1997,22 @@ namespace TGS
             }
 
             float depthOffset = gridMeshDepthOffset / 10000.0f;
-            cellsThinMat.SetFloat("_Offset", depthOffset);
-            cellsGeoMat.SetFloat("_Offset", depthOffset);
-            territoriesMat.SetFloat("_Offset", depthOffset);
-            territoriesDisputedMat.SetFloat("_Offset", depthOffset);
-            foreach (Material mat in frontierColorCache.Values)
+            _cellsThinMat.SetFloat("_Offset", depthOffset);
+            _cellsGeoMat.SetFloat("_Offset", depthOffset);
+            _territoriesMat.SetFloat("_Offset", depthOffset);
+            _territoriesDisputedMat.SetFloat("_Offset", depthOffset);
+            foreach (Material mat in _frontierColorCache.Values)
             {
                 mat.SetFloat("_Offset", depthOffset);
             }
 
-            hudMatCellOverlay.SetInt("_Offset", gridSurfaceDepthOffset);
-            hudMatCellGround.SetInt("_Offset", gridSurfaceDepthOffset - 1);
-            hudMatTerritoryOverlay.SetInt("_Offset", gridSurfaceDepthOffset);
-            hudMatTerritoryGround.SetInt("_Offset", gridSurfaceDepthOffset - 1);
+            _hudMatCellOverlay.SetInt("_Offset", gridSurfaceDepthOffset);
+            _hudMatCellGround.SetInt("_Offset", gridSurfaceDepthOffset - 1);
+            _hudMatTerritoryOverlay.SetInt("_Offset", gridSurfaceDepthOffset);
+            _hudMatTerritoryGround.SetInt("_Offset", gridSurfaceDepthOffset - 1);
         }
 
-        void UpdateMaterialNearClipFade()
+        private void UpdateMaterialNearClipFade()
         {
             float nearClipFade;
             float nearClipFadeFallOff;
@@ -2032,19 +2029,19 @@ namespace TGS
 
             if (nearClipFadeEnabled)
             {
-                cellsThinMat.EnableKeyword(SKW_NEAR_CLIP_FADE);
-                cellsThinMat.SetFloat("_NearClip", nearClipFade);
-                cellsThinMat.SetFloat("_FallOff", nearClipFadeFallOff);
-                cellsGeoMat.EnableKeyword(SKW_NEAR_CLIP_FADE);
-                cellsGeoMat.SetFloat("_NearClip", nearClipFade);
-                cellsGeoMat.SetFloat("_FallOff", nearClipFadeFallOff);
-                territoriesMat.EnableKeyword(SKW_NEAR_CLIP_FADE);
-                territoriesMat.SetFloat("_NearClip", nearClipFade);
-                territoriesMat.SetFloat("_FallOff", nearClipFadeFallOff);
-                territoriesDisputedMat.EnableKeyword(SKW_NEAR_CLIP_FADE);
-                territoriesDisputedMat.SetFloat("_NearClip", nearClipFade);
-                territoriesDisputedMat.SetFloat("_FallOff", nearClipFadeFallOff);
-                foreach (Material mat in frontierColorCache.Values)
+                _cellsThinMat.EnableKeyword(SKW_NEAR_CLIP_FADE);
+                _cellsThinMat.SetFloat("_NearClip", nearClipFade);
+                _cellsThinMat.SetFloat("_FallOff", nearClipFadeFallOff);
+                _cellsGeoMat.EnableKeyword(SKW_NEAR_CLIP_FADE);
+                _cellsGeoMat.SetFloat("_NearClip", nearClipFade);
+                _cellsGeoMat.SetFloat("_FallOff", nearClipFadeFallOff);
+                _territoriesMat.EnableKeyword(SKW_NEAR_CLIP_FADE);
+                _territoriesMat.SetFloat("_NearClip", nearClipFade);
+                _territoriesMat.SetFloat("_FallOff", nearClipFadeFallOff);
+                _territoriesDisputedMat.EnableKeyword(SKW_NEAR_CLIP_FADE);
+                _territoriesDisputedMat.SetFloat("_NearClip", nearClipFade);
+                _territoriesDisputedMat.SetFloat("_FallOff", nearClipFadeFallOff);
+                foreach (Material mat in _frontierColorCache.Values)
                 {
                     mat.EnableKeyword(SKW_NEAR_CLIP_FADE);
                     mat.SetFloat("_NearClip", nearClipFade);
@@ -2053,11 +2050,11 @@ namespace TGS
             }
             else
             {
-                cellsThinMat.DisableKeyword(SKW_NEAR_CLIP_FADE);
-                cellsGeoMat.DisableKeyword(SKW_NEAR_CLIP_FADE);
-                territoriesMat.DisableKeyword(SKW_NEAR_CLIP_FADE);
-                territoriesDisputedMat.EnableKeyword(SKW_NEAR_CLIP_FADE);
-                foreach (Material mat in frontierColorCache.Values)
+                _cellsThinMat.DisableKeyword(SKW_NEAR_CLIP_FADE);
+                _cellsGeoMat.DisableKeyword(SKW_NEAR_CLIP_FADE);
+                _territoriesMat.DisableKeyword(SKW_NEAR_CLIP_FADE);
+                _territoriesDisputedMat.EnableKeyword(SKW_NEAR_CLIP_FADE);
+                foreach (Material mat in _frontierColorCache.Values)
                 {
                     mat.DisableKeyword(SKW_NEAR_CLIP_FADE);
                 }
@@ -2065,62 +2062,56 @@ namespace TGS
         }
 
 
-        void UpdateHighlightEffect()
+        private void UpdateHighlightEffect()
         {
-            if (highlightKeywords == null)
+            if (_highlightKeywords == null)
             {
-                highlightKeywords = new List<string>();
+                _highlightKeywords = new List<string>();
             }
             else
             {
-                highlightKeywords.Clear();
+                _highlightKeywords.Clear();
             }
 
             switch (highlightEffect)
             {
                 case HIGHLIGHT_EFFECT.TextureAdditive:
-                    highlightKeywords.Add(SKW_TEX_HIGHLIGHT_ADDITIVE);
+                    _highlightKeywords.Add(SKW_TEX_HIGHLIGHT_ADDITIVE);
                     break;
                 case HIGHLIGHT_EFFECT.TextureMultiply:
-                    highlightKeywords.Add(SKW_TEX_HIGHLIGHT_MULTIPLY);
+                    _highlightKeywords.Add(SKW_TEX_HIGHLIGHT_MULTIPLY);
                     break;
                 case HIGHLIGHT_EFFECT.TextureColor:
-                    highlightKeywords.Add(SKW_TEX_HIGHLIGHT_COLOR);
+                    _highlightKeywords.Add(SKW_TEX_HIGHLIGHT_COLOR);
                     break;
                 case HIGHLIGHT_EFFECT.TextureScale:
-                    highlightKeywords.Add(SKW_TEX_HIGHLIGHT_SCALE);
+                    _highlightKeywords.Add(SKW_TEX_HIGHLIGHT_SCALE);
                     break;
             }
 
-            string[] keywords = highlightKeywords.ToArray();
-            hudMatCellGround.shaderKeywords = keywords;
-            hudMatCellOverlay.shaderKeywords = keywords;
-            hudMatTerritoryGround.shaderKeywords = keywords;
-            hudMatTerritoryOverlay.shaderKeywords = keywords;
+            string[] keywords = _highlightKeywords.ToArray();
+            _hudMatCellGround.shaderKeywords = keywords;
+            _hudMatCellOverlay.shaderKeywords = keywords;
+            _hudMatTerritoryGround.shaderKeywords = keywords;
+            _hudMatTerritoryOverlay.shaderKeywords = keywords;
         }
 
         #endregion
 
         #region Drawing stuff
 
-        int GetCacheIndexForTerritoryRegion(int territoryIndex)
+        private int GetCacheIndexForTerritoryRegion(int territoryIndex)
         {
             return territoryIndex; // * 1000 + regionIndex;
         }
 
-        Material hudMatTerritory
-        {
-            get { return overlayMode == OVERLAY_MODE.Overlay ? hudMatTerritoryOverlay : hudMatTerritoryGround; }
-        }
+        private Material HUDMatTerritory => overlayMode == OVERLAY_MODE.Overlay ? _hudMatTerritoryOverlay : _hudMatTerritoryGround;
 
-        Material hudMatCell
-        {
-            get { return overlayMode == OVERLAY_MODE.Overlay ? hudMatCellOverlay : hudMatCellGround; }
-        }
+        private Material HUDMatCell => overlayMode == OVERLAY_MODE.Overlay ? _hudMatCellOverlay : _hudMatCellGround;
 
-        Material GetColoredTexturedMaterial(Color color, Texture2D texture, bool overlay)
+        private Material GetColoredTexturedMaterial(Color color, Texture2D texture, bool overlay)
         {
-            Dictionary<Color, Material> matCache = overlay ? coloredMatCacheOverlay : coloredMatCacheGround;
+            Dictionary<Color, Material> matCache = overlay ? _coloredMatCacheOverlay : _coloredMatCacheGround;
             Material mat;
             if (texture == null && matCache.TryGetValue(color, out mat))
             {
@@ -2131,48 +2122,48 @@ namespace TGS
                 Material customMat;
                 if (texture != null)
                 {
-                    mat = overlay ? texturizedMatOverlay : texturizedMatGround;
+                    mat = overlay ? _texturizedMatOverlay : _texturizedMatGround;
                     customMat = Instantiate(mat);
                     customMat.name = mat.name;
                     customMat.mainTexture = texture;
                 }
                 else
                 {
-                    mat = overlay ? coloredMatOverlay : coloredMatGround;
+                    mat = overlay ? _coloredMatOverlay : _coloredMatGround;
                     customMat = Instantiate(mat);
                     customMat.name = mat.name;
                     matCache[color] = customMat;
                 }
 
                 customMat.color = color;
-                disposalManager.MarkForDisposal(customMat);
+                _disposalManager.MarkForDisposal(customMat);
                 customMat.SetFloat("_Offset", gridSurfaceDepthOffset);
                 return customMat;
             }
         }
 
-        Material GetFrontierColorMaterial(Color color)
+        private Material GetFrontierColorMaterial(Color color)
         {
-            if (color == territoriesMat.color)
-                return territoriesMat;
+            if (color == _territoriesMat.color)
+                return _territoriesMat;
 
             Material mat;
-            if (frontierColorCache.TryGetValue(color, out mat))
+            if (_frontierColorCache.TryGetValue(color, out mat))
             {
                 return mat;
             }
             else
             {
-                Material customMat = Instantiate(territoriesMat) as Material;
-                customMat.name = territoriesMat.name;
+                Material customMat = Instantiate(_territoriesMat) as Material;
+                customMat.name = _territoriesMat.name;
                 customMat.color = color;
-                disposalManager.MarkForDisposal(customMat);
-                frontierColorCache[color] = customMat;
+                _disposalManager.MarkForDisposal(customMat);
+                _frontierColorCache[color] = customMat;
                 return customMat;
             }
         }
 
-        void ApplyMaterialToSurface(Renderer renderer, Material sharedMaterial)
+        private void ApplyMaterialToSurface(Renderer renderer, Material sharedMaterial)
         {
             if (renderer != null)
             {
@@ -2180,14 +2171,14 @@ namespace TGS
             }
         }
 
-        void DrawColorizedTerritories()
+        private void DrawColorizedTerritories()
         {
-            if (territories == null)
+            if (Territories == null)
                 return;
-            int territoriesCount = territories.Count;
+            int territoriesCount = Territories.Count;
             for (int k = 0; k < territoriesCount; k++)
             {
-                Territory territory = territories[k];
+                Territory territory = Territories[k];
                 Region region = territory.region;
                 if (region.customMaterial != null)
                 {
@@ -2197,8 +2188,8 @@ namespace TGS
                 }
                 else
                 {
-                    Color fillColor = territories[k].fillColor;
-                    fillColor.a *= colorizedTerritoriesAlpha;
+                    Color fillColor = Territories[k].fillColor;
+                    fillColor.a *= ColorizedTerritoriesAlpha;
                     TerritoryToggleRegionSurface(k, true, fillColor);
                 }
             }
@@ -2206,12 +2197,12 @@ namespace TGS
 
         public void GenerateMap()
         {
-            recreateCells = true;
-            recreateTerritories = true;
+            _recreateCells = true;
+            _recreateTerritories = true;
             if (Cells != null)
                 Cells.Clear();
-            if (territories != null)
-                territories.Clear();
+            if (Territories != null)
+                Territories.Clear();
             Redraw();
             if (territoriesTexture != null)
             {
@@ -2227,10 +2218,10 @@ namespace TGS
             }
         }
 
-        void ReloadMask()
+        private void ReloadMask()
         {
             ReadMaskContents();
-            if (gridMask == null || mask == null)
+            if (gridMask == null || _mask == null)
             {
                 int cellsCount = Cells.Count;
                 for (int k = 0; k < cellsCount; k++)
@@ -2240,7 +2231,7 @@ namespace TGS
             }
 
             CellsApplyVisibilityFilters();
-            recreateTerritories = true;
+            _recreateTerritories = true;
             Redraw();
             if (territoriesTexture != null)
             {
@@ -2249,7 +2240,7 @@ namespace TGS
         }
 
 
-        void ComputeGridScale()
+        private void ComputeGridScale()
         {
             if (regularHexagons && gridTopology == GRID_TOPOLOGY.Hexagonal)
             {
@@ -2280,12 +2271,12 @@ namespace TGS
             if (!gameObject.activeInHierarchy)
                 return;
 
-            shouldRedraw = false;
+            _shouldRedraw = false;
 
             // Initialize surface cache
-            if (surfaces != null)
+            if (_surfaces != null)
             {
-                List<GameObject> cached = new List<GameObject>(surfaces.Values);
+                List<GameObject> cached = new List<GameObject>(_surfaces.Values);
                 int cachedCount = cached.Count;
                 for (int k = 0; k < cachedCount; k++)
                 {
@@ -2295,7 +2286,7 @@ namespace TGS
             }
             else
             {
-                surfaces = new Dictionary<int, GameObject>();
+                _surfaces = new Dictionary<int, GameObject>();
             }
 
             DestroySurfaces();
@@ -2303,7 +2294,7 @@ namespace TGS
 
             if (!UpdateTerrainReference(terrain, reuseTerrainData))
                 return;
-            refreshCellMesh = true;
+            _refreshCellMesh = true;
             _lastVertexCount = 0;
             ComputeGridScale();
             CheckCells();
@@ -2313,14 +2304,14 @@ namespace TGS
                 DrawColorizedCells();
             }
 
-            refreshTerritoriesMesh = true;
+            _refreshTerritoriesMesh = true;
             CheckTerritories();
-            if (_showTerritories)
+            if (showTerritories)
             {
                 DrawTerritoryBorders();
             }
 
-            if (_colorizeTerritories)
+            if (colorizeTerritories)
             {
                 DrawColorizedTerritories();
             }
@@ -2330,30 +2321,30 @@ namespace TGS
             UpdateHighlightEffect();
         }
 
-        void CheckCells()
+        private void CheckCells()
         {
-            if (!showCells && !_showTerritories && !_colorizeTerritories && highlightMode == HIGHLIGHT_MODE.None)
+            if (!showCells && !showTerritories && !colorizeTerritories && highlightMode == HIGHLIGHT_MODE.None)
                 return;
-            if (Cells == null || recreateCells)
+            if (Cells == null || _recreateCells)
             {
                 CreateCells();
-                refreshCellMesh = true;
+                _refreshCellMesh = true;
             }
 
-            if (refreshCellMesh)
+            if (_refreshCellMesh)
             {
                 CellsApplyVisibilityFilters();
                 GenerateCellsMesh();
-                refreshCellMesh = false;
-                refreshTerritoriesMesh = true;
+                _refreshCellMesh = false;
+                _refreshTerritoriesMesh = true;
             }
         }
 
-        void DrawCellBorders()
+        private void DrawCellBorders()
         {
-            if (cellLayer != null)
+            if (_cellLayer != null)
             {
-                DestroyImmediate(cellLayer);
+                DestroyImmediate(_cellLayer);
             }
             else
             {
@@ -2365,26 +2356,28 @@ namespace TGS
             if (Cells.Count == 0)
                 return;
 
-            cellLayer = new GameObject(CELLS_LAYER_NAME);
-            disposalManager.MarkForDisposal(cellLayer);
-            cellLayer.transform.SetParent(transform, false);
-            cellLayer.transform.localPosition = Vector3.back * 0.001f;
+            _cellLayer = new GameObject(CELLS_LAYER_NAME);
+            _disposalManager.MarkForDisposal(_cellLayer);
+            _cellLayer.transform.SetParent(transform, false);
+            _cellLayer.transform.localPosition = Vector3.back * 0.001f;
 
-            for (int k = 0; k < cellMeshBorders.Length; k++)
+            for (int k = 0; k < _cellMeshBorders.Length; k++)
             {
-                GameObject flayer = new GameObject("flayer");
-                disposalManager.MarkForDisposal(flayer);
+                GameObject flayer = new("flayer");
+                _disposalManager.MarkForDisposal(flayer);
                 flayer.hideFlags |= HideFlags.HideInHierarchy;
-                flayer.transform.SetParent(cellLayer.transform, false);
+                flayer.transform.SetParent(_cellLayer.transform, false);
                 flayer.transform.localPosition = Misc.Vector3zero;
                 flayer.transform.localRotation = Quaternion.Euler(Misc.Vector3zero);
 
-                Mesh mesh = new Mesh();
-                mesh.vertices = cellMeshBorders[k];
-                mesh.SetIndices(cellMeshIndices[k], MeshTopology.Lines, 0);
+                Mesh mesh = new()
+                {
+                    vertices = _cellMeshBorders[k]
+                };
+                mesh.SetIndices(_cellMeshIndices[k], MeshTopology.Lines, 0);
 
                 mesh.RecalculateBounds();
-                disposalManager.MarkForDisposal(mesh);
+                _disposalManager.MarkForDisposal(mesh);
 
                 MeshFilter mf = flayer.AddComponent<MeshFilter>();
                 mf.sharedMesh = mesh;
@@ -2394,14 +2387,14 @@ namespace TGS
                 mr.receiveShadows = false;
                 mr.reflectionProbeUsage = UnityEngine.Rendering.ReflectionProbeUsage.Off;
                 mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-                mr.sharedMaterial = cellsMat;
+                mr.sharedMaterial = CellsMat;
             }
 
-            cellLayer.SetActive(showCells);
-            cellsGeoMat.SetFloat("_Thickness", cellBorderThickness - 0.8f);
+            _cellLayer.SetActive(showCells);
+            _cellsGeoMat.SetFloat("_Thickness", cellBorderThickness - 0.8f);
         }
 
-        void DrawColorizedCells()
+        private void DrawColorizedCells()
         {
             int cellsCount = Cells.Count;
             for (int k = 0; k < cellsCount; k++)
@@ -2417,35 +2410,35 @@ namespace TGS
             }
         }
 
-        void CheckTerritories()
+        private void CheckTerritories()
         {
-            if (!territoriesAreUsed)
+            if (!TerritoriesAreUsed)
                 return;
-            if (territories == null || recreateTerritories)
+            if (Territories == null || _recreateTerritories)
             {
                 CreateTerritories();
-                refreshTerritoriesMesh = true;
+                _refreshTerritoriesMesh = true;
             }
-            else if (needUpdateTerritories)
+            else if (_needUpdateTerritories)
             {
                 FindTerritoryFrontiers();
                 UpdateTerritoryBoundaries();
-                needUpdateTerritories = false;
-                refreshTerritoriesMesh = true;
+                _needUpdateTerritories = false;
+                _refreshTerritoriesMesh = true;
             }
 
-            if (refreshTerritoriesMesh)
+            if (_refreshTerritoriesMesh)
             {
                 GenerateTerritoriesMesh();
-                refreshTerritoriesMesh = false;
+                _refreshTerritoriesMesh = false;
             }
         }
 
-        void DrawTerritoryBorders()
+        private void DrawTerritoryBorders()
         {
-            if (territoryLayer != null)
+            if (_territoryLayer != null)
             {
-                DestroyImmediate(territoryLayer);
+                DestroyImmediate(_territoryLayer);
             }
             else
             {
@@ -2454,24 +2447,24 @@ namespace TGS
                     DestroyImmediate(t.gameObject);
             }
 
-            if (territories.Count == 0)
+            if (Territories.Count == 0)
                 return;
 
-            territoryLayer = new GameObject(TERRITORIES_LAYER_NAME);
-            disposalManager.MarkForDisposal(territoryLayer);
-            territoryLayer.transform.SetParent(transform, false);
-            territoryLayer.transform.localPosition = Vector3.back * 0.001f;
+            _territoryLayer = new GameObject(TERRITORIES_LAYER_NAME);
+            _disposalManager.MarkForDisposal(_territoryLayer);
+            _territoryLayer.transform.SetParent(transform, false);
+            _territoryLayer.transform.localPosition = Vector3.back * 0.001f;
 
-            for (int t = 0; t < territoryMeshes.Count; t++)
+            for (int t = 0; t < _territoryMeshes.Count; t++)
             {
-                TerritoryMesh tm = territoryMeshes[t];
+                TerritoryMesh tm = _territoryMeshes[t];
 
                 for (int k = 0; k < tm.territoryMeshBorders.Length; k++)
                 {
-                    GameObject flayer = new GameObject("flayer");
-                    disposalManager.MarkForDisposal(flayer);
+                    GameObject flayer = new("flayer");
+                    _disposalManager.MarkForDisposal(flayer);
                     flayer.hideFlags |= HideFlags.HideInHierarchy;
-                    flayer.transform.SetParent(territoryLayer.transform, false);
+                    flayer.transform.SetParent(_territoryLayer.transform, false);
                     flayer.transform.localPosition = Vector3.back * 0.001f;
                     flayer.transform.localRotation = Quaternion.Euler(Misc.Vector3zero);
 
@@ -2480,7 +2473,7 @@ namespace TGS
                     mesh.SetIndices(tm.territoryMeshIndices[k], MeshTopology.Lines, 0);
 
                     mesh.RecalculateBounds();
-                    disposalManager.MarkForDisposal(mesh);
+                    _disposalManager.MarkForDisposal(mesh);
 
                     MeshFilter mf = flayer.AddComponent<MeshFilter>();
                     mf.sharedMesh = mesh;
@@ -2494,15 +2487,15 @@ namespace TGS
                     Material mat;
                     if (tm.territoryIndex < 0)
                     {
-                        mat = territoriesDisputedMat;
+                        mat = _territoriesDisputedMat;
                     }
                     else
                     {
-                        Color frontierColor = territories[tm.territoryIndex].frontierColor;
+                        Color frontierColor = Territories[tm.territoryIndex].frontierColor;
                         if (frontierColor.a == 0 && frontierColor.r == 0 && frontierColor.g == 0 &&
                             frontierColor.b == 0)
                         {
-                            mat = territoriesMat;
+                            mat = _territoriesMat;
                         }
                         else
                         {
@@ -2514,65 +2507,65 @@ namespace TGS
                 }
             }
 
-            territoryLayer.SetActive(_showTerritories);
+            _territoryLayer.SetActive(showTerritories);
         }
 
-        void PrepareNewSurfaceMesh(int pointCount)
+        private void PrepareNewSurfaceMesh(int pointCount)
         {
-            if (meshPoints == null)
+            if (_meshPoints == null)
             {
-                meshPoints = new List<Vector3>(pointCount);
+                _meshPoints = new List<Vector3>(pointCount);
             }
             else
             {
-                meshPoints.Clear();
+                _meshPoints.Clear();
             }
 
-            triNew = new int[pointCount];
-            if (surfaceMeshHit == null)
-                surfaceMeshHit = new Dictionary<TriangulationPoint, int>(20000);
+            _triNew = new int[pointCount];
+            if (_surfaceMeshHit == null)
+                _surfaceMeshHit = new Dictionary<TriangulationPoint, int>(20000);
             else
-                surfaceMeshHit.Clear();
+                _surfaceMeshHit.Clear();
 
-            triNewIndex = -1;
-            newPointsCount = -1;
+            _triNewIndex = -1;
+            _newPointsCount = -1;
         }
 
-        void AddPointToSurfaceMeshWithNormalOffset(TriangulationPoint p)
+        private void AddPointToSurfaceMeshWithNormalOffset(TriangulationPoint p)
         {
             int tri;
-            if (surfaceMeshHit.TryGetValue(p, out tri))
+            if (_surfaceMeshHit.TryGetValue(p, out tri))
             {
-                triNew[++triNewIndex] = tri;
+                _triNew[++_triNewIndex] = tri;
             }
             else
             {
-                Vector3 np = new Vector3(p.Xf - 2, p.Yf - 2, -p.Zf);
+                Vector3 np = new(p.Xf - 2, p.Yf - 2, -p.Zf);
                 np += transform.InverseTransformVector(
                     terrain.terrainData.GetInterpolatedNormal(np.x + 0.5f, np.y + 0.5f)) * gridNormalOffset;
-                meshPoints.Add(np);
-                surfaceMeshHit.Add(p, ++newPointsCount);
-                triNew[++triNewIndex] = newPointsCount;
+                _meshPoints.Add(np);
+                _surfaceMeshHit.Add(p, ++_newPointsCount);
+                _triNew[++_triNewIndex] = _newPointsCount;
             }
         }
 
-        void AddPointToSurfaceMeshWithoutNormalOffset(TriangulationPoint p)
+        private void AddPointToSurfaceMeshWithoutNormalOffset(TriangulationPoint p)
         {
             int tri;
-            if (surfaceMeshHit.TryGetValue(p, out tri))
+            if (_surfaceMeshHit.TryGetValue(p, out tri))
             {
-                triNew[++triNewIndex] = tri;
+                _triNew[++_triNewIndex] = tri;
             }
             else
             {
-                Vector3 np = new Vector3(p.Xf - 2, p.Yf - 2, -p.Zf);
-                meshPoints.Add(np);
-                surfaceMeshHit.Add(p, ++newPointsCount);
-                triNew[++triNewIndex] = newPointsCount;
+                Vector3 np = new(p.Xf - 2, p.Yf - 2, -p.Zf);
+                _meshPoints.Add(np);
+                _surfaceMeshHit.Add(p, ++_newPointsCount);
+                _triNew[++_triNewIndex] = _newPointsCount;
             }
         }
 
-        Poly2Tri.Polygon GetPolygon(Region region, out List<PolygonPoint> ppoints, bool reduce = false)
+        private Poly2Tri.Polygon GetPolygon(Region region, out List<PolygonPoint> ppoints, bool reduce = false)
         {
             // Calculate region's surface points
             ppoints = null;
@@ -2580,7 +2573,7 @@ namespace TGS
             if (numSegments == 0)
                 return null;
 
-            Connector connector = new Connector();
+            Connector connector = new();
             if (terrain == null)
             {
                 for (int i = 0; i < numSegments; i++)
@@ -2606,7 +2599,7 @@ namespace TGS
 
             int spCount = surfacedPoints.Count;
             ppoints = new List<PolygonPoint>(spCount);
-            double midx = 0, midy = 0;
+            double midX = 0, midY = 0;
             for (int k = 0; k < spCount; k++)
             {
                 double
@@ -2619,23 +2612,23 @@ namespace TGS
                         ? terrain.SampleHeight(transform.TransformPoint((float)x - 2, (float)y - 2, 0))
                         : 0;
                     ppoints.Add(new PolygonPoint(x, y, h));
-                    midx += x;
-                    midy += y;
+                    midX += x;
+                    midY += y;
                 }
             }
 
-            int ppointsCount = ppoints.Count;
-            if (ppointsCount < 3)
+            int pPointsCount = ppoints.Count;
+            if (pPointsCount < 3)
                 return null;
             if (reduce)
             {
-                midx /= ppointsCount;
-                midy /= ppointsCount;
-                for (int k = 0; k < ppointsCount; k++)
+                midX /= pPointsCount;
+                midY /= pPointsCount;
+                for (int k = 0; k < pPointsCount; k++)
                 {
                     PolygonPoint p = ppoints[k];
-                    double DX = midx - p.X;
-                    double DY = midy - p.Y;
+                    double DX = midX - p.X;
+                    double DY = midY - p.Y;
                     ppoints[k] = new PolygonPoint(p.X + DX * 0.0001, p.Y + DY * 0.0001);
                 }
             }
@@ -2643,59 +2636,58 @@ namespace TGS
             return new Poly2Tri.Polygon(ppoints);
         }
 
-        GameObject GenerateRegionSurface(Region region, int cacheIndex, Material material, Vector2 textureScale,
+        private  GameObject GenerateRegionSurface(Region region, int cacheIndex, Material material, Vector2 textureScale,
             Vector2 textureOffset, float textureRotation, bool rotateInLocalSpace)
         {
-            List<PolygonPoint> ppoints;
-            Poly2Tri.Polygon poly = GetPolygon(region, out ppoints);
+            List<PolygonPoint> pPoints;
+            Poly2Tri.Polygon poly = GetPolygon(region, out pPoints);
             if (poly == null)
                 return null;
 
             // Support for internal territories
-            if (_allowTerritoriesInsideTerritories && region.entity is Territory)
+            if (allowTerritoriesInsideTerritories && region.entity is Territory)
             {
-                int terrCount = territories.Count;
+                int terrCount = Territories.Count;
                 for (int ot = 0; ot < terrCount; ot++)
                 {
-                    Territory oter = territories[ot];
-                    if (oter.region != region && region.Contains(oter.region))
+                    Territory outer = Territories[ot];
+                    if (outer.region != region && region.Contains(outer.region))
                     {
-                        List<PolygonPoint> dummyPoints;
-                        Poly2Tri.Polygon oterPoly = GetPolygon(oter.region, out dummyPoints, true);
-                        if (oterPoly != null)
-                            poly.AddHole(oterPoly);
+                        Poly2Tri.Polygon outerPoly = GetPolygon(outer.region, out _, true);
+                        if (outerPoly != null)
+                            poly.AddHole(outerPoly);
                     }
                 }
             }
 
             if (terrain != null)
             {
-                if (steinerPoints == null)
+                if (_steinerPoints == null)
                 {
-                    steinerPoints = new List<TriangulationPoint>(6000);
+                    _steinerPoints = new List<TriangulationPoint>(6000);
                 }
                 else
                 {
-                    steinerPoints.Clear();
+                    _steinerPoints.Clear();
                 }
 
-                float stepX = 1.0f / heightMapWidth;
-                float smallStep = 1.0f / heightMapWidth;
+                float stepX = 1.0f / _heightMapWidth;
+                float smallStep = 1.0f / _heightMapWidth;
                 float y = region.rect2D.yMin + smallStep;
-                float ymax = region.rect2D.yMax - smallStep;
-                float[] acumY = new float[terrainRoughnessMapWidth];
+                float yMax = region.rect2D.yMax - smallStep;
+                float[] acmY = new float[_terrainRoughnessMapWidth];
                 int steinerPointsCount = 0;
-                while (y < ymax)
+                while (y < yMax)
                 {
-                    int j = (int)((y + 0.5f) * terrainRoughnessMapHeight); // * heightMapHeight)) / TERRAIN_CHUNK_SIZE;
-                    if (j >= terrainRoughnessMapHeight)
-                        j = terrainRoughnessMapHeight - 1;
+                    int j = (int)((y + 0.5f) * _terrainRoughnessMapHeight); // * heightMapHeight)) / TERRAIN_CHUNK_SIZE;
+                    if (j >= _terrainRoughnessMapHeight)
+                        j = _terrainRoughnessMapHeight - 1;
                     else if (j < 0)
                         j = 0;
-                    int jPos = j * terrainRoughnessMapWidth;
+                    int jPos = j * _terrainRoughnessMapWidth;
                     float sy = y + 2;
                     float xin, xout;
-                    GetFirstAndLastPointInRow(sy, ppoints, out xin, out xout);
+                    GetFirstAndLastPointInRow(sy, pPoints, out xin, out xout);
 //																				float xin = GetFirstPointInRow (sy, ppoints) + smallStep;
 //																				float xout = GetLastPointInRow (sy, ppoints) - smallStep;
                     xin += smallStep;
@@ -2703,21 +2695,21 @@ namespace TGS
                     int k0 = -1;
                     for (float x = xin; x < xout; x += stepX)
                     {
-                        int k = (int)((x + 0.5f) * terrainRoughnessMapWidth); //)) / TERRAIN_CHUNK_SIZE;
-                        if (k >= terrainRoughnessMapWidth)
-                            k = terrainRoughnessMapWidth - 1;
+                        int k = (int)((x + 0.5f) * _terrainRoughnessMapWidth); //)) / TERRAIN_CHUNK_SIZE;
+                        if (k >= _terrainRoughnessMapWidth)
+                            k = _terrainRoughnessMapWidth - 1;
                         else if (k < 0)
                             k = 0;
                         if (k0 != k)
                         {
                             k0 = k;
-                            stepX = terrainRoughnessMap[jPos + k];
-                            if (acumY[k] >= stepX)
-                                acumY[k] = 0;
-                            acumY[k] += smallStep;
+                            stepX = _terrainRoughnessMap[jPos + k];
+                            if (acmY[k] >= stepX)
+                                acmY[k] = 0;
+                            acmY[k] += smallStep;
                         }
 
-                        if (acumY[k] >= stepX)
+                        if (acmY[k] >= stepX)
                         {
                             // Gather precision height
                             float h = terrain.SampleHeight(transform.TransformPoint(x, y, 0));
@@ -2733,7 +2725,7 @@ namespace TGS
                             float hbl = terrain.SampleHeight(transform.TransformPoint(x - smallStep, y - smallStep, 0));
                             if (hbl > h)
                                 h = hbl;
-                            steinerPoints.Add(new PolygonPoint(x + 2, sy, h));
+                            _steinerPoints.Add(new PolygonPoint(x + 2, sy, h));
                             steinerPointsCount++;
                         }
                     }
@@ -2745,21 +2737,21 @@ namespace TGS
                     }
                 }
 
-                poly.AddSteinerPoints(steinerPoints);
+                poly.AddSteinerPoints(_steinerPoints);
             }
 
             P2T.Triangulate(poly);
 
-            string cacheIndexSTR = cacheIndex.ToString();
+            string cacheIndexStr = cacheIndex.ToString();
             // Deletes potential residual surface
-            Transform t = surfacesLayer.transform.Find(cacheIndexSTR);
+            Transform t = SurfacesLayer.transform.Find(cacheIndexStr);
             if (t != null)
             {
                 DestroyImmediate(t.gameObject);
             }
 
             Rect rect = (canvasTexture != null && material != null && material.mainTexture == canvasTexture)
-                ? canvasRect
+                ? _canvasRect
                 : region.rect2D;
 
             // Calculate & optimize mesh data
@@ -2797,14 +2789,14 @@ namespace TGS
                     }
                 }
 
-                string surfName = triBase == 0 ? cacheIndexSTR : "splitMesh";
-                GameObject surf = Drawing.CreateSurface(surfName, meshPoints.ToArray(), triNew, material, rect,
-                    textureScale, textureOffset, textureRotation, rotateInLocalSpace, disposalManager);
-                _lastVertexCount += meshPoints.Count;
+                string surfName = triBase == 0 ? cacheIndexStr : "splitMesh";
+                GameObject surf = Drawing.CreateSurface(surfName, _meshPoints.ToArray(), _triNew, material, rect,
+                    textureScale, textureOffset, textureRotation, rotateInLocalSpace, _disposalManager);
+                _lastVertexCount += _meshPoints.Count;
                 if (triBase == 0)
                 {
-                    surf.transform.SetParent(surfacesLayer.transform, false);
-                    surfaces[cacheIndex] = surf;
+                    surf.transform.SetParent(SurfacesLayer.transform, false);
+                    _surfaces[cacheIndex] = surf;
                 }
                 else
                 {
@@ -2830,7 +2822,7 @@ namespace TGS
             return "";
         }
 
-        float goodGridRelaxation
+        private float GoodGridRelaxation
         {
             get
             {
@@ -2845,7 +2837,7 @@ namespace TGS
             }
         }
 
-        float goodGridCurvature
+        private float GoodGridCurvature
         {
             get
             {
@@ -2860,7 +2852,7 @@ namespace TGS
             }
         }
 
-        int FastConvertToInt(string s)
+        private int FastConvertToInt(string s)
         {
             int value = 0;
             int start, sign;
@@ -2889,8 +2881,8 @@ namespace TGS
         /// </summary>
         public bool CheckRay(Ray ray)
         {
-            useEditorRay = true;
-            editorRay = ray;
+            _useEditorRay = true;
+            _editorRay = ray;
             return CheckMousePos();
         }
 
@@ -2899,23 +2891,23 @@ namespace TGS
 
         #region Highlighting
 
-        void OnMouseEnter()
+        private void OnMouseEnter()
         {
             mouseIsOver = true;
             ClearLastOver();
         }
 
-        void OnMouseExit()
+        private void OnMouseExit()
         {
             // Make sure it's outside of grid
             Vector3 mousePos = Input.mousePosition;
             Ray ray = Camera.main.ScreenPointToRay(mousePos);
-            int hitCount = Physics.RaycastNonAlloc(ray, hits);
+            int hitCount = Physics.RaycastNonAlloc(ray, _hits);
             if (hitCount > 0)
             {
                 for (int k = 0; k < hitCount; k++)
                 {
-                    if (hits[k].collider.gameObject == gameObject)
+                    if (_hits[k].collider.gameObject == gameObject)
                         return;
                 }
             }
@@ -2924,7 +2916,7 @@ namespace TGS
             ClearLastOver();
         }
 
-        void ClearLastOver()
+        private void ClearLastOver()
         {
             NotifyExitingEntities();
             _cellLastOver = null;
@@ -2933,7 +2925,7 @@ namespace TGS
             _territoryLastOverIndex = -1;
         }
 
-        void NotifyExitingEntities()
+        private void NotifyExitingEntities()
         {
             if (_territoryLastOverIndex >= 0 && OnTerritoryExit != null)
                 OnTerritoryExit(_territoryLastOverIndex);
@@ -2941,14 +2933,14 @@ namespace TGS
                 OnCellExit(_cellLastOverIndex);
         }
 
-        bool GetLocalHitFromMousePos(out Vector3 localPoint)
+        private bool GetLocalHitFromMousePos(out Vector3 localPoint)
         {
             Ray ray;
             localPoint = Misc.Vector3zero;
 
-            if (useEditorRay && !Application.isPlaying)
+            if (_useEditorRay && !Application.isPlaying)
             {
-                ray = editorRay;
+                ray = _editorRay;
             }
             else
             {
@@ -2964,7 +2956,7 @@ namespace TGS
                 ray = Camera.main.ScreenPointToRay(mousePos);
             }
 
-            int hitCount = Physics.RaycastNonAlloc(ray, hits);
+            int hitCount = Physics.RaycastNonAlloc(ray, _hits);
             if (hitCount > 0)
             {
                 if (terrain != null)
@@ -2972,11 +2964,11 @@ namespace TGS
                     float minDistance = highlightMinimumTerrainDistance * highlightMinimumTerrainDistance;
                     for (int k = 0; k < hitCount; k++)
                     {
-                        if (hits[k].collider.gameObject == terrain.gameObject)
+                        if (_hits[k].collider.gameObject == terrain.gameObject)
                         {
-                            if ((hits[k].point - ray.origin).sqrMagnitude > minDistance)
+                            if ((_hits[k].point - ray.origin).sqrMagnitude > minDistance)
                             {
-                                localPoint = terrain.transform.InverseTransformPoint(hits[k].point);
+                                localPoint = terrain.transform.InverseTransformPoint(_hits[k].point);
                                 float w = terrain.terrainData.size.x;
                                 float d = terrain.terrainData.size.z;
                                 localPoint.x = localPoint.x / w - 0.5f;
@@ -2990,9 +2982,9 @@ namespace TGS
                 {
                     for (int k = 0; k < hitCount; k++)
                     {
-                        if (hits[k].collider.gameObject == gameObject)
+                        if (_hits[k].collider.gameObject == gameObject)
                         {
-                            localPoint = transform.InverseTransformPoint(hits[k].point);
+                            localPoint = transform.InverseTransformPoint(_hits[k].point);
                             return true;
                         }
                     }
@@ -3002,20 +2994,20 @@ namespace TGS
             return false;
         }
 
-        bool GetLocalHitFromWorldPosition(ref Vector3 position)
+        private bool GetLocalHitFromWorldPosition(ref Vector3 position)
         {
             if (terrain != null)
             {
                 Ray ray = new Ray(position - transform.forward * 100, transform.forward);
-                int hitCount = Physics.RaycastNonAlloc(ray, hits);
+                int hitCount = Physics.RaycastNonAlloc(ray, _hits);
                 bool goodHit = false;
                 if (hitCount > 0)
                 {
                     for (int k = 0; k < hitCount; k++)
                     {
-                        if (hits[k].collider.gameObject == terrain.gameObject)
+                        if (_hits[k].collider.gameObject == terrain.gameObject)
                         {
-                            Vector3 localPoint = terrain.transform.InverseTransformPoint(hits[k].point);
+                            Vector3 localPoint = terrain.transform.InverseTransformPoint(_hits[k].point);
                             float w = terrain.terrainData.size.x;
                             float d = terrain.terrainData.size.z;
                             position.x = localPoint.x / w - 0.5f;
@@ -3038,9 +3030,9 @@ namespace TGS
             return true;
         }
 
-        bool CheckMousePos()
+        private bool CheckMousePos()
         {
-            if (highlightMode == HIGHLIGHT_MODE.None || (!Application.isPlaying && !useEditorRay))
+            if (highlightMode == HIGHLIGHT_MODE.None || (!Application.isPlaying && !_useEditorRay))
                 return false;
 
             Vector3 localPoint;
@@ -3068,9 +3060,9 @@ namespace TGS
             int newTerritoryHighlightedIndex = -1;
 
             // mouse if over the grid - verify if hitPos is inside any territory polygon
-            if (territories != null)
+            if (Territories != null)
             {
-                int terrCount = sortedTerritories.Count;
+                int terrCount = SortedTerritories.Count;
                 for (int c = 0; c < terrCount; c++)
                 {
                     Region sreg = _sortedTerritories[c].region;
@@ -3098,7 +3090,7 @@ namespace TGS
                     OnTerritoryEnter(newTerritoryHighlightedIndex);
                 _territoryLastOverIndex = newTerritoryHighlightedIndex;
                 if (_territoryLastOverIndex >= 0)
-                    _territoryLastOver = territories[_territoryLastOverIndex];
+                    _territoryLastOver = Territories[_territoryLastOverIndex];
                 else
                     _territoryLastOver = null;
             }
@@ -3159,7 +3151,7 @@ namespace TGS
             {
                 if (!sameTerritoryHighlight)
                 {
-                    if (newTerritoryHighlightedIndex >= 0 && territories[newTerritoryHighlightedIndex].visible)
+                    if (newTerritoryHighlightedIndex >= 0 && Territories[newTerritoryHighlightedIndex].visible)
                     {
                         HighlightTerritoryRegion(newTerritoryHighlightedIndex, false);
                     }
@@ -3173,16 +3165,16 @@ namespace TGS
             return true;
         }
 
-        void UpdateHighlightFade()
+        private void UpdateHighlightFade()
         {
             if (highlightFadeAmount == 0)
                 return;
 
             if (_highlightedObj != null)
             {
-                float newAlpha = highlightFadeMin + Mathf.PingPong(Time.time * highlightFadeSpeed - highlightFadeStart,
+                float newAlpha = highlightFadeMin + Mathf.PingPong(Time.time * highlightFadeSpeed - _highlightFadeStart,
                     highlightFadeAmount - highlightFadeMin);
-                Material mat = HighlightMode == HIGHLIGHT_MODE.Territories ? hudMatTerritory : hudMatCell;
+                Material mat = HighlightMode == HIGHLIGHT_MODE.Territories ? HUDMatTerritory : HUDMatCell;
                 mat.SetFloat("_FadeAmount", newAlpha);
                 float newScale = highlightScaleMin +
                                  Mathf.PingPong(Time.time * HighlightFadeSpeed, highlightScaleMax - highlightScaleMin);
@@ -3191,7 +3183,7 @@ namespace TGS
             }
         }
 
-        void TriggerEvents()
+        private void TriggerEvents()
         {
             int buttonIndex = -1;
             bool leftButtonClick = Input.GetMouseButtonDown(0);
@@ -3258,12 +3250,12 @@ namespace TGS
 
         #region Geometric functions
 
-        Vector3 GetWorldSpacePosition(Vector2 localPosition)
+        private Vector3 GetWorldSpacePosition(Vector2 localPosition)
         {
             if (terrain != null)
             {
-                Vector3 localCenter = new Vector3((localPosition.x + 0.5f) * terrainWidth, 0,
-                    (localPosition.y + 0.5f) * terrainDepth);
+                Vector3 localCenter = new Vector3((localPosition.x + 0.5f) * _terrainWidth, 0,
+                    (localPosition.y + 0.5f) * _terrainDepth);
                 localCenter.y = terrain.SampleHeight(terrain.transform.TransformPoint(localCenter));
                 return terrain.transform.TransformPoint(localCenter);
             }
@@ -3273,7 +3265,7 @@ namespace TGS
             }
         }
 
-        Vector3 GetScaledVector(Vector3 p)
+        private Vector3 GetScaledVector(Vector3 p)
         {
             p.x *= gridScale.x;
             p.x += gridCenter.x;
@@ -3282,7 +3274,7 @@ namespace TGS
             return p;
         }
 
-        Point GetScaledPoint(Point p)
+        private Point GetScaledPoint(Point p)
         {
             p.x *= gridScale.x;
             p.x += gridCenter.x;
@@ -3304,17 +3296,17 @@ namespace TGS
 
         #region Territory stuff
 
-        void HideTerritoryRegionHighlight()
+        private void HideTerritoryRegionHighlight()
         {
             HideCellRegionHighlight();
-            if (_territoryHighlighted == null)
+            if (TerritoryHighlighted == null)
                 return;
             if (_highlightedObj != null)
             {
-                if (_territoryHighlighted.region.customMaterial != null)
+                if (TerritoryHighlighted.region.customMaterial != null)
                 {
                     ApplyMaterialToSurface(_highlightedObj.GetComponent<Renderer>(),
-                        _territoryHighlighted.region.customMaterial);
+                        TerritoryHighlighted.region.customMaterial);
                 }
                 else if (_highlightedObj.GetComponent<SurfaceFader>() == null)
                 {
@@ -3333,11 +3325,11 @@ namespace TGS
         /// Internally used by the Map UI and the Editor component, but you can use it as well to temporarily mark a territory region.
         /// </summary>
         /// <param name="refreshGeometry">Pass true only if you're sure you want to force refresh the geometry of the highlight (for instance, if the frontiers data has changed). If you're unsure, pass false.</param>
-        GameObject HighlightTerritoryRegion(int territoryIndex, bool refreshGeometry)
+        private GameObject HighlightTerritoryRegion(int territoryIndex, bool refreshGeometry)
         {
-            if (_territoryHighlighted != null)
+            if (TerritoryHighlighted != null)
                 HideTerritoryRegionHighlight();
-            if (territoryIndex < 0 || territoryIndex >= territories.Count)
+            if (territoryIndex < 0 || territoryIndex >= Territories.Count)
                 return null;
 
             if (highlightEffect != HIGHLIGHT_EFFECT.None)
@@ -3351,91 +3343,91 @@ namespace TGS
                 }
 
                 int cacheIndex = GetCacheIndexForTerritoryRegion(territoryIndex);
-                bool existsInCache = surfaces.ContainsKey(cacheIndex);
+                bool existsInCache = _surfaces.ContainsKey(cacheIndex);
                 if (refreshGeometry && existsInCache)
                 {
-                    GameObject obj = surfaces[cacheIndex];
-                    surfaces.Remove(cacheIndex);
+                    GameObject obj = _surfaces[cacheIndex];
+                    _surfaces.Remove(cacheIndex);
                     DestroyImmediate(obj);
                     existsInCache = false;
                 }
 
                 if (existsInCache)
                 {
-                    _highlightedObj = surfaces[cacheIndex];
+                    _highlightedObj = _surfaces[cacheIndex];
                     if (_highlightedObj == null)
                     {
-                        surfaces.Remove(cacheIndex);
+                        _surfaces.Remove(cacheIndex);
                     }
                     else
                     {
                         if (!_highlightedObj.activeSelf)
                             _highlightedObj.SetActive(true);
                         Renderer rr = _highlightedObj.GetComponent<Renderer>();
-                        if (rr.sharedMaterial != hudMatTerritory)
-                            rr.sharedMaterial = hudMatTerritory;
+                        if (rr.sharedMaterial != HUDMatTerritory)
+                            rr.sharedMaterial = HUDMatTerritory;
                     }
                 }
                 else
                 {
-                    _highlightedObj = GenerateTerritoryRegionSurface(territoryIndex, hudMatTerritory, Misc.Vector2one,
+                    _highlightedObj = GenerateTerritoryRegionSurface(territoryIndex, HUDMatTerritory, Misc.Vector2one,
                         Misc.Vector2zero, 0, false);
                 }
 
                 // Reuse territory texture
-                Territory territory = territories[territoryIndex];
+                Territory territory = Territories[territoryIndex];
                 if (territory.region.customMaterial != null)
                 {
-                    hudMatTerritory.mainTexture = territory.region.customMaterial.mainTexture;
+                    HUDMatTerritory.mainTexture = territory.region.customMaterial.mainTexture;
                 }
                 else
                 {
-                    hudMatTerritory.mainTexture = null;
+                    HUDMatTerritory.mainTexture = null;
                 }
 
-                highlightFadeStart = Time.time;
+                _highlightFadeStart = Time.time;
             }
 
             _territoryHighlightedIndex = territoryIndex;
-            _territoryHighlighted = territories[territoryIndex];
+            _territoryHighlighted = Territories[territoryIndex];
 
             return _highlightedObj;
         }
 
-        GameObject GenerateTerritoryRegionSurface(int territoryIndex, Material material, Vector2 textureScale,
+        private GameObject GenerateTerritoryRegionSurface(int territoryIndex, Material material, Vector2 textureScale,
             Vector2 textureOffset, float textureRotation, bool rotateInLocalSpace)
         {
-            if (territoryIndex < 0 || territoryIndex >= territories.Count)
+            if (territoryIndex < 0 || territoryIndex >= Territories.Count)
                 return null;
-            Region region = territories[territoryIndex].region;
+            Region region = Territories[territoryIndex].region;
             int cacheIndex = GetCacheIndexForTerritoryRegion(territoryIndex);
             return GenerateRegionSurface(region, cacheIndex, material, textureScale, textureOffset, textureRotation,
                 rotateInLocalSpace);
         }
 
-        void UpdateColorizedTerritoriesAlpha()
+        private void UpdateColorizedTerritoriesAlpha()
         {
-            if (territories == null)
+            if (Territories == null)
                 return;
-            int territoriesCount = territories.Count;
+            int territoriesCount = Territories.Count;
             for (int c = 0; c < territoriesCount; c++)
             {
-                Territory territory = territories[c];
+                Territory territory = Territories[c];
                 int cacheIndex = GetCacheIndexForTerritoryRegion(c);
                 GameObject surf;
-                if (surfaces.TryGetValue(cacheIndex, out surf))
+                if (_surfaces.TryGetValue(cacheIndex, out surf))
                 {
                     if (surf != null)
                     {
                         Color newColor = surf.GetComponent<Renderer>().sharedMaterial.color;
-                        newColor.a = territory.fillColor.a * _colorizedTerritoriesAlpha;
+                        newColor.a = territory.fillColor.a * colorizedTerritoriesAlpha;
                         surf.GetComponent<Renderer>().sharedMaterial.color = newColor;
                     }
                 }
             }
         }
 
-        Territory GetTerritoryAtPoint(Vector3 position, bool worldSpace)
+        private Territory GetTerritoryAtPoint(Vector3 position, bool worldSpace)
         {
             if (worldSpace)
             {
@@ -3443,10 +3435,10 @@ namespace TGS
                     return null;
             }
 
-            int territoriesCount = territories.Count;
+            int territoriesCount = Territories.Count;
             for (int p = 0; p < territoriesCount; p++)
             {
-                Territory territory = territories[p];
+                Territory territory = Territories[p];
                 if (territory.region.Contains(position.x, position.y))
                 {
                     return territory;
@@ -3456,17 +3448,17 @@ namespace TGS
             return null;
         }
 
-        void TerritoryAnimate(FADER_STYLE style, int territoryIndex, Color color, float duration)
+        private void TerritoryAnimate(FADER_STYLE style, int territoryIndex, Color color, float duration)
         {
-            if (territoryIndex < 0 || territoryIndex >= territories.Count)
+            if (territoryIndex < 0 || territoryIndex >= Territories.Count)
                 return;
             int cacheIndex = GetCacheIndexForTerritoryRegion(territoryIndex);
             GameObject territorySurface = null;
-            surfaces.TryGetValue(cacheIndex, out territorySurface);
+            _surfaces.TryGetValue(cacheIndex, out territorySurface);
             if (territorySurface == null)
             {
                 territorySurface = TerritoryToggleRegionSurface(territoryIndex, true, color);
-                territories[territoryIndex].region.customMaterial = null;
+                Territories[territoryIndex].region.customMaterial = null;
             }
             else
             {
@@ -3475,11 +3467,11 @@ namespace TGS
 
             Renderer renderer = territorySurface.GetComponent<Renderer>();
             Material oldMaterial = renderer.sharedMaterial;
-            Material fadeMaterial = Instantiate(hudMatTerritory);
-            Region region = territories[territoryIndex].region;
+            Material fadeMaterial = Instantiate(HUDMatTerritory);
+            Region region = Territories[territoryIndex].region;
             fadeMaterial.color = region.customMaterial != null ? region.customMaterial.color : oldMaterial.color;
             fadeMaterial.mainTexture = oldMaterial.mainTexture;
-            disposalManager.MarkForDisposal(fadeMaterial);
+            _disposalManager.MarkForDisposal(fadeMaterial);
             fadeMaterial.name = oldMaterial.name;
             renderer.sharedMaterial = fadeMaterial;
             SurfaceFader.Animate(style, this, territorySurface, region, fadeMaterial, color, duration);
@@ -3490,7 +3482,7 @@ namespace TGS
 
         #region Cell stuff
 
-        int GetCacheIndexForCellRegion(int cellIndex)
+        private int GetCacheIndexForCellRegion(int cellIndex)
         {
             return 1000000 + cellIndex; // * 1000 + regionIndex;
         }
@@ -3500,7 +3492,7 @@ namespace TGS
         /// Internally used by the Map UI and the Editor component, but you can use it as well to temporarily mark a territory region.
         /// </summary>
         /// <param name="refreshGeometry">Pass true only if you're sure you want to force refresh the geometry of the highlight (for instance, if the frontiers data has changed). If you're unsure, pass false.</param>
-        GameObject HighlightCellRegion(int cellIndex, bool refreshGeometry)
+        private GameObject HighlightCellRegion(int cellIndex, bool refreshGeometry)
         {
             if (_cellHighlighted != null)
                 HideCellRegionHighlight();
@@ -3519,30 +3511,30 @@ namespace TGS
 
                 int cacheIndex = GetCacheIndexForCellRegion(cellIndex);
                 GameObject obj;
-                bool existsInCache = surfaces.TryGetValue(cacheIndex, out obj);
+                bool existsInCache = _surfaces.TryGetValue(cacheIndex, out obj);
                 if (refreshGeometry && existsInCache)
                 {
-                    surfaces.Remove(cacheIndex);
+                    _surfaces.Remove(cacheIndex);
                     DestroyImmediate(obj);
                     existsInCache = false;
                 }
 
                 if (existsInCache)
                 {
-                    _highlightedObj = surfaces[cacheIndex];
+                    _highlightedObj = _surfaces[cacheIndex];
                     if (_highlightedObj != null)
                     {
                         _highlightedObj.SetActive(true);
-                        _highlightedObj.GetComponent<Renderer>().sharedMaterial = hudMatCell;
+                        _highlightedObj.GetComponent<Renderer>().sharedMaterial = HUDMatCell;
                     }
                     else
                     {
-                        surfaces.Remove(cacheIndex);
+                        _surfaces.Remove(cacheIndex);
                     }
                 }
                 else
                 {
-                    _highlightedObj = GenerateCellRegionSurface(cellIndex, hudMatCell, Misc.Vector2one,
+                    _highlightedObj = GenerateCellRegionSurface(cellIndex, HUDMatCell, Misc.Vector2one,
                         Misc.Vector2zero, 0, false);
                 }
 
@@ -3550,14 +3542,14 @@ namespace TGS
                 Cell cell = Cells[cellIndex];
                 if (cell.region.customMaterial != null)
                 {
-                    hudMatCell.mainTexture = cell.region.customMaterial.mainTexture;
+                    HUDMatCell.mainTexture = cell.region.customMaterial.mainTexture;
                 }
                 else
                 {
-                    hudMatCell.mainTexture = null;
+                    HUDMatCell.mainTexture = null;
                 }
 
-                highlightFadeStart = Time.time;
+                _highlightFadeStart = Time.time;
             }
 
             _cellHighlighted = Cells[cellIndex];
@@ -3565,7 +3557,7 @@ namespace TGS
             return _highlightedObj;
         }
 
-        void HideCellRegionHighlight()
+        private void HideCellRegionHighlight()
         {
             if (_cellHighlighted == null)
                 return;
@@ -3588,7 +3580,7 @@ namespace TGS
             _cellHighlightedIndex = -1;
         }
 
-        void SurfaceSegmentForSurface(Segment s, Connector connector)
+        private void SurfaceSegmentForSurface(Segment s, Connector connector)
         {
             // trace the line until roughness is exceeded
             double dist = s.magnitude; // (float)Math.Sqrt ( (p1.x-p0.x)*(p1.x-p0.x) + (p1.y-p0.y)*(p1.y-p0.y));
@@ -3603,19 +3595,19 @@ namespace TGS
             {
                 Point t1 = s.start + direction * i / numSteps;
                 h1 = terrain.SampleHeight(transform.TransformPoint(t1.vector3));
-                if (h0 < h1 || h0 - h1 > effectiveRoughness)
+                if (h0 < h1 || h0 - h1 > _effectiveRoughness)
                 {
                     //-effectiveRoughness) {
                     if (t0 != ta)
                     {
-                        Segment s0 = new Segment(t0, ta, s.border);
+                        Segment s0 = new(t0, ta, s.border);
                         connector.Add(s0);
-                        Segment s1 = new Segment(ta, t1, s.border);
+                        Segment s1 = new(ta, t1, s.border);
                         connector.Add(s1);
                     }
                     else
                     {
-                        Segment s0 = new Segment(t0, t1, s.border);
+                        Segment s0 = new(t0, t1, s.border);
                         connector.Add(s0);
                     }
 
@@ -3627,69 +3619,15 @@ namespace TGS
             }
 
             // Add last point
-            Segment finalSeg = new Segment(t0, s.end, s.border);
+            Segment finalSeg = new(t0, s.end, s.border);
             connector.Add(finalSeg);
         }
-
-        //								float GetFirstPointInRow (float y, List<PolygonPoint>points) {
-        //												int max = points.Count - 1;
-        //												float minx = 1000;
-        //												for (int k = 0; k <= max; k++) {
-        //																PolygonPoint p0 = points [k];
-        //																PolygonPoint p1;
-        //																if (k == max) {
-        //																				p1 = points [0];
-        //																} else {
-        //																				p1 = points [k + 1];
-        //																}
-        //																// if line crosses the horizontal line
-        //																if (p0.Y >= y && p1.Y <= y || p0.Y <= y && p1.Y >= y) {
-        //																				float x;
-        //																				if (p1.Xf == p0.Xf) {
-        //																								x = p0.Xf;
-        //																				} else {
-        //																								float a = (p1.Xf - p0.Xf) / (p1.Yf - p0.Yf);
-        //																								x = p0.Xf + a * (y - p0.Yf);
-        //																				}
-        //																				if (x < minx)
-        //																								minx = x;
-        //																}
-        //												}
-        //												return minx - 2;
-        //								}
-        //
-        //								float GetLastPointInRow (float y, List<PolygonPoint>points) {
-        //												int max = points.Count - 1;
-        //												float maxx = -1000;
-        //												for (int k = 0; k <= max; k++) {
-        //																PolygonPoint p0 = points [k];
-        //																PolygonPoint p1;
-        //																if (k == max) {
-        //																				p1 = points [0];
-        //																} else {
-        //																				p1 = points [k + 1];
-        //																}
-        //																// if line crosses the horizontal line
-        //																if (p0.Yf >= y && p1.Yf <= y || p0.Yf <= y && p1.Yf >= y) {
-        //																				float x;
-        //																				if (p1.X == p0.Xf) {
-        //																								x = p0.Xf;
-        //																				} else {
-        //																								float a = (p1.Xf - p0.Xf) / (p1.Yf - p0.Yf);
-        //																								x = p0.Xf + a * (y - p0.Yf);
-        //																				}
-        //																				if (x > maxx)
-        //																								maxx = x;
-        //																}
-        //												}
-        //												return maxx - 2;
-        //								}
-
-        void GetFirstAndLastPointInRow(float y, List<PolygonPoint> points, out float first, out float last)
+        
+        private void GetFirstAndLastPointInRow(float y, List<PolygonPoint> points, out float first, out float last)
         {
             int max = points.Count - 1;
-            float minx = float.MaxValue;
-            float maxx = float.MinValue;
+            float minX = float.MaxValue;
+            float maxX = float.MinValue;
             for (int k = 0; k <= max; k++)
             {
                 PolygonPoint p0 = points[k];
@@ -3717,18 +3655,18 @@ namespace TGS
                         x = p0.Xf + a * (y - p0.Yf);
                     }
 
-                    if (x > maxx)
-                        maxx = x;
-                    if (x < minx)
-                        minx = x;
+                    if (x > maxX)
+                        maxX = x;
+                    if (x < minX)
+                        minX = x;
                 }
             }
 
-            first = minx - 2f;
-            last = maxx - 2f;
+            first = minX - 2f;
+            last = maxX - 2f;
         }
 
-        bool IsTooNearPolygon(double x, double y, List<PolygonPoint> points)
+        private bool IsTooNearPolygon(double x, double y, List<PolygonPoint> points)
         {
             int pointsCount = points.Count;
             for (int j = 0; j < pointsCount; j++)
@@ -3743,7 +3681,7 @@ namespace TGS
             return false;
         }
 
-        GameObject GenerateCellRegionSurface(int cellIndex, Material material, Vector2 textureScale,
+        private GameObject GenerateCellRegionSurface(int cellIndex, Material material, Vector2 textureScale,
             Vector2 textureOffset, float textureRotation, bool rotateInLocalSpace)
         {
             if (cellIndex < 0 || cellIndex >= Cells.Count)
@@ -3754,7 +3692,7 @@ namespace TGS
                 rotateInLocalSpace);
         }
 
-        Cell GetCellAtPoint(Vector3 position, bool worldSpace, int territoryIndex = -1)
+        private Cell GetCellAtPoint(Vector3 position, bool worldSpace, int territoryIndex = -1)
         {
             // Compute local point
             if (worldSpace)
@@ -3789,9 +3727,9 @@ namespace TGS
             }
             else
             {
-                if (territoryIndex >= 0 && (territories == null || territoryIndex >= territories.Count))
+                if (territoryIndex >= 0 && (Territories == null || territoryIndex >= Territories.Count))
                     return null;
-                List<Cell> cells = territoryIndex >= 0 ? territories[territoryIndex].cells : sortedCells;
+                List<Cell> cells = territoryIndex >= 0 ? Territories[territoryIndex].cells : _sortedCells;
                 for (int p = 0; p < cellsCount; p++)
                 {
                     Cell cell = cells[p];
@@ -3807,13 +3745,13 @@ namespace TGS
             return null;
         }
 
-        void CellAnimate(FADER_STYLE style, int cellIndex, Color initialColor, Color color, float duration)
+        private void CellAnimate(FADER_STYLE style, int cellIndex, Color initialColor, Color color, float duration)
         {
             if (cellIndex < 0 || cellIndex >= Cells.Count)
                 return;
             int cacheIndex = GetCacheIndexForCellRegion(cellIndex);
             GameObject cellSurface = null;
-            surfaces.TryGetValue(cacheIndex, out cellSurface);
+            _surfaces.TryGetValue(cacheIndex, out cellSurface);
             if (cellSurface == null)
             {
                 cellSurface = CellToggleRegionSurface(cellIndex, true, color, false);
@@ -3826,20 +3764,20 @@ namespace TGS
 
             Renderer renderer = cellSurface.GetComponent<Renderer>();
             Material oldMaterial = renderer.sharedMaterial;
-            Material fadeMaterial = Instantiate(hudMatCell);
+            Material fadeMaterial = Instantiate(HUDMatCell);
             fadeMaterial.SetFloat("_FadeAmount", 0);
             Region region = Cells[cellIndex].region;
             fadeMaterial.color = (initialColor.a == 0 && region.customMaterial != null)
                 ? region.customMaterial.color
                 : initialColor;
             fadeMaterial.mainTexture = oldMaterial.mainTexture;
-            disposalManager.MarkForDisposal(fadeMaterial);
+            _disposalManager.MarkForDisposal(fadeMaterial);
             renderer.sharedMaterial = fadeMaterial;
 
             SurfaceFader.Animate(style, this, cellSurface, region, fadeMaterial, color, duration);
         }
 
-        bool ToggleCellsVisibility(Rect rect, bool visible, bool worldSpace = false)
+        private bool ToggleCellsVisibility(Rect rect, bool visible, bool worldSpace = false)
         {
             if (Cells == null)
                 return false;
@@ -3866,15 +3804,15 @@ namespace TGS
                 rect.yMax = 0.4999f;
             if (gridTopology == GRID_TOPOLOGY.Irregular)
             {
-                float xmin = rect.xMin;
-                float xmax = rect.xMax;
-                float ymin = rect.yMin;
-                float ymax = rect.yMax;
+                float xMin = rect.xMin;
+                float xMax = rect.xMax;
+                float yMin = rect.yMin;
+                float yMax = rect.yMax;
                 for (int k = 0; k < count; k++)
                 {
                     Cell cell = Cells[k];
-                    if (cell.center.x >= xmin && cell.center.x <= xmax && cell.center.y >= ymin &&
-                        cell.center.y <= ymax)
+                    if (cell.center.x >= xMin && cell.center.x <= xMax && cell.center.y >= yMin &&
+                        cell.center.y <= yMax)
                     {
                         cell.visible = visible;
                     }
@@ -3892,9 +3830,7 @@ namespace TGS
                 int col1 = bottomRight.column;
                 if (row1 < row0)
                 {
-                    int tmp = row0;
-                    row0 = row1;
-                    row1 = tmp;
+                    (row0, row1) = (row1, row0);
                 }
 
                 if (col1 < col0)
@@ -3915,9 +3851,9 @@ namespace TGS
             }
 
             ClearLastOver();
-            needRefreshRouteMatrix = true;
-            refreshCellMesh = true;
-            shouldRedraw = true;
+            _needRefreshRouteMatrix = true;
+            _refreshCellMesh = true;
+            _shouldRedraw = true;
             return true;
         }
 

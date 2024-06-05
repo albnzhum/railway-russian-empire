@@ -2,12 +2,13 @@ using System;
 using Railway.Events;
 using Railway.Gameplay;
 using UnityEngine;
+using Zenject;
 
 namespace Railway.GlobalData
 {
     public class TimeSystem : MonoBehaviour
     {
-        [SerializeField] private GameStateSO _gameState;
+        [Inject] private GameStateSO _gameState;
 
         [SerializeField] private TimeComponent _time;
 

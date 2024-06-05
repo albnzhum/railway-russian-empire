@@ -22,8 +22,8 @@ namespace Railway.Gameplay
     {
         public GameState CurrentGameState => _currentGameState;
 
-        [Header("Game states")] [SerializeField] [ReadOnly]
-        private GameState _currentGameState;
+        [Header("Game states")] 
+        [SerializeField] [ReadOnly] private GameState _currentGameState;
 
         [SerializeField] [ReadOnly] private GameState _previousGameState;
 

@@ -4,10 +4,11 @@ using Railway.Input;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
+using Zenject;
 
 public class RTSCamera : MonoBehaviour
 {
-    public InputReader _inputReader;
+    [Inject] InputReader _inputReader;
 
     private Transform cameraTransform;
 

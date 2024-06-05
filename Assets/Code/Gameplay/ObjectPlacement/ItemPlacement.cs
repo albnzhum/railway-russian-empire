@@ -1,15 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ModestTree;
 using R3;
 using Railway.Events;
-using Railway.Gameplay.UI;
-using Railway.Input;
 using Railway.Shop.Data;
 using TGS;
 using Unity.Collections;
 using UnityEngine;
+using Zenject;
 
 namespace Railway.Gameplay
 {
@@ -18,19 +16,20 @@ namespace Railway.Gameplay
     /// </summary>
     public class ItemPlacement : MonoBehaviour
     {
-        [Header("Gameplay")] [SerializeField] private GameStateSO gameState;
+        [Header("Gameplay")] 
+        [Inject] private GameStateSO _gameState;
         [SerializeField] private ItemEventChannel useItemEvent;
-        [SerializeField] private CellInputHandler _inputHandler;
+        [SerializeField] private CellInputHandler inputHandler;
 
-        [Header("Scene Object")] [SerializeField]
-        private Camera _camera;
+        [Header("Scene Object")] 
+        [SerializeField] private Camera _camera;
 
         [SerializeField] [ReadOnly] private NonInteractableObject _startGO;
         [SerializeField] private GameObject _particleSystem;
 
         private ItemData _currentItemData;
 
-        private TerrainGridSystem _tgs;
+        [Inject] private TerrainGridSystem _tgs;
 
         private Cell _currentCell;
         private Cell _startCell;
@@ -46,26 +45,23 @@ namespace Railway.Gameplay
 
         private void OnEnable()
         {
-            _tgs = TerrainGridSystem.Instance;
-            _neighborFinder = NeighborFinder.Instance(_tgs);
-
             useItemEvent.OnEventRaised += SetCurrentItem;
 
-            _inputHandler.OnChooseItemPositionStream
+            inputHandler.OnChooseItemPositionStream
                 .Subscribe(OnChooseItemPosition)
                 .AddTo(_disposable);
 
-            _inputHandler.OnPlaceItemStream
+            inputHandler.OnPlaceItemStream
                 .Subscribe(PlaceItem)
                 .AddTo(_disposable);
 
-            _inputHandler.OnStopItemPlacing += StopPlacing;
+            inputHandler.OnStopItemPlacing += StopPlacing;
         }
 
         private void OnDisable()
         {
             useItemEvent.OnEventRaised -= SetCurrentItem;
-            _inputHandler.OnStopItemPlacing -= StopPlacing;
+            inputHandler.OnStopItemPlacing -= StopPlacing;
 
             _occupiedCells.Clear();
             _disposable.Dispose();
@@ -129,7 +125,7 @@ namespace Railway.Gameplay
 
                 //Reset
 
-                gameState.UpdateGameState(GameState.Gameplay);
+                _gameState.UpdateGameState(GameState.Gameplay);
             }
         }
 

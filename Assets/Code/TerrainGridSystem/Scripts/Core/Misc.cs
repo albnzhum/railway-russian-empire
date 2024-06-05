@@ -5,7 +5,7 @@ namespace TGS
 {
     static class Misc
     {
-        public static Vector3 Vector3zero = Vector3zero;
+        public static Vector3 Vector3zero = Vector3.zero;
         public static Vector3 Vector3one = Vector3.one;
 
         public static Vector2 Vector2left = Vector2.left;

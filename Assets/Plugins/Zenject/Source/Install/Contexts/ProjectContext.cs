@@ -37,15 +37,9 @@ namespace Zenject
 
         DiContainer _container;
 
-        public override DiContainer Container
-        {
-            get { return _container; }
-        }
+        public override DiContainer Container => _container;
 
-        public static bool HasInstance
-        {
-            get { return _instance != null; }
-        }
+        public static bool HasInstance => _instance != null;
 
         public static ProjectContext Instance
         {
@@ -172,7 +166,7 @@ namespace Zenject
 
         public bool ParentNewObjectsUnderContext
         {
-            get { return _parentNewObjectsUnderContext; }
+            get => _parentNewObjectsUnderContext;
             set { _parentNewObjectsUnderContext = value; }
         }
 
