@@ -1,6 +1,5 @@
 using UnityEngine;
 using System;
-using UnityEngine.Serialization;
 
 namespace TGS
 {
@@ -66,7 +65,7 @@ namespace TGS
         /// Returns the terrain center in world space.
         /// </summary>
         public Vector3 TerrainCenter =>
-            terrain.transform.position + new Vector3(terrainWidth * 0.5f, 0, terrainDepth * 0.5f);
+            terrain.transform.position + new Vector3(_terrainWidth * 0.5f, 0, _terrainDepth * 0.5f);
 
         public Texture2D canvasTexture;
 
@@ -166,7 +165,7 @@ namespace TGS
             }
         }
 
-        [SerializeField] bool evenLayout = false;
+        [SerializeField] bool evenLayout;
 
         /// <summary>
         /// Toggle even corner in hexagonal topology.
@@ -241,7 +240,7 @@ namespace TGS
             }
         }
 
-        [SerializeField] float gridCurvature = 0.0f;
+        [SerializeField] float gridCurvature;
 
         /// <summary>
         /// Gets or sets the grid's curvature factor.
@@ -280,7 +279,7 @@ namespace TGS
             }
         }
 
-        [SerializeField] float highlightFadeMin = 0f;
+        [SerializeField] float highlightFadeMin;
 
         public float HighlightFadeMin
         {
@@ -426,19 +425,7 @@ namespace TGS
             }
         }
 
-        [SerializeField] Vector3 gridCenterWorldPosition;
-
-        /// <summary>
-        /// Center of the grid in world space coordinates. You can also use this property to reposition the grid on a given world position coordinate.
-        /// </summary>
-        public Vector3 GridCenterWorldPosition
-        {
-            get => GetWorldSpacePosition(gridCenter);
-            set => SetGridCenterWorldPosition(value, false);
-        }
-
-
-        [SerializeField] Vector2 gridScale = new Vector2(1, 1);
+        [SerializeField] private Vector2 gridScale = new(1, 1);
 
         /// <summary>
         /// Scale of the grid on the Terrain (by default, 1,1, which means occupy entire terrain)
@@ -460,7 +447,7 @@ namespace TGS
             }
         }
 
-        [SerializeField] float gridElevation = 0;
+        [SerializeField] private float gridElevation;
 
         public float GridElevation
         {
@@ -476,7 +463,7 @@ namespace TGS
             }
         }
 
-        [SerializeField] float gridElevationBase = 0;
+        [SerializeField] private float gridElevationBase;
 
         public float GridElevationBase
         {
@@ -494,7 +481,7 @@ namespace TGS
 
         public float GridElevationCurrent => gridElevation + gridElevationBase;
 
-        [SerializeField] float gridCameraOffset = 0;
+        [SerializeField] private float gridCameraOffset;
 
         public float GridCameraOffset
         {
@@ -510,7 +497,7 @@ namespace TGS
             }
         }
 
-        [SerializeField] float gridNormalOffset = 0;
+        [SerializeField] float gridNormalOffset;
 
         public float GridNormalOffset
         {
@@ -741,7 +728,7 @@ namespace TGS
                     _instance = FindObjectOfType<TerrainGridSystem>();
                     if (_instance == null)
                     {
-                        Debug.LogWarning("TerrainGridSystem gameobject not found in the scene!");
+                        Debug.LogWarning("TerrainGridSystem game object not found in the scene!");
                     }
                 }
 
@@ -784,8 +771,8 @@ namespace TGS
             if (Terrain != null)
             {
                 position -= TerrainCenter;
-                position.x /= terrainWidth;
-                position.z /= terrainDepth;
+                position.x /= _terrainWidth;
+                position.z /= _terrainDepth;
                 GridCenter = new Vector2(position.x, position.z);
             }
             else
@@ -850,14 +837,14 @@ namespace TGS
                     float halfStepX = stepX * 0.5f;
                     float halfStepY = stepY * 0.5f;
 
-                    int evenLayout = this.evenLayout ? 1 : 0;
+                    int layout = this.evenLayout ? 1 : 0;
 
                     float k = Mathf.FloorToInt(position.x * cellColumnCount / gridScale.x);
                     float j = Mathf.FloorToInt(position.y * cellRowCount / gridScale.y);
                     position.x = k * stepX; // + halfStepX;
                     position.y = j * stepY;
                     position.x -= k * halfStepX / 2;
-                    float offsetY = (k % 2 == evenLayout) ? 0 : -halfStepY;
+                    float offsetY = (k % 2 == layout) ? 0 : -halfStepY;
                     position.y += offsetY;
                 }
             }

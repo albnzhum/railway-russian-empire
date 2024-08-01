@@ -17,12 +17,12 @@ namespace TGS
         [HideInInspector] public Texture2D[] textures;
 
         // Use this for initialization
-        void OnEnable()
+        private void OnEnable()
         {
             if (!Application.isPlaying) LoadConfiguration();
         }
 
-        void Start()
+        private void Start()
         {
             LoadConfiguration();
         }

@@ -13,7 +13,7 @@ namespace TGS
 
     public delegate void CellClickEvent(int cellIndex, int buttonIndex);
 
-    public partial class TerrainGridSystem : MonoBehaviour
+    public partial class TerrainGridSystem 
     {
         public event CellEvent OnCellEnter;
         public event CellEvent OnCellExit;
@@ -78,9 +78,9 @@ namespace TGS
                 {
                     showCells = value;
                     isDirty = true;
-                    if (cellLayer != null)
+                    if (_cellLayer != null)
                     {
-                        cellLayer.SetActive(showCells);
+                        _cellLayer.SetActive(showCells);
                         ClearLastOver();
                     }
                     else if (showCells)
@@ -105,14 +105,14 @@ namespace TGS
                 {
                     cellBorderColor = value;
                     isDirty = true;
-                    if (cellsThinMat != null && cellBorderColor != cellsThinMat.color)
+                    if (_cellsThinMat != null && cellBorderColor != _cellsThinMat.color)
                     {
-                        cellsThinMat.color = cellBorderColor;
+                        _cellsThinMat.color = cellBorderColor;
                     }
 
-                    if (cellsGeoMat != null && cellBorderColor != cellsGeoMat.color)
+                    if (_cellsGeoMat != null && cellBorderColor != _cellsGeoMat.color)
                     {
-                        cellsGeoMat.color = cellBorderColor;
+                        _cellsGeoMat.color = cellBorderColor;
                     }
                 }
             }
@@ -166,14 +166,14 @@ namespace TGS
                 {
                     cellHighlightColor = value;
                     isDirty = true;
-                    if (hudMatCellOverlay != null && cellHighlightColor != hudMatCellOverlay.color)
+                    if (_hudMatCellOverlay != null && cellHighlightColor != _hudMatCellOverlay.color)
                     {
-                        hudMatCellOverlay.color = cellHighlightColor;
+                        _hudMatCellOverlay.color = cellHighlightColor;
                     }
 
-                    if (hudMatCellGround != null && cellHighlightColor != hudMatCellGround.color)
+                    if (_hudMatCellGround != null && cellHighlightColor != _hudMatCellGround.color)
                     {
-                        hudMatCellGround.color = cellHighlightColor;
+                        _hudMatCellGround.color = cellHighlightColor;
                     }
                 }
             }
@@ -227,7 +227,7 @@ namespace TGS
                 if (cellsMaxSlope != value)
                 {
                     cellsMaxSlope = value;
-                    needUpdateTerritories = true;
+                    _needUpdateTerritories = true;
                     Redraw(true);
                 }
             }
@@ -246,7 +246,7 @@ namespace TGS
                 if (cellsMinimumAltitude != value)
                 {
                     cellsMinimumAltitude = value;
-                    needUpdateTerritories = true;
+                    _needUpdateTerritories = true;
                     Redraw(true);
                 }
             }
@@ -280,7 +280,7 @@ namespace TGS
         {
             if (cell == null)
                 return -1;
-            if (cellLookup.TryGetValue(cell, out var index))
+            if (CellLookup.TryGetValue(cell, out var index))
                 return index;
             else
                 return -1;
@@ -427,16 +427,16 @@ namespace TGS
             }
 
             int cacheIndex = GetCacheIndexForCellRegion(cellIndex);
-            bool existsInCache = surfaces.TryGetValue(cacheIndex, out GameObject surf);
+            bool existsInCache = _surfaces.TryGetValue(cacheIndex, out GameObject surf);
             if (existsInCache && surf == null)
             {
-                surfaces.Remove(cacheIndex);
+                _surfaces.Remove(cacheIndex);
                 existsInCache = false;
             }
 
             if (refreshGeometry && existsInCache)
             {
-                surfaces.Remove(cacheIndex);
+                _surfaces.Remove(cacheIndex);
                 DestroyImmediate(surf);
                 existsInCache = false;
                 surf = null;
@@ -453,7 +453,7 @@ namespace TGS
                                         textureOffset != region.customTextureOffset ||
                                         textureRotation != region.customTextureRotation))
                 {
-                    surfaces.Remove(cacheIndex);
+                    _surfaces.Remove(cacheIndex);
                     DestroyImmediate(surf);
                     surf = null;
                 }
@@ -463,8 +463,8 @@ namespace TGS
             bool isHighlighted = CellHighlightedIndex == cellIndex;
             if (surf != null)
             {
-                Material coloredMat = overlay ? coloredMatOverlay : coloredMatGround;
-                Material texturizedMat = overlay ? texturizedMatOverlay : texturizedMatGround;
+                Material coloredMat = overlay ? _coloredMatOverlay : _coloredMatGround;
+                Material texturizedMat = overlay ? _texturizedMatOverlay : _texturizedMatGround;
                 if (!surf.activeSelf)
                     surf.SetActive(true);
                 // Check if material is ok
@@ -499,14 +499,14 @@ namespace TGS
             {
                 if (region.customMaterial != null)
                 {
-                    hudMatCell.mainTexture = region.customMaterial.mainTexture;
+                    HUDMatCell.mainTexture = region.customMaterial.mainTexture;
                 }
                 else
                 {
-                    hudMatCell.mainTexture = null;
+                    HUDMatCell.mainTexture = null;
                 }
 
-                surf.GetComponent<Renderer>().sharedMaterial = hudMatCell;
+                surf.GetComponent<Renderer>().sharedMaterial = HUDMatCell;
                 _highlightedObj = surf;
             }
 
@@ -526,11 +526,11 @@ namespace TGS
             if (_cellHighlightedIndex != cellIndex)
             {
                 int cacheIndex = GetCacheIndexForCellRegion(cellIndex);
-                if (surfaces.TryGetValue(cacheIndex, out GameObject surf))
+                if (_surfaces.TryGetValue(cacheIndex, out GameObject surf))
                 {
                     if (surf == null)
                     {
-                        surfaces.Remove(cacheIndex);
+                        _surfaces.Remove(cacheIndex);
                     }
                     else
                     {
@@ -958,7 +958,7 @@ namespace TGS
             Cell cell = Cells[cellIndex];
             GameObject cellSurface = null;
             int cacheIndex = GetCacheIndexForCellRegion(cellIndex);
-            surfaces.TryGetValue(cacheIndex, out cellSurface);
+            _surfaces.TryGetValue(cacheIndex, out cellSurface);
             if (cellSurface == null)
             {
                 CellToggleRegionSurface(cellIndex, true, texture);
@@ -975,7 +975,7 @@ namespace TGS
 
                 if (cellSurface != null)
                 {
-                    surfaces[cacheIndex].SetActive(true);
+                    _surfaces[cacheIndex].SetActive(true);
                 }
             }
 
@@ -989,7 +989,7 @@ namespace TGS
 
             if (_highlightedObj == cellSurface)
             {
-                hudMatCell.mainTexture = texture;
+                HUDMatCell.mainTexture = texture;
             }
         }
 
@@ -1051,7 +1051,7 @@ namespace TGS
             if (territory == null)
                 return -1;
             int index;
-            if (territoryLookup.TryGetValue(territory, out index))
+            if (TerritoryLookup.TryGetValue(territory, out index))
                 return index;
             else
                 return -1;
@@ -1104,9 +1104,9 @@ namespace TGS
             int territoryIndex = cell.territoryIndex;
             if (territoryIndex >= 0)
             {
-                if (territories[territoryIndex].cells.Contains(cell))
+                if (Territories[territoryIndex].cells.Contains(cell))
                 {
-                    territories[territoryIndex].cells.Remove(cell);
+                    Territories[territoryIndex].cells.Remove(cell);
                 }
             }
 
@@ -1114,8 +1114,8 @@ namespace TGS
             if (Cells.Contains(cell))
                 Cells.Remove(cell);
 
-            needRefreshRouteMatrix = true;
-            needUpdateTerritories = true;
+            _needRefreshRouteMatrix = true;
+            _needUpdateTerritories = true;
         }
 
         /// <summary>
@@ -1124,18 +1124,18 @@ namespace TGS
         public void CellSetTag(Cell cell, int tag)
         {
             // remove previous tag register
-            if (cellTagged.ContainsKey(cell.tag))
+            if (_cellTagged.ContainsKey(cell.tag))
             {
-                cellTagged.Remove(cell.tag);
+                _cellTagged.Remove(cell.tag);
             }
 
             // override existing tag
-            if (cellTagged.ContainsKey(tag))
+            if (_cellTagged.ContainsKey(tag))
             {
-                cellTagged.Remove(tag);
+                _cellTagged.Remove(tag);
             }
 
-            cellTagged.Add(tag, cell);
+            _cellTagged.Add(tag, cell);
             cell.tag = tag;
         }
 
@@ -1164,7 +1164,7 @@ namespace TGS
         /// </summary>
         public Cell CellGetWithTag(int tag)
         {
-            if (cellTagged.TryGetValue(tag, out Cell cell))
+            if (_cellTagged.TryGetValue(tag, out Cell cell))
                 return cell;
             return null;
         }
@@ -1178,7 +1178,7 @@ namespace TGS
             if (cellIndex < 0 || cellIndex >= Cells.Count)
                 return;
             Cells[cellIndex].canCross = canCross;
-            needRefreshRouteMatrix = true;
+            _needRefreshRouteMatrix = true;
         }
 
         /// <summary>
@@ -1189,7 +1189,7 @@ namespace TGS
             if (cellIndex < 0 || cellIndex >= Cells.Count)
                 return;
             Cells[cellIndex].group = group;
-            needRefreshRouteMatrix = true;
+            _needRefreshRouteMatrix = true;
         }
 
         /// <summary>
@@ -1218,9 +1218,9 @@ namespace TGS
                 ClearLastOver();
             }
 
-            needRefreshRouteMatrix = true;
-            refreshCellMesh = true;
-            shouldRedraw = true;
+            _needRefreshRouteMatrix = true;
+            _refreshCellMesh = true;
+            _shouldRedraw = true;
         }
 
 
@@ -1318,15 +1318,15 @@ namespace TGS
             if (cellIndex < 0 || cellIndex >= Cells.Count)
                 return false;
             Cell cell = Cells[cellIndex];
-            if (cell.territoryIndex >= 0 && cell.territoryIndex < territories.Count &&
-                territories[cell.territoryIndex].cells.Contains(cell))
+            if (cell.territoryIndex >= 0 && cell.territoryIndex < Territories.Count &&
+                Territories[cell.territoryIndex].cells.Contains(cell))
             {
-                territories[cell.territoryIndex].cells.Remove(cell);
+                Territories[cell.territoryIndex].cells.Remove(cell);
             }
 
             Cells[cellIndex].territoryIndex = territoryIndex;
-            needUpdateTerritories = true;
-            shouldRedraw = true;
+            _needUpdateTerritories = true;
+            _shouldRedraw = true;
             return true;
         }
 
@@ -1442,8 +1442,8 @@ namespace TGS
                 }
             }
 
-            needUpdateTerritories = true;
-            needRefreshRouteMatrix = true;
+            _needUpdateTerritories = true;
+            _needRefreshRouteMatrix = true;
             Redraw();
             isDirty = true;
         }

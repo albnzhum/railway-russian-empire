@@ -46,7 +46,7 @@ namespace TGS_Editor
             };
 
             tgs = (TerrainGridSystem)target;
-            if (tgs.territories == null)
+            if (tgs.Territories == null)
             {
                 tgs.Init();
             }
@@ -90,7 +90,7 @@ namespace TGS_Editor
 
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Territories", GUILayout.Width(120));
-            tgs.numTerritories = EditorGUILayout.IntSlider(tgs.numTerritories, 1,
+            tgs.NumTerritories = EditorGUILayout.IntSlider(tgs.NumTerritories, 1,
                 Mathf.Min(tgs.NumCells, TerrainGridSystem.MAX_TERRITORIES));
             EditorGUILayout.EndHorizontal();
 
@@ -245,12 +245,12 @@ namespace TGS_Editor
             EditorGUILayout.EndHorizontal();
 
             int cellsCreated = tgs.Cells == null ? 0 : tgs.Cells.Count;
-            int territoriesCreated = tgs.territories == null ? 0 : tgs.territories.Count;
+            int territoriesCreated = tgs.Territories == null ? 0 : tgs.Territories.Count;
 
             EditorGUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
             DrawInfoLabel("Cells Created: " + cellsCreated + " / Territories Created: " + territoriesCreated +
-                          " / Vertex Count: " + tgs.lastVertexCount);
+                          " / Vertex Count: " + tgs.LastVertexCount);
             GUILayout.FlexibleSpace();
             EditorGUILayout.EndHorizontal();
 
@@ -339,33 +339,33 @@ namespace TGS_Editor
 
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Show Territories", GUILayout.Width(120));
-            tgs.showTerritories = EditorGUILayout.Toggle(tgs.showTerritories);
+            tgs.ShowTerritories = EditorGUILayout.Toggle(tgs.ShowTerritories);
             GUILayout.Label("Frontier Color");
-            tgs.territoryFrontiersColor = EditorGUILayout.ColorField(tgs.territoryFrontiersColor, GUILayout.Width(50));
+            tgs.TerritoryFrontiersColor = EditorGUILayout.ColorField(tgs.TerritoryFrontiersColor, GUILayout.Width(50));
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("  Highlight Color", GUILayout.Width(120));
-            tgs.territoryHighlightColor = EditorGUILayout.ColorField(tgs.territoryHighlightColor, GUILayout.Width(50));
+            tgs.TerritoryHighlightColor = EditorGUILayout.ColorField(tgs.TerritoryHighlightColor, GUILayout.Width(50));
             GUILayout.FlexibleSpace();
             GUILayout.Label(new GUIContent("Disputed Frontier", "Color for common frontiers between two territories."));
-            tgs.territoryDisputedFrontierColor =
-                EditorGUILayout.ColorField(tgs.territoryDisputedFrontierColor, GUILayout.Width(50));
+            tgs.TerritoryDisputedFrontierColor =
+                EditorGUILayout.ColorField(tgs.TerritoryDisputedFrontierColor, GUILayout.Width(50));
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("  Colorize Territories", GUILayout.Width(120));
-            tgs.colorizeTerritories = EditorGUILayout.Toggle(tgs.colorizeTerritories);
+            tgs.ColorizeTerritories = EditorGUILayout.Toggle(tgs.ColorizeTerritories);
             GUILayout.Label("Alpha");
-            tgs.colorizedTerritoriesAlpha = EditorGUILayout.Slider(tgs.colorizedTerritoriesAlpha, 0.0f, 1.0f);
+            tgs.ColorizedTerritoriesAlpha = EditorGUILayout.Slider(tgs.ColorizedTerritoriesAlpha, 0.0f, 1.0f);
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("  Outer Borders", GUILayout.Width(120));
-            tgs.showTerritoriesOuterBorders = EditorGUILayout.Toggle(tgs.showTerritoriesOuterBorders);
+            tgs.ShowTerritoriesOuterBorders = EditorGUILayout.Toggle(tgs.ShowTerritoriesOuterBorders);
             GUILayout.Label(new GUIContent("Internal Territories",
                 "Allows territories to be contained by other territories."));
-            tgs.allowTerritoriesInsideTerritories = EditorGUILayout.Toggle(tgs.allowTerritoriesInsideTerritories);
+            tgs.AllowTerritoriesInsideTerritories = EditorGUILayout.Toggle(tgs.AllowTerritoriesInsideTerritories);
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.BeginHorizontal();

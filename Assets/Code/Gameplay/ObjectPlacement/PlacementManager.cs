@@ -2,7 +2,6 @@
 using Railway.Shop.Data;
 using TGS;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Railway.Gameplay
 {

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TGS;
 using UnityEngine;
 
@@ -15,21 +13,20 @@ public class CellTerrainType : MonoBehaviour
     private Terrain _terrain;
     private TerrainData _terrainData;
 
-    private int alphamapWidth;
-    private int alphamapHeight;
-    private float[,,] splatmapData;
-    private int numTextures;
+    private int _alphamapWidth;
+    private int _alphamapHeight;
+    private float[,,] _splatmapData;
+    private int _numTextures;
 
     private void Start()
     {
-        _tgs = TerrainGridSystem.Instance;
         _terrain = _tgs.Terrain;
         _terrainData = _terrain.terrainData;
 
-        alphamapWidth = _terrainData.alphamapWidth;
-        alphamapHeight = _terrainData.alphamapHeight;
-        splatmapData = _terrainData.GetAlphamaps(0, 0, alphamapWidth, alphamapHeight);
-        numTextures = splatmapData.Length / (alphamapWidth * alphamapHeight);
+        _alphamapWidth = _terrainData.alphamapWidth;
+        _alphamapHeight = _terrainData.alphamapHeight;
+        _splatmapData = _terrainData.GetAlphamaps(0, 0, _alphamapWidth, _alphamapHeight);
+        _numTextures = _splatmapData.Length / (_alphamapWidth * _alphamapHeight);
 
         foreach (var cell in _tgs.Cells)
         {
@@ -45,14 +42,14 @@ public class CellTerrainType : MonoBehaviour
     private int GetActiveTerrainTextureIdx(Vector3 position)
     {
         Vector3 terrainCord = ConvertToSplatMapCoordinate(position);
-        int activeTerrainIndex = 0;
-        float largestOpacity = 0f;
-        for (int i = 0; i < numTextures; i++)
+        var activeTerrainIndex = 0;
+        var largestOpacity = 0f;
+        for (int i = 0; i < _numTextures; i++)
         {
-            if (largestOpacity < splatmapData[(int)terrainCord.z, (int)terrainCord.x, i])
+            if (largestOpacity < _splatmapData[(int)terrainCord.z, (int)terrainCord.x, i])
             {
                 activeTerrainIndex = i;
-                largestOpacity = splatmapData[(int)terrainCord.z, (int)terrainCord.x, i];
+                largestOpacity = _splatmapData[(int)terrainCord.z, (int)terrainCord.x, i];
             }
         }
 

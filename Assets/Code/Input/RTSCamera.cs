@@ -1,13 +1,10 @@
-using System;
-using Cinemachine;
 using Railway.Input;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 
 public class RTSCamera : MonoBehaviour
 {
-    public InputReader _inputReader;
+    InputReader _inputReader;
 
     private Transform cameraTransform;
 

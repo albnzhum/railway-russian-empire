@@ -1,5 +1,3 @@
-using System;
-using Railway.Events;
 using Railway.Gameplay;
 using UnityEngine;
 
@@ -7,7 +5,7 @@ namespace Railway.GlobalData
 {
     public class TimeSystem : MonoBehaviour
     {
-        [SerializeField] private GameStateSO _gameState;
+        private GameStateSO _gameState;
 
         [SerializeField] private TimeComponent _time;
 

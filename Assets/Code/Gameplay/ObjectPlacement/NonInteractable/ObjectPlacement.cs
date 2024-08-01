@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using TGS;
@@ -20,8 +19,6 @@ public class ObjectPlacement : MonoBehaviour
 
     private void OnEnable()
     {
-        _tgs = TerrainGridSystem.Instance;
-
         _objectsToPlace = GetComponentsInChildren<NonInteractableObject>().ToList();
     }
 

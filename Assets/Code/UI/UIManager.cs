@@ -1,5 +1,3 @@
-using System;
-using Railway.Components;
 using Railway.Events;
 using Railway.Input;
 using Railway.SceneManagement;
@@ -12,22 +10,24 @@ namespace Railway.UI
 {
     public class UIManager : MonoBehaviour
     {
-        [Header("Scene UI")] [SerializeField] private UIPopup popupPanel;
+        [Header("Scene UI")] 
+        [SerializeField] private UIPopup popupPanel;
         [SerializeField] private UIShop shopPanel;
         [SerializeField] private UISettingsController settingsScreen;
         [SerializeField] private UIHud _hud;
         [SerializeField] private UIPause pauseScreen;
         [SerializeField] private UIResources _uiResources;
 
-        [Header("Gameplay")] [SerializeField] private GameStateSO _gameStateManager;
+        [Header("Gameplay")] 
+        private GameStateSO _gameStateManager;
         [SerializeField] private MenuSceneSO _mainMenu;
-        [SerializeField] private InputReader _inputReader;
+        private InputReader _inputReader;
 
-        [Header("Listening on")] [SerializeField]
-        private BoolEventChannelSO _onLocationLoadedEvent;
+        [Header("Listening on")] 
+        [SerializeField] private BoolEventChannelSO _onLocationLoadedEvent;
 
-        [Header("Broadcasting on")] [SerializeField]
-        private LoadEventChannelSO _loadMenuEvent = default;
+        [Header("Broadcasting on")] 
+        [SerializeField] private LoadEventChannelSO _loadMenuEvent = default;
 
         [SerializeField] private ItemEventChannel _useItemEvent = default;
 

@@ -14,8 +14,8 @@ namespace Railway.UI
         [SerializeField] private Button _openShopButton;
         [SerializeField] private Button _openSettingsButton;
 
-        [Header("Listening on")] [SerializeField]
-        private BoolEventChannelSO _onLocationLoadedEvent;
+        [Header("Listening on")] 
+        [SerializeField] private BoolEventChannelSO _onLocationLoadedEvent;
 
         public UnityAction OpenShopEvent;
         public UnityAction OpenSettingsEvent;

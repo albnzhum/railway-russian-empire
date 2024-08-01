@@ -5,8 +5,8 @@ namespace Railway.SceneManagement
 {
     public class LocationTeleporter : MonoBehaviour
     {
-        [Header("Broadcast on")] [SerializeField]
-        private LoadEventChannelSO _loadLocationRequest;
+        [Header("Broadcast on")] 
+        [SerializeField] private LoadEventChannelSO _loadLocationRequest;
 
         [SerializeField] private VoidEventChannelSO _onSceneReady;
         [SerializeField] private LoadEventChannelSO _loadMenuEvent = default;

@@ -1,34 +1,28 @@
-using UnityEngine;
-using System;
-using System.IO;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
 using TGS.PathFinding;
 
 namespace TGS
 {
-    public partial class TerrainGridSystem : MonoBehaviour
+    public partial class TerrainGridSystem
     {
-        int[] routeMatrix;
+        private int[] _routeMatrix;
 
-        IPathFinder finder;
-        bool needRefreshRouteMatrix;
+        private IPathFinder _finder;
+        private bool _needRefreshRouteMatrix;
 
 
-        void ComputeRouteMatrix()
+        private void ComputeRouteMatrix()
         {
             // prepare matrix
-            if (routeMatrix == null)
+            if (_routeMatrix == null)
             {
-                needRefreshRouteMatrix = true;
-                routeMatrix = new int[cellColumnCount * cellRowCount];
+                _needRefreshRouteMatrix = true;
+                _routeMatrix = new int[cellColumnCount * cellRowCount];
             }
 
-            if (!needRefreshRouteMatrix)
+            if (!_needRefreshRouteMatrix)
                 return;
 
-            needRefreshRouteMatrix = false;
+            _needRefreshRouteMatrix = false;
 
             // Compute route
             for (int j = 0; j < cellRowCount; j++)
@@ -40,40 +34,40 @@ namespace TGS
                     if (Cells[cellIndex].canCross && Cells[cellIndex].visible)
                     {
                         // set navigation bit
-                        routeMatrix[cellIndex] = Cells[cellIndex].group;
+                        _routeMatrix[cellIndex] = Cells[cellIndex].group;
                     }
                     else
                     {
                         // clear navigation bit
-                        routeMatrix[cellIndex] = 0;
+                        _routeMatrix[cellIndex] = 0;
                     }
                 }
             }
 
-            if (finder == null)
+            if (_finder == null)
             {
                 if ((cellColumnCount & (cellColumnCount - 1)) == 0)
                 {
                     // is power of two?
-                    finder = new PathFinderFast(routeMatrix, cellColumnCount, cellRowCount);
+                    _finder = new PathFinderFast(_routeMatrix, cellColumnCount, cellRowCount);
                 }
                 else
                 {
-                    finder = new PathFinderFastNonSQR(routeMatrix, cellColumnCount, cellRowCount);
+                    _finder = new PathFinderFastNonSQR(_routeMatrix, cellColumnCount, cellRowCount);
                 }
             }
             else
             {
-                finder.SetCalcMatrix(routeMatrix);
+                _finder.SetCalcMatrix(_routeMatrix);
             }
         }
 
         /// <summary>
         /// Used by FindRoute method to satisfy custom positions check
         /// </summary>
-        int FindRoutePositionValidator(int location)
+        private int FindRoutePositionValidator(int location)
         {
-            int cost = 1;
+            var cost = 1;
             if (OnPathFindingCrossCell != null)
             {
                 cost = OnPathFindingCrossCell(location);
