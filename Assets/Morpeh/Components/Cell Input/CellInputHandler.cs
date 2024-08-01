@@ -3,8 +3,6 @@ using Railway.Input;
 using Scellecs.Morpeh;
 using UnityEngine;
 using Unity.IL2CPP.CompilerServices;
-using UnityEngine.Events;
-using Zenject;
 
 namespace Railway.Morpeh
 {

@@ -3,7 +3,6 @@ using System;
 using System.Text;
 using System.Collections.Generic;
 using TGS.Geom;
-using Zenject;
 
 namespace TGS
 {

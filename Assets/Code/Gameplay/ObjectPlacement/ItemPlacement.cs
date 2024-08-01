@@ -7,7 +7,6 @@ using Railway.Shop.Data;
 using TGS;
 using Unity.Collections;
 using UnityEngine;
-using Zenject;
 
 namespace Railway.Gameplay
 {
@@ -17,7 +16,7 @@ namespace Railway.Gameplay
     public class ItemPlacement : MonoBehaviour
     {
         [Header("Gameplay")] 
-        [Inject] private GameStateSO _gameState;
+        private GameStateSO _gameState;
         [SerializeField] private ItemEventChannel useItemEvent;
         [SerializeField] private CellInputHandler inputHandler;
 
@@ -29,7 +28,7 @@ namespace Railway.Gameplay
 
         private ItemData _currentItemData;
 
-        [Inject] private TerrainGridSystem _tgs;
+        private TerrainGridSystem _tgs;
 
         private Cell _currentCell;
         private Cell _startCell;

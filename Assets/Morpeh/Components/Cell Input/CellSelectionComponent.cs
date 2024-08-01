@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Railway.Shop.Data;
 using Scellecs.Morpeh;
 using TGS;
 using Unity.IL2CPP.CompilerServices;
@@ -14,6 +15,7 @@ namespace Railway.Morpeh
         public Cell CurrentCell;
         public Cell StartCell;
         public List<Cell> AvailableCells;
+        public Dictionary<ItemType, List<Cell>> OccupiedCells;
         
         public bool IsPlacing;
     }

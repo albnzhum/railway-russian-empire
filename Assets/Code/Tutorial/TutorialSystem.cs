@@ -1,12 +1,8 @@
-using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using Railway.Events;
 using Railway.Gameplay;
 using Railway.Input;
 using UnityEngine;
-using UnityEngine.UI;
-using Zenject;
 
 namespace Railway.Tutorials
 {
@@ -17,10 +13,10 @@ namespace Railway.Tutorials
         [SerializeField] private GameObject _tutorial;
 
         [Header("Gameplay")] 
-        [Inject] private GameStateSO _gameState;
+        private GameStateSO _gameState;
         [SerializeField] private BoolEventChannelSO _onLocationLoadedEvent;
 
-        [Inject] private InputReader _inputReader;
+        private InputReader _inputReader;
 
         private int currentStageIndex = 0;
         private bool isCompleted;

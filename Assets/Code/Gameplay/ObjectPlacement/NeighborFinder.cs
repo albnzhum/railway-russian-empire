@@ -3,19 +3,13 @@ using System.Linq;
 using Railway.Shop.Data;
 using TGS;
 using UnityEngine;
-using Zenject;
 
 namespace Railway.Gameplay
 {
-    public class NeighborFinder : MonoInstaller<NeighborFinder>
+    public class NeighborFinder
     {
-        [Inject] private TerrainGridSystem _tgs;
-
-        public override void InstallBindings()
-        {
-            Container.Bind<NeighborFinder>().FromInstance(this).AsCached().IfNotBound();
-        }
-
+        private TerrainGridSystem _tgs;
+        
         public Cell[] GetAvailableCell(ShopItem currentItem, Cell startCell,
             Dictionary<ItemType, List<Cell>> _occupiedCells)
         {

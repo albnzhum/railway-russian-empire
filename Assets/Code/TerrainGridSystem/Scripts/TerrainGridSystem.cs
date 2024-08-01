@@ -1,7 +1,5 @@
 using UnityEngine;
 using System;
-using UnityEngine.Serialization;
-using Zenject;
 
 namespace TGS
 {
@@ -42,7 +40,7 @@ namespace TGS
     public delegate int OnPathFindingCrossCell(int cellIndex);
 
 
-    public partial class TerrainGridSystem : MonoInstaller<TerrainGridSystem>
+    public partial class TerrainGridSystem : MonoBehaviour
     {
         [SerializeField] Terrain terrain;
 

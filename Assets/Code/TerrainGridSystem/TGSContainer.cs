@@ -6,10 +6,6 @@ namespace TGS
 {
     public partial class TerrainGridSystem 
     {
-        public override void InstallBindings()
-        {
-            Container.Bind<TerrainGridSystem>().FromInstance(TerrainGridSystem.Instance);
-            
-        }
+    
     }
 }

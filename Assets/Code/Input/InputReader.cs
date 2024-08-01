@@ -1,14 +1,12 @@
 using System;
-using Railway.Gameplay;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
-using Zenject;
 
 namespace Railway.Input
 {
     [CreateAssetMenu(fileName = "InputReader", menuName = "Gameplay/Input Reader")]
-    public class InputReader : ScriptableObjectInstaller<InputReader>, RailwayInputs.IGameplayActions, RailwayInputs.IEditActions,
+    public class InputReader : ScriptableObject, RailwayInputs.IGameplayActions, RailwayInputs.IEditActions,
         RailwayInputs.IMenusActions, RailwayInputs.ITutorialsActions, RailwayInputs.IThirdPersonViewActions
     {
         public event UnityAction OpenShopEvent = delegate { };
@@ -57,11 +55,6 @@ namespace Railway.Input
         private void OnDisable()
         {
             DisableAllInput();
-        }
-
-        public override void InstallBindings()
-        {
-            Container.Bind<InputReader>().FromInstance(this).AsCached().IfNotBound();
         }
 
         public void EnableGameplayInput()

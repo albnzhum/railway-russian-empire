@@ -5,7 +5,6 @@ using Railway.Gameplay;
 using Railway.Gameplay.UI;
 using Railway.Shop.UI;
 using UnityEngine;
-using Zenject;
 
 namespace Railway.UI
 {
@@ -20,9 +19,9 @@ namespace Railway.UI
         [SerializeField] private UIResources _uiResources;
 
         [Header("Gameplay")] 
-        [Inject] private GameStateSO _gameStateManager;
+        private GameStateSO _gameStateManager;
         [SerializeField] private MenuSceneSO _mainMenu;
-        [Inject] private InputReader _inputReader;
+        private InputReader _inputReader;
 
         [Header("Listening on")] 
         [SerializeField] private BoolEventChannelSO _onLocationLoadedEvent;

@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using TGS;
 using UnityEngine;
-using Zenject;
 
 public enum CellType
 {
@@ -12,7 +9,7 @@ public enum CellType
 
 public class CellTerrainType : MonoBehaviour
 {
-    [Inject] private TerrainGridSystem _tgs;
+    private TerrainGridSystem _tgs;
     private Terrain _terrain;
     private TerrainData _terrainData;
 
