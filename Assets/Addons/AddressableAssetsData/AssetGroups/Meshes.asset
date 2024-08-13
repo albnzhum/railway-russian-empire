@@ -57,16 +57,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 6c2391f242b3c9942bea6252fe2891e4
-    m_Address: Assets/Content/CsarskoeSelo/Nature/Pine Trees/SM_PineTress_1.fbx
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 11513268302b562498f3c140346b22c8
-    m_Address: Assets/Content/CsarskoeSelo/Nature/HandpaintedForest_Pack/Source/Forest_pack_models_set.FBX
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5457c9455a9496b4380c2b529f0973d9
     m_Address: Assets/Content/CsarskoeSelo/People/Static Meshes/SM_Peasant_6.fbx
     m_ReadOnly: 0
